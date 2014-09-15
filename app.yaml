@@ -1,0 +1,36 @@
+application: dkc-app
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: false
+inbound_services:
+- warmup
+
+skip_files:
+- ^(.*/)?.*\.pyc
+
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
+
+handlers:
+- url: /favicon\.ico
+  static_files: dkc/static/favicon.ico
+  upload: dkc/static/favicon\.ico
+  expiration: 30d
+- url: /images
+  static_dir: dkc/static/images
+  expiration: 14d
+- url: /css
+  static_dir: dkc/static/css
+  expiration: 7d
+- url: /js
+  static_dir: dkc/static/js
+  expiration: 7d
+- url: /fonts
+  static_dir: dkc/static/fonts
+  expiration: 7d
+- url: /.*
+  script: dkc.views.application

@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1>Forgot Password?</h1>
+
+{% if not_found %}
+<div class="alert alert-danger"><strong>User not found! </strong>Please check that you typed the correct email.</div>
+{% endif %}
+{% if email_sent %}
+<div class="alert alert-danger"><strong>An email has been sent! </strong>Please check it for instructions on how to reset your password.</div>
+{% endif %}
+
+<form class="form-horizontal col-md-6 col-md-offset-3" role="form" action="/forgot" method="post">
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="email">Email</label>
+        <div class="col-md-10">
+            <input type="email" class="form-control" id="email" name="email" value="{{ email }}" placeholder="email@example.com">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2 col-md-offset-2">
+            <button type="submit" class="btn btn-default">Reset Password</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

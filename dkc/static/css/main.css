@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "Myriad Pro";
+    src: url(../fonts/myriad-pro.otf) format("truetype");
+}
+@font-face {
+    font-family: "Century Gothic";
+    src: url(../fonts/century-gothic.ttf) format("truetype");
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Century Gothic", Arial;
+}
+
+body {
+    font-family: "Myriad Pro", Arial;
+}
+
+.alert {
+    text-align: center;
+}
