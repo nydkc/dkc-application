@@ -35,7 +35,7 @@ If you did not authorize this, then please disregard this email. Otherwise, clic
 If you have an questions or concerns, feel free to reply to this email and we will try our best to address them!
 Yours in spirit and service,
 The New York District Awards Committee
-                       """,
+                       """ % (verification_url, verification_url),
                        html="""
 <h2>Your DKC Application password has been reset.</h2>
 <p>If you did not authorize this, then please disregard this email. Otherwise, click the link below to reset your password.</p>
@@ -43,7 +43,8 @@ The New York District Awards Committee
 <p>If you have an questions or concerns, feel free to reply to this email and we will try our best to address them!</p>
 <p>Yours in spirit and service,<br>
 The New York District Awards Committee</p>
-                       """)
+                       """ % (verification_url, verification_url)
+        )
         self._serve_page(email_sent=True)
 
     def _serve_page(self, not_found=False, email_sent=False):
@@ -93,6 +94,6 @@ class SetPasswordHandler(BaseHandler):
         self.user_model.delete_signup_token(user.get_id(), old_token)
 
         template_values = {
-            changed: True
+            'changed': True
         }
         self.render_template('login.html', template_values)

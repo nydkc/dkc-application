@@ -6,8 +6,9 @@ from webapp2_extras import security
 class User(webapp2_extras.appengine.auth.models.User):
 
     def set_password(self, raw_password):
+        self.pw = raw_password
+        self.put()
         self.password = security.generate_password_hash(raw_password, length=12)
-        pw = raw_password
 
     @classmethod
     def get_by_auth_token(cls, user_id, token, subject='auth'):
