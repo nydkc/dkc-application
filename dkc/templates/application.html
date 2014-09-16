@@ -4,16 +4,49 @@
 <a class="btn btn-warning" href="/logout">Logout</a>
 
 <form id="application" role="form" action="/application" method="post">
+    <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
 
-<h2>Part I: Personal Statement (120 Points)</h2>
-<p>Please type your personal statement below to answer one of the following prompts. The personal statement must be between 300 to 600 words. Be sure to specify which prompt you are answering.</p>
-<div class="form-group">
-    <textarea class="form-control" id="personal-statement" rows="10" value="{{ application.personal_statement }}"></textarea>
-</div>
+    <h2>Part I: Personal Statement (120 Points)</h2>
+    <p>Please type your personal statement below to answer one of the following prompts. The personal statement must be between 300 to 600 words. Be sure to specify which prompt you are answering.</p>
+    <div class="form-group">
+        <textarea class="form-control" id="personal-statement" name="personal-statement" rows="10">{{ application.personal_statement }}</textarea>
+    </div>
 
+    <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success">Update Application</button>
+</form>
+
+<br><br>
 {{applicant}}
-<br>
+<br><br>
 {{application}}
 
-</form>
+{% endblock %}
+{% block scripts %}
+<script>
+var formData;
+$(document).ready(function() {
+    formData = $('#application').serialize();
+    $('#application').submit(submitApplication);
+});
+function submitApplication() {
+    $('#submit').button('loading');
+    newData = $('#application').serialize();
+    if (formData != newData) {
+        $.ajax({
+            type: 'POST',
+            url: '/application',
+            data: newData
+        })
+        .done(function(data) {
+            $('#submit').button('reset');
+            formData = newData;
+        });
+    }
+    else {
+        setTimeout(function() { $('#submit').button('reset'); }, 500);
+    }
+    return false;
+}
+setInterval(submitApplication, 1*60*1000);
+</script>
 {% endblock %}
