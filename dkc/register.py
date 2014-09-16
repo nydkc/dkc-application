@@ -25,5 +25,7 @@ class RegisterPage(BaseHandler):
         user = user_data[1]
 
         new_application = Application(parent=user.key)
-        new_application.put()
+        new_application_key = new_application.put()
+        user.application = new_application_key
+        user.put()
         self.redirect('/application')

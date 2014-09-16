@@ -2,4 +2,18 @@
 {% block body %}
 <h1>Hello {{ user.first_name }} {{ user.lastname }}</h1>
 <a class="btn btn-warning" href="/logout">Logout</a>
+
+<form id="application" role="form" action="/application" method="post">
+
+<h2>Part I: Personal Statement (120 Points)</h2>
+<p>Please type your personal statement below to answer one of the following prompts. The personal statement must be between 300 to 600 words. Be sure to specify which prompt you are answering.</p>
+<div class="form-group">
+    <textarea class="form-control" id="personal-statement" rows="10" value="{{ application.personal_statement }}"></textarea>
+</div>
+
+{{applicant}}
+<br>
+{{application}}
+
+</form>
 {% endblock %}
