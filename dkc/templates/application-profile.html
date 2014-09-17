@@ -1,0 +1,12 @@
+{% extends "application.html" %}
+{% block application %}
+<form id="application" class="form-horizontal" role="form" action="{{ application_url }}" method="post">
+    <h2>Profile</h2>
+
+    {{ input('first-name', 'First Name', applicant.first_name) }}
+    {{ input('last-name', 'Last Name', applicant.last_name) }}
+    {{ input('email', 'Email', applicant.email, disabled='disabled') }}
+
+    <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success">Update</button>
+</form>
+{% endblock %}

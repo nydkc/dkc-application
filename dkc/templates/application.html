@@ -1,26 +1,14 @@
 {% extends "layout.html" %}
 {% block body %}
-<h1>Hello {{ user.first_name }} {{ user.lastname }}</h1>
-<a class="btn btn-warning" href="/logout">Logout</a>
-
-<form id="application" role="form" action="/application" method="post">
-    <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
-
-    <h2>Part I: Personal Statement (120 Points)</h2>
-    <p>Please type your personal statement below to answer one of the following prompts. The personal statement must be between 300 to 600 words. Be sure to specify which prompt you are answering.</p>
-    <div class="form-group">
-        <textarea class="form-control" id="personal-statement" name="personal-statement" rows="10">{{ application.personal_statement }}</textarea>
+<div class="row">
+    <div class="col-md-3">
+{% include "sidebar.html" with context %}
     </div>
-
-    <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success">Update Application</button>
-</form>
-
-<br><br>
-{{applicant}}
-<br><br>
-{{application}}
-
+    <div class="col-md-9">
+{% block application %}{% endblock %}
+    </div>
 {% endblock %}
+
 {% block scripts %}
 <script>
 var formData;
@@ -34,7 +22,7 @@ function submitApplication() {
     if (formData != newData) {
         $.ajax({
             type: 'POST',
-            url: '/application',
+            url: '{{ application_url }}',
             data: newData
         })
         .done(function(data) {
@@ -50,3 +38,12 @@ function submitApplication() {
 setInterval(submitApplication, 1*60*1000);
 </script>
 {% endblock %}
+
+{% macro input(name, label='', value='', type='text', disabled='') -%}
+<div class="form-group">
+    <label for="{{ name }}" class="col-md-3 control-label">{{ label }}</label>
+    <div class="col-md-9">
+        <input type="{{ type }}" class="form-control" name="{{ name }}" value="{{ value|e }}" {{ disabled }}>
+    </div>
+</div>
+{%- endmacro %}

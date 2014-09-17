@@ -11,7 +11,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 config = {
     'webapp2_extras.auth': {
         'user_model': 'dkc.models.User',
-        'user_attributes': ['email', 'first_name', 'last_name']
+        'user_attributes': ['email']
     },
     'webapp2_extras.sessions': {
         'secret_key': PASSWORD_SECRET_KEY

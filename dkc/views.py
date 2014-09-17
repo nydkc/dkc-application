@@ -1,6 +1,6 @@
 import os, webapp2, jinja2
 from dkc import *
-from application import ApplicationPage
+from application import *
 from register import RegisterPage
 from login import LoginPage
 from logout import LogoutPage
@@ -13,7 +13,13 @@ class MainPage(BaseHandler):
         self.response.write(template.render({}))
 
 application = webapp2.WSGIApplication([
-    ('/application', ApplicationPage),
+    ('/application/personal-statement', ApplicationPersonalStatement),
+#    ('/application/projects', ApplicationProjects),
+#    ('/application/involvement', ApplicationInvolvement),
+#    ('/application/activities', ApplicationActivities),
+#    ('/application/scoring', ApplicationScoring),
+#    ('/application/verification', ApplicationVerification),
+    ('/application.*', ApplicationProfile),
     ('/login', LoginPage),
     ('/logout', LogoutPage),
     ('/register', RegisterPage),
