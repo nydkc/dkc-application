@@ -12,7 +12,7 @@
         <li>How do you describe Key Club to a non-Key Club member?</li>
     </ol>
     <div class="form-group">
-        <textarea class="form-control" id="personal-statement" name="personal-statement" rows="10">{{ application.personal_statement }}</textarea>
+        {{ textarea("personal-statement", value=application.personal_statement, rows="20") }}
     </div>
 
     <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success">Update</button>
