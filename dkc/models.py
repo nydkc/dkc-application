@@ -27,13 +27,14 @@ class User(webapp2_extras.appengine.auth.models.User):
     pw = ndb.StringProperty()
     application = ndb.KeyProperty()
 
-    grade = ndb.IntegerProperty()
-    ltg = ndb.StringProperty()
-    division = ndb.StringProperty()
+    grade = ndb.StringProperty()
     address = ndb.StringProperty()
     city = ndb.StringProperty()
     zip_code = ndb.StringProperty()
     phone_number = ndb.StringProperty()
+    division = ndb.StringProperty()
+    ltg = ndb.StringProperty()
+
     school = ndb.StringProperty()
     school_address = ndb.StringProperty()
     school_city = ndb.StringProperty()
@@ -44,7 +45,7 @@ class User(webapp2_extras.appengine.auth.models.User):
     faculty_advisor_phone_number = ndb.StringProperty()
 
 class InternationalProject(ndb.Model):
-    section = ndb.IntegerProperty()
+    section = ndb.StringProperty()
     event = ndb.StringProperty()
     description = ndb.TextProperty()
 
@@ -106,9 +107,9 @@ class Application(ndb.Model):
     other_projects = ndb.StructuredProperty(GeneralProject, repeated=True)
 
     early_submission = ndb.ComputedProperty(lambda self: self.is_early())
-    early_submission_points = ndb.IntegerProperty()
+    early_submission_points = ndb.StringProperty()
     recommendation = ndb.GenericProperty()
-    recommender_points = ndb.IntegerProperty()
+    recommender_points = ndb.StringProperty()
     
     scoring_reason_two = ndb.TextProperty()
     scoring_reason_three = ndb.TextProperty()

@@ -39,11 +39,11 @@ setInterval(submitApplication, 1*60*1000);
 </script>
 {% endblock %}
 
-{% macro input(name, label='', value='', type='text', disabled='') -%}
+{% macro input_horizontal(name, label='', value='', type='text', disabled='') -%}
 <div class="form-group">
-    <label for="{{ name }}" class="col-md-3 control-label">{{ label }}</label>
-    <div class="col-md-9">
-        <input type="{{ type }}" class="form-control" name="{{ name }}" value="{{ value|e }}" {{ disabled }}>
+    <label for="{{ name }}" class="col-md-4 control-label">{{ label }}</label>
+    <div class="col-md-8">
+        <input type="{{ type }}" class="form-control" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }}>
     </div>
 </div>
 {%- endmacro %}

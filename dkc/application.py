@@ -18,6 +18,21 @@ class ApplicationProfile(BaseHandler):
         applicant = self.user
         applicant.first_name = self.request.get('first-name')
         applicant.last_name = self.request.get('last-name')
+        applicant.grade = self.request.get('grade')
+        applicant.address = self.request.get('address')
+        applicant.city = self.request.get('city')
+        applicant.zip_code = self.request.get('zip-code')
+        applicant.phone_number = self.request.get('phone-number')
+        applicant.division = self.request.get('division')
+        applicant.ltg = self.request.get('ltg')
+        applicant.school = self.request.get('school')
+        applicant.school_address = self.request.get('school-address')
+        applicant.school_city = self.request.get('school-city')
+        applicant.school_zip_code = self.request.get('school-zip-code')
+        applicant.club_president = self.request.get('club-president')
+        applicant.club_president_phone_number = self.request.get('club-president-phone-number')
+        applicant.faculty_advisor = self.request.get('faculty-advisor')
+        applicant.faculty_advisor_phone_number = self.request.get('faculty-advisor-phone-number')
         applicant.put()
 
 class ApplicationPersonalStatement(BaseHandler):
