@@ -34,7 +34,9 @@
         {% endfor %}
     </div>
     <button class="btn btn-inverse btn-block" id="international-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
+
     <hr>
+
     <p>Complete the following section. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description. You may receive up to four points per event with a maximum of 20 points.</p>
     <p>Section 4: District Projects &amp; Local Causes</p>
     <p>Describe five projects or events that you have participated in relating to either the District Projects or Local Causes. At least one project must be a District Project. You must include all information as requested. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description. The District Projects are:</p>
@@ -65,34 +67,72 @@
     </div>
     <button class="btn btn-inverse btn-block" id="district-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
 
+    <hr>
+
+    <p>Complete the following section. Attendance at a divisional meeting is 4 points per meeting, with a maximum of 4 points. Attendance at a Divisional project/event is 4 points per event with a maximum of 8 points. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
+    <p>Section 5: Divisional Involvement</p>
+    <p>Attendance at Divisional Meeting (Max 8 Points, 4 Points per Event)</p>
+    <div class="divisional-meetings">
+        {% for divisional in application.divisionals %}
+        <div class="row divisional divisional-{{ loop.index }}">
+            <div class="form-horizontal">
+                <div class="col-md-4">
+                    {{ input_horizontal("divisional-meeting-date", "Date:", divisional.date|e, size=2) }}
+                </div>
+                <div class="col-md-8">
+                    {{ input_horizontal("divisional-meeting-location", "Location:", divisional.location|e, size=2) }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button class="btn btn-inverse btn-block" id="divisional-meetings-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
+
+    <hr>
+
     <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success">Update</button>
 </form>
 {% endblock %}
 {% block application_scripts %}
 <script>
 $(document).ready(function() {
-    var count = $('.international-projects .project').length;
-    if (count >= 5) {
+    var count;
+    count = $('.international-projects .project').length;
+    if (count >= 6) {
         $('#international-projects-button').hide();
     }
-    var count = $('.district-projects .project').length;
+    count = $('.district-projects .project').length;
     if (count >= 5) {
         $('#district-projects-button').hide();
+    }
+    count = $('.divisional-meetings .divisional').length;
+    if (count >= 2) {
+        $('#divisional-meetings-button').hide();
     }
 });
 $('#international-projects-button').click(function() {
     var count = $('.international-projects .project').length + 1;
-    $('.international-projects').append('<div class="row project project' + count + '"><div class="form-horizontal"><div class="col-md-3"><div class="form-group"><label for="international-projects-section" class="col-md-4 control-label">Section:</label><div class="col-md-8"><select class="form-control" id="international-projects-section" name="international-projects-section"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div></div></div><div class="col-md-9"><div class="form-group"><label for="international-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="international-projects-event" name="international-projects-event" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="international-projects-description" name="international-projects-description" rows="4"></textarea></div></div></div></div></div>');
-    if (count >= 5) {
+    $('.international-projects').append('<div class="row project project-' + count + '"><div class="form-horizontal"><div class="col-md-3"><div class="form-group"><label for="international-projects-section" class="col-md-4 control-label">Section:</label><div class="col-md-8"><select class="form-control" id="international-projects-section" name="international-projects-section"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div></div></div><div class="col-md-9"><div class="form-group"><label for="international-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="international-projects-event" name="international-projects-event" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="international-projects-description" name="international-projects-description" rows="4"></textarea></div></div></div></div></div>');
+    if (count >= 6) {
         $(this).hide();
     }
+    return false;
 });
 $('#district-projects-button').click(function() {
     var count = $('.district-projects .project').length + 1;
-    $('.district-projects').append('<div class="row project project' + count + '"><div class="form-horizontal"><div class="col-md-6"><div class="form-group"><label for="district-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="district-projects-event" name="district-projects-event" value=""></div></div></div><div class="col-md-6"><div class="form-group"><label for="district-projects-charity" class="col-md-2 control-label">Charity:</label><div class="col-md-10"><select class="form-control" id="district-projects-charity" name="district-projects-charity"><option value="St. Jude Children’s Hospital">St. Jude Children’s Hospital</option><option value="Make-A-Wish Foundation">Make-A-Wish Foundation</option><option value="Kamp Kiwanis">Kamp Kiwanis</option><option value="Kiwanis Pediatric Trauma Center">Kiwanis Pediatric Trauma Center</option><option value="Pediatric Lyme Disease Foundation">Pediatric Lyme Disease Foundation</option></select></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="district-projects-description" name="district-projects-description" rows="4"></textarea></div></div></div></div></div>');
+    $('.district-projects').append('<div class="row project project-' + count + '"><div class="form-horizontal"><div class="col-md-6"><div class="form-group"><label for="district-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="district-projects-event" name="district-projects-event" value=""></div></div></div><div class="col-md-6"><div class="form-group"><label for="district-projects-charity" class="col-md-2 control-label">Charity:</label><div class="col-md-10"><select class="form-control" id="district-projects-charity" name="district-projects-charity"><option value="St. Jude Children’s Hospital">St. Jude Children’s Hospital</option><option value="Make-A-Wish Foundation">Make-A-Wish Foundation</option><option value="Kamp Kiwanis">Kamp Kiwanis</option><option value="Kiwanis Pediatric Trauma Center">Kiwanis Pediatric Trauma Center</option><option value="Pediatric Lyme Disease Foundation">Pediatric Lyme Disease Foundation</option></select></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="district-projects-description" name="district-projects-description" rows="4"></textarea></div></div></div></div></div>');
     if (count >= 5) {
         $(this).hide();
     }
+    return false;
+});
+$('#divisional-meetings-button').click(function() {
+    var count = $('.divisional-meetings .divisional').length + 1;
+    $('.divisional-meetings').append('<div class="row divisional divisional-' + count + '"><div class="form-horizontal"><div class="col-md-4"><div class="form-group"><label for="divisional-meeting-date" class="col-md-2 control-label">Date:</label><div class="col-md-10"><input type="text" class="form-control" id="divisional-meeting-date" name="divisional-meeting-date" value=""></div></div></div><div class="col-md-8"><div class="form-group"><label for="divisional-meeting-location" class="col-md-2 control-label">Location:</label><div class="col-md-10"><input type="text" class="form-control" id="divisional-meeting-location" name="divisional-meeting-location" value=""></div></div></div></div></div>');
+    if (count >= 2) {
+        $(this).hide();
+    }
+    return false;
 });
 </script>
 {% endblock %}

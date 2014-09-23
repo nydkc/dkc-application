@@ -103,4 +103,15 @@ class ApplicationProjects(BaseHandler):
             application.district_projects.append(DistrictProject(event=district_project_events[i], charity=district_project_charities[i], description=district_project_descriptions[i]))
             i += 1
 
+        divisional_dates = self.request.get_all('divisional-meeting-date')
+        divisional_locations = self.request.get_all('divisional-meeting-location')
+        i = 0
+        while i < len(application.divisionals):
+            application.divisionals[i].date = divisional_dates[i]
+            application.divisionals[i].location = divisional_locations[i]
+            i += 1
+        while i < len(divisional_dates):
+            application.divisionals.append(Divisional(date=divisional_dates[i], location=divisional_locations[i]))
+            i += 1
+
         application.put()

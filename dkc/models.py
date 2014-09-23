@@ -56,7 +56,7 @@ class DistrictProject(ndb.Model):
     description = ndb.TextProperty()
 
 class Divisional(ndb.Model):
-    date = ndb.DateTimeProperty()
+    date = ndb.StringProperty(indexed=False)
     location = ndb.StringProperty(indexed=False)
 
 class GeneralProject(ndb.Model):
