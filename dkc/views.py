@@ -14,7 +14,7 @@ class MainPage(BaseHandler):
 
 application = webapp2.WSGIApplication([
     ('/application/personal-statement', ApplicationPersonalStatement),
-#    ('/application/projects', ApplicationProjects),
+    ('/application/projects', ApplicationProjects),
 #    ('/application/involvement', ApplicationInvolvement),
 #    ('/application/activities', ApplicationActivities),
 #    ('/application/scoring', ApplicationScoring),

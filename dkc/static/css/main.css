@@ -18,3 +18,7 @@ body {
 .alert {
     text-align: center;
 }
+
+.project {
+    padding-top: 20px;
+}

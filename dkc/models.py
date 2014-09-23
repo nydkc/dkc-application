@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 from google.appengine.ext import ndb
 import webapp2_extras.appengine.auth.models
 from webapp2_extras import security
@@ -28,46 +29,46 @@ class User(webapp2_extras.appengine.auth.models.User):
     application = ndb.KeyProperty()
 
     grade = ndb.StringProperty()
-    address = ndb.StringProperty()
-    city = ndb.StringProperty()
-    zip_code = ndb.StringProperty()
-    phone_number = ndb.StringProperty()
+    address = ndb.StringProperty(indexed=False)
+    city = ndb.StringProperty(indexed=False)
+    zip_code = ndb.StringProperty(indexed=False)
+    phone_number = ndb.StringProperty(indexed=False)
     division = ndb.StringProperty()
     ltg = ndb.StringProperty()
 
-    school = ndb.StringProperty()
-    school_address = ndb.StringProperty()
-    school_city = ndb.StringProperty()
-    school_zip_code = ndb.StringProperty()
-    club_president = ndb.StringProperty()
-    club_president_phone_number = ndb.StringProperty()
-    faculty_advisor = ndb.StringProperty()
-    faculty_advisor_phone_number = ndb.StringProperty()
+    school = ndb.StringProperty(indexed=False)
+    school_address = ndb.StringProperty(indexed=False)
+    school_city = ndb.StringProperty(indexed=False)
+    school_zip_code = ndb.StringProperty(indexed=False)
+    club_president = ndb.StringProperty(indexed=False)
+    club_president_phone_number = ndb.StringProperty(indexed=False)
+    faculty_advisor = ndb.StringProperty(indexed=False)
+    faculty_advisor_phone_number = ndb.StringProperty(indexed=False)
 
 class InternationalProject(ndb.Model):
-    section = ndb.StringProperty()
-    event = ndb.StringProperty()
+    section = ndb.StringProperty(indexed=False)
+    event = ndb.StringProperty(indexed=False)
     description = ndb.TextProperty()
 
 class DistrictProject(ndb.Model):
-    event = ndb.StringProperty()
-    charity = ndb.StringProperty()
+    event = ndb.StringProperty(indexed=False)
+    charity = ndb.StringProperty(indexed=False)
     description = ndb.TextProperty()
 
 class Divisional(ndb.Model):
     date = ndb.DateTimeProperty()
-    location = ndb.StringProperty()
+    location = ndb.StringProperty(indexed=False)
 
 class GeneralProject(ndb.Model):
-    event = ndb.StringProperty()
-    location = ndb.StringProperty()
-    description = ndb.StringProperty()
+    event = ndb.StringProperty(indexed=False)
+    location = ndb.StringProperty(indexed=False)
+    description = ndb.StringProperty(indexed=False)
 
 class Application(ndb.Model):
-
-    submit_time = ndb.DateTimeProperty()
+    start_time = ndb.DateTimeProperty(auto_now_add=True)
+    submit_time = ndb.DateTimeProperty(auto_now=True)
     def is_early(self):
-        due_date = time.strptime(APPLICATION_DUE_DATE, "%b %d %Y")
+        due_date = datetime.strptime(APPLICATION_DUE_DATE, "%b %d %Y")
         return self.submit_time < due_date
 
     personal_statement = ndb.TextProperty()
@@ -93,10 +94,10 @@ class Application(ndb.Model):
     kiwanis_one_day = ndb.TextProperty()
     k_family_projects = ndb.StructuredProperty(GeneralProject, repeated=True) 
     interclub_events = ndb.StructuredProperty(GeneralProject, repeated=True) 
-    advocacy_cause = ndb.StringProperty()
+    advocacy_cause = ndb.StringProperty(indexed=False)
     advocacy_description = ndb.TextProperty()
     advocacy_materials = ndb.BlobKeyProperty(repeated=True)
-    committee = ndb.StringProperty()
+    committee = ndb.StringProperty(indexed=False)
     committee_description = ndb.TextProperty()
     divisional_newsletter = ndb.BooleanProperty()
     divisional_newsletter_info = ndb.TextProperty()
@@ -107,9 +108,9 @@ class Application(ndb.Model):
     other_projects = ndb.StructuredProperty(GeneralProject, repeated=True)
 
     early_submission = ndb.ComputedProperty(lambda self: self.is_early())
-    early_submission_points = ndb.StringProperty()
+    early_submission_points = ndb.StringProperty(indexed=False)
     recommendation = ndb.GenericProperty()
-    recommender_points = ndb.StringProperty()
+    recommender_points = ndb.StringProperty(indexed=False)
     
     scoring_reason_two = ndb.TextProperty()
     scoring_reason_three = ndb.TextProperty()

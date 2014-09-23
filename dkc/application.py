@@ -53,7 +53,54 @@ class ApplicationPersonalStatement(BaseHandler):
     def post(self):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
-        applicant = application_key.parent().get()
 
         application.personal_statement = self.request.get('personal-statement')
+        application.put()
+
+class ApplicationProjects(BaseHandler):
+
+    @user_required
+    def get(self):
+        applicant = self.user
+        application_key = applicant.application
+        application = application_key.get()
+
+        template_values = {
+            'applicant' :applicant,
+            'application': application,
+            'form_key': application_key.urlsafe(),
+            'application_url': '/application/projects'
+        }
+        self.render_template('application-projects.html', template_values)
+
+    def post(self):
+        application_key = ndb.Key(urlsafe=self.request.get('form-key'))
+        application = application_key.get()
+
+        international_project_sections = self.request.get_all('international-projects-section')
+        international_project_events = self.request.get_all('international-projects-event')
+        international_project_descriptions = self.request.get_all('international-projects-description')
+        i = 0
+        while i < len(application.international_projects):
+            application.international_projects[i].section = international_project_sections[i]
+            application.international_projects[i].event = international_project_events[i]
+            application.international_projects[i].description = international_project_descriptions[i]
+            i += 1
+        while i < len(international_project_sections):
+            application.international_projects.append(InternationalProject(section=international_project_sections[i], event=international_project_events[i], description=international_project_descriptions[i]))
+            i += 1
+
+        district_project_events = self.request.get_all('district-projects-event')
+        district_project_charities = self.request.get_all('district-projects-charity')
+        district_project_descriptions = self.request.get_all('district-projects-description')
+        i = 0
+        while i < len(application.district_projects):
+            application.district_projects[i].event = district_project_events[i]
+            application.district_projects[i].charity = district_project_charities[i]
+            application.district_projects[i].description = district_project_descriptions[i]
+            i += 1
+        while i < len(district_project_events):
+            application.district_projects.append(DistrictProject(event=district_project_events[i], charity=district_project_charities[i], description=district_project_descriptions[i]))
+            i += 1
+
         application.put()

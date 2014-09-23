@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block scripts %}
+{% block application_scripts %}{% endblock %}
 <script>
 var formData;
 $(document).ready(function() {
@@ -39,25 +40,58 @@ setInterval(submitApplication, 1*60*1000);
 </script>
 {% endblock %}
 
-{% macro input(name, label='', value='', type='text', disabled='') -%}
+{% macro input(name, label='', value='', type='text', disabled='', size) -%}
 <div class="form-group">
     {% if label != '' %}<label for="{{ name }}">{{ label }}</label>{% endif %}
-    <input type="{{ type }}" class="form-control" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }}>
+    <input type="{{ type }}" class="form-control {% if size %}{{ size }}{% endif %}" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }}>
 </div>
 {%- endmacro %}
 
-{% macro textarea(name, label='', value='', disabled='', rows='5') -%}
+{% macro textarea(name, label='', value='', disabled='', rows='4') -%}
 <div class="form-group">
     {% if label != '' %}<label for="{{ name }}">{{ label }}</label>{% endif %}
     <textarea class="form-control" id="{{ name }}" name="{{ name }}" rows="{{ rows }}" {{ disabled }}>{% if value|e != 'None' %}{{ value|e }}{% endif %}</textarea>
 </div>
 {%- endmacro %}
 
-{% macro input_horizontal(name, label='', value='', type='text', disabled='') -%}
+{% macro select(name, label='', selected, choices, disabled='') -%}
 <div class="form-group">
-    <label for="{{ name }}" class="col-md-4 control-label">{{ label }}</label>
-    <div class="col-md-8">
+    <label for="{{ name }}" class="control-label">{{ label }}</label>
+    <select class="form-control" id="{{ name }}" name="{{ name }}" {{ disabled }}>
+    {% for choice in choices %}
+        <option value="{{ choice }}"{% if choice == selected %} selected{% endif %}>{{ choice }}</option>
+    {% endfor %}
+    </select>
+</div>
+{%- endmacro %}
+
+{% macro input_horizontal(name, label='', value='', type='text', disabled='', size=4) -%}
+<div class="form-group">
+    <label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>
+    <div class="col-md-{{ 12 - size }}">
         <input type="{{ type }}" class="form-control" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }}>
+    </div>
+</div>
+{%- endmacro %}
+
+{% macro textarea_horizontal(name, label='', value='', disabled='', rows='4', size=4) -%}
+<div class="form-group">
+    {% if label != '' %}<label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>{% endif %}
+    <div class="col-md-{{ 12 - size }}">
+        <textarea class="form-control" id="{{ name }}" name="{{ name }}" rows="{{ rows }}" {{ disabled }}>{% if value|e != 'None' %}{{ value|e }}{% endif %}</textarea>
+    </div>
+</div>
+{%- endmacro %}
+
+{% macro select_horizontal(name, label='', selected, choices, disabled='', size=4) -%}
+<div class="form-group">
+    <label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>
+    <div class="col-md-{{ 12 - size }}">
+        <select class="form-control" id="{{ name }}" name="{{ name }}" {{ disabled }}>
+        {% for choice in choices %}
+            <option value="{{ choice }}"{% if choice == selected %} selected{% endif %}>{{ choice }}</option>
+        {% endfor %}
+        </select>
     </div>
 </div>
 {%- endmacro %}
