@@ -76,7 +76,7 @@ class Application(ndb.Model):
     international_projects = ndb.StructuredProperty(InternationalProject, repeated=True)
     district_projects = ndb.StructuredProperty(DistrictProject, repeated=True)
     divisionals = ndb.StructuredProperty(Divisional, repeated=True)
-    divison_projects = ndb.StructuredProperty(GeneralProject, repeated=True) 
+    division_projects = ndb.StructuredProperty(GeneralProject, repeated=True) 
     
     key_club_week_mon = ndb.TextProperty()
     key_club_week_tue = ndb.TextProperty()

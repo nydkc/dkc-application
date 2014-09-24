@@ -86,8 +86,29 @@
         </div>
         {% endfor %}
     </div>
-    <button class="btn btn-inverse btn-block" id="divisional-meetings-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
+    <button class="btn btn-inverse btn-block" id="divisional-meetings-button"><span class="glyphicon glyphicon-plus"></span> Add more divisionals...</button>
 
+    <p>Attendance at a Divisional Project/Event (Max 8 Points, 4 Points per Event)</p>
+    <div class="division-projects">
+        {% for project in application.division_projects %}
+        <div class="row project project-{{ loop.index }}">
+            <div class="form-horizontal">
+                <div class="col-md-6">
+                    {{ input_horizontal("division-projects-event", "Event:", project.event|e, size=2) }}
+                </div>
+                <div class="col-md-6">
+                    {{ input_horizontal("division-projects-location", "Location:", project.location|e, size=2) }}
+                </div>
+                <div class="col-md-12">
+                    <strong>Description of the event:</strong>
+                    {{ textarea_horizontal("division-projects-description", value=project.description|e, size=0) }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button class="btn btn-inverse btn-block" id="division-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
+ 
     <hr>
 
     <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success">Update</button>
@@ -109,6 +130,10 @@ $(document).ready(function() {
     if (count >= 2) {
         $('#divisional-meetings-button').hide();
     }
+    count = $('.division-projects .project').length;
+    if (count >= 2) {
+        $('#division-projects-button').hide();
+    }
 });
 $('#international-projects-button').click(function() {
     var count = $('.international-projects .project').length + 1;
@@ -129,6 +154,14 @@ $('#district-projects-button').click(function() {
 $('#divisional-meetings-button').click(function() {
     var count = $('.divisional-meetings .divisional').length + 1;
     $('.divisional-meetings').append('<div class="row divisional divisional-' + count + '"><div class="form-horizontal"><div class="col-md-4"><div class="form-group"><label for="divisional-meeting-date" class="col-md-2 control-label">Date:</label><div class="col-md-10"><input type="text" class="form-control" id="divisional-meeting-date" name="divisional-meeting-date" value=""></div></div></div><div class="col-md-8"><div class="form-group"><label for="divisional-meeting-location" class="col-md-2 control-label">Location:</label><div class="col-md-10"><input type="text" class="form-control" id="divisional-meeting-location" name="divisional-meeting-location" value=""></div></div></div></div></div>');
+    if (count >= 2) {
+        $(this).hide();
+    }
+    return false;
+});
+$('#division-projects-button').click(function() {
+    var count = $('.division-projects .project').length + 1;
+    $('.division-projects').append('<div class="row project project-' + count + '"><div class="form-horizontal"><div class="col-md-6"><div class="form-group"><label for="division-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="division-projects-event" name="division-projects-event" value=""></div></div></div><div class="col-md-6"><div class="form-group"><label for="division-projects-location" class="col-md-2 control-label">Location:</label><div class="col-md-10"><input type="text" class="form-control" id="division-projects-location" name="division-projects-location" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="division-projects-description" name="division-projects-description" rows="4"></textarea></div></div></div></div></div>');
     if (count >= 2) {
         $(this).hide();
     }

@@ -114,4 +114,17 @@ class ApplicationProjects(BaseHandler):
             application.divisionals.append(Divisional(date=divisional_dates[i], location=divisional_locations[i]))
             i += 1
 
+        division_project_events = self.request.get_all('division-projects-event')
+        division_project_locations = self.request.get_all('division-projects-location')
+        division_project_descriptions = self.request.get_all('division-projects-description')
+        i = 0
+        while i < len(application.division_projects):
+            application.division_projects[i].event = division_project_events[i]
+            application.division_projects[i].location = division_project_locations[i]
+            application.division_projects[i].description = division_project_descriptions[i]
+            i += 1
+        while i< len(division_project_events):
+            application.division_projects.append(GeneralProject(event=division_project_events[i], location=division_project_locations[i], description=division_project_descriptions[i]))
+            i += 1
+
         application.put()
