@@ -66,7 +66,10 @@ class GeneralProject(ndb.Model):
 
 class Application(ndb.Model):
     start_time = ndb.DateTimeProperty(auto_now_add=True)
-    submit_time = ndb.DateTimeProperty()
+    submit_time = ndb.DateTimeProperty(auto_now=True)
+    def is_early(self):
+        due_date = datetime.strptime(APPLICATION_DUE_DATE, "%b %d %Y")
+        return self.submit_time < due_date
 
     personal_statement = ndb.TextProperty()
 
@@ -104,7 +107,7 @@ class Application(ndb.Model):
     district_website_info = ndb.TextProperty()
     other_projects = ndb.StructuredProperty(GeneralProject, repeated=True)
 
-    early_submission = ndb.BooleanProperty()
+    early_submission = ndb.ComputedProperty(lambda self: self.is_early())
     early_submission_points = ndb.StringProperty(indexed=False)
     recommendation = ndb.GenericProperty()
     recommender_points = ndb.StringProperty(indexed=False)
