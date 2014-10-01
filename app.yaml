@@ -38,3 +38,6 @@ handlers:
   expiration: 7d
 - url: /.*
   script: dkc.views.application
+
+env_variables:
+    TZ: 'EST'
