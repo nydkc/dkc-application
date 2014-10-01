@@ -43,3 +43,23 @@ body {
 .sidebar.affix {
     width: 20%;
 }
+
+.home-wrapper {
+    position: absolute;
+    top: 50%;
+    margin-top: -230px;
+    left: 0;
+    width: 100%;
+}
+
+.home {
+    display: block;
+    margin: auto;
+    width: 454px;
+}
+
+@media screen and (max-width: 454px) {
+    .home {
+        width: 100%;
+    }
+}
