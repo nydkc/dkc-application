@@ -11,10 +11,10 @@
         <li>Why did you join Key Club? How has your perspective on Key Club changed since you joined?</li>
         <li>How do you describe Key Club to a non-Key Club member?</li>
     </ol>
-    <div class="form-group">
-        {{ textarea("personal-statement", value=application.personal_statement, rows="20") }}
-    </div>
+    {{ textarea("personal-statement", value=application.personal_statement, rows="20") }}
 
-    <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success">Update</button>
+    <hr>
+
+    <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success btn-block">Update</button>
 </form>
 {% endblock %}

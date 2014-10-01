@@ -128,3 +128,165 @@ class ApplicationProjects(BaseHandler):
             i += 1
 
         application.put()
+
+class ApplicationInvolvement(BaseHandler):
+
+    @user_required
+    def get(self):
+        applicant = self.user
+        application_key = applicant.application
+        application = application_key.get()
+
+        template_values = {
+            'applicant' :applicant,
+            'application': application,
+            'form_key': application_key.urlsafe(),
+            'application_url': '/application/involvement'
+        }
+        self.render_template('application-involvement.html', template_values)
+
+    def post(self):
+        application_key = ndb.Key(urlsafe=self.request.get('form-key'))
+        application = application_key.get()
+
+        application.key_club_week_mon = self.request.get('key-club-week-monday')
+        application.key_club_week_tue = self.request.get('key-club-week-tuesday')
+        application.key_club_week_wed = self.request.get('key-club-week-wednesday')
+        application.key_club_week_thu = self.request.get('key-club-week-thursday')
+        application.key_club_week_fri = self.request.get('key-club-week-friday')
+
+        application.attendance_dtc = self.request.get('attendance-dtc') == 'on'
+        application.attendance_fall_rally = self.request.get('attendance-fall-rally') == 'on'
+        application.attendance_kamp_kiwanis = self.request.get('attendance-kamp-kiwanis') == 'on'
+        application.attendance_key_leader = self.request.get('attendance-key-leader') == 'on'
+        application.attendance_ltc = self.request.get('attendance-ltc') == 'on'
+        application.attendance_icon = self.request.get('attendance-icon') == 'on'
+
+        application.positions = self.request.get('positions')
+
+        application.put()
+
+class ApplicationActivities(BaseHandler):
+
+    @user_required
+    def get(self):
+        applicant = self.user
+        application_key = applicant.application
+        application = application_key.get()
+
+        template_values = {
+            'applicant' :applicant,
+            'application': application,
+            'form_key': application_key.urlsafe(),
+            'application_url': '/application/activities'
+        }
+        self.render_template('application-activities.html', template_values)
+
+    def post(self):
+        application_key = ndb.Key(urlsafe=self.request.get('form-key'))
+        application = application_key.get()
+
+        application.kiwanis_one_day = GeneralProject(event=self.request.get('kiwanis-one-day-event'), location=self.request.get('kiwanis-one-day-location'), description=self.request.get('kiwanis-one-day-description'))
+
+        k_family_projects_events = self.request.get_all('k-family-projects-event')
+        k_family_projects_locations = self.request.get_all('k-family-projects-location')
+        k_family_projects_descriptions = self.request.get_all('k-family-projects-description')
+        i = 0
+        while i < len(application.k_family_projects):
+            application.k_family_projects[i].event = k_family_projects_events[i]
+            application.k_family_projects[i].location = k_family_projects_locations[i]
+            application.k_family_projects[i].description = k_family_projects_descriptions[i]
+            i += 1
+        while i < len(k_family_projects_events):
+            application.k_family_projects.append(GeneralProject(event=k_family_projects_events[i], location=k_family_projects_locations[i], description=k_family_projects_descriptions[i]))
+            i += 1
+
+        interclub_projects_events = self.request.get_all('interclub-projects-event')
+        interclub_projects_locations = self.request.get_all('interclub-projects-location')
+        interclub_projects_descriptions = self.request.get_all('interclub-projects-description')
+        i = 0
+        while i < len(application.interclub_projects):
+            application.interclub_projects[i].event = interclub_projects_events[i]
+            application.interclub_projects[i].location = interclub_projects_locations[i]
+            application.interclub_projects[i].description = interclub_projects_descriptions[i]
+            i += 1
+        while i < len(interclub_projects_events):
+            application.interclub_projects.append(GeneralProject(event=interclub_projects_events[i], location=interclub_projects_locations[i], description=interclub_projects_descriptions[i]))
+            i += 1
+
+        application.advocacy_cause = self.request.get('advocacy-cause')
+        application.advocacy_description = self.request.get('advocacy-description')
+
+        application.committee = self.request.get('committee')
+        application.committee_type = self.request.get('committee-type')
+        application.committee_description = self.request.get('committee-description')
+
+        application.divisional_newsletter = self.request.get('divisional-newsletter') == 'on'
+        if application.divisional_newsletter:
+            application.divisional_newsletter_info = self.request.get('divisional-newsletter-info')
+        application.district_newsletter = self.request.get('district-newsletter') == 'on'
+        if application.district_newsletter:
+            application.district_newsletter_info = self.request.get('district-newsletter-info')
+        application.district_website = self.request.get('district-website') == 'on'
+        if application.district_website:
+            application.district_website_info = self.request.get('district-website-info')
+
+        other_projects_events = self.request.get_all('other-projects-event')
+        other_projects_locations = self.request.get_all('other-projects-location')
+        other_projects_descriptions = self.request.get_all('other-projects-description')
+        i = 0
+        while i < len(application.other_projects):
+            application.other_projects[i].event = other_projects_events[i]
+            application.other_projects[i].location = other_projects_locations[i]
+            application.other_projects[i].description = other_projects_descriptions[i]
+            i += 1
+        while i < len(other_projects_events):
+            application.other_projects.append(GeneralProject(event=other_projects_events[i], location=other_projects_locations[i], description=other_projects_descriptions[i]))
+            i += 1
+
+        application.put()
+
+class ApplicationScoring(BaseHandler):
+
+    @user_required
+    def get(self):
+        applicant = self.user
+        application_key = applicant.application
+        application = application_key.get()
+
+        template_values = {
+            'applicant' :applicant,
+            'application': application,
+            'form_key': application_key.urlsafe(),
+            'application_url': '/application/scoring'
+        }
+        self.render_template('application-scoring.html', template_values)
+
+    def post(self):
+        application_key = ndb.Key(urlsafe=self.request.get('form-key'))
+        application = application_key.get()
+
+        application.early_submission_points = self.request.get('early-submission-points')
+        application.recommender_points = self.request.get('recommender-points')
+
+        application.scoring_reason_two = self.request.get('scoring-reason-two')
+        application.scoring_reason_three = self.request.get('scoring-reason-three')
+        application.scoring_reason_four = self.request.get('scoring-reason-four')
+
+        application.put()
+
+class ApplicationVerification(BaseHandler):
+
+    @user_required
+    def get(self):
+        applicant = self.user
+        application_key = applicant.application
+        application = application_key.get()
+
+        template_values = {
+            'applicant' :applicant,
+            'application': application,
+            'form_key': application_key.urlsafe(),
+            'application_url': '/application/verification'
+        }
+        self.render_template('application-verification.html', template_values)

@@ -1,0 +1,38 @@
+{% extends "application.html" %}
+{% block application %}
+<form id="application" role="form" action="{{ application_url }}" method="post">
+    <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
+
+    <h2>Other & Scoring</h2>
+    <ol>
+        <li>
+            Receive 5 points in any part for submitting this application early.
+            <div class="form-horizontal row">
+                <div class="col-md-7">
+                    {{ input_horizontal("early-submission-points", "I would like to apply these points to part:", application.early_submission_points, size=9) }}
+                </div>
+            </div>
+        </li>
+        <li>
+            A recommendation may be submitted by a club member, officer or faculty advisor for a total of 5 points. This recommendation should be no more than 150 words nominating you for the award. The recommendation must be signed by the writer.
+            <div class="form-horizontal row">
+                <div class="col-md-7">
+                    {{ input_horizontal("recommender-points", "I would like to apply these points to part:", application.recommender_points, size=9) }}
+                </div>
+            </div>
+        </li>
+        <li>For all late submission, 5 points will be deducted per day from each part. Submissions sent in three days after the deadline will not be accepted.</li>
+    </ol>
+
+    <hr>
+
+    <strong>If you did not reach the minimum requirement for a section, please indicate why here.</strong>
+    {{ textarea("scoring-reason-two", "Part II", application.scoring_reason_two) }}
+    {{ textarea("scoring-reason-three", "Part III", application.scoring_reason_three) }}
+    {{ textarea("scoring-reason-four", "Part IV", application.scoring_reason_four) }}
+
+    <hr>
+
+    <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success btn-block">Update</button>
+</form>
+{% endblock %}

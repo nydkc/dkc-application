@@ -1,0 +1,237 @@
+{% extends "application.html" %}
+{% block application %}
+<form id="application" role="form" action="{{ application_url }}" method="post">
+    <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
+
+    <h2>Part IV: Projects, Advocacy & Newsletters (60 Points)</h2>
+    <p>This Part will show what projects or activities you have participated in.
+        <br>Required Points: 20
+        <br>Recommended Points: 40
+    </p>
+
+    <h4>Section 1: K-Family Project</h4>
+    <p>If you have participated in any event or project with another member of the Kiwanis Family, describe the project in this segment. Members of the K-Family include: Kiwanis Club, Circle-K, Builders Club, K-Kids and AKTION Club. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
+
+    <strong>Kiwanis One Day Event (5 Points Max, 5 Points per Event)</strong>
+    <p>Kiwanis One Day is celebrated during the first week of April. If you have participated in a Kiwanis One Day event or project, please fill out this section.</p>
+    <div class="row form-horizontal">
+        <div class="col-md-6">
+            {{ input_horizontal("kiwanis-one-day-event", "Event:", application.kiwanis_one_day.event|e, size=2) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_horizontal("kiwanis-one-day-location", "Location:", application.kiwanis_one_day.location|e, size=2) }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description of the event:</strong>
+            {{ textarea_horizontal("kiwanis-one-day-description", value=application.kiwanis_one_day.description|e, size=0) }}
+        </div>
+    </div>
+
+    <hr>
+
+    <strong>K-Family Service Projects (16 Points Max, 4 Point per Event)</strong>
+    <p>Describe any projects or events you have participated in with a Kiwanis Club.</p>
+    <div class="k-family-projects">
+        {% for project in application.k_family_projects %}
+        <div class="row project project-{{ loop.index }}">
+            <div class="form-horizontal">
+                <div class="col-md-6">
+                    {{ input_horizontal("k-family-projects-event", "Event:", project.event, size=2) }}
+                </div>
+                <div class="col-md-6">
+                    {{ input_horizontal("k-family-projects-location", "Location:", project.location, size=2) }}
+                </div>
+                <div class="col-md-12">
+                    <strong>Description of the event:</strong>
+                    {{ textarea_horizontal("k-family-projects-description", value=project.description|e, size=0) }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button class="btn btn-inverse btn-block" id="k-family-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
+
+    <hr>
+
+    <h4>Section 2: Interclub Event (Max 16 Points, 4 Point per Event)</h4>
+    <p>If you have participated in any event or project with other clubs, fill out this section. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
+    <div class="interclub-projects">
+        {% for project in application.interclub_projects %}
+        <div class="row project project-{{ loop.index }}">
+            <div class="form-horizontal">
+                <div class="col-md-6">
+                    {{ input_horizontal("interclub-projects-event", "Event:", project.event, size=2) }}
+                </div>
+                <div class="col-md-6">
+                    {{ input_horizontal("interclub-projects-location", "Location:", project.location, size=2) }}
+                </div>
+                <div class="col-md-12">
+                    <strong>Description of the event:</strong>
+                    {{ textarea_horizontal("interclub-projects-description", value=project.description|e, size=0) }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button class="btn btn-inverse btn-block" id="interclub-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
+
+    <hr>
+
+    <h4>Section 3: Advocacy (Max 3 Points, 3 Points per Project)</h4>
+    <p>In this section, describe any advocacy project that you may have started or participated in. Include a description of the cause you are advocating for, why it is important to you, and what steps you have taken to promote it. Please include any materials, such as petitions, letters and fliers to your application.</p>
+    <div class="row form-horizontal">
+        <div class="col-md-12">
+            {{ input_horizontal("advocacy-cause", "Cause:", application.advocacy_cause|e, size=1) }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description of the cause:</strong>
+            {{ textarea_horizontal("advocacy-description", value=application.advocacy_description|e, size=0) }}
+        </div>
+    </div>
+
+    <hr>
+
+    <h4>Section 4: Committee Involvement (Max 3 Points, 3 Points per committee)</h4>
+    <p>If you were part of a Key Club committee, whether it is a club committee, divisional committee, or international committee, please fill out this section. Indicate the name of the committee and the type (club, division) of committee. Briefly describe what you have done in the committee.</p>
+    <div class="row form-horizontal">
+        <div class="col-md-8">
+            {{ input_horizontal("committee", "Committee:", application.committee, size=2) }}
+        </div>
+        <div class="col-md-4">
+            {{ input_horizontal("committee-type", "Type:", application.committee_type, size=2) }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description of the committee:</strong>
+            {{ textarea_horizontal("committee-description", value=application.committee_description|e, size=0) }}
+        </div>
+    </div>
+
+    <hr>
+
+    <h4>Section 5: Newsletter Article Submission (Max 5 Points)</h4>
+    <p>Submit a service spotlight to either the district or divisional newsletter. Use any combination to receive up to 5 points in this section. Attach all articles with your submission. Each article can only qualify once. Be sure to specify the date the newsletter was published and the link to the article if possible. Please include the number of articles submitted for each newsletter.</p>
+    <div class="row form-horizontal newsletters">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="row">
+                <div class="col-xs-6">
+                    {{ checkbox("divisional-newsletter", "(1 Point) Divisional Newsletter", application.divisional_newsletter) }}
+                </div>
+                <div class="col-xs-6">
+                    {{ input_horizontal_small("divisional-newsletter-info", value=application.divisional_newsletter_info, size=0) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    {{ checkbox("district-newsletter", "(2 Points) District Newsletter (The Empire Key)", application.district_newsletter) }}
+                </div>
+                <div class="col-xs-6">
+                    {{ input_horizontal_small("district-newsletter-info", value=application.district_newsletter_info, size=0) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    {{ checkbox("district-website", "(2 Points) District Website", application.district_website) }}
+                </div>
+                <div class="col-xs-6">
+                    {{ input_horizontal_small("district-website-info", value=application.district_website_info, size=0) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h4>Section 6: Other Project/Fundraisers (Max 12 Points, 2 Point per Project/Fundraiser)</h4>
+    <p>Please list and describe any service project that you have participated in. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
+    <div class="other-projects">
+        {% for project in application.other_projects %}
+        <div class="row project project-{{ loop.index }}">
+            <div class="form-horizontal">
+                <div class="col-md-6">
+                    {{ input_horizontal("other-projects-event", "Event:", project.event, size=2) }}
+                </div>
+                <div class="col-md-6">
+                    {{ input_horizontal("other-projects-location", "Location:", project.location, size=2) }}
+                </div>
+                <div class="col-md-12">
+                    <strong>Description of the event:</strong>
+                    {{ textarea_horizontal("other-projects-description", value=project.description|e, size=0) }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button class="btn btn-inverse btn-block" id="other-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
+
+    <hr>
+
+    <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success btn-block">Update</button>
+</form>
+{% endblock %}
+{% block application_scripts %}
+<script>
+$(document).ready(function() {
+    $('input[type=checkbox]').each(function() {
+         var infoBox = $(this).parent().parent().parent().parent().find('input[type=text]');
+        if ($(this).is(':checked')) {
+            infoBox.removeAttr('disabled');
+        }
+        else {
+            infoBox.attr('disabled', 'disabled');
+        }
+    });
+});
+
+$('input[type=checkbox]').click(function() {
+    var infoBox = $(this).parent().parent().parent().parent().find('input[type=text]');
+    if ($(this).is(':checked')) {
+        infoBox.removeAttr('disabled');
+    }
+    else {
+        infoBox.attr('disabled', 'disabled');
+    }
+});
+</script>
+<script>
+$(document).ready(function() {
+    var count;
+    count = $('.k-family-projects .project').length;
+    if (count >= 4) {
+        $('#k-family-projects-button').hide();
+    }
+    count = $('.interclub-projects .project').length;
+    if (count >= 4) {
+        $('#interclub-projects-button').hide();
+    }
+    count = $('.other-projects .project').length;
+    if (count >= 4) {
+        $('#other-projects-button').hide();
+    }
+});
+$('#k-family-projects-button').click(function() {
+    var count = $('.k-family-projects .project').length + 1;
+    $('.k-family-projects').append('<div class="row project project-' + count + '"><div class="form-horizontal"><div class="col-md-6"><div class="form-group"><label for="k-family-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="k-family-projects-event" name="k-family-projects-event" value=""></div></div></div><div class="col-md-6"><div class="form-group"><label for="k-family-projects-location" class="col-md-2 control-label">Location:</label><div class="col-md-10"><input type="text" class="form-control" id="k-family-projects-location" name="k-family-projects-location" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="k-family-projects-description" name="k-family-projects-description" rows="4"></textarea></div></div></div></div></div>');
+    if (count >= 4) {
+        $(this).hide();
+    }
+    return false;
+});
+$('#interclub-projects-button').click(function() {
+    var count = $('.interclub-projects .project').length + 1;
+    $('.interclub-projects').append('<div class="row project project-' + count + '"><div class="form-horizontal"><div class="col-md-6"><div class="form-group"><label for="interclub-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="interclub-projects-event" name="interclub-projects-event" value=""></div></div></div><div class="col-md-6"><div class="form-group"><label for="interclub-projects-location" class="col-md-2 control-label">Location:</label><div class="col-md-10"><input type="text" class="form-control" id="interclub-projects-location" name="interclub-projects-location" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="interclub-projects-description" name="interclub-projects-description" rows="4"></textarea></div></div></div></div></div>');
+    if (count >= 4) {
+        $(this).hide();
+    }
+    return false;
+});
+$('#other-projects-button').click(function() {
+    var count = $('.other-projects .project').length + 1;
+    $('.other-projects').append('<div class="row project project-' + count + '"><div class="form-horizontal"><div class="col-md-6"><div class="form-group"><label for="other-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="other-projects-event" name="other-projects-event" value=""></div></div></div><div class="col-md-6"><div class="form-group"><label for="other-projects-location" class="col-md-2 control-label">Location:</label><div class="col-md-10"><input type="text" class="form-control" id="other-projects-location" name="other-projects-location" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="other-projects-description" name="other-projects-description" rows="4"></textarea></div></div></div></div></div>');
+    if (count >= 6) {
+        $(this).hide();
+    }
+    return false;
+});
+
+</script>
+{% endblock %}

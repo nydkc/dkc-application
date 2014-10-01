@@ -3,11 +3,10 @@
 <form id="application" role="form" action="{{ application_url }}" method="post">
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
 
-    <h2>Part II: International, District and Divisional Projects (60 Points)</h2>
-    <p>This part is designed to see how much you participated in projects in your Division, the District and International.</p>
-    <p>
-        Required Points: 20 Points<br>
-        Recommend Points: 40 Points
+    <h2>Part II: International, District & Divisional Projects (60 Points)</h2>
+    <p>This part is designed to see how much you participated in projects in your Division, the District and International.
+        <br>Required Points: 20 Points
+        <br>Recommend Points: 40 Points
     </p>
     <p>Complete the following three sections. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description. You may receive up to four points per event with a maximum of twenty four points.</p>
     <ul>
@@ -38,7 +37,7 @@
     <hr>
 
     <p>Complete the following section. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description. You may receive up to four points per event with a maximum of 20 points.</p>
-    <p>Section 4: District Projects &amp; Local Causes</p>
+    <h4>Section 4: District Projects &amp; Local Causes</h4>
     <p>Describe five projects or events that you have participated in relating to either the District Projects or Local Causes. At least one project must be a District Project. You must include all information as requested. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description. The District Projects are:</p>
     <ul>
         <li>St. Jude Children’s Hospital</li>
@@ -70,7 +69,7 @@
     <hr>
 
     <p>Complete the following section. Attendance at a divisional meeting is 4 points per meeting, with a maximum of 4 points. Attendance at a Divisional project/event is 4 points per event with a maximum of 8 points. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
-    <p>Section 5: Divisional Involvement</p>
+    <h4>Section 5: Divisional Involvement</h4>
     <p>Attendance at Divisional Meeting (Max 8 Points, 4 Points per Event)</p>
     <div class="divisional-meetings">
         {% for divisional in application.divisionals %}
@@ -111,7 +110,7 @@
  
     <hr>
 
-    <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success">Update</button>
+    <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success btn-block">Update</button>
 </form>
 {% endblock %}
 {% block application_scripts %}

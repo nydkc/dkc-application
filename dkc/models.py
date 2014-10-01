@@ -62,14 +62,17 @@ class Divisional(ndb.Model):
 class GeneralProject(ndb.Model):
     event = ndb.StringProperty(indexed=False)
     location = ndb.StringProperty(indexed=False)
-    description = ndb.StringProperty(indexed=False)
+    description = ndb.TextProperty()
 
 class Application(ndb.Model):
     start_time = ndb.DateTimeProperty(auto_now_add=True)
-    submit_time = ndb.DateTimeProperty(auto_now=True)
+    submit_time = ndb.DateTimeProperty()
     def is_early(self):
         due_date = datetime.strptime(APPLICATION_DUE_DATE, "%b %d %Y")
-        return self.submit_time < due_date
+        if self.submit_time:
+            return self.submit_time < due_date
+        else:
+            return False
 
     personal_statement = ndb.TextProperty()
 
@@ -91,13 +94,14 @@ class Application(ndb.Model):
     attendance_icon = ndb.BooleanProperty()
     positions = ndb.TextProperty()
 
-    kiwanis_one_day = ndb.TextProperty()
+    kiwanis_one_day = ndb.StructuredProperty(GeneralProject)
     k_family_projects = ndb.StructuredProperty(GeneralProject, repeated=True) 
-    interclub_events = ndb.StructuredProperty(GeneralProject, repeated=True) 
+    interclub_projects = ndb.StructuredProperty(GeneralProject, repeated=True) 
     advocacy_cause = ndb.StringProperty(indexed=False)
     advocacy_description = ndb.TextProperty()
     advocacy_materials = ndb.BlobKeyProperty(repeated=True)
     committee = ndb.StringProperty(indexed=False)
+    committee_type = ndb.StringProperty(indexed=False)
     committee_description = ndb.TextProperty()
     divisional_newsletter = ndb.BooleanProperty()
     divisional_newsletter_info = ndb.TextProperty()

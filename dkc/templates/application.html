@@ -2,7 +2,7 @@
 {% block body %}
 <div class="row">
     <div class="col-md-3">
-{% include "sidebar.html" with context %}
+{% include "sidebar.html" %}
     </div>
     <div class="col-md-9">
 {% block application %}{% endblock %}
@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="/js/main.js"></script>
 {% block application_scripts %}{% endblock %}
 <script>
 var formData;
@@ -74,6 +75,15 @@ setInterval(submitApplication, 1*60*1000);
 </div>
 {%- endmacro %}
 
+{% macro input_horizontal_small(name, label='', value='', type='text', disabled='', size=4) -%}
+<div class="form-group-sm">
+    {% if label != '' %}<label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>{% endif %}
+    <div class="col-md-{{ 12 - size }}">
+        <input type="{{ type }}" class="form-control" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }}>
+    </div>
+</div>
+{%- endmacro %}
+
 {% macro textarea_horizontal(name, label='', value='', disabled='', rows='4', size=4) -%}
 <div class="form-group">
     {% if label != '' %}<label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>{% endif %}
@@ -93,5 +103,14 @@ setInterval(submitApplication, 1*60*1000);
         {% endfor %}
         </select>
     </div>
+</div>
+{%- endmacro %}
+
+{% macro checkbox(name, label='', checked=False, disabled='') -%}
+<div class="checkbox {{ disabled }}">
+    <label>
+        <input type="checkbox" name="{{ name }}"{% if checked %} checked{% endif %} {{ disabled }}>
+        {{ label }}
+    </label>
 </div>
 {%- endmacro %}
