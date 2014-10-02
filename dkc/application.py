@@ -3,6 +3,17 @@ from google.appengine.ext import ndb
 from dkc import *
 from models import *
 
+class ApplicationOverview(BaseHandler):
+
+    @user_required
+    def get(self):
+        applicant = self.user
+        template_values = {
+            'applicant': applicant,
+            'application_url': '/application/overview'
+        }
+        self.render_template('application_overview.html', template_values)
+
 class ApplicationProfile(BaseHandler):
 
     @user_required

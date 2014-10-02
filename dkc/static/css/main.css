@@ -28,6 +28,10 @@ body {
     user-select: none;
 }
 
+#logout-button {
+    margin-top: 20px;
+}
+
 .project {
     padding-top: 20px;
 }
@@ -46,10 +50,6 @@ input#district-projects-charity {
 
 .newsletters .row {
     margin-bottom: 3px;
-}
-
-.sidebar.affix {
-    width: 20%;
 }
 
 .home-wrapper {
@@ -71,3 +71,21 @@ input#district-projects-charity {
         width: 100%;
     }
 }
+
+@media screen and (max-width: 1200px) {
+    .nav > li > a {
+        padding: 6px 15px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .sidebar.affix {
+        width: 212.5px;
+    }
+}
+@media screen and (min-width: 1200px) {
+    .sidebar.affix {
+        width: 262.5px;
+    }
+}
+

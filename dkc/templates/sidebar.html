@@ -1,34 +1,38 @@
-<div class="sidebar">
+<ul class="sidebar nav nav-pills nav-stacked">
     <h2>{{ applicant.first_name }} {{ applicant.last_name }}</h2>
 
-    <h4>
+    <li{% if application_url == '/application/overview' %} class="active"{% endif %}>
+        <a href="/application/overview">Overview</a>
+    </li>
+
+    <li{% if application_url == '/application/profile' %} class="active"{% endif %}>
         <a href="/application/profile">Profile</a>
-    </h4>
+    </li>
 
-    <h5>
+    <li{% if application_url == '/application/personal-statement' %} class="active"{% endif %}>
         <a href="/application/personal-statement">Part 1:<br>Personal Statement</a>
-    </h5>
+    </li>
 
-    <h5>
+    <li{% if application_url == '/application/projects' %} class="active"{% endif %}>
         <a href="/application/projects">Part 2:<br>International, District &amp; Divisional Projects</a>
-    </h5>
+    </li>
 
-    <h5>
+    <li{% if application_url == '/application/involvement' %} class="active"{% endif %}>
         <a href="/application/involvement">Part 3:<br>Involvement in Key Club Functions</a>
-    </h5>
+    </li>
 
-    <h5>
+    <li{% if application_url == '/application/activities' %} class="active"{% endif %}>
         <a href="/application/activities">Part 4:<br>Projects, Advocacy &amp; Newsletters</a>
-    </h5>
+    </li>
 
-    <h5>
+    <li{% if application_url == '/application/scoring' %} class="active"{% endif %}>
         <a href="/application/scoring">Other &amp; Scoring</a>
-    </h5>
+    </li>
 
-    <h5>
+    <li{% if application_url == '/application/verification' %} class="active"{% endif %}>
         <a href="/application/verification">Verification</a>
-    </h5>
+    </li>
 
-    <a class="btn btn-warning" href="/logout">Logout</a>
+    <a id="logout-button" class="btn btn-warning btn-block" href="/logout">Logout</a>
 
-</div>
+</ul>
