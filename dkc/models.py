@@ -74,6 +74,7 @@ class Application(ndb.Model):
         else:
             return False
 
+    personal_statement_choice = ndb.StringProperty(indexed=False)
     personal_statement = ndb.TextProperty()
 
     international_projects = ndb.StructuredProperty(InternationalProject, repeated=True)

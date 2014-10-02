@@ -5,12 +5,17 @@
 
     <h2>Part I: Personal Statement (120 Points)</h2>
     <p>Please type your personal statement below to answer one of the following prompts. The personal statement must be between 300 to 600 words. Be sure to specify which prompt you are answering.</p>
-    <ol>
-        <li>How has Key Club impacted your life? Describe a pivotal moment in your Key Club experience as part of your answer.</li>
-        <li>What makes Key Club a unique organization? How has Key Club affected your home, school, or community?</li>
-        <li>Why did you join Key Club? How has your perspective on Key Club changed since you joined?</li>
-        <li>How do you describe Key Club to a non-Key Club member?</li>
-    </ol>
+
+    {% set questions = ["How has Key Club impacted your life? Describe a pivotal moment in your Key Club experience as part of your answer.", "What makes Key Club a unique organization? How has Key Club affected your home, school, or community?", "Why did you join Key Club? How has your perspective on Key Club changed since you joined?", "How do you describe Key Club to a non-Key Club member?"] %}
+    {% for question in questions %}
+    <div class="radio">
+        <label>
+            <input type="radio" name="personal-statement-choice" value="{{ loop.index }}"{% if loop.index|e == application.personal_statement_choice %} checked{% endif %}>
+            {{ question }}
+        </label>
+    </div>
+    {% endfor %}
+
     {{ textarea("personal-statement", value=application.personal_statement, rows="20") }}
 
     <hr>

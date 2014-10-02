@@ -54,6 +54,7 @@ class ApplicationPersonalStatement(BaseHandler):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
 
+        application.personal_statement_choice = self.request.get("personal-statement-choice")
         application.personal_statement = self.request.get('personal-statement')
         application.put()
 
