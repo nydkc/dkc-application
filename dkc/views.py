@@ -24,7 +24,7 @@ application = webapp2.WSGIApplication([
     ('/application/scoring', ApplicationScoring),
     ('/application/verification', ApplicationVerification),
     ('/application/profile', ApplicationProfile),
-    ('/application/.*', ApplicationOverview),
+    ('/application.*', ApplicationOverview),
     ('/login', LoginPage),
     ('/logout', LogoutPage),
     ('/register', RegisterPage),

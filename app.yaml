@@ -17,12 +17,12 @@ libraries:
 
 handlers:
 - url: /favicon\.ico
-  static_files: join/static/favicon.ico
-  upload: join/static/favicon\.ico
+  static_files: dkc/static/favicon.ico
+  upload: dkc/static/favicon\.ico
   expiration: 30d
 - url: /(apple-touch-icon.*\.(png))
-  static_files: join/static/\1
-  upload: join/static/(apple-touch-icon.*\.png)
+  static_files: dkc/static/\1
+  upload: dkc/static/(apple-touch-icon.*\.png)
   expiration: 30d
 - url: /images
   static_dir: dkc/static/images
