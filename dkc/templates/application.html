@@ -99,9 +99,17 @@ setInterval(submitApplication, 1*60*1000);
     <div class="col-md-{{ 12 - size }}">
         <select class="form-control" id="{{ name }}" name="{{ name }}" {{ disabled }}>
         {% for choice in choices %}
+            {%- if "Other" not in choice -%}
             <option value="{{ choice }}"{% if choice == selected %} selected{% endif %}>{{ choice }}</option>
+            {%- endif -%}
         {% endfor %}
+        {%- if "Other" in choices -%}
+            <option value="Other"{% if selected not in choices %} selected{% endif %}>Other</option>
         </select>
+        <input type="text" class="form-control{% if selected in choices %} hidden{% endif %}" id="{{ name }}" name="{{ name }}" value="{{ selected }}">
+        {%- else -%}
+        </select>
+        {%- endif -%}
     </div>
 </div>
 {%- endmacro %}

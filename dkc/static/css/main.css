@@ -36,6 +36,14 @@ body {
     margin-bottom: 20px;
 }
 
+#district-projects-charity {
+    display: inline-block;
+}
+
+input#district-projects-charity {
+    width: 71%;
+}
+
 .newsletters .row {
     margin-bottom: 3px;
 }
