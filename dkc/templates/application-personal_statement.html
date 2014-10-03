@@ -23,3 +23,8 @@
     <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success btn-block">Update</button>
 </form>
 {% endblock %}
+{% block application_scripts %}
+<script>
+$('#personal-statement').textareaCounter({limit: 600});
+</script>
+{% endblock %}

@@ -46,3 +46,8 @@
     <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success btn-block">Update</button>
 </form>
 {% endblock %}
+{% block application_scripts %}
+<script>
+$('#positions').textareaCounter({limit: 250});
+</script>
+{% endblock %}
