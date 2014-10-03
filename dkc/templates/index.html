@@ -24,103 +24,52 @@
 </div>
 
 <div id="faq">
-    <h1 class="text-center">Frequently Asked Questions (FAQ)</h1>
+    <div class="page-header text-center">
+        <h1>Frequently Asked Questions (FAQ)</h1>
+    </div>
 
-    <div class="question">
-        Who may apply for the award?
+    {% set faq = [("Who may apply for the award?", "Any dues-paying Key Club member in good standing may apply for the award."),
+                  ("If I participated in a project or event prior to April 1, 2014, may I still use it in this application?", "Only events, projects, or meetings during the 2014 – 2015 Service Year may be counted towards this application."),
+                  ("Under Part II Section #4, do all five projects have to be distinct?", "No, you could have participated in five projects that benefited the same charities and still qualify for the award."),
+                  ("What is sufficient proof for Advocacy?", "You must include a description of the steps you have taken to advocate your project and include at least one additional document, such as a flier, poster, letter or petition."),
+                  ("Will the Personal Statement be rated on quality?", "Yes, it is important to submit a personal statement of the highest quality. Although there is not a limit on the number of members that may receive the awards, the essay will allow the awards committee to understand you. The personal statement is weighed more than the other three parts (40%)."),
+                  ("Will descriptions be rated on quality?", "Yes, it is important to submit everything with a full description of the event. Since this year’s DKC award is judged holistically, you may lose points for incomplete descriptions."),
+                  ("Who can write my recommendation?", "Any Key Club member in good standing, Key Club Officer, Faculty Advisor or Kiwanis Advisor may write your recommendation."),
+                  ("If I participated in a Kiwanis One Day Event that was not on April 5, 2014, can I still receive points?", "Yes."),
+                  ("Will the statement in Involvement #3, Positions Held within Key Club, be rated based on quality?", "Yes, you may receive anywhere from 0 to 5 points based on the quality of work that was submitted."),
+                  ("Can I submit articles to the Empire Key or Divisional Newsletters last minute?", "No."),
+                  ("I can’t qualify for the DKC Award because I am unable to fulfill all the criteria in the four parts. What should I do?", "If it is due to an issue or circumstance with your home club or division which is out of your control, please contact the Awards Committee Co-Chair that will be reviewing your application."),
+                  ("Why do you need my personal information?", "All applicants must submit this information so that you may be easily accessible and that records may be kept for the future in case any issues arise."),
+                  ("How are the applications judged?", "Part I will be weighted the most (40%) and the other three parts will be weighed equally. If you complete all parts fully, you will generally receive the award. All other applications are judged holistically. Generally, you will need to complete at least 70% (210 Points) of all the criteria to receive the award."),
+                  ("Who reviews the application?", "The District Awards Committee Co-Chair will be reviewing your award. The award will be based off of the point system."),
+                  ("Who can I contact if I have any more questions?", "You should contact the District Awards Committee Co-Chair that is responsible for your division. Contact Information can be found on the Information & Rules Section."),
+                  ("What is the maximum amount of points I can earn for each part?", "In Part I, you may earn up to 120 points. In all other parts, you may earn up to 60 points each. The total number of points you can score is 300, and the recommended number of points to receive the award is 210.")
+                  ] %}
+
+    <div class="panel-group" id="questions">
+    {% for column in faq|slice(2) -%}
+        <div class="col-md-6">
+            {% set outerloop = loop %}
+            {% for question in column %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title question">
+                        <a data-toggle="collapse" data-parent="#questions" href="#question-{{ outerloop.index0 }}{{ loop.index }}">
+                            {{ question[0] }}
+                        </a>
+                    </div>
+                </div>
+                <div id="question-{{ outerloop.index0 }}{{ loop.index }}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        {{ question[1] }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
     </div>
-    <div class="answer">
-        Any dues-paying Key Club member in good standing may apply for the award.
-    </div>
-    <div class="question">
-        If I participated in a project or event prior to April 1, 2014, may I still use it in this application?
-    </div>
-    <div class="answer">
-        Only events, projects, or meetings during the 2014 – 2015 Service Year may be counted towards this application.
-    </div>
-    <div class="question">
-        Under Part II Section #4, do all five projects have to be distinct?
-    </div>
-    <div class="answer">
-        No, you could have participated in five projects that benefited the same charities and still qualify for the award.
-    </div>
-    <div class="question">
-        What is sufficient proof for Advocacy?
-    </div>
-    <div class="answer">
-        You must include a description of the steps you have taken to advocate your project and include at least one additional document, such as a flier, poster, letter or petition.
-    </div>
-    <div class="question">
-        Will the Personal Statement be rated on quality?
-    </div>
-    <div class="answer">
-        Yes, it is important to submit a personal statement of the highest quality. Although there is not a limit on the number of members that may receive the awards, the essay will allow the awards committee to understand you. The personal statement is weighed more than the other three parts (40%).
-    </div>
-    <div class="question">
-        Will descriptions be rated on quality?
-    </div>
-    <div class="answer">
-        Yes, it is important to submit everything with a full description of the event. Since this year’s DKC award is judged holistically, you may lose points for incomplete descriptions.
-    </div>
-    <div class="question">
-        Who can write my recommendation?
-    </div>
-    <div class="answer">
-        Any Key Club member in good standing, Key Club Officer, Faculty Advisor or Kiwanis Advisor may write your recommendation.
-    </div>
-    <div class="question">
-        If I participated in a Kiwanis One Day Event that was not on April 5, 2014, can I still receive points?
-    </div>
-    <div class="answer">
-        Yes.
-    </div>
-    <div class="question">
-        Will the statement in Involvement #3, Positions Held within Key Club, be rated based on quality?
-    </div>
-    <div class="answer">
-        Yes, you may receive anywhere from 0 to 5 points based on the quality of work that was submitted.
-    </div>
-    <div class="question">
-        Can I submit articles to the Empire Key or Divisional Newsletters last minute?
-    </div>
-    <div class="answer">
-        No.
-    </div>
-    <div class="question">
-        I can’t qualify for the DKC Award because I am unable to fulfill all the criteria in the four parts. What should I do?
-    </div>
-    <div class="answer">
-        If it is due to an issue or circumstance with your home club or division which is out of your control, please contact the Awards Committee Co-Chair that will be reviewing your application.
-    </div>
-    <div class="question">
-        Why do you need my personal information?
-    </div>
-    <div class="answer">
-        All applicants must submit this information so that you may be easily accessible and that records may be kept for the future in case any issues arise.
-    </div>
-    <div class="question">
-        How are the applications judged?
-    </div>
-    <div class="answer">
-        Part I will be weighted the most (40%) and the other three parts will be weighed equally. If you complete all parts fully, you will generally receive the award. All other applications are judged holistically. Generally, you will need to complete at least 70% (210 Points) of all the criteria to receive the award.
-    </div>
-    <div class="question">
-        Who reviews the application?
-    </div>
-    <div class="answer">
-        The District Awards Committee Co-Chair will be reviewing your award. The award will be based off of the point system.
-    </div>
-    <div class="question">
-        Who can I contact if I have any more questions?
-    </div>
-    <div class="answer">
-        You should contact the District Awards Committee Co-Chair that is responsible for your division. Contact Information can be found on the Information & Rules Section.
-    </div>
-    <div class="question">
-        What is the maximum amount of points I can earn for each part?
-    </div>
-    <div class="answer">
-        In Part I, you may earn up to 120 points. In all other parts, you may earn up to 60 points each. The total number of points you can score is 300, and the recommended number of points to receive the award is 210.
-    </div>
+
 </div>
+
 {% endblock %}

@@ -9,7 +9,8 @@ $(window).scroll(function() {
 });
 
 $(function() {
-    $('a[href*=#]:not([href=#])').click(function() {
+    //$('a[href*=#]:not([href=#])').click(function() {
+    $('.home a[href*=#]:not([href=#])').click(function() {
         if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
             var target = $(this.hash);
             target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
@@ -20,5 +21,13 @@ $(function() {
                 return false;
             }
         }
+    });
+});
+
+$('.panel-collapse').each(function() {
+    $(this).on('shown.bs.collapse', function() {
+        $('html, body').animate({
+            scrollTop: $(this).parent().offset().top
+        }, 1000);
     });
 });
