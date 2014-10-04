@@ -77,8 +77,8 @@ setInterval(submitApplication, 1*60*1000);
 
 {% macro input_horizontal_small(name, label='', value='', type='text', disabled='', size=4) -%}
 <div class="form-group-sm">
-    {% if label != '' %}<label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>{% endif %}
-    <div class="col-md-{{ 12 - size }}">
+    {% if label != '' %}<label for="{{ name }}" class="col-xs-{{ size }} control-label">{{ label }}</label>{% endif %}
+    <div class="col-xs-{{ 12 - size }}">
         <input type="{{ type }}" class="form-control" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }}>
     </div>
 </div>

@@ -4,6 +4,149 @@
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
 
     <h1>Verification</h1>
-    This part will be added soon!
+
+    <div class="verification panel panel-{% if application.verification_ltg %}success{% else %}default{% endif %}">
+        <div class="panel-heading panel-title">Lieutenant Governor Verification</div>
+        <div class="panel-body row">
+            {% if application.verification_ltg_sent -%}
+            <p class="col-md-12 text-warning">
+                An email to verify your application has already been sent to your lieutenant governor. Please do not send it again or else the previous verification email will become invalid.
+            </p>
+            {%- endif %}
+            <div class="col-xs-1 text-right">
+            {% if application.verification_ltg %}
+                <span class="glyphicon glyphicon-ok text-success"></span>
+            {% else %}
+                <span class="glyphicon glyphicon-remove text-danger"></span>
+            {% endif %}
+            </div>
+            <div class="col-xs-8 col-sm-9 form-horizontal">
+            {% if application.verification_ltg %}
+                <h4>{{ application.verification_ltg_email }}</h4>
+            </div>
+            {% else %}
+                {{ input_horizontal_small('verification-ltg-email', 'LTG Email:', application.verification_ltg_email, size=4) }}
+            </div>
+            <div class="col-xs-3 col-sm-2">
+                <button id="verification-ltg-button" class="btn btn-default btn-sm">Send</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="verification panel panel-{% if application.verification_club_president %}success{% else %}default{% endif %}">
+        <div class="panel-heading panel-title">Club President Verification</div>
+        <div class="panel-body row">
+            {% if application.verification_club_president_sent -%}
+            <p class="col-md-12 text-warning">
+                An email to verify your application has already been sent to your club president. Please do not send it again or else the previous verification email will become invalid.
+            </p>
+            {%- endif %}
+            <div class="col-xs-1 text-right">
+            {% if application.verification_club_president %}
+                <span class="glyphicon glyphicon-ok text-success"></span>
+            {% else %}
+                <span class="glyphicon glyphicon-remove text-danger"></span>
+            {% endif %}
+            </div>
+            <div class="col-xs-8 col-sm-9 form-horizontal">
+            {% if application.verification_club_president %}
+                <h4>{{ application.verification_club_president_email }}</h4>
+            </div>
+            {% else %}
+                {{ input_horizontal_small('verification-club-president-email', 'Club President Email:', application.verification_club_president_email, size=4) }}
+            </div>
+            <div class="col-xs-3 col-sm-2">
+                <button id="verification-club-president-button" class="btn btn-default btn-sm">Send</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="verification panel panel-{% if application.verification_faculty_advisor %}success{% else %}default{% endif %}">
+        <div class="panel-heading panel-title">Faculty Advisor Verification</div>
+        <div class="panel-body row">
+            {% if application.verification_faculty_advisor_sent -%}
+            <p class="col-md-12 text-warning">
+                An email to verify your application has already been sent to your club president. Please do not send it again or else the previous verification email will become invalid.
+            </p>
+            {%- endif %}
+            <div class="col-xs-1 text-right">
+            {% if application.verification_faculty_advisor %}
+                <span class="glyphicon glyphicon-ok text-success"></span>
+            {% else %}
+                <span class="glyphicon glyphicon-remove text-danger"></span>
+            {% endif %}
+            </div>
+            <div class="col-xs-8 col-sm-9 form-horizontal">
+            {% if application.verification_faculty_advisor %}
+                <h4>{{ application.verification_faculty_advisor_email }}</h4>
+            </div>
+            {% else %}
+                {{ input_horizontal_small('verification-faculty-advisor-email', 'Faculty Advisor Email:', application.verification_faculty_advisor_email, size=4) }}
+            </div>
+            <div class="col-xs-3 col-sm-2">
+                <button id="verification-faculty-advisor-button" class="btn btn-default btn-sm">Send</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="verification panel panel-{% if application.verification_applicant %}success{% else %}default{% endif %}">
+        <div class="panel-heading panel-title">Applicant Agreement</div>
+        <div class="panel-body row">
+            <div class="col-xs-1 text-right">
+            {% if application.verification_applicant %}
+                <span class="glyphicon glyphicon-ok text-success"></span>
+            {% else %}
+                <span class="glyphicon glyphicon-remove text-danger"></span>
+            {% endif %}
+            </div>
+            <div class="col-xs-11 form-horizontal">
+                <p>I hereby affirm that all of the information included in this application and in any documents attached is true and accurate to the best of my ability. I have reviewed the scoring session and if Mandatory Criteria A or B is checked off, the student attends a club that has special circumstances that prevents him/her from completing the application. Otherwise, all other information is true and that if there should be any false or misleading information, this application is subject to being disqualified and appropriate disciplinary action will be taken.</p>
+            {% if application.verification_applicant %}
+                <h4>You agreed to this statement on {{ application.verification_applicant_date|datetimeformat }}</h4>
+            {% else %}
+                <button id="verification-applicant-button" class="btn btn-default btn-sm btn-block">I Agree</button>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+
 </form>
+{% endblock %}
+{% block application_scripts %}
+<script>
+$('#verification-ltg-button').click(function() {
+    $.post('/application/verification',
+           {'form-key': $('#form-key').val(),
+            'task': 'ltg',
+            'ltg-email': $('#verification-ltg-email').val()
+           });
+    $(this).addClass('btn-info').attr('disabled', 'disabled').text("Sent!");
+});
+$('#verification-club-president-button').click(function() {
+    $.post('/application/verification',
+           {'form-key': $('#form-key').val(),
+            'task': 'club-president',
+            'club-president-email': $('#verification-club-president-email').val()
+           });
+    $(this).addClass('btn-info').attr('disabled', 'disabled').text("Sent!");
+});
+$('#verification-faculty-advisor-button').click(function() {
+    $.post('/application/verification',
+           {'form-key': $('#form-key').val(),
+            'task': 'faculty-advisor',
+            'faculty-advisor-email': $('#verification-faculty-advisor-email').val()
+           });
+    $(this).addClass('btn-info').attr('disabled', 'disabled').text("Sent!");
+});
+$('#verification-applicant-button').click(function() {
+    $.post('/application/verification',
+           {'form-key': $('#form-key').val(),
+            'task': 'applicant',
+           });
+    $(this).addClass('btn-info').attr('disabled', 'disabled').text("Agreed!");
+});
+</script>
 {% endblock %}

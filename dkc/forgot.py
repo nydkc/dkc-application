@@ -29,7 +29,7 @@ class ForgotPasswordHandler(BaseHandler):
                        subject="Resetting your DKC Application Password",
                        reply_to="dkc.applications@gmail.com",
                        body="""
-Your DKC Application password has been reset.
+<h2>You have requested to change the password for your DKC Application.</h2>
 If you did not authorize this, then please disregard this email. Otherwise, click the link below to reset your password.
 <p><a href="%s">%s</a>
 If you have an questions or concerns, feel free to reply to this email and we will try our best to address them!
@@ -37,7 +37,7 @@ Yours in spirit and service,
 The New York District Awards Committee
                        """ % (verification_url, verification_url),
                        html="""
-<h2>Your DKC Application password has been reset.</h2>
+<h2>You have requested to change the password for your DKC Application.</h2>
 <p>If you did not authorize this, then please disregard this email. Otherwise, click the link below to reset your password.</p>
 <p><a href="%s">%s</a></p>
 <p>If you have an questions or concerns, feel free to reply to this email and we will try our best to address them!</p>
@@ -55,30 +55,6 @@ The New York District Awards Committee</p>
             'email_sent': email_sent
         }
         self.render_template('forgot.html', template_values)
-
-class VerificationHandler(BaseHandler):
-
-    def get(self, *args, **kwargs):
-        user = None
-        user_id = kwargs['user_id']
-        signup_token = kwargs['signup_token']
-        verification_type = kwargs['type']
-
-        user, ts = self.user_model.get_by_auth_token(int(user_id), signup_token, 'signup')
-
-        if not user:
-            logging.info('Could not find any user with id "%s" signup token "%s"', user_id, signup_token)
-            self.abort(404)
-
-        self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
-
-        if verification_type == 'p':
-            template_values = {
-                'token': signup_token
-            }
-            self.render_template('reset_password.html', template_values)
-        else:
-            self.abort(404)
 
 class SetPasswordHandler(BaseHandler):
 

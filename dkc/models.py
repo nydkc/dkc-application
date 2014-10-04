@@ -122,6 +122,19 @@ class Application(ndb.Model):
     scoring_reason_four = ndb.TextProperty()
 
     verification_ltg = ndb.BooleanProperty(default=False)
+    verification_ltg_token = ndb.StringProperty(default=None)
+    verification_ltg_email = ndb.StringProperty(indexed=False)
+    verification_ltg_sent = ndb.BooleanProperty(default=False)
+
     verification_club_president = ndb.BooleanProperty(default=False)
+    verification_club_president_token = ndb.StringProperty(default=None)
+    verification_club_president_email = ndb.StringProperty(indexed=False)
+    verification_club_president_sent = ndb.BooleanProperty(default=False)
+
     verification_faculty_advisor = ndb.BooleanProperty(default=False)
+    verification_faculty_advisor_token = ndb.StringProperty(default=None)
+    verification_faculty_advisor_email = ndb.StringProperty(indexed=False)
+    verification_faculty_advisor_sent = ndb.BooleanProperty(default=False)
+
     verification_applicant = ndb.BooleanProperty(default=False)
+    verification_applicant_date = ndb.DateTimeProperty()

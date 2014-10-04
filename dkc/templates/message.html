@@ -1,4 +1,14 @@
-Message
-<br>
+{% extends "layout.html" %}
+{% block body %}
 
-{{ message }}
+<div class="page-header text-center">
+    <h1>Message</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+    {{ message }}
+    </div>
+</div>
+
+{% endblock %}

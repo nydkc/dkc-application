@@ -1,10 +1,12 @@
 import os, webapp2, jinja2
 from dkc import *
 from application import *
+from application_verify import ApplicationVerificationHandler
 from register import RegisterPage
 from login import LoginPage
 from logout import LogoutPage
-from forgot import ForgotPasswordHandler, VerificationHandler, SetPasswordHandler
+from forgot import ForgotPasswordHandler, SetPasswordHandler
+from verify import VerificationHandler
 from test import TestHandler
 
 class MainPage(BaseHandler):
@@ -23,14 +25,15 @@ application = webapp2.WSGIApplication([
     ('/application/activities', ApplicationActivities),
     ('/application/scoring', ApplicationScoring),
     ('/application/verification', ApplicationVerification),
+    ('/verification_success', ApplicationVerificationHandler),
     ('/application/profile', ApplicationProfile),
     ('/application.*', ApplicationOverview),
     ('/login', LoginPage),
     ('/logout', LogoutPage),
     ('/register', RegisterPage),
     ('/forgot', ForgotPasswordHandler),
-    webapp2.Route('/<type:p>/<user_id:\d+>-<signup_token:.+>', handler=VerificationHandler, name='verification'),
     ('/reset_password', SetPasswordHandler),
+    webapp2.Route('/<type:p|v>/<user_id:\d+>-<signup_token:.+>', handler=VerificationHandler, name='verification'),
     ('/test/.*', TestHandler),
     ('/.*', MainPage)
 ], debug=True, config=config)

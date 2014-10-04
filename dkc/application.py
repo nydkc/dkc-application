@@ -1,4 +1,5 @@
 import os, webapp2, jinja2
+from datetime import datetime
 from google.appengine.ext import ndb
 from dkc import *
 from models import *
@@ -302,3 +303,30 @@ class ApplicationVerification(BaseHandler):
             'application_url': '/application/verification'
         }
         self.render_template('application-verification.html', template_values)
+
+    def post(self):
+        application_key = ndb.Key(urlsafe=self.request.get('form-key'))
+        application = application_key.get()
+
+        task = self.request.get('task')
+        if task != 'applicant':
+            user_id = self.user.get_id()
+            token = self.user_model.create_signup_token(user_id)
+            verification_url = self.uri_for('verification', type='v', user_id=user_id, signup_token=token, _full=True)
+            if task == 'ltg':
+                application.verification_ltg_email = self.request.get('ltg-email')
+                application.verification_ltg_token = token
+                application.verification_ltg_sent = True
+            if task == 'club-president':
+                application.verification_club_president_email = self.request.get('club-president-email')
+                application.verification_club_president_token = token
+                application.verification_club_president_sent = True
+            if task == 'faculty-advisor':
+                application.verification_faculty_advisor_email = self.request.get('faculty-advisor-email')
+                application.verification_faculty_advisor_token = token
+                application.verification_faculty_advisor_sent = True
+        else:
+            application.verification_applicant = True
+            application.verification_applicant_date = datetime.now()
+
+        application.put()

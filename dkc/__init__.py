@@ -3,10 +3,12 @@ from webapp2_extras import auth, sessions
 import webapp2_extras.appengine.auth.models
 from constants import *
 from models import *
+import timezone
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
     extensions=['jinja2.ext.autoescape'])
+JINJA_ENVIRONMENT.filters['datetimeformat'] = timezone.datetimeformat
 
 config = {
     'webapp2_extras.auth': {
@@ -91,7 +93,7 @@ class BaseHandler(webapp2.RequestHandler):
         }
         self.render_template('message.html', template_values)
 
-# this is needed for webapp2 sessions to work
+    # this is needed for webapp2 sessions to work
     def dispatch(self):
         self.session_store = sessions.get_store(request=self.request)
         try:

@@ -64,10 +64,23 @@ input#district-projects-charity {
     margin-bottom: 3px;
 }
 
+.verification {
+    margin-top: 30px;
+}
+
+.verification .glyphicon {
+    font-size: 23px;
+}
+
 .home-wrapper, #faq {
     display: table;
     width: 100%;
     height: 100%;
+}
+
+.verification h4 {
+    margin-top: 5px;
+    margin-bottom: 0px;
 }
 
 .home {
