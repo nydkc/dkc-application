@@ -1,6 +1,7 @@
 import os, webapp2, jinja2
 from datetime import datetime
 from google.appengine.ext import ndb
+from google.appengine.api import mail
 from dkc import *
 from models import *
 
@@ -305,6 +306,7 @@ class ApplicationVerification(BaseHandler):
         self.render_template('application-verification.html', template_values)
 
     def post(self):
+        applicant = self.user
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
 
@@ -313,18 +315,52 @@ class ApplicationVerification(BaseHandler):
             user_id = self.user.get_id()
             token = self.user_model.create_signup_token(user_id)
             verification_url = self.uri_for('verification', type='v', user_id=user_id, signup_token=token, _full=True)
+
+            verification_email = mail.EmailMessage(sender="NYDKC Awards Committee <verification@dkc-app.appspotmail.com>",
+                                                   subject="Distinguished Key Clubber Application Verification for %s %s" % (applicant.first_name, applicant.last_name),
+                                                   reply_to="dkc.applications@gmail.com",
+                                                   body="""
+You've been requested to verify the application of %s %s
+
+Please click the link below to verify your information on the application. If the information is incorrect, please make sure to email or contact the applicant at <a href="mailto:%s">%s</a> so that he/she can put the correct information onto the application.
+
+In addition to verifying your information, you are also verifying that this applicant is a member in good standing of Key Club International.
+
+Click the following link to verify: <a href="%s">%s</a>
+
+If you have any questions or concerns, feel free to reply to this email and we will try our best to address them!
+
+Yours in spirit and service,
+The New York District Awards Committee
+                                                   """ % (applicant.first_name, applicant.last_name, applicant.email, applicant.email, verification_url, verification_url),
+                                                   html="""
+<h2>You've been requested to verify the application of %s %s</h2>
+<p>Please click the link below to verify your information on the application. If the information is incorrect, please make sure to email or contact the applicant at <a href="mailto:%s">%s</a> so that he/she can put the correct information onto the application.</p>
+<p>In addition to verifying your information, you are also verifying that this applicant is a member in good standing of Key Club International.</p>
+<p><strong>Click the following link to verify:</strong> <a href="%s">%s</a></p>
+<p>If you have any questions or concerns, feel free to reply to this email and we will try our best to address them!</p>
+<p>Yours in spirit and service,<br>
+The New York District Awards Committee</p>
+                                                   """ % (applicant.first_name, applicant.last_name, applicant.email, applicant.email, verification_url, verification_url)
+            )
+
             if task == 'ltg':
                 application.verification_ltg_email = self.request.get('ltg-email')
                 application.verification_ltg_token = token
                 application.verification_ltg_sent = True
-            if task == 'club-president':
+                verification_email.to = application.verification_ltg_email
+            elif task == 'club-president':
                 application.verification_club_president_email = self.request.get('club-president-email')
                 application.verification_club_president_token = token
                 application.verification_club_president_sent = True
-            if task == 'faculty-advisor':
+                verification_email.to = application.verification_club_president_email
+            elif task == 'faculty-advisor':
                 application.verification_faculty_advisor_email = self.request.get('faculty-advisor-email')
                 application.verification_faculty_advisor_token = token
                 application.verification_faculty_advisor_sent = True
+                verification_email.to = application.verification_faculty_advisor_email
+
+            verification_email.send()
         else:
             application.verification_applicant = True
             application.verification_applicant_date = datetime.now()

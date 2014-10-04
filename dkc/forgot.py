@@ -29,10 +29,14 @@ class ForgotPasswordHandler(BaseHandler):
                        subject="Resetting your DKC Application Password",
                        reply_to="dkc.applications@gmail.com",
                        body="""
-<h2>You have requested to change the password for your DKC Application.</h2>
+You have requested to change the password for your DKC Application.
+
 If you did not authorize this, then please disregard this email. Otherwise, click the link below to reset your password.
-<p><a href="%s">%s</a>
-If you have an questions or concerns, feel free to reply to this email and we will try our best to address them!
+
+<a href="%s">%s</a>
+
+If you have any questions or concerns, feel free to reply to this email and we will try our best to address them!
+
 Yours in spirit and service,
 The New York District Awards Committee
                        """ % (verification_url, verification_url),
@@ -40,7 +44,7 @@ The New York District Awards Committee
 <h2>You have requested to change the password for your DKC Application.</h2>
 <p>If you did not authorize this, then please disregard this email. Otherwise, click the link below to reset your password.</p>
 <p><a href="%s">%s</a></p>
-<p>If you have an questions or concerns, feel free to reply to this email and we will try our best to address them!</p>
+<p>If you have any questions or concerns, feel free to reply to this email and we will try our best to address them!</p>
 <p>Yours in spirit and service,<br>
 The New York District Awards Committee</p>
                        """ % (verification_url, verification_url)
