@@ -35,6 +35,11 @@ function submitApplication() {
     else {
         setTimeout(function() { $('#submit').button('reset'); }, 500);
     }
+    if ($('#updated-text').length == 0) {
+        $('#submit').before('<div id="updated-text" class="text-center text-success" style="display:none">Application updated!</div>');
+    }
+    $('#updated-text').fadeIn(500);
+    setTimeout(function() { $('#updated-text').fadeOut(1000); }, 2000);
     return false;
 }
 setInterval(submitApplication, 1*60*1000);
