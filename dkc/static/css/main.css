@@ -31,6 +31,14 @@ html, body {
     text-align: center;
 }
 
+.alert ul {
+    display: table;
+    margin-left:auto;
+    margin-right: auto;
+    padding-right: 40px;
+    text-align: left;
+}
+
 .checkbox {
     -webkit-touch-callout: none;
     -webkit-user-select: none;

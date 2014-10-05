@@ -25,7 +25,7 @@
                 <h4>{{ application.verification_ltg_email }}</h4>
             </div>
             {% else %}
-                {{ input_horizontal_small('verification-ltg-email', 'LTG Email:', application.verification_ltg_email, size=4) }}
+                {{ input_horizontal_small('verification-ltg-email', 'LTG Email:', application.verification_ltg_email, type='email', size=4) }}
             </div>
             <div class="col-xs-3 col-sm-2">
                 <button id="verification-ltg-button" class="btn btn-default btn-sm">Send</button>
@@ -54,7 +54,7 @@
                 <h4>{{ application.verification_club_president_email }}</h4>
             </div>
             {% else %}
-                {{ input_horizontal_small('verification-club-president-email', 'Club President Email:', application.verification_club_president_email, size=4) }}
+                {{ input_horizontal_small('verification-club-president-email', 'Club President Email:', application.verification_club_president_email, type='email', size=4) }}
             </div>
             <div class="col-xs-3 col-sm-2">
                 <button id="verification-club-president-button" class="btn btn-default btn-sm">Send</button>
@@ -83,7 +83,7 @@
                 <h4>{{ application.verification_faculty_advisor_email }}</h4>
             </div>
             {% else %}
-                {{ input_horizontal_small('verification-faculty-advisor-email', 'Faculty Advisor Email:', application.verification_faculty_advisor_email, size=4) }}
+                {{ input_horizontal_small('verification-faculty-advisor-email', 'Faculty Advisor Email:', application.verification_faculty_advisor_email, type='email', size=4) }}
             </div>
             <div class="col-xs-3 col-sm-2">
                 <button id="verification-faculty-advisor-button" class="btn btn-default btn-sm">Send</button>

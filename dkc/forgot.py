@@ -6,7 +6,6 @@ from models import *
 
 class ForgotPasswordHandler(BaseHandler):
 
-    @guest_only
     def get(self):
         self._serve_page()
 
@@ -62,6 +61,9 @@ The New York District Awards Committee</p>
 
 class SetPasswordHandler(BaseHandler):
 
+    def get(self):
+        self.redirect('/forgot')
+
     @user_required
     def post(self):
         password = self.request.get('password')
@@ -72,6 +74,7 @@ class SetPasswordHandler(BaseHandler):
         user.put()
 
         self.user_model.delete_signup_token(user.get_id(), old_token)
+        self.auth.unset_session()
 
         template_values = {
             'changed': True

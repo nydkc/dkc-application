@@ -25,7 +25,7 @@ class VerificationHandler(BaseHandler):
                 'token': signup_token
             }
             self.render_template('reset_password.html', template_values)
-        if verification_type == 'v':
+        elif verification_type == 'v':
             application = user.application.get()
             template_values = {
                 'applicant': user,

@@ -27,6 +27,7 @@ class ApplicationProfile(BaseHandler):
         }
         self.render_template('application-profile.html', template_values)
 
+    @user_required
     def post(self):
         applicant = self.user
         applicant.first_name = self.request.get('first-name')
@@ -63,6 +64,7 @@ class ApplicationPersonalStatement(BaseHandler):
         }
         self.render_template('application-personal_statement.html', template_values)
 
+    @user_required
     def post(self):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
@@ -87,6 +89,7 @@ class ApplicationProjects(BaseHandler):
         }
         self.render_template('application-projects.html', template_values)
 
+    @user_required
     def post(self):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
@@ -159,6 +162,7 @@ class ApplicationInvolvement(BaseHandler):
         }
         self.render_template('application-involvement.html', template_values)
 
+    @user_required
     def post(self):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
@@ -196,6 +200,7 @@ class ApplicationActivities(BaseHandler):
         }
         self.render_template('application-activities.html', template_values)
 
+    @user_required
     def post(self):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
@@ -276,6 +281,7 @@ class ApplicationScoring(BaseHandler):
         }
         self.render_template('application-scoring.html', template_values)
 
+    @user_required
     def post(self):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
@@ -305,6 +311,7 @@ class ApplicationVerification(BaseHandler):
         }
         self.render_template('application-verification.html', template_values)
 
+    @user_required
     def post(self):
         applicant = self.user
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))

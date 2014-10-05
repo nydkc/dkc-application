@@ -10,6 +10,7 @@ class LoginPage(BaseHandler):
     def get(self):
         self._serve_page()
 
+    @guest_only
     def post(self):
         username = self.request.get('email')
         password = self.request.get('password')

@@ -5,36 +5,48 @@
     <h1>Create an account</h1>
 </div>
 
-<form class="form-horizontal col-md-6 col-md-offset-3" role="form" action="/register" method="post">
+<div class="alert alert-danger {% if error|e == 'None' %} hidden{% endif %}">
+    <h4>There were problems with creating your account.</h4>
+    {% if error|e != 'None' %}<strong>{{ error }}</strong>{% endif %}
+    <div id="errors"></div>
+</div>
+
+<form id="register" class="form-horizontal col-md-6 col-md-offset-3" role="form" action="/register" method="post">
     <div class="form-group">
         <label class="col-md-2 control-label" for="name">Name</label>
         <div class="col-md-10">
             <div class="row">
-                <div class="col-md-6">
-                    <input type="text" class="form-control" id="first-name" name="first-name" placeholder="First Name">
+                <div class="col-xs-6">
+                    <input type="text" class="form-control" id="first-name" name="first-name" placeholder="First Name" value="{{ first_name }}">
                 </div>
-                <div class="col-md-6">
-                    <input type="text" class="form-control" id="last-name" name="last-name" placeholder="Last Name">
+                <div class="col-xs-6">
+                    <input type="text" class="form-control" id="last-name" name="last-name" placeholder="Last Name" value="{{ last_name }}">
                 </div>
             </div>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group has-feedback">
         <label class="col-md-2 control-label" for="email">Email</label>
         <div class="col-md-10">
-            <input type="email" class="form-control" id="email" name="email" placeholder="email@example.com">
+            <input type="email" class="form-control" id="email" name="email" placeholder="email@example.com" value="{{ email }}">
+            <span class="glyphicon form-control-feedback"></span>
+            <span class="help-block text-danger" style="display:none;">Are you sure that you typed your email address correctly?</span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group has-feedback">
         <label class="col-md-2 control-label" for="password">Password</label>
         <div class="col-md-10">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Choose a password">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Choose a password" value="{{ password }}">
+            <span class="glyphicon form-control-feedback"></span>
+            <span class="help-block text-danger" style="display:none;">Your password cannot be less than 6 characters.</span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group has-feedback">
         <label class="col-md-2 control-label" for="confirm-password">Confirm</label>
         <div class="col-md-10">
             <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm your password">
+            <span class="glyphicon form-control-feedback"></span>
+            <span class="help-block text-danger" style="display:none;">Passwords do not match.</span>
         </div>
     </div>
     <div class="form-group">
@@ -43,4 +55,118 @@
         </div>
     </div>
 </form>
+{% endblock %}
+{% block scripts %}
+<script>
+var first = $('#first-name');
+function checkFirstName() {
+    if (first.val() == '') {
+        first.parent().addClass('has-error').removeClass('has-success');
+        return "Your first name cannot be blank.";
+    }
+    else {
+        first.parent().addClass('has-success').removeClass('has-error');
+        return "";
+    }
+}
+first.keyup(checkFirstName);
+
+var last = $('#last-name');
+function checkLastName() {
+    if (last.val() == '') {
+        last.parent().addClass('has-error').removeClass('has-success');
+        return "Your last name cannot be blank.";
+    }
+    else {
+        last.parent().addClass('has-success').removeClass('has-error');
+        return "";
+    }
+}
+last.keyup(checkLastName);
+
+var email = $('#email');
+var re = /^([a-zA-Z0-9+_\-\.])+@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,6})$/;
+function checkEmail() {
+    if (re.test(email.val())) {
+        email.parent().addClass('has-success').removeClass('has-error');
+        email.siblings('.glyphicon').addClass('glyphicon-ok').removeClass('glyphicon-remove');
+        return "";
+    }
+    else {
+        email.parent().addClass('has-error').removeClass('has-success');
+        email.siblings('.glyphicon').addClass('glyphicon-remove').removeClass('glyphicon-ok');
+        return "Please use a valid email address.";
+    }
+}
+email.keyup(checkEmail);
+email.blur(function() {
+    if (re.test(email.val())) {
+        email.siblings('.help-block').hide();
+    }
+    else {
+        email.siblings('.help-block').show();
+    }
+});
+
+var password = $('#password');
+var cpassword = $('#confirm-password');
+function checkPassword() {
+    if (password.val().length < 6) {
+        password.parent().addClass('has-error').removeClass('has-success');
+        password.siblings('.glyphicon').addClass('glyphicon-remove').removeClass('glyphicon-ok');
+        cpassword.parent().addClass('has-error').removeClass('has-success');
+        cpassword.siblings('.glyphicon').addClass('glyphicon-remove').removeClass('glyphicon-ok');
+        return "Your password must be at least 6 characters.";
+    }
+    else if (password.val() != cpassword.val()) {
+        password.parent().addClass('has-success').removeClass('has-error');
+        password.siblings('.glyphicon').addClass('glyphicon-ok').removeClass('glyphicon-remove');
+        cpassword.parent().addClass('has-error').removeClass('has-success');
+        cpassword.siblings('.glyphicon').addClass('glyphicon-remove').removeClass('glyphicon-ok');
+        return "Passwords do not match.";
+    }
+    else {
+        password.parent().addClass('has-success').removeClass('has-error');
+        password.siblings('.glyphicon').addClass('glyphicon-ok').removeClass('glyphicon-remove');
+        cpassword.parent().addClass('has-success').removeClass('has-error');
+        cpassword.siblings('.glyphicon').addClass('glyphicon-ok').removeClass('glyphicon-remove');
+        return "";
+    }
+}
+password.keyup(checkPassword);
+cpassword.keyup(checkPassword);
+password.blur(function() {
+    if (password.val().length < 6) {
+        password.siblings('.help-block').show();
+    }
+    else {
+        password.siblings('.help-block').hide();
+    }
+});
+
+function validateForm() {
+    var errors = [];
+    var cf = checkFirstName();
+        if (cf != "") {errors.push(cf)};
+    var cl = checkLastName();
+        if (cl != "") {errors.push(cl)};
+    var ce = checkEmail();
+        if (ce != "") {errors.push(ce)};
+    var cp = checkPassword();
+        if (cp != "") {errors.push(cp)};
+
+    if (errors.length > 0) {
+        var html = "<ul>";
+        for (var i=0; i<errors.length; i++) {
+            html += "<li>" + errors[i] + "</li>";
+        }
+        html += "</ul>";
+        $('#errors').html(html).parent().removeClass('hidden');
+        return false;
+    }
+    return true;
+}
+$('#register').submit(validateForm);
+{% if error|e != 'None' %}$(document).ready(validateForm);{% endif %}
+</script>
 {% endblock %}
