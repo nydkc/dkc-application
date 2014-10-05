@@ -7,6 +7,14 @@
     src: url(../fonts/century-gothic.ttf) format("truetype");
 }
 
+noscript div.alert {
+    margin-top: 10px;
+}
+
+noscript h3 {
+    margin-top: 0;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: "Century Gothic", Arial;
 }

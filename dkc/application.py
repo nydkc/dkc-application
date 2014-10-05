@@ -20,12 +20,7 @@ class ApplicationProfile(BaseHandler):
 
     @user_required
     def get(self):
-        applicant = self.user
-        template_values = {
-            'applicant': applicant,
-            'application_url': '/application/profile'
-        }
-        self.render_template('application-profile.html', template_values)
+        self._serve_page()
 
     @user_required
     def post(self):
@@ -48,11 +43,33 @@ class ApplicationProfile(BaseHandler):
         applicant.faculty_advisor = self.request.get('faculty-advisor')
         applicant.faculty_advisor_phone_number = self.request.get('faculty-advisor-phone-number')
         applicant.put()
+        self._serve_page()
+
+    def _serve_page(self):
+        applicant = self.user
+        template_values = {
+            'applicant': applicant,
+            'application_url': '/application/profile'
+        }
+        self.render_template('application-profile.html', template_values)
 
 class ApplicationPersonalStatement(BaseHandler):
 
     @user_required
     def get(self):
+        self._serve_page()
+
+    @user_required
+    def post(self):
+        application_key = ndb.Key(urlsafe=self.request.get('form-key'))
+        application = application_key.get()
+
+        application.personal_statement_choice = self.request.get("personal-statement-choice")
+        application.personal_statement = self.request.get('personal-statement')
+        application.put()
+        self._serve_page()
+
+    def _serve_page(self):
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
@@ -64,30 +81,11 @@ class ApplicationPersonalStatement(BaseHandler):
         }
         self.render_template('application-personal_statement.html', template_values)
 
-    @user_required
-    def post(self):
-        application_key = ndb.Key(urlsafe=self.request.get('form-key'))
-        application = application_key.get()
-
-        application.personal_statement_choice = self.request.get("personal-statement-choice")
-        application.personal_statement = self.request.get('personal-statement')
-        application.put()
-
 class ApplicationProjects(BaseHandler):
 
     @user_required
     def get(self):
-        applicant = self.user
-        application_key = applicant.application
-        application = application_key.get()
-
-        template_values = {
-            'applicant' :applicant,
-            'application': application,
-            'form_key': application_key.urlsafe(),
-            'application_url': '/application/projects'
-        }
-        self.render_template('application-projects.html', template_values)
+        self._serve_page()
 
     @user_required
     def post(self):
@@ -145,11 +143,9 @@ class ApplicationProjects(BaseHandler):
             i += 1
 
         application.put()
+        self._serve_page()
 
-class ApplicationInvolvement(BaseHandler):
-
-    @user_required
-    def get(self):
+    def _serve_page(self):
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
@@ -158,9 +154,15 @@ class ApplicationInvolvement(BaseHandler):
             'applicant' :applicant,
             'application': application,
             'form_key': application_key.urlsafe(),
-            'application_url': '/application/involvement'
+            'application_url': '/application/projects'
         }
-        self.render_template('application-involvement.html', template_values)
+        self.render_template('application-projects.html', template_values)
+
+class ApplicationInvolvement(BaseHandler):
+
+    @user_required
+    def get(self):
+        self._serve_page()
 
     @user_required
     def post(self):
@@ -183,11 +185,9 @@ class ApplicationInvolvement(BaseHandler):
         application.positions = self.request.get('positions')
 
         application.put()
+        self._serve_page()
 
-class ApplicationActivities(BaseHandler):
-
-    @user_required
-    def get(self):
+    def _serve_page(self):
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
@@ -196,9 +196,15 @@ class ApplicationActivities(BaseHandler):
             'applicant' :applicant,
             'application': application,
             'form_key': application_key.urlsafe(),
-            'application_url': '/application/activities'
+            'application_url': '/application/involvement'
         }
-        self.render_template('application-activities.html', template_values)
+        self.render_template('application-involvement.html', template_values)
+
+class ApplicationActivities(BaseHandler):
+
+    @user_required
+    def get(self):
+        self._serve_page()
 
     @user_required
     def post(self):
@@ -264,11 +270,9 @@ class ApplicationActivities(BaseHandler):
             i += 1
 
         application.put()
+        self._serve_page()
 
-class ApplicationScoring(BaseHandler):
-
-    @user_required
-    def get(self):
+    def _serve_page(self):
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
@@ -277,9 +281,15 @@ class ApplicationScoring(BaseHandler):
             'applicant' :applicant,
             'application': application,
             'form_key': application_key.urlsafe(),
-            'application_url': '/application/scoring'
+            'application_url': '/application/activities'
         }
-        self.render_template('application-scoring.html', template_values)
+        self.render_template('application-activities.html', template_values)
+
+class ApplicationScoring(BaseHandler):
+
+    @user_required
+    def get(self):
+        self._serve_page()
 
     @user_required
     def post(self):
@@ -294,11 +304,9 @@ class ApplicationScoring(BaseHandler):
         application.scoring_reason_four = self.request.get('scoring-reason-four')
 
         application.put()
+        self._serve_page()
 
-class ApplicationVerification(BaseHandler):
-
-    @user_required
-    def get(self):
+    def _serve_page(self):
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
@@ -307,9 +315,15 @@ class ApplicationVerification(BaseHandler):
             'applicant' :applicant,
             'application': application,
             'form_key': application_key.urlsafe(),
-            'application_url': '/application/verification'
+            'application_url': '/application/scoring'
         }
-        self.render_template('application-verification.html', template_values)
+        self.render_template('application-scoring.html', template_values)
+
+class ApplicationVerification(BaseHandler):
+
+    @user_required
+    def get(self):
+        self._serve_page()
 
     @user_required
     def post(self):
@@ -322,6 +336,7 @@ class ApplicationVerification(BaseHandler):
             user_id = self.user.get_id()
             token = self.user_model.create_signup_token(user_id)
             verification_url = self.uri_for('verification', type='v', user_id=user_id, signup_token=token, _full=True)
+            print verification_url
 
             verification_email = mail.EmailMessage(sender="NYDKC Awards Committee <verification@dkc-app.appspotmail.com>",
                                                    subject="Distinguished Key Clubber Application Verification for %s %s" % (applicant.first_name, applicant.last_name),
@@ -373,3 +388,17 @@ The New York District Awards Committee</p>
             application.verification_applicant_date = datetime.now()
 
         application.put()
+        self._serve_page()
+
+    def _serve_page(self):
+        applicant = self.user
+        application_key = applicant.application
+        application = application_key.get()
+
+        template_values = {
+            'applicant' :applicant,
+            'application': application,
+            'form_key': application_key.urlsafe(),
+            'application_url': '/application/verification'
+        }
+        self.render_template('application-verification.html', template_values)
