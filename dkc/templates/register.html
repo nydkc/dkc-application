@@ -5,7 +5,7 @@
     <h1>Create an account</h1>
 </div>
 
-<div class="alert alert-danger {% if error|e == 'None' %} hidden{% endif %}">
+<div class="alert alert-danger"{% if error|e == 'None' %} style="display:none;"{% endif %}>
     <h4>There were problems with creating your account.</h4>
     {% if error|e != 'None' %}<strong>{{ error }}</strong>{% endif %}
     <div id="errors"></div>
@@ -161,7 +161,7 @@ function validateForm() {
             html += "<li>" + errors[i] + "</li>";
         }
         html += "</ul>";
-        $('#errors').html(html).parent().removeClass('hidden');
+        $('#errors').html(html).parent().fadeIn(300);
         return false;
     }
     return true;
