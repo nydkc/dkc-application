@@ -66,6 +66,7 @@ class GeneralProject(ndb.Model):
 
 class Application(ndb.Model):
     start_time = ndb.DateTimeProperty(auto_now_add=True)
+    updated_time = ndb.DateTimeProperty(auto_now=True)
     submit_time = ndb.DateTimeProperty()
     def is_early(self):
         due_date = datetime.strptime(APPLICATION_DUE_DATE, "%b %d %Y")

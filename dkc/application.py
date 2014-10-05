@@ -9,9 +9,18 @@ class ApplicationOverview(BaseHandler):
 
     @user_required
     def get(self):
+        self._serve_page()
+
+    def post(self):
+        self._serve_page()
+
+    def _serve_page(self):
         applicant = self.user
+        application_key = applicant.application
+        application = application_key.get()
         template_values = {
             'applicant': applicant,
+            'application': application,
             'application_url': '/application/overview'
         }
         self.render_template('application_overview.html', template_values)

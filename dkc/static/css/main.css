@@ -60,8 +60,36 @@ html, body {
     margin-top: 20px;
 }
 
+#overview-sections {
+    margin-top: 20px;
+}
+
+blockquote.letter {
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+#example-submissions table td {
+    vertical-align: top;
+    padding: 5px;
+}
+
+#example-submissions h5 {
+    padding: 10px;
+    margin: 0;
+}
+
+#instruction-rules ul.list-unstyled {
+    padding-left: 40px;
+}
+
+p.lead:last-child {
+    margin-bottom: 0;
+}
+
 .project {
-    padding-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 #application .btn-block {
@@ -81,22 +109,22 @@ input#district-projects-charity {
 }
 
 .verification {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .verification .glyphicon {
     font-size: 23px;
 }
 
+.verification h4 {
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
 .home-wrapper, #faq {
     display: table;
     width: 100%;
     height: 100%;
-}
-
-.verification h4 {
-    margin-top: 5px;
-    margin-bottom: 0px;
 }
 
 .home {

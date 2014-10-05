@@ -2,9 +2,12 @@ from datetime import datetime, tzinfo, timedelta
 import time
 
 def datetimeformat(value, format='%B %d, %Y - %I:%M %p'):
-    value = value.replace(tzinfo=UTC())
-    value = value.astimezone(Eastern)
-    return value.strftime(format)
+    try:
+        value = value.replace(tzinfo=UTC())
+        value = value.astimezone(Eastern)
+        return value.strftime(format)
+    except:
+        return None
 
 ZERO = timedelta(0)
 HOUR = timedelta(hours=1)
