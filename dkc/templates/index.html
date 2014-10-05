@@ -11,6 +11,10 @@
 
         <img src="/images/key-club-logo.png">
 
+    {% if user %}
+        <h4>Logged in as: {{ user.email }}</h4>
+        <a class="btn btn-warning btn-block" href="/application">Access your application</a>
+    {% else %}
         <div class="row">
             <div class="col-sm-6">
                 <a class="btn btn-success btn-block" href="/login">Login</a>
@@ -19,6 +23,7 @@
                 <a class="btn btn-info btn-block" href="/register">Create an account</a>
             </div>
         </div>
+    {% endif %}
         <a class="btn btn-primary btn-block" href="#faq">Frequently Asked Questions</a>
     </div>
 </div>
