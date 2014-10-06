@@ -8,6 +8,7 @@ inbound_services:
 
 skip_files:
 - ^(.*/)?.*\.pyc
+- .DS_Store
 
 libraries:
 - name: webapp2
