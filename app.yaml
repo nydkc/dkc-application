@@ -36,6 +36,8 @@ handlers:
 - url: /fonts
   static_dir: dkc/static/fonts
   expiration: 7d
+- url: /admin/stats.*
+  script: google.appengine.ext.appstats.ui.app
 - url: /.*
   script: dkc.views.application
 
