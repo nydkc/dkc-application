@@ -39,7 +39,7 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
         resource = str(urllib.unquote(resource))
         blob_info = blobstore.BlobInfo.get(resource)
         if "image" in blob_info.content_type:
-            image_url = images.get_serving_url(resource)
+            image_url = images.get_serving_url(resource) + "=s0"
             self.redirect(image_url)
         else:
             self.send_blob(blob_info)
