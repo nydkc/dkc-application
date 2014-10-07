@@ -7,6 +7,7 @@ from login import LoginPage
 from logout import LogoutPage
 from forgot import ForgotPasswordHandler, SetPasswordHandler
 from verify import VerificationHandler
+from upload import *
 from test import TestHandler
 
 class MainPage(BaseHandler):
@@ -23,6 +24,7 @@ application = webapp2.WSGIApplication([
     ('/application/projects', ApplicationProjects),
     ('/application/involvement', ApplicationInvolvement),
     ('/application/activities', ApplicationActivities),
+    ('/application/activities/upload', ApplicationActivitiesUploadHandler),
     ('/application/scoring', ApplicationScoring),
     ('/application/verification', ApplicationVerification),
     ('/verification_success', ApplicationVerificationHandler),
@@ -34,6 +36,7 @@ application = webapp2.WSGIApplication([
     ('/forgot', ForgotPasswordHandler),
     ('/reset_password', SetPasswordHandler),
     webapp2.Route('/<type:p|v>/<user_id:\d+>-<signup_token:.+>', handler=VerificationHandler, name='verification'),
+    ('/serve/([^/]+)/?.*', ServeHandler),
     ('/test/.*', TestHandler),
     ('/.*', MainPage)
 ], debug=True, config=config)

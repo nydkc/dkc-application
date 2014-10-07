@@ -9,7 +9,7 @@
             Receive 5 points in any part for submitting this application early.
             <div class="form-horizontal row">
                 <div class="col-md-7">
-                    {{ input_horizontal("early-submission-points", "I would like to apply these points to part:", application.early_submission_points, size=9) }}
+                    {{ select_horizontal("early-submission-points", "I would like to apply these points to part:", application.early_submission_points, ["1","2","3","4"], size=9) }}
                 </div>
             </div>
         </li>
@@ -17,7 +17,7 @@
             A recommendation may be submitted by a club member, officer or faculty advisor for a total of 5 points. This recommendation should be no more than 150 words nominating you for the award. The recommendation must be signed by the writer.
             <div class="form-horizontal row">
                 <div class="col-md-7">
-                    {{ input_horizontal("recommender-points", "I would like to apply these points to part:", application.recommender_points, size=9) }}
+                    {{ select_horizontal("recommender-points", "I would like to apply these points to part:", application.recommender_points, ["1","2","3","4"], size=9) }}
                 </div>
             </div>
         </li>

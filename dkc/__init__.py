@@ -3,12 +3,14 @@ from webapp2_extras import auth, sessions
 import webapp2_extras.appengine.auth.models
 from constants import *
 from models import *
-import timezone
+import jinja_functions
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
     extensions=['jinja2.ext.autoescape'])
-JINJA_ENVIRONMENT.filters['datetimeformat'] = timezone.datetimeformat
+JINJA_ENVIRONMENT.filters['datetimeformat'] = jinja_functions.datetimeformat
+JINJA_ENVIRONMENT.filters['getblobdata'] = jinja_functions.getBlobData
+JINJA_ENVIRONMENT.filters['byteconvert'] = jinja_functions.byteConversion
 
 config = {
     'webapp2_extras.auth': {

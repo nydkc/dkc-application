@@ -89,6 +89,29 @@
         </div>
     </div>
 
+    <h5>Advocacy Materials</h5>
+    <div class="table-responsive">
+        <table id="advocacy-upload" class="table table-striped table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Filename</th>
+                    <th>Size</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for file in application.advocacy_materials|getblobdata %}
+                <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
+                    <td>{{ file.content_type }}</td>
+                    <td>{{ file.filename }}</td>
+                    <td>{{ file.size|byteconvert }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#advocacy-upload-modal">Upload</button>
+
     <hr>
 
     <h4>Section 4: Committee Involvement (Max 3 Points, 3 Points per committee)</h4>
@@ -167,8 +190,64 @@
 
     <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success btn-block">Update</button>
 </form>
+
+<form class="modal fade" id="advocacy-upload-modal" tabindex="-1" role="dialog" aria-labelledby="advocacy-upload-window-title" aria-hidden="true" method="post" enctype="multipart/form-data" target="upload_target">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="advocacy-upload-window-title">Upload advocacy materials</h4>
+            </div>
+            <div class="modal-body">
+                <p id="result"></p>
+                <div id="uploaded-files" style="display:none;">
+                    Uploaded files:
+                    <ul></ul>
+                </div>
+                <input class="upload-field" type="file" name="advocacy-material">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </div>
+    </div>
+</form>
+<iframe id="upload_target" name="upload_target" src="#" class="hidden"></iframe>
 {% endblock %}
 {% block application_scripts %}
+<script>
+function resetUploadForm() {
+    $.get('/application/activities/upload', function(data) {
+        $('#advocacy-upload-modal').attr("action", data);
+    });
+}
+$('#advocacy-upload-modal').on('show.bs.modal', resetUploadForm);
+function finishUpload(blobs){
+    if (0){
+        $('#result').text('There was an error during file upload!').addClass('text-danger');
+    }
+    else {
+        $('#result').text('The file was uploaded successfully!').addClass('text-success');
+        for (var i=0; i<blobs.length; i++) {
+            var blobInfo = $.parseJSON(blobs[i]);
+            $('#uploaded-files ul').append('<li>' + blobInfo.filename + '</li>');
+            $('#uploaded-files').show();
+            $('#advocacy-upload tbody').append('<tr href="' + blobInfo.url + '" class="clickable-row"><td>' + blobInfo.content_type + '</td><td>' + blobInfo.filename + '</td><td>' + blobInfo.size + '</td></tr>');
+        }
+        $('#advocacy-upload-modal')[0].reset();
+    }
+    resetUploadForm();
+    clickableRows();
+    return true;
+}
+function clickableRows() {
+    $(".clickable-row").click(function() {
+        window.open($(this).attr('href'), '_blank');
+    });
+}
+$(document).ready(clickableRows);
+</script>
 <script>
 $(document).ready(function() {
     $('input[type=checkbox]').each(function() {
@@ -232,6 +311,5 @@ $('#other-projects-button').click(function() {
     }
     return false;
 });
-
 </script>
 {% endblock %}

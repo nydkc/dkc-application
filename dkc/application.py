@@ -1,6 +1,6 @@
 import os, webapp2, jinja2
 from datetime import datetime
-from google.appengine.ext import ndb
+from google.appengine.ext import ndb, blobstore
 from google.appengine.api import mail
 from dkc import *
 from models import *
@@ -290,7 +290,7 @@ class ApplicationActivities(BaseHandler):
             'applicant' :applicant,
             'application': application,
             'form_key': application_key.urlsafe(),
-            'application_url': '/application/activities'
+            'application_url': '/application/activities',
         }
         self.render_template('application-activities.html', template_values)
 

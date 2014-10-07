@@ -56,6 +56,10 @@ html, body {
     user-select: none;
 }
 
+.clickable-row {
+    cursor: pointer;
+}
+
 #logout-button {
     margin-top: 20px;
 }
@@ -106,6 +110,10 @@ input#district-projects-charity {
 
 .newsletters .row {
     margin-bottom: 3px;
+}
+
+.upload-field {
+    width: 100%;
 }
 
 .verification {
