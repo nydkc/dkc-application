@@ -199,15 +199,17 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="advocacy-upload-window-title">Upload advocacy materials</h4>
+                <h3 class="modal-title" id="advocacy-upload-window-title">Upload Advocacy Materials</h3>
             </div>
             <div class="modal-body">
-                <p id="result"></p>
-                <div id="uploaded-files" style="display:none;">
+                <p>Upload your files one at a time in the field below.</p>
+                <p id="result" class="lead text-center"></p>
+                <div id="advocacy-uploaded-files" class="bg-success" style="display:none;">
                     Uploaded files:
                     <ul></ul>
                 </div>
-                <input class="upload-field" type="file" name="advocacy-material">
+                <p class="warning-file-size text-warning" style="display:none;"></p>
+                <input id="advocacy-upload-field" class="upload-field" type="file" name="advocacy-material">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
@@ -216,14 +218,27 @@
         </div>
     </div>
 </form>
-<iframe id="upload_target" name="upload_target" src="#" class="hidden"></iframe>
+<iframe id="upload_target" name="upload_target" class="hidden"></iframe>
 {% endblock %}
 {% block application_scripts %}
 <script>
+$('#advocacy-upload-field').change(function() {
+    var file = $(this)[0].files[0];
+    if (file.size > 10485760 && typeof FileReader !== "undefined") {
+        var warning = $(this).siblings('.warning-file-size');
+        warning.html('<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;&nbsp;&nbsp;File size of "' + file.name + '" is too big! Only files &lt;10 MB are allowed.');
+        warning.fadeIn(200);
+        setTimeout(function() { warning.fadeOut(700); }, 5000);
+        $('#advocacy-upload-modal')[0].reset();
+    }
+});
 function resetUploadForm() {
     $.get('/application/activities/upload', function(data) {
         $('#advocacy-upload-modal').attr("action", data);
-    });
+    })
+     .fail(function() {
+          sweetAlert("Unable to upload!", "It appears that you are not connected to the internet.", "error");
+     });
 }
 $('#advocacy-upload-modal').on('show.bs.modal', resetUploadForm);
 function finishUpload(blobs){
@@ -234,8 +249,8 @@ function finishUpload(blobs){
         $('#result').text('The file was uploaded successfully!').addClass('text-success');
         for (var i=0; i<blobs.length; i++) {
             var blobInfo = $.parseJSON(blobs[i]);
-            $('#uploaded-files ul').append('<li>' + blobInfo.filename + '</li>');
-            $('#uploaded-files').show();
+            $('#advocacy-uploaded-files ul').append('<li>' + blobInfo.filename + '</li>');
+            $('#advocacy-uploaded-files').show();
             $('#advocacy-upload tbody').append('<tr href="' + blobInfo.url + '" class="clickable-row"><td>' + blobInfo.content_type + '</td><td>' + blobInfo.filename + '</td><td>' + blobInfo.size + '</td></tr>');
         }
         $('#advocacy-upload-modal')[0].reset();

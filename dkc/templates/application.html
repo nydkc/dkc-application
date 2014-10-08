@@ -32,6 +32,9 @@ function submitApplication(e) {
             $('#updated-text').addClass('text-success').removeClass('text-danger').text('Application updated!');
             $('#submit').button('reset');
             formData = newData;
+            if (e.data == 'click') {
+                sweetAlert("Application updated!", "All your information has successfully been saved.", "success");
+            }
         })
         .fail(function(data) {
             $('#updated-text').addClass('text-danger').removeClass('text-success').text('Update failed... are you connected to the internet?');
