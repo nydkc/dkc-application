@@ -4,7 +4,7 @@
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
 
     <h2>Part IV: Projects, Advocacy & Newsletters (60 Points)</h2>
-    <p>This Part will show what projects or activities you have participated in.
+    <p>This part will show what projects or activities you have participated in.
         <br>Required Points: 20
         <br>Recommended Points: 40
     </p>
@@ -110,7 +110,9 @@
             </tbody>
         </table>
     </div>
-    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#advocacy-upload-modal">Upload</button>
+    <div class="text-center">
+        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#advocacy-upload-modal"><span class="glyphicon glyphicon-upload"></span> Upload</button>
+    </div>
 
     <hr>
 
@@ -188,6 +190,7 @@
 
     <hr>
 
+    <div id="updated-text" class="text-center" style="display:none"></div>
     <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success btn-block">Update</button>
 </form>
 

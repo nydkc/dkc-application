@@ -26,23 +26,24 @@
     <p>If you attended any of the following conferences or programs, please indicate which programs by checking the boxes below.</p>
     <div class="row">
         <div class="col-md-11 col-md-offset-1">
-            {{ checkbox("attendance-dtc", "Divisional Training Conference/Personal Training", application.attendance_dtc) }}
-            {{ checkbox("attendance-fall-rally", "Fall Rally", application.attendance_fall_rally) }}
-            {{ checkbox("attendance-kamp-kiwanis", "Kamp Kiwanis", application.attendance_kamp_kiwanis) }}
-            {{ checkbox("attendance-key-leader", "Key Leader", application.attendance_key_leader) }}
-            {{ checkbox("attendance-ltc", "Leadership Training Conference", application.attendance_ltc) }}
-            {{ checkbox("attendance-icon", "International Convention", application.attendance_icon) }}
+            {{ checkbox("attendance-dtc", "(5 points) Divisional Training Conference/Personal Training", application.attendance_dtc) }}
+            {{ checkbox("attendance-fall-rally", "(5 points) Fall Rally", application.attendance_fall_rally) }}
+            {{ checkbox("attendance-kamp-kiwanis", "(5 points) Kamp Kiwanis", application.attendance_kamp_kiwanis) }}
+            {{ checkbox("attendance-key-leader", "(5 points) Key Leader", application.attendance_key_leader) }}
+            {{ checkbox("attendance-ltc", "(7 points) Leadership Training Conference", application.attendance_ltc) }}
+            {{ checkbox("attendance-icon", "(8 points) International Convention", application.attendance_icon) }}
         </div>
     </div>
 
     <hr>
 
     <h4>Section 3: Positions Held within Key Club (10 Points)</h4>
-    <p>Please include a typed 250 word essay, attached to this application, that describes any offices or positions that you have held, whether elected (club, district, or international office) or appointed (committee chair, project chair person, project captains, etc.)</p>
+    <p>Please include a typed 250 word essay, that describes any offices or positions that you have held, whether elected (club, district, or international office) or appointed (committee chair, project chair person, project captains, etc.)</p>
     {{ textarea("positions", value=application.positions, rows="10") }}
 
     <hr>
 
+    <div id="updated-text" class="text-center" style="display:none"></div>
     <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success btn-block">Update</button>
 </form>
 {% endblock %}

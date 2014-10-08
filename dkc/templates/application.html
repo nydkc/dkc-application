@@ -7,6 +7,7 @@
     <div class="col-md-9">
 {% block application %}{% endblock %}
     </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
@@ -16,9 +17,9 @@
 var formData;
 $(document).ready(function() {
     formData = $('#application').serialize();
-    $('#application').submit(submitApplication);
+    $('#application').submit('click', submitApplication);
 });
-function submitApplication() {
+function submitApplication(e) {
     $('#submit').button('loading');
     newData = $('#application').serialize();
     if (formData != newData) {
@@ -28,21 +29,29 @@ function submitApplication() {
             data: newData
         })
         .done(function(data) {
+            $('#updated-text').addClass('text-success').removeClass('text-danger').text('Application updated!');
             $('#submit').button('reset');
             formData = newData;
+        })
+        .fail(function(data) {
+            $('#updated-text').addClass('text-danger').removeClass('text-success').text('Update failed... are you connected to the internet?');
+            $('#submit').button('reset');
+            if (e.data == 'click') {
+                sweetAlert("Update failed!", "It appears that you are not connected to the internet.", "error");
+            }
         });
     }
     else {
-        setTimeout(function() { $('#submit').button('reset'); }, 500);
+        $('#updated-text').addClass('text-success').removeClass('text-danger').text('Application updated!');
+        setTimeout(function() { $('#submit').button('reset'); }, 300);
     }
-    if ($('#updated-text').length == 0) {
-        $('#submit').before('<div id="updated-text" class="text-center text-success" style="display:none">Application updated!</div>');
-    }
-    $('#updated-text').fadeIn(500);
-    setTimeout(function() { $('#updated-text').fadeOut(1000); }, 2000);
+    $('#updated-text').fadeIn(200);
+    setTimeout(function() { $('#updated-text').fadeOut(700); }, 1000);
     return false;
 }
-setInterval(submitApplication, 1*60*1000);
+setInterval(function() {
+    submitApplication('auto')
+}, 1*60*1000);
 </script>
 {% endblock %}
 
