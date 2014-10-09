@@ -90,7 +90,7 @@
                     <tr>
                         <td class="text-nowrap text-right">Explanation:</td><td>{{ example[4] }}</td>
                     </tr>
-                </body></table>
+                </tbody></table>
                 </h5>
                 {% endfor %}
            </div>
@@ -161,6 +161,146 @@
             </div>
         </div>
     </div>
-</div>
 
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" href="#other-material-upload">
+                    Upload Other Materials
+                </a>
+            </h4>
+        </div>
+        <div id="other-material-upload" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <p>If you have any other materials that you would like to submit with your application, you may upload it here. A few examples are:</p>
+                <ul>
+                    <li>Articles that you submitted to district or division publications</li>
+                    <li>Recommendation of no more than 150 words nominating you for the award</li>
+                </ul>
+                <form id="upload-form" enctype="multipart/form-data">
+                    <p class="warning-file-size text-warning" style="display:none;"></p>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <input type="file" id="other-material-upload-field" class="upload-field" name="other-material">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" id="other-material-upload-button" class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-upload"></span> Upload</button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="progress" style="display:none;">
+                                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="sr-only"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table id="other-material-upload-table" class="table table-striped table-condensed table-hover">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Filename</th>
+                                <th>Size</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for file in application.other_materials|getblobdata %}
+                            <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
+                                <td>{{ file.content_type }}</td>
+                                <td>{{ file.filename }}</td>
+                                <td>{{ file.size|byteconvert }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block application_scripts %}
+<script>
+$('#other-material-upload-field').change(function() {
+    var file = this.files[0];
+    if (file.size > 10485760) {
+        var warning = $('.warning-file-size');
+        warning.html('<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;&nbsp;&nbsp;File size of "' + file.name + '" is too big! Only files &lt;10 MB are allowed.');
+        warning.fadeIn(200);
+        setTimeout(function() { warning.fadeOut(700); }, 5000);
+        $('#upload-form')[0].reset();
+    }
+});
+
+function getUploadLink() {
+    $.ajax({
+          url: '/application/upload',
+        async: false,
+        cache: false
+    })
+    .done(function(data) {
+        window.blob_upload_url = data + "";
+    })
+    .fail(function(data) {
+        sweetAlert("Unable to upload!", "It appears that you are not connected to the internet.", "error");
+    });
+}
+function progressHandler(e) {
+    if (e.lengthComputable) {
+        var percent = e.loaded / e.total * 100;
+        if (percent >= 100) {
+            $('.progress-bar').removeClass('active').removeClass('progress-bar-striped');
+            $('.progress').fadeOut(1500);
+            setTimeout(function() { $('.progress-bar').width(0); }, 1600);
+            $('#upload-form')[0].reset();
+        }
+        else {
+            $('.progress-bar').addClass('active').addClass('progress-bar-striped');
+        }
+        percent += "%";
+        $('.progress-bar').css('width', percent);
+        $('.progress-bar .sr-only').text(percent);
+    }
+}
+$('#other-material-upload-button').click(function(){
+    if ($('#other-material-upload-field').val() == '') {
+        return false;
+    }
+    getUploadLink();
+    var formData = new FormData($('#upload-form')[0]);
+    $.ajax({
+        url: window.blob_upload_url,
+        type: 'post',
+        contentType: false,
+        xhr: function() {
+            var myXhr = $.ajaxSettings.xhr();
+            if (myXhr.upload) {
+                $('.progress').show();
+                myXhr.upload.addEventListener('progress', progressHandler, false);
+            }
+            return myXhr;
+        },
+        data: formData,
+        processData: false,
+        cache: false
+    })
+    .done(function(data) {
+        for (var i=0; i<data.length; i++) {
+            blobInfo = $.parseJSON(data[i]);
+            $('#other-material-upload-table tbody').append('<tr href="' + blobInfo.url + '" class="clickable-row"><td>' + blobInfo.content_type + '</td><td>' + blobInfo.filename + '</td><td>' + blobInfo.size + '</td></tr>');
+        }
+        sweetAlert("File uploaded!", "You have successfully uploaded a file.", "success");
+        clickableRows();
+    })
+    .error(function(data) {
+        sweetAlert("Unable to upload!", "Something has gone terribly wrong on our end. Please try again later.", "error");
+    });
+});
+function clickableRows() {
+    $(".clickable-row").click(function() {
+        window.open($(this).attr('href'), '_blank');
+    });
+}
+</script>
 {% endblock %}

@@ -35,6 +35,14 @@ html, body {
     position: relative;
 }
 
+.no-animation {
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
+}
+
 .alert {
     text-align: center;
 }
@@ -89,6 +97,15 @@ blockquote.letter {
 
 p.lead:last-child {
     margin-bottom: 0;
+}
+
+#upload-form .progress {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+#other-material-upload-table {
+    margin-top: 15px;
 }
 
 .project {
