@@ -24,7 +24,7 @@ class ForgotPasswordHandler(BaseHandler):
         verification_url = self.uri_for('verification', type='p', user_id=user_id, signup_token=token, _full=True)
         print verification_url
         
-        mail.send_mail(sender="NYDKC Awards Committee <info@dkc-app.appspotmail.com>",
+        mail.send_mail(sender="NYDKC Awards Committee <hello@dkc-app.appspotmail.com>",
                        to=user.email,
                        subject="Resetting your DKC Application Password",
                        reply_to="dkc.applications@gmail.com",

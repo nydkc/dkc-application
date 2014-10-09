@@ -8,7 +8,7 @@
     <div class="verification panel panel-{% if application.verification_ltg %}success{% else %}default{% endif %}">
         <div class="panel-heading panel-title">Lieutenant Governor Verification</div>
         <div class="panel-body row">
-            {% if application.verification_ltg_sent -%}
+            {% if application.verification_ltg_sent and not application.verification_ltg -%}
             <p class="col-md-12 text-warning">
                 An email to verify your application has already been sent to your lieutenant governor. Please do not send it again or else the previous verification email will become invalid.
             </p>
@@ -37,7 +37,7 @@
     <div class="verification panel panel-{% if application.verification_club_president %}success{% else %}default{% endif %}">
         <div class="panel-heading panel-title">Club President Verification</div>
         <div class="panel-body row">
-            {% if application.verification_club_president_sent -%}
+            {% if application.verification_club_president_sent and not application.verification_club_president -%}
             <p class="col-md-12 text-warning">
                 An email to verify your application has already been sent to your club president. Please do not send it again or else the previous verification email will become invalid.
             </p>
@@ -66,7 +66,7 @@
     <div class="verification panel panel-{% if application.verification_faculty_advisor %}success{% else %}default{% endif %}">
         <div class="panel-heading panel-title">Faculty Advisor Verification</div>
         <div class="panel-body row">
-            {% if application.verification_faculty_advisor_sent -%}
+            {% if application.verification_faculty_advisor_sent and not application.verification_faculty_advisor -%}
             <p class="col-md-12 text-warning">
                 An email to verify your application has already been sent to your club president. Please do not send it again or else the previous verification email will become invalid.
             </p>
