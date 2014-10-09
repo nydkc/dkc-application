@@ -104,7 +104,7 @@
                 <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
                     <td>{{ file.content_type }}</td>
                     <td>{{ file.filename }}</td>
-                    <td>{{ file.size|byteconvert }}</td>
+                    <td class="text-nowrap">{{ file.size|byteconvert }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -251,7 +251,7 @@ function finishUpload(blobs){
             var blobInfo = $.parseJSON(blobs[i]);
             $('#advocacy-uploaded-files ul').append('<li>' + blobInfo.filename + '</li>');
             $('#advocacy-uploaded-files').show();
-            $('#advocacy-upload tbody').append('<tr href="' + blobInfo.url + '" class="clickable-row"><td>' + blobInfo.content_type + '</td><td>' + blobInfo.filename + '</td><td>' + blobInfo.size + '</td></tr>');
+            $('#advocacy-upload tbody').append('<tr href="' + blobInfo.url + '" class="clickable-row"><td>' + blobInfo.content_type + '</td><td>' + blobInfo.filename + '</td><td class="text-nowrap">' + blobInfo.size + '</td></tr>');
         }
         $('#advocacy-upload-modal')[0].reset();
     }

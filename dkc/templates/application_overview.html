@@ -209,7 +209,7 @@
                             <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
                                 <td>{{ file.content_type }}</td>
                                 <td>{{ file.filename }}</td>
-                                <td>{{ file.size|byteconvert }}</td>
+                                <td class="text-nowrap">{{ file.size|byteconvert }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -232,7 +232,6 @@ $('#other-material-upload-field').change(function() {
         $('#upload-form')[0].reset();
     }
 });
-
 function getUploadLink() {
     $.ajax({
           url: '/application/upload',
@@ -288,7 +287,7 @@ $('#other-material-upload-button').click(function(){
     .done(function(data) {
         for (var i=0; i<data.length; i++) {
             blobInfo = $.parseJSON(data[i]);
-            $('#other-material-upload-table tbody').append('<tr href="' + blobInfo.url + '" class="clickable-row"><td>' + blobInfo.content_type + '</td><td>' + blobInfo.filename + '</td><td>' + blobInfo.size + '</td></tr>');
+            $('#other-material-upload-table tbody').append('<tr href="' + blobInfo.url + '" class="clickable-row"><td>' + blobInfo.content_type + '</td><td>' + blobInfo.filename + '</td><td class="text-nowrap">' + blobInfo.size + '</td></tr>');
         }
         sweetAlert("File uploaded!", "You have successfully uploaded a file.", "success");
         clickableRows();
