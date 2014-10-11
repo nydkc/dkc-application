@@ -16,6 +16,10 @@ class ApplicationActivitiesUploadHandler(BaseHandler, blobstore_handlers.Blobsto
         application_key = applicant.application
         application = application_key.get()
 
+        if len(application.advocacy_materials) >= 5:
+            self.response.write('<script language="javascript" type="text/javascript">window.top.window.finishUpload(1);</script>')
+            return
+
         try:
             upload_files = self.get_uploads('advocacy-material')
             for blob_info in upload_files:
@@ -43,6 +47,10 @@ class ApplicationUploadHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHa
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
+
+        if len(application.other_materials) >= 3:
+            self.abort(403)
+            return
 
         upload_files = self.get_uploads('other-material')
         for blob_info in upload_files:

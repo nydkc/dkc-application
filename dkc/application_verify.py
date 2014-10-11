@@ -13,7 +13,7 @@ class ApplicationVerificationHandler(BaseHandler):
 
         if not user:
             logging.info('Unauthorized verification by id "%s"', user_id)
-            self.abort(404)
+            self.abort(401)
             return
 
         application = user.application.get()
