@@ -1,12 +1,14 @@
 {% extends "application.html" %}
 {% block application %}
 <form id="application" class="form-horizontal" role="form" action="{{ application_url }}" method="post">
-    <h2>Profile</h2>
+    <div class="page-header">
+        <h2>Profile</h2>
+    </div>
 
     {{ input_horizontal("first-name", "First Name", applicant.first_name) }}
     {{ input_horizontal("last-name", "Last Name", applicant.last_name) }}
     {{ input_horizontal("email", "Email", applicant.email, disabled="disabled") }}
-    {{ input_horizontal("grade", "Grade", applicant.grade) }}
+    {{ input_horizontal("grade", "Grade", applicant.grade, type='number" max="12') }}
     {{ input_horizontal("address", "Home Address", applicant.address) }}
     {{ input_horizontal("city", "City", applicant.city) }}
     {{ input_horizontal("zip-code", "Zip Code", applicant.zip_code) }}

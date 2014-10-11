@@ -3,7 +3,9 @@
 <form id="application" role="form" action="{{ application_url }}" method="post">
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
 
-    <h2>Part I: Personal Statement (120 Points)</h2>
+    <div class="page-header">
+        <h2>Part I: Personal Statement (120 Points)</h2>
+    </div>
     <p>Please type your personal statement below to answer one of the following prompts. The personal statement must be between 300 to 600 words. Be sure to specify which prompt you are answering.</p>
 
     {% set questions = ["How has Key Club impacted your life? Describe a pivotal moment in your Key Club experience as part of your answer.", "What makes Key Club a unique organization? How has Key Club affected your home, school, or community?", "Why did you join Key Club? How has your perspective on Key Club changed since you joined?", "How do you describe Key Club to a non-Key Club member?"] %}

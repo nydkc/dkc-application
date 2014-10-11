@@ -83,5 +83,7 @@ class DeleteHandler(BaseHandler):
             application.advocacy_materials.remove(resource)
             self.redirect('/application/activities')
         application.put()
+        deleted = DeletedFile(user=self.user.key, blob=blob_info.key())
+        deleted.put()
 
         self.redirect('/application')

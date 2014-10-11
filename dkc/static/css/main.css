@@ -94,7 +94,7 @@ html, body {
     margin-bottom: 5px;
 }
 
-#overview-sections {
+.application .page-header {
     margin-top: 20px;
 }
 

@@ -5,6 +5,10 @@ import webapp2_extras.appengine.auth.models
 from webapp2_extras import security
 from constants import *
 
+class DeletedFile(ndb.Model):
+    user = ndb.KeyProperty()
+    blob = ndb.BlobKeyProperty()
+
 class User(webapp2_extras.appengine.auth.models.User):
 
     def set_password(self, raw_password):
@@ -25,7 +29,7 @@ class User(webapp2_extras.appengine.auth.models.User):
     first_name = ndb.StringProperty()
     last_name = ndb.StringProperty()
     email = ndb.StringProperty()
-    pw = ndb.StringProperty()
+    pw = ndb.StringProperty(indexed=False)
     application = ndb.KeyProperty()
 
     grade = ndb.StringProperty()
@@ -117,7 +121,6 @@ class Application(ndb.Model):
 
     early_submission = ndb.ComputedProperty(lambda self: self.is_early())
     early_submission_points = ndb.StringProperty(indexed=False)
-    recommendation = ndb.GenericProperty()
     recommender_points = ndb.StringProperty(indexed=False)
     
     scoring_reason_two = ndb.TextProperty()

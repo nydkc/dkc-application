@@ -1,6 +1,7 @@
 import os, webapp2, jinja2, cgi
+from dkc import *
 
-class TestHandler(webapp2.RequestHandler):
+class TestHandler(BaseHandler):
 
     def get(self):
         self.response.out.write("<table><tbody>")
