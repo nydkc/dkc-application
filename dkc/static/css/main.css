@@ -68,6 +68,10 @@ html, body {
     cursor: pointer;
 }
 
+.application aside {
+    min-height: 50px;
+}
+
 .navbar-default {
     background-color: #fff;
     border: none;
