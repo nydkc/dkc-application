@@ -14,43 +14,49 @@
             <div class="form-group">
                 <label class="col-xs-6 control-label">Applicant Name</label>
                 <div class="col-xs-6">
-                    <p class="form-control-static">{{ applicant.first_name }} {{ applicant.last_name }}</p>
+                    <p class="form-control-static">{{ applicant.first_name|e }} {{ applicant.last_name|e }}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-6 control-label">Applicant Email</label>
+                <div class="col-xs-6">
+                    <p class="form-control-static">{{ applicant.email|e }}</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-6 control-label">Applicant School</label>
                 <div class="col-xs-6">
-                    <p class="form-control-static">{{ applicant.school }}</p>
+                    <p class="form-control-static">{{ applicant.school|e }}</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-6 control-label">Applicant Division</label>
                 <div class="col-xs-6">
-                    <p class="form-control-static">{{ applicant.division }}</p>
+                    <p class="form-control-static">{{ applicant.division|e }}</p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-xs-6 control-label">Club President</label>
                 <div class="col-xs-6">
-                    <p class="form-control-static">{{ applicant.club_president }}</p>
+                    <p class="form-control-static">{{ applicant.club_president|e }}</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-6 control-label">Club President Phone Number</label>
                 <div class="col-xs-6">
-                    <p class="form-control-static">{{ applicant.club_president_phone_number }}</p>
+                    <p class="form-control-static">{{ applicant.club_president_phone_number|e }}</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-6 control-label">Club President Email</label>
                 <div class="col-xs-6">
-                    <p class="form-control-static">{{ application.verification_club_president_email }}</p>
+                    <p class="form-control-static">{{ application.verification_club_president_email|e }}</p>
                 </div>
             </div>
         </div>
 
-        <p>By verifying the application of {{ applicant.first_name }} {{ applicant.last_name }}, you agree upon the following terms:</p>
+        <p>By verifying the application of {{ applicant.first_name|e }} {{ applicant.last_name|e }}, you agree upon the following terms:</p>
         <blockquote>
             I hereby affirm that all of the information included above is true and accurate to the best of my ability. If there should be any false or misleading information, this application is subject to being disqualified and appropriate disciplinary action will be taken.
         </blockquote>
