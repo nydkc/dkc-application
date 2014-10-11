@@ -208,6 +208,7 @@
                     Uploaded files:
                     <ul></ul>
                 </div>
+                <div class="loader" style="display:none;">Loading...</div>
                 <p class="warning-file-size text-warning" style="display:none;"></p>
                 <input id="advocacy-upload-field" class="upload-field" type="file" name="advocacy-material">
             </div>
@@ -241,11 +242,16 @@ function resetUploadForm() {
      });
 }
 $('#advocacy-upload-modal').on('show.bs.modal', resetUploadForm);
-function finishUpload(blobs){
-    if (0){
+$('#advocacy-upload-modal').submit(function() {
+    $('.loader').show();
+    return true;
+});
+function finishUpload(blobs) {
+    if (0) {
         $('#result').text('There was an error during file upload!').addClass('text-danger');
     }
     else {
+        $('.loader').hide();
         $('#result').text('The file was uploaded successfully!').addClass('text-success');
         for (var i=0; i<blobs.length; i++) {
             var blobInfo = $.parseJSON(blobs[i]);
