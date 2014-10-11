@@ -38,6 +38,7 @@ application = webapp2.WSGIApplication([
     ('/reset_password', SetPasswordHandler),
     webapp2.Route('/<type:p|v>/<user_id:\d+>-<signup_token:.+>', handler=VerificationHandler, name='verification'),
     ('/serve/([^/]+)/?.*', ServeHandler),
+    ('/delete/([^/]+)?', DeleteHandler),
     ('/test/.*', TestHandler),
     ('/.*', MainPage)
 ], debug=True, config=config)

@@ -25,7 +25,7 @@ class ApplicationActivitiesUploadHandler(BaseHandler, blobstore_handlers.Blobsto
             self.response.write('<script language="javascript" type="text/javascript">window.top.window.finishUpload(')
             self.response.write('[')
             for blob_info in upload_files:
-                self.response.write('\'{"url": "/serve/%s/%s", "filename": "%s", "content_type": "%s", "size": "%s"}\', ' % (blob_info.key(), blob_info.filename, blob_info.filename, blob_info.content_type, byteConversion(blob_info.size)))
+                self.response.write('\'{"key": "%s", "filename": "%s", "content_type": "%s", "size": "%s"}\', ' % (blob_info.key(), blob_info.filename, blob_info.content_type, byteConversion(blob_info.size)))
             self.response.write(']')
             self.response.write(');</script>')
         except Exception, e:
@@ -51,7 +51,7 @@ class ApplicationUploadHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHa
 
         response = []
         for blob_info in upload_files:
-            response.append('{"url": "/serve/%s/%s", "filename": "%s", "content_type": "%s", "size": "%s"}' % (blob_info.key(), blob_info.filename, blob_info.filename, blob_info.content_type, byteConversion(blob_info.size)))
+            response.append('{"key": "%s", "filename": "%s", "content_type": "%s", "size": "%s"}' % (blob_info.key(), blob_info.filename, blob_info.content_type, byteConversion(blob_info.size)))
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(response))
 
@@ -65,3 +65,23 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
             self.redirect(image_url)
         else:
             self.send_blob(blob_info)
+
+class DeleteHandler(BaseHandler):
+
+    @user_required
+    def get(self, resource):
+        resource = str(urllib.unquote(resource))
+        blob_info = blobstore.BlobInfo.get(resource)
+
+        applicant = self.user
+        application_key = applicant.application
+        application = application_key.get()
+
+        if resource in application.other_materials:
+            application.other_materials.remove(resource)
+        elif resource in application.advocacy_materials:
+            application.advocacy_materials.remove(resource)
+            self.redirect('/application/activities')
+        application.put()
+
+        self.redirect('/application')

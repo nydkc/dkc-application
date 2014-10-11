@@ -202,6 +202,7 @@
                                 <th>Type</th>
                                 <th>Filename</th>
                                 <th>Size</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -210,6 +211,7 @@
                                 <td>{{ file.content_type }}</td>
                                 <td>{{ file.filename }}</td>
                                 <td class="text-nowrap">{{ file.size|byteconvert }}</td>
+                                <td><a href="/delete/{{ file.blob_key }}"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -287,7 +289,7 @@ $('#other-material-upload-button').click(function(){
     .done(function(data) {
         for (var i=0; i<data.length; i++) {
             blobInfo = $.parseJSON(data[i]);
-            $('#other-material-upload-table tbody').append('<tr href="' + blobInfo.url + '" class="clickable-row"><td>' + blobInfo.content_type + '</td><td>' + blobInfo.filename + '</td><td class="text-nowrap">' + blobInfo.size + '</td></tr>');
+            $('#other-material-upload-table tbody').append('<tr href="/serve/' + blobInfo.key + '/' + blobInfo.filename + '" class="clickable-row"><td>' + blobInfo.content_type + '</td><td>' + blobInfo.filename + '</td><td class="text-nowrap">' + blobInfo.size + '</td><td><a href="/delete/' + blobInfo.key + '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>');
         }
         sweetAlert("File uploaded!", "You have successfully uploaded a file.", "success");
         clickableRows();
@@ -297,9 +299,21 @@ $('#other-material-upload-button').click(function(){
     });
 });
 function clickableRows() {
-    $(".clickable-row").click(function() {
-        window.open($(this).attr('href'), '_blank');
+    $(".clickable-row td:not(:last-child)").click(function() {
+        window.open($(this).parent().attr('href'), '_blank');
+    });
+    $('.clickable-row td a').click(function() {
+        var trash = $(this);
+        $.get(trash.attr('href'))
+         .done(function() {
+             trash.parent().parent().fadeOut(500);
+         })
+         .error(function() {
+             sweetAlert("Delete failed!", "Something went wrong with deleting the file...", "error");
+         });
+        return false;
     });
 }
+$(document).ready(clickableRows);
 </script>
 {% endblock %}
