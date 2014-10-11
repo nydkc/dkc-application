@@ -4,9 +4,9 @@
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
 
     <h2>Part II: International, District &amp; Divisional Projects (60 Points)</h2>
-    <p>This part is designed to see how much you participated in projects in your Division, the District and International.
+    <p class="text-center">This part is designed to see how much you participated in projects in your Division, the District and International.
         <br>Required Points: 20 Points
-        <br>Recommend Points: 40 Points
+        <br>Recommended Points: 40 Points
     </p>
     <p>Complete the following three sections. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description. You may receive up to four points per event with a maximum of twenty four points.</p>
     <ul>
@@ -22,11 +22,11 @@
                     {{ select_horizontal("international-projects-section", "Section:", project.section, ["1","2","3"], size=4) }}
                 </div>
                 <div class="col-md-9">
-                    {{ input_horizontal("international-projects-event", "Event:", project.event|e, size=2) }}
+                    {{ input_horizontal("international-projects-event", "Event:", project.event, size=2) }}
                 </div>
                 <div class="col-md-12">
                     <strong>Description of the event:</strong>
-                    {{ textarea_horizontal("international-projects-description", value=project.description|e, size=0) }}
+                    {{ textarea_horizontal("international-projects-description", value=project.description, size=0) }}
                 </div>
             </div>
         </div>
@@ -52,14 +52,14 @@
         <div class="row project project-{{ loop.index }}">
             <div class="form-horizontal">
                 <div class="col-md-6">
-                    {{ input_horizontal("district-projects-event", "Event:", project.event|e, size=2) }}
+                    {{ input_horizontal("district-projects-event", "Event:", project.event, size=2) }}
                 </div>
                 <div class="col-md-6">
                     {{ select_horizontal("district-projects-charity", "Charity:", project.charity, ["St. Jude Children’s Hospital", "Make-A-Wish Foundation", "Kamp Kiwanis", "Kiwanis Pediatric Trauma Center", "Pediatric Lyme Disease Foundation", "Other"], size=2) }}
                 </div>
                 <div class="col-md-12">
                     <strong>Description of the event:</strong>
-                    {{ textarea_horizontal("district-projects-description", value=project.description|e, size=0) }}
+                    {{ textarea_horizontal("district-projects-description", value=project.description, size=0) }}
                 </div>
             </div>
         </div>
@@ -77,10 +77,10 @@
         <div class="row divisional divisional-{{ loop.index }}">
             <div class="form-horizontal">
                 <div class="col-md-4">
-                    {{ input_horizontal("divisional-meeting-date", "Date:", divisional.date|e, size=2) }}
+                    {{ input_horizontal("divisional-meeting-date", "Date:", divisional.date, size=2) }}
                 </div>
                 <div class="col-md-8">
-                    {{ input_horizontal("divisional-meeting-location", "Location:", divisional.location|e, size=2) }}
+                    {{ input_horizontal("divisional-meeting-location", "Location:", divisional.location, size=2) }}
                 </div>
             </div>
         </div>
@@ -88,20 +88,20 @@
     </div>
     <button class="btn btn-inverse btn-block" id="divisional-meetings-button"><span class="glyphicon glyphicon-plus"></span> Add more divisionals...</button>
 
-    <p>Attendance at a Divisional Project/Event (Max 8 Points, 4 Points per Event)</p>
+    <p style="margin-top: 20px;">Attendance at a Divisional Project/Event (Max 8 Points, 4 Points per Event)</p>
     <div class="division-projects">
         {% for project in application.division_projects %}
         <div class="row project project-{{ loop.index }}">
             <div class="form-horizontal">
                 <div class="col-md-6">
-                    {{ input_horizontal("division-projects-event", "Event:", project.event|e, size=2) }}
+                    {{ input_horizontal("division-projects-event", "Event:", project.event, size=2) }}
                 </div>
                 <div class="col-md-6">
-                    {{ input_horizontal("division-projects-location", "Location:", project.location|e, size=2) }}
+                    {{ input_horizontal("division-projects-location", "Location:", project.location, size=2) }}
                 </div>
                 <div class="col-md-12">
                     <strong>Description of the event:</strong>
-                    {{ textarea_horizontal("division-projects-description", value=project.description|e, size=0) }}
+                    {{ textarea_horizontal("division-projects-description", value=project.description, size=0) }}
                 </div>
             </div>
         </div>

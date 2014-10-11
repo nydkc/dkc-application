@@ -4,9 +4,9 @@
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
 
     <h2>Part IV: Projects, Advocacy & Newsletters (60 Points)</h2>
-    <p>This part will show what projects or activities you have participated in.
-        <br>Required Points: 20
-        <br>Recommended Points: 40
+    <p class="text-center">This part will show what projects or activities you have participated in.
+        <br>Required Points: 20 Points
+        <br>Recommended Points: 40 Points
     </p>
 
     <h4>Section 1: K-Family Project</h4>
@@ -16,14 +16,14 @@
     <p>Kiwanis One Day is celebrated during the first week of April. If you have participated in a Kiwanis One Day event or project, please fill out this section.</p>
     <div class="row form-horizontal">
         <div class="col-md-6">
-            {{ input_horizontal("kiwanis-one-day-event", "Event:", application.kiwanis_one_day.event|e, size=2) }}
+            {{ input_horizontal("kiwanis-one-day-event", "Event:", application.kiwanis_one_day.event, size=2) }}
         </div>
         <div class="col-md-6">
-            {{ input_horizontal("kiwanis-one-day-location", "Location:", application.kiwanis_one_day.location|e, size=2) }}
+            {{ input_horizontal("kiwanis-one-day-location", "Location:", application.kiwanis_one_day.location, size=2) }}
         </div>
         <div class="col-md-12">
             <strong>Description of the event:</strong>
-            {{ textarea_horizontal("kiwanis-one-day-description", value=application.kiwanis_one_day.description|e, size=0) }}
+            {{ textarea_horizontal("kiwanis-one-day-description", value=application.kiwanis_one_day.description, size=0) }}
         </div>
     </div>
 
@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-md-12">
                     <strong>Description of the event:</strong>
-                    {{ textarea_horizontal("k-family-projects-description", value=project.description|e, size=0) }}
+                    {{ textarea_horizontal("k-family-projects-description", value=project.description, size=0) }}
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
                 </div>
                 <div class="col-md-12">
                     <strong>Description of the event:</strong>
-                    {{ textarea_horizontal("interclub-projects-description", value=project.description|e, size=0) }}
+                    {{ textarea_horizontal("interclub-projects-description", value=project.description, size=0) }}
                 </div>
             </div>
         </div>
@@ -81,11 +81,11 @@
     <p>In this section, describe any advocacy project that you may have started or participated in. Include a description of the cause you are advocating for, why it is important to you, and what steps you have taken to promote it. Please include any materials, such as petitions, letters and fliers to your application.</p>
     <div class="row form-horizontal">
         <div class="col-md-12">
-            {{ input_horizontal("advocacy-cause", "Cause:", application.advocacy_cause|e, size=1) }}
+            {{ input_horizontal("advocacy-cause", "Cause:", application.advocacy_cause, size=1) }}
         </div>
         <div class="col-md-12">
             <strong>Description of the cause:</strong>
-            {{ textarea_horizontal("advocacy-description", value=application.advocacy_description|e, size=0) }}
+            {{ textarea_horizontal("advocacy-description", value=application.advocacy_description, size=0) }}
         </div>
     </div>
 
@@ -103,7 +103,7 @@
             {% for file in application.advocacy_materials|getblobdata %}
                 <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
                     <td>{{ file.content_type }}</td>
-                    <td>{{ file.filename }}</td>
+                    <td>{{ file.filename|e }}</td>
                     <td class="text-nowrap">{{ file.size|byteconvert }}</td>
                 </tr>
             {% endfor %}
@@ -127,7 +127,7 @@
         </div>
         <div class="col-md-12">
             <strong>Description of the committee:</strong>
-            {{ textarea_horizontal("committee-description", value=application.committee_description|e, size=0) }}
+            {{ textarea_horizontal("committee-description", value=application.committee_description, size=0) }}
         </div>
     </div>
 
@@ -180,7 +180,7 @@
                 </div>
                 <div class="col-md-12">
                     <strong>Description of the event:</strong>
-                    {{ textarea_horizontal("other-projects-description", value=project.description|e, size=0) }}
+                    {{ textarea_horizontal("other-projects-description", value=project.description, size=0) }}
                 </div>
             </div>
         </div>

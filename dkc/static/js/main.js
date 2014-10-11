@@ -1,12 +1,18 @@
-$(window).scroll(function() {
+$(window).scroll(sidebarAffix);
+$(window).resize(sidebarAffix);
+function sidebarAffix() {
     if ($(window).width() > 992) {
-        $('.sidebar').affix({
+        $('.navbar').affix({
             offset: {
                 top: 0
             }
         });
     }
-});
+    else {
+        $(window).off('.affix');
+        $('.navbar').removeData('bs.affix').removeClass('affix affix-top affix-bottom')
+    }
+}
 
 $(function() {
     //$('a[href*=#]:not([href=#])').click(function() {

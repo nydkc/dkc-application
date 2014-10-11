@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-sm-3">
 {% include "sidebar.html" %}
     </div>
-    <div class="col-md-9">
+    <div class="col-sm-9">
 {% block application %}{% endblock %}
     </div>
 </div>
@@ -123,7 +123,7 @@ setInterval(function() {
         {%- if "Other" in choices -%}
             <option value="Other"{% if selected not in choices %} selected{% endif %}>Other</option>
         </select>
-        <input type="text" class="form-control{% if selected in choices %} hidden{% endif %}" id="{{ name }}" name="{{ name }}" value="{{ selected }}">
+        <input type="text" class="form-control{% if selected in choices %} hidden{% endif %}" id="{{ name }}" name="{{ name }}" value="{{ selected|e }}">
         {%- else -%}
         </select>
         {%- endif -%}

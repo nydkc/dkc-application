@@ -68,8 +68,30 @@ html, body {
     cursor: pointer;
 }
 
+.navbar-default {
+    background-color: #fff;
+    border: none;
+}
+
+#menu-header {
+    float: none;
+}
+
+#menu-header h3 {
+    margin: 14px 0 10px;
+}
+
+#menu-header button {
+    margin-right: 0;
+}
+
+#menu {
+    padding: 0;
+}
+
 #logout-button {
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 #overview-sections {
@@ -104,13 +126,22 @@ p.lead:last-child {
     margin-bottom: 0;
 }
 
+#other-material-upload-button {
+    margin-top: 4px;
+    margin-bottom: 3px;
+}
+
 #other-material-upload-table {
     margin-top: 15px;
 }
 
 .project {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 3px;
+    padding-bottom: 12px;
+}
+
+.project:last-child {
+    padding-bottom: 0;
 }
 
 #application .btn-block {
@@ -206,6 +237,12 @@ input#district-projects-charity {
     }
 }
 
+@media screen and (max-width: 768px) {
+    .navbar-default {
+        border-bottom: 1px solid #003366;
+    }
+}
+
 @media screen and (max-width: 1200px) {
     .nav > li > a {
         padding: 6px 15px;
@@ -213,12 +250,12 @@ input#district-projects-charity {
 }
 
 @media screen and (min-width: 992px) {
-    .sidebar.affix {
+    .navbar.affix {
         width: 212.5px;
     }
 }
 @media screen and (min-width: 1200px) {
-    .sidebar.affix {
+    .navbar.affix {
         width: 262.5px;
     }
 }

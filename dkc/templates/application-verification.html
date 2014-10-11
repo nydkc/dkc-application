@@ -123,7 +123,7 @@ $('#verification-ltg-button').click(function() {
             'task': 'ltg',
             'ltg-email': $('#verification-ltg-email').val()
            });
-    $(this).addClass('btn-info').attr('disabled', 'disabled').text("Sent!");
+    $(this).addClass('btn-success').attr('disabled', 'disabled').text("Sent!");
 });
 $('#verification-club-president-button').click(function() {
     $.post('/application/verification',
@@ -131,7 +131,7 @@ $('#verification-club-president-button').click(function() {
             'task': 'club-president',
             'club-president-email': $('#verification-club-president-email').val()
            });
-    $(this).addClass('btn-info').attr('disabled', 'disabled').text("Sent!");
+    $(this).addClass('btn-success').attr('disabled', 'disabled').text("Sent!");
 });
 $('#verification-faculty-advisor-button').click(function() {
     $.post('/application/verification',
@@ -139,14 +139,14 @@ $('#verification-faculty-advisor-button').click(function() {
             'task': 'faculty-advisor',
             'faculty-advisor-email': $('#verification-faculty-advisor-email').val()
            });
-    $(this).addClass('btn-info').attr('disabled', 'disabled').text("Sent!");
+    $(this).addClass('btn-success').attr('disabled', 'disabled').text("Sent!");
 });
 $('#verification-applicant-button').click(function() {
     $.post('/application/verification',
            {'form-key': $('#form-key').val(),
             'task': 'applicant',
            });
-    $(this).addClass('btn-info').attr('disabled', 'disabled').text("Agreed!");
+    $(this).addClass('btn-success').attr('disabled', 'disabled').text("Agreed!");
 });
 </script>
 {% endblock %}

@@ -4,9 +4,9 @@
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
 
     <h2>Part III: Involvement in Key Club Functions (60 Points)</h2>
-    <p>This part will show how involved you are at the club, division and district level. 
-        <br>Required Points: 20
-        <br>Recommended Points: 40
+    <p class="text-center">This part will show how involved you are at the club, division and district level. 
+        <br>Required Points: 20 Points
+        <br>Recommended Points: 40 Points
     </p>
 
     <h4>Section 1: Key Club Week Participation (Max 15 Points, 3 Point per Day)</h4>
@@ -25,7 +25,7 @@
     <h4>Section 2: Attendance at Key Club Functions</h4>
     <p>If you attended any of the following conferences or programs, please indicate which programs by checking the boxes below.</p>
     <div class="row">
-        <div class="col-md-11 col-md-offset-1">
+        <div class="col-sm-11 col-sm-offset-1">
             {{ checkbox("attendance-dtc", "(5 points) Divisional Training Conference/Personal Training", application.attendance_dtc) }}
             {{ checkbox("attendance-fall-rally", "(5 points) Fall Rally", application.attendance_fall_rally) }}
             {{ checkbox("attendance-kamp-kiwanis", "(5 points) Kamp Kiwanis", application.attendance_kamp_kiwanis) }}
