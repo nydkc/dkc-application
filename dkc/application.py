@@ -158,7 +158,6 @@ class ApplicationProjects(BaseHandler):
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
-
         template_values = {
             'applicant' :applicant,
             'application': application,
@@ -200,7 +199,6 @@ class ApplicationInvolvement(BaseHandler):
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
-
         template_values = {
             'applicant' :applicant,
             'application': application,
@@ -285,7 +283,6 @@ class ApplicationActivities(BaseHandler):
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
-
         template_values = {
             'applicant' :applicant,
             'application': application,
@@ -319,7 +316,6 @@ class ApplicationScoring(BaseHandler):
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
-
         template_values = {
             'applicant' :applicant,
             'application': application,
@@ -336,6 +332,10 @@ class ApplicationVerification(BaseHandler):
 
     @user_required
     def post(self):
+        if self._no_verify():
+            self._serve_page()
+            return
+
         applicant = self.user
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
@@ -403,11 +403,24 @@ The New York District Awards Committee</p>
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
-
         template_values = {
             'applicant' :applicant,
             'application': application,
             'form_key': application_key.urlsafe(),
-            'application_url': '/application/verification'
+            'application_url': '/application/verification',
+            'no_verify': self._no_verify()
         }
         self.render_template('application-verification.html', template_values)
+
+    def _no_verify(self):
+        applicant = self.user
+        no_verify = (applicant.first_name == '' or applicant.first_name == None)\
+                or (applicant.last_name == '' or applicant.last_name == None)\
+                or (applicant.school == '' or applicant.school == None)\
+                or (applicant.division == '' or applicant.division == None)\
+                or (applicant.ltg == '' or applicant.ltg == None)\
+                or (applicant.club_president == '' or applicant.club_president == None)\
+                or (applicant.club_president_phone_number == '' or applicant.club_president_phone_number == None)\
+                or (applicant.faculty_advisor == '' or applicant.faculty_advisor == None)\
+                or (applicant.faculty_advisor_phone_number == '' or applicant.faculty_advisor_phone_number == None)
+        return no_verify

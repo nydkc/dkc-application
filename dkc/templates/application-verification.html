@@ -1,9 +1,20 @@
 {% extends "application.html" %}
 {% block application %}
-<form id="application" role="form" action="{{ application_url }}" method="post">
+<div id="application" role="form">
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
 
-    <h2>Verification</h2>
+    <div class="page-header">
+        <h2>Verification</h2>
+    </div>
+
+    {%- if no_verify -%}
+    <div style="position:absolute;top:0;left:0;bottom:0;right:0;opacity:.9;background:#fff;z-index:9999;">
+        <div style="position:absolute;top:50%;margin-top:-100px;left:50%;margin-left:-180px;width:360px;opacity:1;" class="text-center text-danger">
+            <h2>Access Denied!</h2>
+            <p class="lead">You must complete your <a href="/application/profile">profile</a> first.</p>
+        </div>
+    </div>
+    {%- endif -%}
 
     <div class="verification panel panel-{% if application.verification_ltg %}success{% else %}default{% endif %}">
         <div class="panel-heading panel-title">Lieutenant Governor Verification</div>
@@ -117,29 +128,50 @@
 {% endblock %}
 {% block application_scripts %}
 <script>
+function checkEmail(button) {
+    var email = $(button).parent().parent().find('input[type="email"]');
+    console.log(email);
+    var re = /^([a-zA-Z0-9+_\-\.])+@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,6})$/;
+    if (re.test(email.val())) {
+        return true;
+    }
+    else {
+        sweetAlert('Invalid Email!', 'The email address you specified does not exist.', 'error');
+        return false;
+    }
+}
 $('#verification-ltg-button').click(function() {
-    $.post('/application/verification',
-           {'form-key': $('#form-key').val(),
-            'task': 'ltg',
-            'ltg-email': $('#verification-ltg-email').val()
-           });
-    $(this).addClass('btn-success').attr('disabled', 'disabled').text("Sent!");
+    if (checkEmail(this)) {
+        $.post('/application/verification',
+               {'form-key': $('#form-key').val(),
+                'task': 'ltg',
+                'ltg-email': $('#verification-ltg-email').val()
+               });
+        $(this).addClass('btn-success').attr('disabled', 'disabled').text("Sent!");
+    }
+    return false;
 });
 $('#verification-club-president-button').click(function() {
-    $.post('/application/verification',
-           {'form-key': $('#form-key').val(),
-            'task': 'club-president',
-            'club-president-email': $('#verification-club-president-email').val()
-           });
-    $(this).addClass('btn-success').attr('disabled', 'disabled').text("Sent!");
+    if (checkEmail(this)) {
+        $.post('/application/verification',
+               {'form-key': $('#form-key').val(),
+                'task': 'club-president',
+                'club-president-email': $('#verification-club-president-email').val()
+               });
+        $(this).addClass('btn-success').attr('disabled', 'disabled').text("Sent!");
+    }
+    return false;
 });
 $('#verification-faculty-advisor-button').click(function() {
-    $.post('/application/verification',
-           {'form-key': $('#form-key').val(),
-            'task': 'faculty-advisor',
-            'faculty-advisor-email': $('#verification-faculty-advisor-email').val()
-           });
-    $(this).addClass('btn-success').attr('disabled', 'disabled').text("Sent!");
+    if (checkEmail(this)) {
+        $.post('/application/verification',
+               {'form-key': $('#form-key').val(),
+                'task': 'faculty-advisor',
+                'faculty-advisor-email': $('#verification-faculty-advisor-email').val()
+               });
+        $(this).addClass('btn-success').attr('disabled', 'disabled').text("Sent!");
+    }
+    return false;
 });
 $('#verification-applicant-button').click(function() {
     $.post('/application/verification',
@@ -147,6 +179,7 @@ $('#verification-applicant-button').click(function() {
             'task': 'applicant',
            });
     $(this).addClass('btn-success').attr('disabled', 'disabled').text("Agreed!");
+    return false;
 });
 </script>
 {% endblock %}

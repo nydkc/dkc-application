@@ -1,223 +1,225 @@
 {% extends "application.html" %}
 {% block application %}
-<div class="page-header">
-    <h2>Overview</h2>
-</div>
+<div id="application" role="form">
+    <div class="page-header">
+        <h2>Overview</h2>
+    </div>
 
-<div class="panel-group" id="overview-sections">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#overview-sections" href="#introduction">
-                    Introduction
-                </a>
-            </h4>
-        </div>
-        <div id="introduction" class="panel-collapse collapse{% if application.start_time|datetimeformat == application.updated_time|datetimeformat %} in{% endif %}">
-            <div class="panel-body">
-                <blockquote class="letter">
-                    <p>Hi New York District Key Club,
-                    <p>Each year, during the New York District Key Club’s District Convention, the Leadership Training Conference, we present the Distinguished Key Clubber Award to our most dedicated members, who have gone above and beyond the call of duty, shown leadership throughout the service year, and promoted the core values of Key Club International. Members who have served their homes, schools and communities to the best of their abilities and consistently worked throughout the service year are eligible to receive this award. All members who would like to receive this award must complete this application.</p>
-                    <p>This year’s application has been redesigned and remodeled to reflect the high ideals of Key Club International. It has been made easier and more flexible so that more members may receive the award. Anyone who does not fulfill all the requirements and are in a club with special circumstances may still submit the application.</p>
-                    <p>We also worked with our district webmaster, Danny Qiu, to create a new method for electronic submissions. Please create an account at <a href="http://dkc-app.nydkc.org/">http://dkc-app.nydkc.org</a> and follow the online instructions. We will continue to accept submissions via snail mail. For verification, please follow the online directions provided on the website, or have the appropriate persons sign the verification statement for snail mail submissions.</p>
-                    <p>If any information provided in this application is inaccurate, dishonest, unverified, or warranted void, your application may be disqualified. Thank you for your service to your home, school and community.</p>
-                    <p>We wish you the best of luck in your application and anticipate your submission.</p>
-                    <div class="text-right">
-                        <p>Yours in Care and in Service,</p>
-                        <p>Lieutenant Governor Aaron Cheung
-                            <br>District Awards Committee Co-Chair</p>
-                        <p>Lieutenant Governor Cindy Pietrakowski
-                            <br>District Awards Committee Co-Chair</p>
-                    </div>
-                </blockquote>
+    <div class="panel-group" id="overview-sections">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#overview-sections" href="#introduction">
+                        Introduction
+                    </a>
+                </h4>
             </div>
-        </div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#overview-sections" href="#example-submissions">
-                    Example Submissions
-                </a>
-            </h4>
-        </div>
-        <div id="example-submissions" class="panel-collapse collapse">
-            <div class="panel-body">
-                <h4>Section 1: K-Family Project</h4>
-                <p>If you have participated in any event or project with another member of the Kiwanis Family, describe the project in this segment. Members of the K-Family include: Kiwanis Club, Circle-K, Builders Club, K-Kids and AKTION Club. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
-                <strong>Kiwanis One Day Event (5 Points Max, 5 Points per Event)</strong>
-                <p>Kiwanis One Day is celebrated during the first week of April. If you have participated in a Kiwanis One Day event or project, please fill out this section.</p>
-
-                {% set examples = [("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on September 21, 2014 with Kiwanis International.", 1, "This submission shows minimal effort in describing the event. This also does not include the number of service hours or the charity that was helped."),
-                                   ("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on September 21, 2014 with Kiwanis International.", 1, "This submission shows minimal effort in describing the event. This also does not include the number of service hours or the charity that was helped."),
-                                   ("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on September 21, 2014 with Kiwanis International. I volunteered for 6 hours with Nickelodeon.", 2, "This submission has all of the requirements indicated in the field."),
-                                   ("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on September 21, 2014 with Kiwanis International. The Worldwide Day of Play event was a large project that consisted of several games. I volunteered for 6 hours with Nickelodeon.", 3, "This submission has all of the requirements indicated in the field and describes the event."),
-                                   ("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on September 21, 2014 with Kiwanis International. The Worldwide Day of Play event was a large project that consisted of several. I volunteered for 6 hours with Nickelodeon by setting up a playground for children, playing fun and active games, and cleaning up after the event was finished.", 4, "This submission has all of the requirements indicated in the field and shows a more in depth description on what was done.")
-                                   ] %}
-
-                {% for example in examples %}
-                <hr>
-                <div class="form-horizontal clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="example-projects-event" class="col-md-2 control-label">Event:</label>
-                            <div class="col-md-10">
-                                <p class="form-control-static">{{ example[0] }}</p>
-                            </div>
+            <div id="introduction" class="panel-collapse collapse{% if application.start_time|datetimeformat == application.updated_time|datetimeformat %} in{% endif %}">
+                <div class="panel-body">
+                    <blockquote class="letter">
+                        <p>Hi New York District Key Club,
+                        <p>Each year, during the New York District Key Club’s District Convention, the Leadership Training Conference, we present the Distinguished Key Clubber Award to our most dedicated members, who have gone above and beyond the call of duty, shown leadership throughout the service year, and promoted the core values of Key Club International. Members who have served their homes, schools and communities to the best of their abilities and consistently worked throughout the service year are eligible to receive this award. All members who would like to receive this award must complete this application.</p>
+                        <p>This year’s application has been redesigned and remodeled to reflect the high ideals of Key Club International. It has been made easier and more flexible so that more members may receive the award. Anyone who does not fulfill all the requirements and are in a club with special circumstances may still submit the application.</p>
+                        <p>We also worked with our district webmaster, Danny Qiu, to create a new method for electronic submissions. Please create an account at <a href="http://dkc-app.nydkc.org/">http://dkc-app.nydkc.org</a> and follow the online instructions. We will continue to accept submissions via snail mail. For verification, please follow the online directions provided on the website, or have the appropriate persons sign the verification statement for snail mail submissions.</p>
+                        <p>If any information provided in this application is inaccurate, dishonest, unverified, or warranted void, your application may be disqualified. Thank you for your service to your home, school and community.</p>
+                        <p>We wish you the best of luck in your application and anticipate your submission.</p>
+                        <div class="text-right">
+                            <p>Yours in Care and in Service,</p>
+                            <p>Lieutenant Governor Aaron Cheung
+                                <br>District Awards Committee Co-Chair</p>
+                            <p>Lieutenant Governor Cindy Pietrakowski
+                                <br>District Awards Committee Co-Chair</p>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="example-projects-location" class="col-md-2 control-label">Location:</label>
-                            <div class="col-md-10">
-                                <p class="form-control-static">{{ example[1] }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <strong>Description of the event:</strong>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <p>{{ example[2] }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <h5 class="bg-info">
-                <table><tbody>
-                    <tr>
-                        <td class="text-nowrap text-right">Points Received:</td><td>{{ example[3] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-nowrap text-right">Explanation:</td><td>{{ example[4] }}</td>
-                    </tr>
-                </tbody></table>
-                </h5>
-                {% endfor %}
-           </div>
-        </div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#overview-sections" href="#instruction-rules">
-                    Instructions & Rules
-                </a>
-            </h4>
-        </div>
-        <div id="instruction-rules" class="panel-collapse collapse">
-            <div class="panel-body">
-                <ol>
-                    <li>The application is separated into four parts, and each part is designed to focus on different aspects of Key Club. Complete all parts of this application to qualify for the award.
-                        <ul class="list-unstyled">
-                            <li>Part 1: Personal Statement</li>
-                            <li>Part 2: Mandatory Projects</li>
-                            <li>Part 3: Involvement</li>
-                            <li>Part 4: Projects, Advocacy &amp; Newsletter</li>
-                        </ul>
-                    </li>
-                    <li>If you are submitting the application by mail, please obtain the signatures of all the parties in the <a href="/application/verification">Verification</a> section. Applications without verification <strong>WILL BE DISQUALIFIED</strong>. If you are submitting this application electronically, please create an online DKC account at <a href="http://dkc-app.nydkc.org">http://dkc-app.nydkc.org</a>.</li>
-                    <li>All applications should be submitted by the deadline. All late applications will be penalized.</li>
-                    <li>If you are having technical difficulties, you must contact your Committee Co-Chair by 8:00 PM EST on the night the application is due. If you have technical difficulties that are not reported by 8:00 PM EST, it will not be honored.</li>
-                    <li>By submitting this application, the applicant agrees that all information included is accurate and that the information provided is <strong>his/her own work</strong>. Please describe events in your own words. Any form of <strong>plagiarism</strong> will <strong>DISQUALIFY</strong> the application. Any form of <strong>dishonesty</strong> will <strong>DISQUALIFY</strong> the application.</li>
-                    <li>All applications are subject to be disqualified as deemed fit by a Committee Co-Chair.</li>
-                </ol>
-
-                <p>Notes:</p>
-                <ul>
-                    <li>For all events, please include <i>the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description</i>.</li>
-                    <li>Read the directions for each section <i>CAREFULLY</i>. If you do not provide all information, you will not be given credit.</li>
-                </ul>
-                <div class="text-center">
-                    <h5><u><strong>Contacts</strong></u></h5>
-                    <p>For Division 1-10
-                        <br>c/o: Lieutenant Governor Cindy Pietrakowski
-                        <br>60-03 Maspeth Ave
-                        <br>Maspeth, NY 11378
-                    </p>
-                    <p>For Divisions 11-27
-                        <br>c/o: Lieutenant Governor Aaron Cheung
-                        <br>34 Monroe St Apt CB10
-                        <br>Manhattan, NY 10002
-                    </p>
+                    </blockquote>
                 </div>
             </div>
         </div>
-    </div>
 
-     <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#overview-sections" href="#resources">
-                    Additional Resources
-                </a>
-            </h4>
-        </div>
-        <div id="resources" class="panel-collapse collapse in">
-            <div class="panel-body">
-                <p class="lead">You can download the PDF of the Distinguished Key Clubber application <a href="/images/14-15-Distinguished-Key-Clubber-Application.pdf">here</a>.</p>
-                <p class="lead">Answers to frequently asked questions can be found <a href="/#faq">here</a>.</p>
-                <p class="lead">If you have any other questions, please email us at <a href="mailto:dkc.applications@gmail.com">dkc.applications@gmail.com</a></p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#overview-sections" href="#example-submissions">
+                        Example Submissions
+                    </a>
+                </h4>
             </div>
-        </div>
-    </div>
+            <div id="example-submissions" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <h4>Section 1: K-Family Project</h4>
+                    <p>If you have participated in any event or project with another member of the Kiwanis Family, describe the project in this segment. Members of the K-Family include: Kiwanis Club, Circle-K, Builders Club, K-Kids and AKTION Club. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
+                    <strong>Kiwanis One Day Event (5 Points Max, 5 Points per Event)</strong>
+                    <p>Kiwanis One Day is celebrated during the first week of April. If you have participated in a Kiwanis One Day event or project, please fill out this section.</p>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" href="#other-material-upload">
-                    Upload Other Materials
-                </a>
-            </h4>
-        </div>
-        <div id="other-material-upload" class="panel-collapse collapse in">
-            <div class="panel-body">
-                <p>If you have any other materials that you would like to submit with your application, you may upload it here. A few examples are:</p>
-                <ul>
-                    <li>Articles that you submitted to district or division publications</li>
-                    <li>Recommendation of no more than 150 words nominating you for the award</li>
-                </ul>
-                <form id="upload-form" enctype="multipart/form-data">
-                    <p class="warning-file-size text-warning" style="display:none;"></p>
-                    <div class="row">
-                        <div class="col-sm-8 col-md-9">
-                            <input type="file" id="other-material-upload-field" class="upload-field" name="other-material">
+                    {% set examples = [("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on September 21, 2014 with Kiwanis International.", 1, "This submission shows minimal effort in describing the event. This also does not include the number of service hours or the charity that was helped."),
+                                       ("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on September 21, 2014 with Kiwanis International.", 1, "This submission shows minimal effort in describing the event. This also does not include the number of service hours or the charity that was helped."),
+                                       ("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on September 21, 2014 with Kiwanis International. I volunteered for 6 hours with Nickelodeon.", 2, "This submission has all of the requirements indicated in the field."),
+                                       ("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on September 21, 2014 with Kiwanis International. The Worldwide Day of Play event was a large project that consisted of several games. I volunteered for 6 hours with Nickelodeon.", 3, "This submission has all of the requirements indicated in the field and describes the event."),
+                                       ("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on September 21, 2014 with Kiwanis International. The Worldwide Day of Play event was a large project that consisted of several. I volunteered for 6 hours with Nickelodeon by setting up a playground for children, playing fun and active games, and cleaning up after the event was finished.", 4, "This submission has all of the requirements indicated in the field and shows a more in depth description on what was done.")
+                                       ] %}
+
+                    {% for example in examples %}
+                    <hr>
+                    <div class="form-horizontal clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-projects-event" class="col-md-2 control-label">Event:</label>
+                                <div class="col-md-10">
+                                    <p class="form-control-static">{{ example[0] }}</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-4 col-md-3">
-                            <button type="button" id="other-material-upload-button" class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-upload"></span> Upload</button>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-projects-location" class="col-md-2 control-label">Location:</label>
+                                <div class="col-md-10">
+                                    <p class="form-control-static">{{ example[1] }}</p>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="progress" style="display:none;">
-                                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                                    <span class="sr-only"></span>
+                            <strong>Description of the event:</strong>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <p>{{ example[2] }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
-                <div class="table-responsive">
-                    <table id="other-material-upload-table" class="table table-striped table-condensed table-hover">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Filename</th>
-                                <th>Size</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for file in application.other_materials|getblobdata %}
-                            <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
-                                <td>{{ file.content_type }}</td>
-                                <td>{{ file.filename }}</td>
-                                <td class="text-nowrap">{{ file.size|byteconvert }}</td>
-                                <td><a href="/delete/{{ file.blob_key }}"><span class="glyphicon glyphicon-trash"></span></a></td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                    <h5 class="bg-info">
+                    <table><tbody>
+                        <tr>
+                            <td class="text-nowrap text-right">Points Received:</td><td>{{ example[3] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-nowrap text-right">Explanation:</td><td>{{ example[4] }}</td>
+                        </tr>
+                    </tbody></table>
+                    </h5>
+                    {% endfor %}
+               </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#overview-sections" href="#instruction-rules">
+                        Instructions & Rules
+                    </a>
+                </h4>
+            </div>
+            <div id="instruction-rules" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <ol>
+                        <li>The application is separated into four parts, and each part is designed to focus on different aspects of Key Club. Complete all parts of this application to qualify for the award.
+                            <ul class="list-unstyled">
+                                <li>Part 1: Personal Statement</li>
+                                <li>Part 2: Mandatory Projects</li>
+                                <li>Part 3: Involvement</li>
+                                <li>Part 4: Projects, Advocacy &amp; Newsletter</li>
+                            </ul>
+                        </li>
+                        <li>If you are submitting the application by mail, please obtain the signatures of all the parties in the <a href="/application/verification">Verification</a> section. Applications without verification <strong>WILL BE DISQUALIFIED</strong>. If you are submitting this application electronically, please create an online DKC account at <a href="http://dkc-app.nydkc.org">http://dkc-app.nydkc.org</a>.</li>
+                        <li>All applications should be submitted by the deadline. All late applications will be penalized.</li>
+                        <li>If you are having technical difficulties, you must contact your Committee Co-Chair by 8:00 PM EST on the night the application is due. If you have technical difficulties that are not reported by 8:00 PM EST, it will not be honored.</li>
+                        <li>By submitting this application, the applicant agrees that all information included is accurate and that the information provided is <strong>his/her own work</strong>. Please describe events in your own words. Any form of <strong>plagiarism</strong> will <strong>DISQUALIFY</strong> the application. Any form of <strong>dishonesty</strong> will <strong>DISQUALIFY</strong> the application.</li>
+                        <li>All applications are subject to be disqualified as deemed fit by a Committee Co-Chair.</li>
+                    </ol>
+
+                    <p>Notes:</p>
+                    <ul>
+                        <li>For all events, please include <i>the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description</i>.</li>
+                        <li>Read the directions for each section <i>CAREFULLY</i>. If you do not provide all information, you will not be given credit.</li>
+                    </ul>
+                    <div class="text-center">
+                        <h5><u><strong>Contacts</strong></u></h5>
+                        <p>For Division 1-10
+                            <br>c/o: Lieutenant Governor Cindy Pietrakowski
+                            <br>60-03 Maspeth Ave
+                            <br>Maspeth, NY 11378
+                        </p>
+                        <p>For Divisions 11-27
+                            <br>c/o: Lieutenant Governor Aaron Cheung
+                            <br>34 Monroe St Apt CB10
+                            <br>Manhattan, NY 10002
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#overview-sections" href="#resources">
+                        Additional Resources
+                    </a>
+                </h4>
+            </div>
+            <div id="resources" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p class="lead">You can download the PDF of the Distinguished Key Clubber application <a href="/images/14-15-Distinguished-Key-Clubber-Application.pdf">here</a>.</p>
+                    <p class="lead">Answers to frequently asked questions can be found <a href="/#faq">here</a>.</p>
+                    <p class="lead">If you have any other questions, please email us at <a href="mailto:dkc.applications@gmail.com">dkc.applications@gmail.com</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#other-material-upload">
+                        Upload Other Materials
+                    </a>
+                </h4>
+            </div>
+            <div id="other-material-upload" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p>If you have any other materials that you would like to submit with your application, you may upload it here. A few examples are:</p>
+                    <ul>
+                        <li>Articles that you submitted to district or division publications</li>
+                        <li>Recommendation of no more than 150 words nominating you for the award</li>
+                    </ul>
+                    <form id="upload-form" enctype="multipart/form-data">
+                        <p class="warning-file-size text-warning" style="display:none;"></p>
+                        <div class="row">
+                            <div class="col-sm-8 col-md-9">
+                                <input type="file" id="other-material-upload-field" class="upload-field" name="other-material">
+                            </div>
+                            <div class="col-sm-4 col-md-3">
+                                <button type="button" id="other-material-upload-button" class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-upload"></span> Upload</button>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="progress" style="display:none;">
+                                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                        <span class="sr-only"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="table-responsive">
+                        <table id="other-material-upload-table" class="table table-striped table-condensed table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Filename</th>
+                                    <th>Size</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for file in application.other_materials|getblobdata %}
+                                <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
+                                    <td>{{ file.content_type }}</td>
+                                    <td>{{ file.filename }}</td>
+                                    <td class="text-nowrap">{{ file.size|byteconvert }}</td>
+                                    <td><a href="/delete/{{ file.blob_key }}"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
