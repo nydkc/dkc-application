@@ -23,7 +23,7 @@ class ApplicationOverview(BaseHandler):
             'application': application,
             'application_url': '/application/overview'
         }
-        self.render_template('application_overview.html', template_values)
+        self.render_template('application-overview.html', template_values)
 
 class ApplicationProfile(BaseHandler):
 
