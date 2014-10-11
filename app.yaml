@@ -44,3 +44,8 @@ handlers:
 
 env_variables:
     TZ: 'EST'
+
+pagespeed:
+  domains_to_rewrite:
+  - http://*.nydkc.org
+
