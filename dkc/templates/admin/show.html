@@ -1,0 +1,11 @@
+{% extends "admin.html" %}
+{% block admin %}
+<div class="page-header">
+    <h2>{{ applicant.first_name }} {{ applicant.last_name }}</h2>
+</div>
+
+{{ applicant|e }}
+<br>
+{{ application|e }}
+
+{% endblock %}

@@ -54,7 +54,7 @@
     {% for column in faq|slice(2) -%}
         <div class="col-md-6">
             {% set outerloop = loop %}
-            {% for question in column %}
+            {%- for question in column -%}
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="panel-title question">
@@ -69,9 +69,9 @@
                     </div>
                 </div>
             </div>
-            {% endfor %}
+            {%- endfor -%}
         </div>
-    {% endfor %}
+    {%- endfor %}
     </div>
 
 </div>

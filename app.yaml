@@ -39,13 +39,10 @@ handlers:
   expiration: 7d
 - url: /admin/stats.*
   script: google.appengine.ext.appstats.ui.app
+- url: /admin.*
+  script: dkc.manage.views.application
 - url: /.*
   script: dkc.views.application
 
 env_variables:
     TZ: 'EST'
-
-pagespeed:
-  domains_to_rewrite:
-  - http://*.nydkc.org
-

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="row admin">
+    <aside class="col-sm-3">
+{% include "sidebar.html" %}
+    </aside>
+    <div class="col-sm-9">
+{% block admin %}{% endblock %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% block admin_scripts %}{% endblock %}
+{% endblock %}
