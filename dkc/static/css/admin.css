@@ -1,0 +1,19 @@
+.admin .page-header {
+    margin-top: 20px;
+}
+
+.search-result {
+    margin-top: 30px;
+}
+
+.search-result a {
+    text-decoration: none;
+}
+
+mark, .mark {
+    padding: .3em .05em;
+}
+
+.clickable-row td {
+    cursor: pointer;
+}

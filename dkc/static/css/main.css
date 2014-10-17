@@ -64,7 +64,7 @@ html, body {
     user-select: none;
 }
 
-.clickable-row td:not(:last-child){
+.clickable-row td:not(:last-child) {
     cursor: pointer;
 }
 

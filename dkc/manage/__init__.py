@@ -1,6 +1,7 @@
 import os, webapp2, jinja2
-from google.appengine.api import users
+from google.appengine.api import users, memcache
 from dkc import jinja_functions
+from dkc.models import User
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), '../templates/admin')),
@@ -8,6 +9,8 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 JINJA_ENVIRONMENT.filters['datetimeformat'] = jinja_functions.datetimeformat
 JINJA_ENVIRONMENT.filters['getblobdata'] = jinja_functions.getBlobData
 JINJA_ENVIRONMENT.filters['byteconvert'] = jinja_functions.byteConversion
+JINJA_ENVIRONMENT.filters['split_string'] = jinja_functions.splitString
+JINJA_ENVIRONMENT.filters['split_regex'] = jinja_functions.splitRegex
 
 class AdminBaseHandler(webapp2.RequestHandler):
 
@@ -30,3 +33,11 @@ class AdminBaseHandler(webapp2.RequestHandler):
             'message': message
         }
         self.render_template('message.html', template_values)
+
+    def get_applicants(self):
+        applicants = memcache.get('all_applicants')
+        if not applicants:
+            query = User.query()
+            applicants = query.fetch()
+            memcache.add(key='all_applicants', value=applicants, time=1800)
+        return applicants

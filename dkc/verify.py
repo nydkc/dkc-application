@@ -16,7 +16,7 @@ class VerificationHandler(BaseHandler):
 
         if not user:
             logging.info('Could not find any user with id "%s" and signup token "%s"', user_id, signup_token)
-            self.abort(404)
+            self.display_message("Invalid Verification Link!")
             return
 
         if verification_type == 'p':
@@ -42,4 +42,4 @@ class VerificationHandler(BaseHandler):
             else:
                 self.render_template('verification-error.html')
         else:
-            self.abort(404)
+            self.display_message("Invalid Verification Link!")

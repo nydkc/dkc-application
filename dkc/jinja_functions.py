@@ -1,3 +1,4 @@
+import re
 from google.appengine.ext import blobstore
 
 def getBlobData(blob_keys):
@@ -29,3 +30,9 @@ def byteConversion(size):
         i += 1
     notation = {0: "B", 1: "KB", 2: "MB", 3: "GB"}[i]
     return "%s %s" % (size, notation)
+
+def splitString(value, separator=' '):
+    return value.split(separator)
+
+def splitRegex(value, seperator_pattern):
+    return re.split(seperator_pattern, value)

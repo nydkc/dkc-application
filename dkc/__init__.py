@@ -11,6 +11,8 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 JINJA_ENVIRONMENT.filters['datetimeformat'] = jinja_functions.datetimeformat
 JINJA_ENVIRONMENT.filters['getblobdata'] = jinja_functions.getBlobData
 JINJA_ENVIRONMENT.filters['byteconvert'] = jinja_functions.byteConversion
+JINJA_ENVIRONMENT.filters['split_string'] = jinja_functions.splitString
+JINJA_ENVIRONMENT.filters['split_regex'] = jinja_functions.splitRegex
 
 config = {
     'webapp2_extras.auth': {
