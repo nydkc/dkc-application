@@ -28,7 +28,7 @@ def byteConversion(size):
     while (size > 1024):
         size = size >> 10
         i += 1
-    notation = {0: "B", 1: "KB", 2: "MB", 3: "GB"}[i]
+    notation = ["B", "KB", "MB", "GB"][i]
     return "%s %s" % (size, notation)
 
 def splitString(value, separator=' '):
@@ -36,3 +36,27 @@ def splitString(value, separator=' '):
 
 def splitRegex(value, seperator_pattern):
     return re.split(seperator_pattern, value)
+
+def search(value, search):
+    value_lower = value.lower()
+    search_lower = search.lower()
+    found_indexes = []
+    i = 0
+    while value_lower.find(search_lower, i) != -1:
+        i = value_lower.find(search_lower, i)
+        found_indexes.append(i)
+        i += 1
+
+    if len(found_indexes) > 0:
+        s = 0
+        start = 0
+        result = ""
+        while s < len(found_indexes):
+            pos = found_indexes[s]
+            result += value[start:pos] + "<mark>" + value[pos:pos+len(search)] + "</mark>"
+            start = pos + len(search)
+            s += 1
+        result += value[start:]
+        return result
+    else:
+        return value

@@ -14,7 +14,7 @@ class ShowHandler(AdminBaseHandler):
             'applicant': applicant,
             'application': application
         }
-        self.render_template('show.html', template_values)
+        self.render_template('admin-show.html', template_values)
 
     def post(self):
         pass

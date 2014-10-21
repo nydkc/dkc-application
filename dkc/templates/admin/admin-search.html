@@ -21,18 +21,18 @@
             <dl class="dl-horizontal">
                 {% set applicant_info = [('Email', applicant.email),
                                          ('Grade', applicant.grade),
-                                         ('Address', [applicant.address, applicant.city, applicant.zip_code]|join(", ") ),
+                                         ('Address', [applicant.address, applicant.city, applicant.zip_code]|join(",&nbsp;") ),
                                          ('Phone Number', applicant.phone_number),
                                          ('Division', applicant.division),
                                          ('Lieutenant Governor', applicant.ltg),
                                          ('School', applicant.school),
-                                         ('School Address', [applicant.school_address, applicant.school_city, applicant.school_zip_code]|join(", ") ),
-                                         ('Club President', [applicant.club_president, applicant.club_president_phone_number]|join(", ") ),
-                                         ('Faculty Advisor', [applicant.faculty_advisor, applicant.faculty_advisor_phone_number]|join(", ") )
+                                         ('School Address', [applicant.school_address, applicant.school_city, applicant.school_zip_code]|join(",&nbsp;") ),
+                                         ('Club President', [applicant.club_president, applicant.club_president_phone_number]|join(",&nbsp;") ),
+                                         ('Faculty Advisor', [applicant.faculty_advisor, applicant.faculty_advisor_phone_number]|join(",&nbsp;") )
                                         ]%}
                 {% for info in applicant_info %}
                     {% if q|lower in info[1]|e|lower %}
-                    <dt>{{ info[0] }}</dt><dd>{{ info[1]|e|replace(q|upper, "<mark>"~q|upper~"</mark>")|replace(q|lower, "<mark>"~q|lower~"</mark>")|replace(q|capitalize, "<mark>"~q|capitalize~"</mark>")|replace(q, "<mark>"~q~"</mark>")}}</dd>
+                    <dt>{{ info[0] }}</dt><dd>{{ info[1]|highlight_search(q) }}</dd>
                     {% endif %}
                 {% endfor %}
             </dl>
