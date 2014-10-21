@@ -297,6 +297,9 @@ $('#other-material-upload-button').click(function(){
         processData: false,
         cache: false,
         statusCode: {
+            423: function(data) {
+                     sweetAlert("You MAY NOT modify your application", "Once you have submitted your application, modification of any sort is strictly forbidden.", "error");
+                 },
             403: function(data) {
                      sweetAlert("Unable to upload!", "You may only upload a total of 3 items.", "error");
                  }

@@ -1,4 +1,4 @@
-import urllib, json
+import urllib, json, logging
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import images
@@ -11,10 +11,16 @@ class ApplicationActivitiesUploadHandler(BaseHandler, blobstore_handlers.Blobsto
         upload_url = blobstore.create_upload_url('/application/activities/upload')
         self.response.write(upload_url)
 
+    @user_required
     def post(self):
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
+
+        if application.submit_time != None:
+            logging.info('Attempt to upload advocacy material to submitted application by %s', applicant.email)
+            self.response.write('<script language="javascript" type="text/javascript">window.top.window.finishUpload(0);</script>')
+            return
 
         if len(application.advocacy_materials) >= 5:
             self.response.write('<script language="javascript" type="text/javascript">window.top.window.finishUpload(1);</script>')
@@ -33,7 +39,7 @@ class ApplicationActivitiesUploadHandler(BaseHandler, blobstore_handlers.Blobsto
             self.response.write(']')
             self.response.write(');</script>')
         except Exception, e:
-            print "Error with uploading: %s" % e
+            logging.error("Error with uploading: %s" % e)
             self.response.clear()
             self.response.write('<script language="javascript" type="text/javascript">window.top.window.finishUpload(0);</script>')
 
@@ -43,10 +49,16 @@ class ApplicationUploadHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHa
         upload_url = blobstore.create_upload_url('/application/upload')
         self.response.write(upload_url)
 
+    @user_required
     def post(self):
         applicant = self.user
         application_key = applicant.application
         application = application_key.get()
+
+        if application.submit_time != None:
+            logging.info('Attempt to upload file to submitted application by %s', applicant.email)
+            self.abort(423)
+            return
 
         if len(application.other_materials) >= 3:
             self.abort(403)

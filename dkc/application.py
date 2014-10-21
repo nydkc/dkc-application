@@ -11,6 +11,7 @@ class ApplicationOverview(BaseHandler):
     def get(self):
         self._serve_page()
 
+    @user_required
     def post(self):
         self._serve_page()
 
@@ -29,6 +30,13 @@ class ApplicationProfile(BaseHandler):
     @user_required
     def post(self):
         applicant = self.user
+        application = applicant.application.get()
+
+        if application.submit_time != None:
+            logging.info("Attempt to modify profile by %s", applicant.email)
+            self._serve_page()
+            return
+
         applicant.first_name = self.request.get('first-name')
         applicant.last_name = self.request.get('last-name')
         applicant.grade = self.request.get('grade')
@@ -66,6 +74,11 @@ class ApplicationPersonalStatement(BaseHandler):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
 
+        if application.submit_time != None:
+            logging.info("Attempt to modify personal statement by %s", applicant.email)
+            self._serve_page()
+            return
+
         application.personal_statement_choice = self.request.get("personal-statement-choice")
         application.personal_statement = self.request.get('personal-statement')
         application.put()
@@ -87,6 +100,11 @@ class ApplicationProjects(BaseHandler):
     def post(self):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
+
+        if application.submit_time != None:
+            logging.info("Attempt to modify projects by %s", applicant.email)
+            self._serve_page()
+            return
 
         international_project_sections = self.request.get_all('international-projects-section')
         international_project_events = self.request.get_all('international-projects-event')
@@ -158,6 +176,11 @@ class ApplicationInvolvement(BaseHandler):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
 
+        if application.submit_time != None:
+            logging.info("Attempt to modify involvement by %s", applicant.email)
+            self._serve_page()
+            return
+
         application.key_club_week_mon = self.request.get('key-club-week-monday')
         application.key_club_week_tue = self.request.get('key-club-week-tuesday')
         application.key_club_week_wed = self.request.get('key-club-week-wednesday')
@@ -192,6 +215,11 @@ class ApplicationActivities(BaseHandler):
     def post(self):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
+
+        if application.submit_time != None:
+            logging.info("Attempt to modify profile by %s", applicant.email)
+            self._serve_page()
+            return
 
         application.kiwanis_one_day = GeneralProject(event=self.request.get('kiwanis-one-day-event'), location=self.request.get('kiwanis-one-day-location'), description=self.request.get('kiwanis-one-day-description'))
 
@@ -271,6 +299,11 @@ class ApplicationScoring(BaseHandler):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
 
+        if application.submit_time != None:
+            logging.info("Attempt to modify scoring by %s", applicant.email)
+            self._serve_page()
+            return
+
         application.early_submission_points = self.request.get('early-submission-points')
         application.recommender_points = self.request.get('recommender-points')
 
@@ -295,13 +328,14 @@ class ApplicationVerification(BaseHandler):
 
     @user_required
     def post(self):
-        if self._no_verify():
-            self._serve_page()
-            return
-
         applicant = self.user
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
+
+        if self._no_verify() or application.submit_time != None:
+            logging.info("Attempt to modify verification by %s", applicant.email)
+            self._serve_page()
+            return
 
         task = self.request.get('task')
         if task != 'applicant':
@@ -384,9 +418,11 @@ The New York District Awards Committee</p>
 
 class ApplicationSubmit(BaseHandler):
 
+    @user_required
     def get(self):
         self._serve_page()
 
+    @user_required
     def post(self):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
