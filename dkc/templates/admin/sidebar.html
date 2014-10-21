@@ -17,6 +17,20 @@
             <li{% if admin_url == '/admin/search' %} class="active"{% endif %}>
                 <a href="/admin/search">Search</a>
             </li>
+            {% if '/admin/show/' in admin_url %}
+            <h5 class="text-center">Application of <span class="text-nowrap">{{ applicant.first_name }} {{ applicant.last_name }}</span></h5>
+            <div class="application-sections">
+                <ul class="nav">
+                    <li><a href="#profile">Profile</a></li>
+                    <li><a href="#personal-statement"</a>Personal Statement</a></li>
+                    <li><a href="#projects">International, District, &amp; Divisional Projects</a></li>
+                    <li><a href="#involvement">Involvement</a></li>
+                    <li><a href="#activities">Projects, Advocacy &amp; Newsletters</a></li>
+                    <li><a href="#scoring">Other and Scoring</a></li>
+                    <li><a href="#verification">Verifiation</a></li>
+                </ul>
+            </div>
+            {% endif %}
             <a id="logout-button" class="btn btn-warning btn-block" href="{{ user.logout_url }}">Logout</a>
         </ul>
     </div>

@@ -1,0 +1,29 @@
+{% extends "admin.html" %}
+{% block admin %}
+<div class="page-header">
+    <h2>{{ applicant.first_name }} {{ applicant.last_name }}</h2>
+</div>
+
+<h3 id="profile">Profile</h3>
+<dl class="dl-horizontal">
+    <dt>First Name</dt><dd>{{ applicant.first_name }}</dd>
+    <dt>Last Name</dt><dd>{{ applicant.last_name }}</dd>
+    <dt>Email</dt><dd>{{ applicant.email }}</dd>
+    <dt>Grade</dt><dd>{{ applicant.grade}}</dd>
+    <dt>Address</dt><dd>{{ applicant.address }}</dd>
+    <dt>City</dt><dd>{{ applicant.city }}</dd>
+    <dt>Zip Code</dt><dd>{{ applicant.zip_code }}</dd>
+    <dt>Phone Number</dt><dd>{{ applicant.phone_number }}</dd>
+    <dt>Division</dt><dd>{{ applicant.division }}</dd>
+    <dt>Lieutenant Governor</dt><dd>{{ applicant.ltg }}</dd>
+    <dt>School</dt><dd>{{ applicant.school }}</dd>
+    <dt>School Address</dt><dd>{{ applicant.school_address }}</dd>
+    <dt>School City</dt><dd>{{ applicant.school_city }}</dd>
+    <dt>School Zip Code</dt><dd>{{ applicant.school_zip_code }}</dd>
+    <dt>Club President</dt><dd>{{ applicant.club_president }}</dd>
+    <dt>Club President Phone Number</dt><dd>{{ applicant.club_president_phone_number }}</dd>
+    <dt>Faculty Advisor</dt><dd>{{ applicant.faculty_advisor }}</dd>
+    <dt>Faculty Advisor Phone Number</dt><dd>{{ applicant.faculty_advisor_phone_number }}</dd>
+</dl>
+{{ application|e }}
+{% endblock %}

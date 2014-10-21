@@ -74,7 +74,7 @@ setInterval(function() {
 {% macro input(name, label='', value='', type='text', disabled='', size) -%}
 <div class="form-group">
     {% if label != '' %}<label for="{{ name }}">{{ label }}</label>{% endif %}
-    <input type="{{ type }}" class="form-control {% if size %}{{ size }}{% endif %}" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }}>
+    <input type="{{ type }}" class="form-control {% if size %}{{ size }}{% endif %}" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }} autocomplete="off">
 </div>
 {%- endmacro %}
 
@@ -109,7 +109,7 @@ setInterval(function() {
 <div class="form-group-sm">
     {% if label != '' %}<label for="{{ name }}" class="col-xs-{{ size }} control-label">{{ label }}</label>{% endif %}
     <div class="col-xs-{{ 12 - size }}">
-        <input type="{{ type }}" class="form-control" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }}>
+        <input type="{{ type }}" class="form-control" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }} autocomplete="off">
     </div>
 </div>
 {%- endmacro %}

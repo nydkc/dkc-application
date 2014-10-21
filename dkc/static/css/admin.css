@@ -1,8 +1,18 @@
-.home {
-    margin-top: 14%;
+body {
+    position: relative;
 }
 
-.admin .page-header {
+.home {
+    margin-top: 20%;
+    margin-bottom: 15%;
+}
+
+.nav-pills li.active a, .nav-pills li.active a:hover, .nav-pills li.active a:focus {
+    background-color: #00aeef;
+    color: #fff;
+}
+
+.page-header {
     margin-top: 20px;
 }
 
@@ -20,4 +30,18 @@ mark, .mark {
 
 .clickable-row td {
     cursor: pointer;
+}
+
+.dl-horizontal dd {
+    margin-left: 20px;
+    margin-bottom: 4px;
+}
+
+@media screen and (min-width: 768px) {
+    .dl-horizontal dt {
+        width: 215px;
+    }
+    .dl-horizontal dd {
+        margin-left: 240px;
+    }
 }
