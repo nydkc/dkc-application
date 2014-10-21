@@ -39,5 +39,5 @@ class AdminBaseHandler(webapp2.RequestHandler):
         if not applicants:
             query = User.query()
             applicants = query.fetch()
-            memcache.add(key='all_applicants', value=applicants, time=1800)
+            memcache.add(key='all_applicants', value=applicants, time=900)
         return applicants

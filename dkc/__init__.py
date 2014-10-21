@@ -97,6 +97,18 @@ class BaseHandler(webapp2.RequestHandler):
         }
         self.render_template('message.html', template_values)
 
+    def render_application(self, template_filename, template_values={}):
+        applicant = self.user
+        application_key = applicant.application
+        application = application_key.get()
+        template_values.update({
+            'applicant': applicant,
+            'application': application,
+            'form_key': application_key.urlsafe(),
+            'submitted': application.submit_time != None
+        })
+        self.render_template(template_filename, template_values)
+
     # this is needed for webapp2 sessions to work
     def dispatch(self):
         self.session_store = sessions.get_store(request=self.request)

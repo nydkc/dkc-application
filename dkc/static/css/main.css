@@ -235,9 +235,27 @@ input#district-projects-charity {
     margin-top: 5px;
 }
 
+.application.submitted-application {
+    margin-top: 75px;
+}
+
+.submitted-overlay {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    right: 0;
+    opacity: .8;
+    font-size: 16px;
+}
+
 @media screen and (max-width: 500px) {
     .home {
         width: 100%;
+    }
+
+    .application.submitted-application {
+        margin-top: 95px;
     }
 }
 
@@ -245,6 +263,9 @@ input#district-projects-charity {
     .navbar-default {
         border-bottom: 1px solid #003366;
     }
+}
+
+@media screen and (max-width: 992px) {
 }
 
 @media screen and (max-width: 1200px) {
@@ -261,6 +282,10 @@ input#district-projects-charity {
 @media screen and (min-width: 1200px) {
     .navbar.affix {
         width: 262.5px;
+    }
+
+    .application.submitted-application {
+        margin-top: 50px;
     }
 }
 

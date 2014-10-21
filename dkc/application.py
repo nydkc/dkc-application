@@ -15,15 +15,10 @@ class ApplicationOverview(BaseHandler):
         self._serve_page()
 
     def _serve_page(self):
-        applicant = self.user
-        application_key = applicant.application
-        application = application_key.get()
         template_values = {
-            'applicant': applicant,
-            'application': application,
             'application_url': '/application/overview'
         }
-        self.render_template('application-overview.html', template_values)
+        self.render_application('application-overview.html', template_values)
 
 class ApplicationProfile(BaseHandler):
 
@@ -55,12 +50,10 @@ class ApplicationProfile(BaseHandler):
         self._serve_page()
 
     def _serve_page(self):
-        applicant = self.user
         template_values = {
-            'applicant': applicant,
             'application_url': '/application/profile'
         }
-        self.render_template('application-profile.html', template_values)
+        self.render_application('application-profile.html', template_values)
 
 class ApplicationPersonalStatement(BaseHandler):
 
@@ -79,16 +72,10 @@ class ApplicationPersonalStatement(BaseHandler):
         self._serve_page()
 
     def _serve_page(self):
-        applicant = self.user
-        application_key = applicant.application
-        application = application_key.get()
         template_values = {
-            'applicant': applicant,
-            'application': application,
-            'form_key': application_key.urlsafe(),
             'application_url': '/application/personal-statement'
         }
-        self.render_template('application-personal_statement.html', template_values)
+        self.render_application('application-personal_statement.html', template_values)
 
 class ApplicationProjects(BaseHandler):
 
@@ -155,16 +142,10 @@ class ApplicationProjects(BaseHandler):
         self._serve_page()
 
     def _serve_page(self):
-        applicant = self.user
-        application_key = applicant.application
-        application = application_key.get()
         template_values = {
-            'applicant' :applicant,
-            'application': application,
-            'form_key': application_key.urlsafe(),
             'application_url': '/application/projects'
         }
-        self.render_template('application-projects.html', template_values)
+        self.render_application('application-projects.html', template_values)
 
 class ApplicationInvolvement(BaseHandler):
 
@@ -196,16 +177,10 @@ class ApplicationInvolvement(BaseHandler):
         self._serve_page()
 
     def _serve_page(self):
-        applicant = self.user
-        application_key = applicant.application
-        application = application_key.get()
         template_values = {
-            'applicant' :applicant,
-            'application': application,
-            'form_key': application_key.urlsafe(),
             'application_url': '/application/involvement'
         }
-        self.render_template('application-involvement.html', template_values)
+        self.render_application('application-involvement.html', template_values)
 
 class ApplicationActivities(BaseHandler):
 
@@ -280,16 +255,10 @@ class ApplicationActivities(BaseHandler):
         self._serve_page()
 
     def _serve_page(self):
-        applicant = self.user
-        application_key = applicant.application
-        application = application_key.get()
         template_values = {
-            'applicant' :applicant,
-            'application': application,
-            'form_key': application_key.urlsafe(),
             'application_url': '/application/activities',
         }
-        self.render_template('application-activities.html', template_values)
+        self.render_application('application-activities.html', template_values)
 
 class ApplicationScoring(BaseHandler):
 
@@ -313,16 +282,10 @@ class ApplicationScoring(BaseHandler):
         self._serve_page()
 
     def _serve_page(self):
-        applicant = self.user
-        application_key = applicant.application
-        application = application_key.get()
         template_values = {
-            'applicant' :applicant,
-            'application': application,
-            'form_key': application_key.urlsafe(),
             'application_url': '/application/scoring'
         }
-        self.render_template('application-scoring.html', template_values)
+        self.render_application('application-scoring.html', template_values)
 
 class ApplicationVerification(BaseHandler):
 
@@ -400,17 +363,11 @@ The New York District Awards Committee</p>
         self._serve_page()
 
     def _serve_page(self):
-        applicant = self.user
-        application_key = applicant.application
-        application = application_key.get()
         template_values = {
-            'applicant' :applicant,
-            'application': application,
-            'form_key': application_key.urlsafe(),
             'application_url': '/application/verification',
             'no_verify': self._no_verify()
         }
-        self.render_template('application-verification.html', template_values)
+        self.render_application('application-verification.html', template_values)
 
     def _no_verify(self):
         applicant = self.user
@@ -424,3 +381,21 @@ The New York District Awards Committee</p>
                 or (applicant.faculty_advisor == '' or applicant.faculty_advisor == None)\
                 or (applicant.faculty_advisor_phone_number == '' or applicant.faculty_advisor_phone_number == None)
         return no_verify
+
+class ApplicationSubmit(BaseHandler):
+
+    def get(self):
+        self._serve_page()
+
+    def post(self):
+        application_key = ndb.Key(urlsafe=self.request.get('form-key'))
+        application = application_key.get()
+        application.submit_time = datetime.now()
+        application.put()
+        self.redirect('/')
+
+    def _serve_page(self):
+        template_values = {
+            'application_url': '/application/submit'
+        }
+        self.render_application('application-submit.html', template_values)

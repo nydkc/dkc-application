@@ -1,0 +1,37 @@
+{% extends "application.html" %}
+{% block application %}
+<form id="submit-application" role="form" action="{{ application_url }}" method="post">
+    <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
+
+    <div class="page-header">
+        <h2>Submit Application</h2>
+    </div>
+    <p>Before you submit your application, make sure that you have filled out all parts to the <strong>best of your ability</strong>. It is highly recommended that you go back and check that your application best reflects your activities as a Key Clubber this past year.</p>
+    <p>By submitting your application before Feburary 1, 2015, you are eligible to receive 5 extra points on any section which you can specify <a href="/application/scoring">here</a>.</p>
+    <p class="lead">If you are sure that you would like to submit your application, please click the <em>Submit</em> button below.</p>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary btn-lg">Submit!</a>
+    </div>
+</form>
+{% endblock %}
+{% block application_scripts %}
+<script>
+$('#submit-application').submit(function(e) {
+    e.preventDefault();
+    swal({
+        title: "Are you sure?",
+        text: "You will not be able to edit your application once you submit!",
+        type: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#5cb85c",
+        confirmButtonText: "Yes, Submit!",
+        allowOutsideClicl: true
+    },
+    function() {
+        $.post('{{ application_url }}');
+        window.location = '/application/overview';
+    });
+});
+</script>
+{% endblock %}

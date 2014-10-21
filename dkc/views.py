@@ -30,6 +30,7 @@ application = webapp2.WSGIApplication([
     ('/verification_success', ApplicationVerificationHandler),
     ('/application/profile', ApplicationProfile),
     ('/application/upload', ApplicationUploadHandler),
+    ('/application/submit', ApplicationSubmit),
     ('/application.*', ApplicationOverview),
     ('/login', LoginPage),
     ('/logout', LogoutPage),

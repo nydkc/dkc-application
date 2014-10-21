@@ -5,10 +5,12 @@
         <h2>Overview</h2>
     </div>
 
+    {%- if not submitted -%}
     <div class="alert alert-info">
         Please note that any changes that you make will only be <strong>saved</strong> online.
         <br>If you would like to submit your application, please go <a href="/application/submit">here</a>.
     </div>
+    {%- endif -%}
 
     <div class="panel-group" id="overview-sections">
         <div class="panel panel-default">
