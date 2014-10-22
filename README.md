@@ -18,6 +18,7 @@ Hosted on Google App Engine: [http://dkc-app.nydkc.org](http://dkc-app.nydkc.org
 - Account management
     - Password reset
     - Access control for logged in users
+    - Block modification after submission
 
 ## Requirements
 
@@ -26,3 +27,5 @@ Hosted on Google App Engine: [http://dkc-app.nydkc.org](http://dkc-app.nydkc.org
     - NDB
     - Blobstore
     - Mail
+- [xhtml2pdf](https://github.com/chrisglass/xhtml2pdf)
+    - Install required dependencies using pip: `pip install -r requirements.txt -t lib`
