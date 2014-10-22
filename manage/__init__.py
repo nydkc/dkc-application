@@ -38,7 +38,7 @@ class AdminBaseHandler(webapp2.RequestHandler):
     def get_applicants(self):
         applicants = memcache.get('all_applicants')
         if not applicants:
-            query = User.query()
+            query = User.query().order(User.division, User.first_name, User.last_name)
             applicants = query.fetch()
             memcache.add(key='all_applicants', value=applicants, time=900)
         return applicants
