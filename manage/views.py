@@ -1,8 +1,8 @@
 import os, webapp2, jinja2
 from google.appengine.api import users
-from dkc.manage import *
-from dkc.manage.admin import *
-from dkc.manage.show import ShowHandler
+from manage import *
+from admin import *
+from show import ShowHandler
 
 class MainPage(webapp2.RequestHandler):
 

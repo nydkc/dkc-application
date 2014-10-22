@@ -1,4 +1,4 @@
-from dkc.manage import *
+from manage import *
 from dkc.models import User
 from google.appengine.api import memcache
 

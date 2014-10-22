@@ -4,7 +4,7 @@ from dkc import jinja_functions
 from dkc.models import User
 
 JINJA_ENVIRONMENT = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), '../templates/admin')),
+    loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
     extensions=['jinja2.ext.autoescape'])
 JINJA_ENVIRONMENT.filters['datetimeformat'] = jinja_functions.datetimeformat
 JINJA_ENVIRONMENT.filters['getblobdata'] = jinja_functions.getBlobData

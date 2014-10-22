@@ -1,6 +1,6 @@
 import urllib
-from dkc import *
-from dkc.manage import *
+#from dkc import *
+from manage import *
 from dkc.models import User
 
 class ShowHandler(AdminBaseHandler):
