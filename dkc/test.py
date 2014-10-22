@@ -1,12 +1,18 @@
 import os, webapp2, jinja2, cgi
 from dkc import *
+from pdf import generate_pdf
 
 class TestHandler(BaseHandler):
 
     def get(self):
-        self.response.out.write("<table><tbody>")
+        result = []
+        result.append("<table><tbody>")
 
         for name in os.environ.keys():
-            self.response.out.write("<tr><td>%s</td><td style='word-break:break-all'>%s</td></tr>" % (name, cgi.escape(str(os.environ[name]))))
+            result.append("<tr><td>%s</td><td style='word-break:break-all'>%s</td></tr>" % (name, cgi.escape(str(os.environ[name]))))
 
-        self.response.out.write("</tbody></table>")
+        result.append("</tbody></table>")
+        html = ''.join(result)
+
+        self.response.headers['content-type'] = 'application/pdf'
+        self.response.out.write(generate_pdf(html))
