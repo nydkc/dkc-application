@@ -32,16 +32,29 @@ mark, .mark {
     cursor: pointer;
 }
 
-.dl-horizontal dd {
+.dl-horizontal.profile dd {
     margin-left: 20px;
     margin-bottom: 4px;
 }
 
+.dl-horizontal.projects {
+
+}
+
+.tooltip-trigger {
+    padding-right: 45px;
+}
+
+.divisional + .divisional {
+    margin-top: 3px;
+}
+
+
 @media screen and (min-width: 768px) {
-    .dl-horizontal dt {
-        width: 215px;
+    .dl-horizontal.profile dt {
+        width: 42%;
     }
-    .dl-horizontal dd {
-        margin-left: 240px;
+    .dl-horizontal.profile dd {
+        margin-left: 45%;
     }
 }
