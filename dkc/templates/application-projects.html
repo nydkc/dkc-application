@@ -21,7 +21,7 @@
         <div class="row project project-{{ loop.index }}">
             <div class="form-horizontal">
                 <div class="col-md-3">
-                    {{ select_horizontal("international-projects-section", "Section:", project.section, ["1","2","3"], size=4) }}
+                    {{ select_horizontal("international-projects-section", "Section:", project.section, ["Section 1:&nbsp;&nbsp;Governor’s Project: “Water: The Key to Life”","Section 2:&nbsp;&nbsp;Major Emphasis: “Children: Their Focus, Our Future”","Section 3:&nbsp;&nbsp;Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)"], size=4) }}
                 </div>
                 <div class="col-md-9">
                     {{ input_horizontal("international-projects-event", "Event:", project.event, size=2) }}
@@ -163,7 +163,7 @@ $(document).ready(function() {
 });
 $('#international-projects-button').click(function() {
     var count = $('.international-projects .project').length + 1;
-    $('.international-projects').append('<div class="row project project-' + count + '"><div class="form-horizontal"><div class="col-md-3"><div class="form-group"><label for="international-projects-section" class="col-md-4 control-label">Section:</label><div class="col-md-8"><select class="form-control" id="international-projects-section" name="international-projects-section"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div></div></div><div class="col-md-9"><div class="form-group"><label for="international-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="international-projects-event" name="international-projects-event" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="international-projects-description" name="international-projects-description" rows="4"></textarea></div></div></div></div></div>');
+    $('.international-projects').append('<div class="row project project-' + count + '"><div class="form-horizontal"><div class="col-md-3"><div class="form-group"><label for="international-projects-section" class="col-md-4 control-label">Section:</label><div class="col-md-8"><select class="form-control" id="international-projects-section" name="international-projects-section"><option value="1">Section 1:&nbsp;&nbsp;Governor’s Project: “Water: The Key to Life”</option><option value="2">Section 2:&nbsp;&nbsp;Major Emphasis: “Children: Their Focus, Our Future”</option><option value="3">Section 3:&nbsp;&nbsp;Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)</option></select></div></div></div><div class="col-md-9"><div class="form-group"><label for="international-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="international-projects-event" name="international-projects-event" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="international-projects-description" name="international-projects-description" rows="4"></textarea></div></div></div></div></div>');
     if (count >= 6) {
         $(this).hide();
     }
