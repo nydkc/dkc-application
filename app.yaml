@@ -28,6 +28,7 @@ handlers:
 - url: /images
   static_dir: static/images
   expiration: 14d
+  application_readable: true
 - url: /css
   static_dir: static/css
   expiration: 7d
@@ -37,6 +38,7 @@ handlers:
 - url: /fonts
   static_dir: static/fonts
   expiration: 7d
+  application_readable: true
 - url: /admin
   script: manage.views.application
 - url: /admin/stats.*

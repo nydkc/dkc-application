@@ -17,6 +17,7 @@ class ApplicationOverview(BaseHandler):
 
     def _serve_page(self):
         template_values = {
+            'user_id': self.user.get_id(),
             'application_url': '/application/overview'
         }
         self.render_application('application-overview.html', template_values)

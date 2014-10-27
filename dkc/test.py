@@ -1,10 +1,10 @@
 import os, webapp2, jinja2, cgi
 from dkc import *
-from pdf import generate_pdf
+from download import generate_pdf
 
 class TestHandler(BaseHandler):
 
-    def get(self):
+    def get(self, resource):
         result = []
         result.append("<table><tbody>")
 
@@ -14,5 +14,8 @@ class TestHandler(BaseHandler):
         result.append("</tbody></table>")
         html = ''.join(result)
 
-        self.response.headers['content-type'] = 'application/pdf'
-        self.response.out.write(generate_pdf(html))
+        if 'pdf' in str(resource):
+            self.response.headers['content-type'] = 'application/pdf'
+            self.response.out.write(generate_pdf(html))
+        else:
+            self.response.out.write(html)

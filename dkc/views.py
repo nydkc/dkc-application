@@ -8,6 +8,7 @@ from logout import LogoutPage
 from forgot import ForgotPasswordHandler, SetPasswordHandler
 from verify import VerificationHandler
 from upload import *
+from download import *
 from test import TestHandler
 
 class MainPage(BaseHandler):
@@ -31,6 +32,8 @@ application = webapp2.WSGIApplication([
     ('/application/profile', ApplicationProfile),
     ('/application/upload', ApplicationUploadHandler),
     ('/application/submit', ApplicationSubmit),
+    ('/application/download/pdf/([^/]+)?', PDFGeneration),
+    #('/application/download/docx/([^/]+)?', DOCXGeneration),
     ('/application.*', ApplicationOverview),
     ('/login', LoginPage),
     ('/logout', LogoutPage),
@@ -40,6 +43,6 @@ application = webapp2.WSGIApplication([
     webapp2.Route('/<type:p|v>/<user_id:\d+>-<signup_token:.+>', handler=VerificationHandler, name='verification'),
     ('/serve/([^/]+)/?.*', ServeHandler),
     ('/delete/([^/]+)?', DeleteHandler),
-    ('/test/.*', TestHandler),
+    ('/test/([^/]+)?', TestHandler),
     ('/.*', MainPage)
 ], debug=True, config=config)
