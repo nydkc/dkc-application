@@ -14,11 +14,7 @@ from test import TestHandler
 class MainPage(BaseHandler):
 
     def get(self):
-        if 'dkc-app.nydkc.org' in os.environ['HTTP_HOST']:
-            template = JINJA_ENVIRONMENT.get_template('coming_soon.html')
-            self.response.write(template.render({}))
-        else:
-            self.render_template('index.html')
+        self.render_template('index.html')
 
 application = webapp2.WSGIApplication([
     ('/application/personal-statement', ApplicationPersonalStatement),
