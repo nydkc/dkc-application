@@ -33,7 +33,7 @@ class ApplicationProfile(BaseHandler):
         applicant = self.user
         application = applicant.application.get()
 
-        if application.submit_time != None:
+        if application.submit_time:
             logging.info("Attempt to modify profile by %s", applicant.email)
             self._serve_page()
             return
@@ -75,7 +75,7 @@ class ApplicationPersonalStatement(BaseHandler):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
 
-        if application.submit_time != None:
+        if application.submit_time:
             logging.info("Attempt to modify personal statement by %s", applicant.email)
             self._serve_page()
             return
@@ -102,7 +102,7 @@ class ApplicationProjects(BaseHandler):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
 
-        if application.submit_time != None:
+        if application.submit_time:
             logging.info("Attempt to modify projects by %s", applicant.email)
             self._serve_page()
             return
@@ -177,7 +177,7 @@ class ApplicationInvolvement(BaseHandler):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
 
-        if application.submit_time != None:
+        if application.submit_time:
             logging.info("Attempt to modify involvement by %s", applicant.email)
             self._serve_page()
             return
@@ -217,7 +217,7 @@ class ApplicationActivities(BaseHandler):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
 
-        if application.submit_time != None:
+        if application.submit_time:
             logging.info("Attempt to modify profile by %s", applicant.email)
             self._serve_page()
             return
@@ -300,7 +300,7 @@ class ApplicationScoring(BaseHandler):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
 
-        if application.submit_time != None:
+        if application.submit_time:
             logging.info("Attempt to modify scoring by %s", applicant.email)
             self._serve_page()
             return
@@ -333,7 +333,7 @@ class ApplicationVerification(BaseHandler):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
 
-        if self._no_verify() or application.submit_time != None:
+        if self._no_verify() or application.submit_time:
             logging.info("Attempt to modify verification by %s", applicant.email)
             self._serve_page()
             return

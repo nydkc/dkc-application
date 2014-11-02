@@ -29,7 +29,7 @@ $('#submit-application').submit(function(e) {
         allowOutsideClicl: true
     },
     function() {
-        $.post('{{ application_url }}');
+        $.post('{{ application_url }}', {'form-key': '{{ form_key }}'});
         window.location = '/application/overview';
     });
 });

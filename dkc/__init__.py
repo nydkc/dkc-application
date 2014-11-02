@@ -106,7 +106,7 @@ class BaseHandler(webapp2.RequestHandler):
             'applicant': applicant,
             'application': application,
             'form_key': application_key.urlsafe(),
-            'submitted': application.submit_time != None
+            'submitted': application.submit_time
         })
         self.render_template(template_filename, template_values)
 
