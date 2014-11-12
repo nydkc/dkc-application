@@ -12,7 +12,7 @@
     {{ input_horizontal("address", "Home Address", applicant.address) }}
     {{ input_horizontal("city", "City", applicant.city) }}
     {{ input_horizontal("zip-code", "Zip Code", applicant.zip_code) }}
-    {{ input_horizontal("phone-number", "Phone Number", applicant.phone_number) }}
+    {{ input_horizontal("phone-number", "Phone Number", applicant.phone_number, type="tel") }}
 
     {{ input_horizontal("division", "Division", applicant.division) }}
     {{ input_horizontal("ltg", "Lieutenant Governor", applicant.ltg) }}
@@ -22,9 +22,9 @@
     {{ input_horizontal("school-city", "School City", applicant.school_city) }}
     {{ input_horizontal("school-zip-code", "School Zip Code", applicant.school_zip_code) }}
     {{ input_horizontal("club-president", "Club President", applicant.club_president) }}
-    {{ input_horizontal("club-president-phone-number", "Club President's Phone Number", applicant.club_president_phone_number) }}
+    {{ input_horizontal("club-president-phone-number", "Club President's Phone Number", applicant.club_president_phone_number, type="tel") }}
     {{ input_horizontal("faculty-advisor", "Faculty Advisor", applicant.faculty_advisor) }}
-    {{ input_horizontal("faculty-advisor-phone-number", "Faculty Advisor's Phone Number", applicant.faculty_advisor_phone_number) }}
+    {{ input_horizontal("faculty-advisor-phone-number", "Faculty Advisor's Phone Number", applicant.faculty_advisor_phone_number, type="tel") }}
 
     <hr>
 
