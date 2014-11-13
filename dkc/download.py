@@ -24,7 +24,6 @@ class PDFGeneration(BaseHandler):
             self.abort(401)
  
 def generate_pdf(html_data):
-    #html_data = '<b>your HTML data</b>'
     html_data = html_data.encode('utf8')
     html_data = StringIO(html_data)
 
