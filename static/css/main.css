@@ -35,6 +35,10 @@ html, body {
     position: relative;
 }
 
+.container>.row, .container-fluid>.row {
+    padding-bottom: 20px;
+}
+
 .no-animation {
     -webkit-transition: none;
     -moz-transition: none;
@@ -97,6 +101,14 @@ html, body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+#menu .sidebar {
+    margin-top: 5px;
+}
+
+.nav > li > a {
+    padding: 8px 15px;
 }
 
 #logout-button {

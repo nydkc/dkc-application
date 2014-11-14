@@ -48,6 +48,14 @@ mark, .mark {
     margin-top: 3px;
 }
 
+.table {
+    margin-bottom: 10px;
+}
+
+hr.separator {
+    margin-top: 80px;
+    border-top: 4px double #ccc;
+}
 
 @media screen and (min-width: 768px) {
     .dl-horizontal.profile dt {
