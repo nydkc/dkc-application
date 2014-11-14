@@ -421,18 +421,96 @@ class ApplicationSubmit(BaseHandler):
 
     @user_required
     def get(self):
-        self._serve_page()
+        self._serve_page(self._not_complete())
 
     @user_required
     def post(self):
         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
         application = application_key.get()
-        application.submit_time = datetime.now()
-        application.put()
-        self.redirect('/')
 
-    def _serve_page(self):
+        not_complete = self._not_complete()
+        if True in not_complete.values(): # If there is an error
+            self.response.set_status(204)
+            self._serve_page(errors=self._not_complete())
+        else:
+            application.submit_time = datetime.now()
+            application.put()
+            self.redirect('/')
+
+    def _serve_page(self, errors={'profile':False, 'personal_statement':False, 'projects':False, 'involvement':False, 'activities':False, 'other':False, 'verification':False}):
         template_values = {
-            'application_url': '/application/submit'
+            'application_url': '/application/submit',
+            'profile': errors['profile'],
+            'personal_statement': errors['personal_statement'],
+            'projects': errors['projects'],
+            'involvement': errors['involvement'],
+            'activites': errors['activities'],
+            'other': errors['other'],
+            'verification': errors['verification']
         }
         self.render_application('application-submit.html', template_values)
+
+    def _not_complete(self):
+        applicant = self.user
+        application = applicant.application.get()
+
+        not_complete_profile = (applicant.first_name == '' or applicant.first_name == None)\
+                or (applicant.last_name == '' or applicant.last_name == None)\
+                or (applicant.school == '' or applicant.school == None)\
+                or (applicant.division == '' or applicant.division == None)\
+                or (applicant.ltg == '' or applicant.ltg == None)\
+                or (applicant.club_president == '' or applicant.club_president == None)\
+                or (applicant.club_president_phone_number == '' or applicant.club_president_phone_number == None)\
+                or (applicant.faculty_advisor == '' or applicant.faculty_advisor == None)\
+                or (applicant.faculty_advisor_phone_number == '' or applicant.faculty_advisor_phone_number == None)\
+
+        not_complete_personal_statement = (application.personal_statement == '' or application.personal_statement == None)
+
+        not_complete_projects = (application.international_projects == None or len(application.international_projects) == 0)\
+                and (application.district_projects == None or len(application.district_projects) == 0)\
+                and (application.divisionals == None or len(application.divisionals) == 0)\
+                and (application.division_projects == None or len(application.division_projects) == 0)\
+                    and (application.scoring_reason_two == '' or application.scoring_reason_two == None)
+
+        not_complete_involvement = (application.key_club_week_mon == '' or application.key_club_week_mon == None)\
+                and (application.key_club_week_tue == '' or application.key_club_week_tue == None)\
+                and (application.key_club_week_wed == '' or application.key_club_week_wed == None)\
+                and (application.key_club_week_thu == '' or application.key_club_week_thu == None)\
+                and (application.key_club_week_fri == '' or application.key_club_week_fri == None)\
+                and (application.attendance_dtc == None)\
+                and (application.attendance_fall_rally == None)\
+                and (application.attendance_kamp_kiwanis == None)\
+                and (application.attendance_key_leader == None)\
+                and (application.attendance_ltc == None)\
+                and (application.attendance_icon == None)\
+                and (application.positions == '' or application.positions == None)\
+                    and (application.scoring_reason_three == '' or application.scoring_reason_three == None)
+
+        not_complete_activities = (application.kiwanis_one_day.event == None or len(application.kiwanis_one_day.event) == 0)\
+                and (application.k_family_projects.events == None or len(application.k_family_projects.events) == 0)\
+                and (application.interclub_projects.events == None or len(application.interclub_projects.events) == 0)\
+                and (application.interclub_projects.events == None or len(application.interclub_projects.events) == 0)\
+                and (application.advocacy_cause == None or application.advocacy_cause == '')\
+                and (application.committee == None or application.committee == '')\
+                and (application.divisional_newsletter == None)\
+                and (application.district_newsletter == None)\
+                and (application.district_website == None)\
+                and (application.other_projects.events == None or len(application.other_projects.events) == 0)\
+
+        not_complete_verification = not (application.verification_ltg\
+                and application.verification_club_president\
+                and application.verification_faculty_advisor\
+                and application.verification_applicant)
+
+        not_complete_other = (not_complete_projects
+                or not_complete_personal_statement\
+                or not_complete_involvement\
+                or not_complete_activities)
+
+        return {'profile': not_complete_profile,
+                'personal_statement': not_complete_personal_statement,
+                'projects': not_complete_projects,
+                'involvement': not_complete_involvement,
+                'activities': not_complete_activities,
+                'other': not_complete_other,
+                'verification': not_complete_verification}
