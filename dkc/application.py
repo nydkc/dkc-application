@@ -289,7 +289,7 @@ class ApplicationActivities(BaseHandler):
         }
         self.render_application('application-activities.html', template_values)
 
-class ApplicationScoring(BaseHandler):
+class ApplicationOther(BaseHandler):
 
     @user_required
     def get(self):
@@ -317,9 +317,9 @@ class ApplicationScoring(BaseHandler):
 
     def _serve_page(self):
         template_values = {
-            'application_url': '/application/scoring'
+            'application_url': '/application/other'
         }
-        self.render_application('application-scoring.html', template_values)
+        self.render_application('application-other.html', template_values)
 
 class ApplicationVerification(BaseHandler):
 

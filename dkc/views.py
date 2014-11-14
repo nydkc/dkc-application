@@ -22,7 +22,7 @@ application = webapp2.WSGIApplication([
     ('/application/involvement', ApplicationInvolvement),
     ('/application/activities', ApplicationActivities),
     ('/application/activities/upload', ApplicationActivitiesUploadHandler),
-    ('/application/scoring', ApplicationScoring),
+    ('/application/other', ApplicationOther),
     ('/application/verification', ApplicationVerification),
     ('/verification_success', ApplicationVerificationHandler),
     ('/application/profile', ApplicationProfile),
