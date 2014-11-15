@@ -20,6 +20,9 @@ Hosted on Google App Engine: [http://dkc-app.nydkc.org](http://dkc-app.nydkc.org
     - Access control for logged in users
     - Block modification after submission
     - Download application as PDF
+- Admin Interface
+    - View applications
+    - Search users based on profile information
 
 ## Requirements
 
