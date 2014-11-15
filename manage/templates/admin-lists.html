@@ -1,0 +1,12 @@
+{% extends "admin.html" %}
+{% block admin %}
+<div class="page-header">
+    <h2>Lists</h2>
+</div>
+
+<h4>Emails</h4>
+{% for email in emails %}
+{{ email }}<br>
+{% endfor %}
+
+{% endblock %}

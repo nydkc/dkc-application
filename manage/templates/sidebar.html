@@ -17,6 +17,9 @@
             <li{% if admin_url == '/admin/search' %} class="active"{% endif %}>
                 <a href="/admin/search">Search</a>
             </li>
+            <li{% if admin_url == '/admin/lists' %} class="active"{% endif %}>
+                <a href="/admin/lists">Lists</a>
+            </li>
             {% if '/admin/show/' in admin_url %}
             <h5 class="text-center">Application of <span class="text-nowrap">{{ applicant.first_name }} {{ applicant.last_name }}</span></h5>
             <div class="application-sections">

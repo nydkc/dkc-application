@@ -2,6 +2,7 @@ import os, webapp2, jinja2
 from google.appengine.api import users, memcache
 from dkc import jinja_functions
 from dkc.models import User
+import query
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
@@ -38,7 +39,6 @@ class AdminBaseHandler(webapp2.RequestHandler):
     def get_applicants(self):
         applicants = memcache.get('all_applicants')
         if not applicants:
-            query = User.query().order(User.division, User.first_name, User.last_name)
-            applicants = query.fetch()
+            applicants = query.get_all_applicants()
             memcache.add(key='all_applicants', value=applicants, time=900)
         return applicants

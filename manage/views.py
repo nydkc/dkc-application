@@ -2,7 +2,8 @@ import os, webapp2, jinja2
 from google.appengine.api import users
 from manage import *
 from admin import *
-from show import ShowHandler
+from show import *
+from lists import *
 
 class MainPage(webapp2.RequestHandler):
 
@@ -17,8 +18,9 @@ class MainPage(webapp2.RequestHandler):
             self.response.out.write(template.render(template_values))
 
 application = webapp2.WSGIApplication([
-    ('/admin/overview', AdminOverviewHandler),
-    ('/admin/search', AdminSearchHandler),
+    ('/admin/overview', OverviewHandler),
+    ('/admin/search', SearchHandler),
+    ('/admin/lists', ListsHandler),
     ('/admin/show/([^/]+)?', ShowHandler),
     ('/admin.*', MainPage)
 ], debug=True)

@@ -2,7 +2,7 @@ from manage import *
 from dkc.models import User
 from google.appengine.api import memcache
 
-class AdminOverviewHandler(AdminBaseHandler):
+class OverviewHandler(AdminBaseHandler):
 
     def get(self):
         applicants = self.get_applicants()
@@ -12,7 +12,7 @@ class AdminOverviewHandler(AdminBaseHandler):
         }
         self.render_template('admin-overview.html', template_values)
 
-class AdminSearchHandler(AdminBaseHandler):
+class SearchHandler(AdminBaseHandler):
 
     def get(self):
         search = self.request.get('q')
