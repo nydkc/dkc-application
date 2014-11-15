@@ -347,7 +347,7 @@ class ApplicationVerification(BaseHandler):
 
             verification_email = mail.EmailMessage(sender="NYDKC Awards Committee <verification@dkc-app.appspotmail.com>",
                                                    subject="Distinguished Key Clubber Application Verification for %s %s" % (applicant.first_name, applicant.last_name),
-                                                   reply_to="dkc.applications@gmail.com",
+                                                   reply_to="dkc.applications@nydkc.org",
                                                    body="""
 You've been requested to verify the application of %s %s
 
