@@ -15,12 +15,29 @@ body {
     margin-top: 20px;
 }
 
-.search-result {
+.search-results {
     margin-top: 30px;
 }
 
-.search-result a {
+.search-results .result:hover {
+    border-radius: 3px;
+    background-color: #f8f8f8;
+}
+
+.search-results a {
     text-decoration: none;
+}
+
+.search-results .result h4 {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+}
+
+.search-results .result .dl-horizontal {
+    margin: 0;
+    padding-bottom: 10px;
 }
 
 mark, .mark {

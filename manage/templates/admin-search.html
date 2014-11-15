@@ -14,8 +14,9 @@
 </form>
 
 {% if q %}
-<div class="search-result">
+<div class="search-results">
     {% for applicant in applicants %}
+    <div class="result">
         <a href="/admin/show/{{ applicant.email }}">
             <h4>{{ applicant.first_name }} {{ applicant.last_name }}</h4>
             <dl class="dl-horizontal">
@@ -36,10 +37,11 @@
                     {% endif %}
                 {% endfor %}
             </dl>
-            <hr>
         </a>
-    {% endfor %}
     </div>
+    <hr>
+    {% endfor %}
+</div>
 {% endif %}
 
 {% endblock %}

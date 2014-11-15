@@ -1,9 +1,10 @@
 import os, webapp2, jinja2
 from google.appengine.api import users
 from manage import *
-from admin import *
-from show import *
-from lists import *
+from admin import OverviewHandler
+from search import SearchHandler
+from lists import ListsHandler
+from show import ShowHandler
 
 class MainPage(webapp2.RequestHandler):
 
