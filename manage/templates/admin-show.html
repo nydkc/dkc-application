@@ -345,14 +345,14 @@
     <h3 id="other">Other &amp; Scoring</h3>
 </div>
 
-{% if early_submission %}
-<p class="text-success">
+{% if application.early_submission %}
+<p class="text-success lead">
     Extra 5 points for early submission!!! <span class="glyphicon glyphicon-thumbs-up"></span>
-    <br><strong>Apply to section {{ application.early_submission_points }}.</strong>
+    <br><strong>Apply to section {{ application.early_submission_points }}.</strong> (If the section is -1, then the applicant did not specify a section)
 </p>
 {% endif %}
 
-<p><strong>If there is a recommendation, apply to section {{ application.recommender_points }}.</strong></p>
+<p class="lead"><strong>If there is a recommendation, apply to section {{ application.recommender_points }}.</strong></p>
 <h5>Other Materials ({{ application.other_materials|length }})</h5>
 <table class="table table-condensed table-hover">
     <tbody>
