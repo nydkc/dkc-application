@@ -305,7 +305,11 @@ class ApplicationOther(BaseHandler):
             self._serve_page()
             return
 
-        application.early_submission_points = self.request.get('early-submission-points')
+        if self.request.get('early-submission-checkbox'):
+            application.early_submission_points = self.request.get('early-submission-points')
+        else:
+            application.early_submission_points = "-1"
+
         application.recommender_points = self.request.get('recommender-points')
 
         application.scoring_reason_two = self.request.get('scoring-reason-two')

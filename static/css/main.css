@@ -68,6 +68,10 @@ html, body {
     user-select: none;
 }
 
+strong label {
+    font-weight: 700 !important;
+}
+
 .clickable-row td:not(:last-child) {
     cursor: pointer;
 }

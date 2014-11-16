@@ -125,7 +125,7 @@ setInterval(function() {
 
 {% macro select_horizontal(name, label='', selected, choices, disabled='', size=4) -%}
 <div class="form-group">
-    <label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>
+    {% if label != '' %}<label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>{% endif %}
     <div class="col-md-{{ 12 - size }}">
         <select class="form-control" id="{{ name }}" name="{{ name }}" {{ disabled }}>
         {% for choice in choices %}
