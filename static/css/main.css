@@ -105,6 +105,7 @@ strong label {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-height: 30px;
 }
 
 #menu .sidebar {
