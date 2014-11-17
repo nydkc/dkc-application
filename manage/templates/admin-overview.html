@@ -4,7 +4,7 @@
     <h2>Overview</h2>
 </div>
 
-<p>There are {{ applicants|length }} applicants.</p>
+<p class="lead">There are <strong>{{ applicants|length }}</strong> applicants.</p>
 <div class="table-responsive">
     <table class="table table-condensed table-hover table-striped">
         <thead>
@@ -13,6 +13,7 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
+                <th>Submitted Early?</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,11 @@
                 <td>{{ user.first_name }}</td>
                 <td>{{ user.last_name }}</td>
                 <td>{{ user.email }}</td>
+                {% if applications[loop.index0].early_submission %}
+                    <td class="text-success"><span class="glyphicon glyphicon-ok"></span></td>
+                {% else %}
+                    <td class="text-danger"><span class="glyphicon glyphicon-remove"></span></td>
+                {% endif %}
             </td>
             {% endfor %}
         </tbody>
