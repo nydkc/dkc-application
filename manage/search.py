@@ -1,11 +1,12 @@
 from manage import *
 from dkc.models import User
+import query
 
 class SearchHandler(AdminBaseHandler):
 
     def get(self):
         search = self.request.get('q')
-        applicants = self.get_applicants()
+        applicants = query.get_all_applicants()
         results = []
         for applicant in applicants:
             if self.match(applicant, search):
