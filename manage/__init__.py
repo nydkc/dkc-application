@@ -35,10 +35,3 @@ class AdminBaseHandler(webapp2.RequestHandler):
             'message': message
         }
         self.render_template('message.html', template_values)
-
-    def get_applicants(self):
-        applicants = memcache.get('all_applicants')
-        if not applicants:
-            applicants = query.get_all_applicants()
-            memcache.add(key='all_applicants', value=applicants, time=900)
-        return applicants

@@ -1,13 +1,12 @@
 from manage import *
 from dkc.models import User
-from google.appengine.ext import ndb
+import query
 
 class OverviewHandler(AdminBaseHandler):
 
     def get(self):
-        applicants = self.get_applicants()
-        applications_keys = [a.application for a in applicants]
-        applications = ndb.get_multi(applications_keys)
+        applicants = query.get_all_applicants()
+        applications = query.get_all_applications()
         template_values = {
             'applicants': applicants,
             'applications': applications,
