@@ -22,7 +22,7 @@ Hosted on Google App Engine: [http://dkc-app.nydkc.org](http://dkc-app.nydkc.org
     - Download application as PDF
 - Admin Interface
     - View applications
-    - Search users based on profile information
+    - Search users by profile information
 
 ## Requirements
 
@@ -34,4 +34,6 @@ Hosted on Google App Engine: [http://dkc-app.nydkc.org](http://dkc-app.nydkc.org
 - [xhtml2pdf](https://github.com/chrisglass/xhtml2pdf)
     - Install required dependencies using pip: `pip install -r requirements.txt -t lib`
 
-Note: There is a bug with Google App Engine's Push-To-Deploy, so to get the PDF Generation to work correctly, the application must be deployed using the GAE App.
+## Notes
+- There is a bug with Google App Engine's Push-To-Deploy, so to get the PDF Generation to work correctly, the application must be deployed using the GAE App.
+- Backup datastore using `appcfg.py download_data --email=INSERT_EMAIL_HERE --url=http://dkc-app.appspot.com/_ah/remote_api --filename=backup`
