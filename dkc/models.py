@@ -38,7 +38,7 @@ class User(webapp2_extras.appengine.auth.models.User):
     zip_code = ndb.StringProperty(indexed=False)
     phone_number = ndb.StringProperty(indexed=False)
     division = ndb.StringProperty()
-    ltg = ndb.StringProperty()
+    ltg = ndb.StringProperty(indexed=False)
 
     school = ndb.StringProperty(indexed=False)
     school_address = ndb.StringProperty(indexed=False)

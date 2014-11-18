@@ -38,6 +38,8 @@ def splitRegex(value, seperator_pattern):
     return re.split(seperator_pattern, value)
 
 def search(value, search):
+    if value == None: # Hack to take care of Nonetype
+        value = "None"
     value_lower = value.lower()
     search_lower = search.lower()
     found_indexes = []
