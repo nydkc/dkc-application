@@ -1,0 +1,65 @@
+<div class="page-header">
+    <h3>Profile</h3>
+</div>
+
+<table class="profile-table">
+    <tbody>
+        <tr>
+            <td><b>Name</b></td>
+            <td>{{ applicant.first_name }} {{ applicant.last_name }}</td>
+        </tr>
+        <tr>
+            <td><b>Grade</b></td>
+            <td>{{ applicant.grade }}</td>
+        </tr>
+        <tr>
+            <td><b>Address</b></td>
+            <td>{{ applicant.address }}
+                <br>{{ applicant.city }} {{ applicant.zip_code }}
+            </td>
+        </tr>
+        <tr>
+            <td><b>Phone Number</b></td>
+            <td>{{ applicant.phone_number }}</td>
+        </tr>
+        <tr>
+            <td><b>Email</b></td>
+            <td>{{ applicant.email }}</td>
+        </tr>
+        <tr>
+            <td><b>Division</b></td>
+            <td>{{ applicant.division }}</td>
+        </tr>
+        <tr>
+            <td><b>Lieutenant Governor</b></td>
+            <td>{{ applicant.ltg }}</td>
+        </tr>
+        <tr>
+            <td><b>School</b></td>
+            <td>{{ applicant.school }}</td>
+        </tr>
+        <tr>
+            <td><b>School Address</b></td>
+            <td>{{ applicant.school_address }}
+                <br>{{ applicant.school_city }} {{ applicant.school_zip_code }}
+            </td>
+        </tr>
+        <tr>
+            <td><b>Club President</b></td>
+            <td>{{ applicant.club_president }}</td>
+        </tr>
+        <tr>
+            <td><b>Club President Phone Number</b></td>
+            <td>{{ applicant.club_president_phone_number }}</td>
+        </tr>
+        <tr>
+            <td><b>Faculty Advisor</b></td>
+            <td>{{ applicant.faculty_advisor }}</td>
+        </tr>
+        <tr>
+            <td><b>Faculty Advisor Phone Number</b></td>
+            <td>{{ applicant.faculty_advisor_phone_number }}</td>
+        </tr>
+    </tbody>
+</table>
+

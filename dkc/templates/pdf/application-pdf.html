@@ -1,6 +1,7 @@
 <html>
 <head>
 <style>
+
 @font-face {
     font-family: "Century Gothic";
     src: url({{ STATIC_DIR }}/fonts/century-gothic.ttf);
@@ -8,6 +9,22 @@
 @font-face {
     font-family: "Myriad Pro";
     src: url({{ STATIC_DIR }}/fonts/myriad-pro.ttf);
+}
+@font-face {
+    font-family: "Myriad Pro";
+    src: url({{ STATIC_DIR }}/fonts/myriad-pro-bold.ttf);
+    font-weight: bold;
+}
+@font-face {
+    font-family: "Myriad Pro";
+    src: url({{ STATIC_DIR }}/fonts/myriad-pro-it.ttf);
+    font-style: italic;
+}
+@font-face {
+    font-family: "Myriad Pro";
+    src: url({{ STATIC_DIR }}/fonts/myriad-pro-boldit.ttf);
+    font-weight: bold;
+    font-style: italic;
 }
 
 body {
@@ -35,6 +52,11 @@ h1, h2, h3, h4, h5, h6 {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.page-header {
+    color: #00aeef;
+    border-bottom: 1pt solid #ccc;
 }
 
 /* Letter size is 612pt x 792pt */
@@ -77,6 +99,20 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     font-size: 11pt;
 }
 
+.profile-table td {
+    padding: 4.6pt;
+}
+.profile-table td:first-child {
+    width: 200pt;
+}
+
+.personal-statement-prompt {
+    margin-bottom: 6pt;
+}
+.personal-statement-essay {
+    font-size: 11pt;
+}
+
 </style>
 </head>
 
@@ -95,13 +131,20 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     </div>
 
     <!-- Content for Static Frame 'header_frame' -->
-    <div id="header_content" class="header text-center">{{ applicant.first_name}} {{ applicant.last_name }}&nbsp;&nbsp;|&nbsp;&nbsp;2014-2015 Distinguished Key Clubber Application</div>
+    <div id="header_content" class="header text-center">{{ applicant.first_name }} {{ applicant.last_name }}&nbsp;&nbsp;|&nbsp;&nbsp;2014-2015 Distinguished Key Clubber Application</div>
 
     <!-- Content for Static Frame 'footer_frame' -->
     <div id="footer_content" class="footer text-center">Page <pdf:pagenumber> of <pdf:pagecount></div>
 
     <pdf:nexttemplate name="page_template" />
 
+    {% include "pdf/application_pdf_profile.html" %}
+
+    <pdf:nextpage />
+
+    {% include "pdf/application_pdf_personal_statement.html" %}
+
+    <pdf:nextpage />
     <p>{{ application }}</p>
 </body>
 </html>

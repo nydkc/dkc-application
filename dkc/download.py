@@ -15,7 +15,7 @@ class PDFGeneration(BaseHandler):
                 'application': application,
                 'STATIC_DIR': os.path.join(os.path.dirname(__file__), '../static')
             }
-            template = JINJA_ENVIRONMENT.get_template('application-pdf.html')
+            template = JINJA_ENVIRONMENT.get_template('pdf/application-pdf.html')
             html = template.render(template_values)
             #self.response.write(html)
             self.response.headers['content-type'] = 'application/pdf'
