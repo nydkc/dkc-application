@@ -16,10 +16,11 @@ def get_all_applicants():
         memcache.add(key='all_applicants', value=applicants, time=600)
     return applicants
 
-def get_all_applications():
+def get_all_applications(applicants=None):
     applications = memcache.get('all_applications')
     if not applications:
-        applicants = get_all_applicants()
+        if applicants == None:
+            applicants = get_all_applicants()
         applications_keys = [a.application for a in applicants]
         applications = ndb.get_multi(applications_keys)
         memcache.add(key='all_applications', value=applications, time=600)
