@@ -2,6 +2,7 @@
     <h3>Part 2: International, District &amp; Divisional Projects</h3>
 </div>
 
+<div class="section">
 <h6>Sections 1, 2, 3: International Projects ({{ application.international_projects|length}} listed below)</h6>
 {% for project in application.international_projects %}
 <div class="project">
@@ -10,8 +11,12 @@
     <strong>Description:</strong> {{ project.description }}
 </div>
 {% endfor %}
+</div>
 
-<h6 class="section">Section 4: District Projects ({{ application.district_projects|length }} listed below)</h6>
+<div class="separator">&nbsp;</div>
+
+<div class="section">
+<h6>Section 4: District Projects ({{ application.district_projects|length }} listed below)</h6>
 {% for project in application.district_projects %}
 <div class="project">
     <strong>Event</strong>: {{ project.event }}<br>
@@ -19,8 +24,12 @@
     <strong>Description</strong>: {{ project.description }}
 </div>
 {% endfor %}
+</div>
 
-<h6 class="section">Section 5: Divisional Involvement</h6>
+<div class="separator">&nbsp;</div>
+
+<div class="section">
+<h6>Section 5: Divisional Involvement</h6>
 <i>Attendance at Divisional Meeting</i>
 <table class="divisional">
     <tbody>
@@ -42,5 +51,4 @@
     </div>
 </div>
 {% endfor %}
-
-
+</div>

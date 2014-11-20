@@ -118,7 +118,16 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     padding-bottom: 0;
 }
 .section {
+    -pdf-keep-with-next: true;
+}
+.separator {
+    -pdf-keep-with-next: false;
+}
+.section h6 {
     margin-top: 36pt;
+}
+.section h6:first-child {
+    margin-top: 0pt;
 }
 .project {
     margin-bottom: 10pt;
