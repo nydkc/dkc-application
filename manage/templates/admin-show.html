@@ -129,64 +129,68 @@
 </div>
 
 <h4>Section 1: Key Club Week Participation (Max 15 Points, 3 Point per Day)</h4>
-<table class="table table-bordered">
-    <tbody>
-        <tr>
-            <td class="col-xs-2">Monday</td>
-            <td>{{ application.key_club_week_mon }}</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2">Tuesday</td>
-            <td>{{ application.key_club_week_tue }}</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2">Wednesday</td>
-            <td>{{ application.key_club_week_wed }}</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2">Thursday</td>
-            <td>{{ application.key_club_week_thu }}</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2">Friday</td>
-            <td>{{ application.key_club_week_fri }}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-xs-2">Monday</td>
+                <td>{{ application.key_club_week_mon }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2">Tuesday</td>
+                <td>{{ application.key_club_week_tue }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2">Wednesday</td>
+                <td>{{ application.key_club_week_wed }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2">Thursday</td>
+                <td>{{ application.key_club_week_thu }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2">Friday</td>
+                <td>{{ application.key_club_week_fri }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <div class="clearfix">
     <hr class="col-xs-6 col-xs-offset-3">
 </div>
 
 <h4>Section 2: Attendance at Key Club Functions</h4>
-<table class="table table-bordered">
-    <tbody>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.attendance_dtc %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>(5 points) Divisional Training Conference/Personal Training</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.attendance_fall_rally %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>(5 points) Fall Rally</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.attendance_kamp_kiwanis %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>(5 points) Kamp Kiwanis</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.attendance_key_leader %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>(5 points) Key Leader</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.attendance_ltc %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>(7 points) Leadership Training Conference</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.attendance_icon %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>(8 points) International Convention</td>
-        </tr>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_dtc %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Divisional Training Conference/Personal Training</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_fall_rally %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Fall Rally</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_kamp_kiwanis %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Kamp Kiwanis</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_key_leader %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Key Leader</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_ltc %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(7 points) Leadership Training Conference</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_icon %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(8 points) International Convention</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <div class="clearfix">
     <hr class="col-xs-6 col-xs-offset-3">
@@ -261,16 +265,18 @@
 </div>
 
 <h5>Advocacy Materials ({{ application.advocacy_materials|length }})</h5>
-<table class="table table-condensed table-hover">
-    <tbody>
-    {% for file in application.advocacy_materials|getblobdata %}
-        <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
-            <td>{{ file.filename|e }}</td>
-            <td class="text-nowrap">{{ file.size|byteconvert }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-condensed table-hover">
+        <tbody>
+        {% for file in application.advocacy_materials|getblobdata %}
+            <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
+                <td>{{ file.filename|e }}</td>
+                <td class="text-nowrap">{{ file.size|byteconvert }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 <div class="clearfix">
     <hr class="col-xs-6 col-xs-offset-3">
@@ -294,32 +300,34 @@
 </div>
 
 <h4>Section 5: Newsletter Article Submission (Max 5 Points)</h4>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th></th>
-            <th>Source</th>
-            <th>Information/Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.divisional_newsletter %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>(1 Point) Divisional Newsletter</td>
-            <td>{{ application.divisional_newsletter_info }}</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.district_newsletter %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>(2 Points) District Newsletter (The Empire Key)</td>
-            <td>{{ application.district_newsletter_info }}</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.district_website %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>(2 Points) District Website</td>
-            <td>{{ application.district_website_info }}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Source</th>
+                <th>Information/Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.divisional_newsletter %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(1 Point) Divisional Newsletter</td>
+                <td>{{ application.divisional_newsletter_info }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.district_newsletter %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(2 Points) District Newsletter (The Empire Key)</td>
+                <td>{{ application.district_newsletter_info }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.district_website %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(2 Points) District Website</td>
+                <td>{{ application.district_website_info }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <div class="clearfix">
     <hr class="col-xs-6 col-xs-offset-3">
@@ -360,16 +368,18 @@
 
 <p class="lead"><strong>If there is a recommendation, apply to section {{ application.recommender_points }}.</strong></p>
 <h5>Other Materials ({{ application.other_materials|length }})</h5>
-<table class="table table-condensed table-hover">
-    <tbody>
-    {% for file in application.other_materials|getblobdata %}
-        <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
-            <td>{{ file.filename|e }}</td>
-            <td class="text-nowrap">{{ file.size|byteconvert }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-condensed table-hover">
+        <tbody>
+        {% for file in application.other_materials|getblobdata %}
+            <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
+                <td>{{ file.filename|e }}</td>
+                <td class="text-nowrap">{{ file.size|byteconvert }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 <hr class="separator">
 
@@ -377,37 +387,39 @@
     <h3 id="verification">Verification</h3>
 </div>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th></th>
-            <th>Type of Verification</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.verification_ltg %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>LTG Verification</td>
-            <td>{{ application.verification_ltg_email }}</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.verification_club_president %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>Club President Verification</td>
-            <td>{{ application.verification_club_president_email }}</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.verification_faculty_advisor %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>Faculty Advisor Verfication</td>
-            <td>{{ application.verification_faculty_advisor_email }}</td>
-        </tr>
-        <tr>
-            <td class="col-xs-2 text-center">{% if application.verification_applicant %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td>Applicant Verification</td>
-            <td>Verified on {{ application.verification_applicant_date|datetimeformat }}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Type of Verification</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.verification_ltg %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>LTG Verification</td>
+                <td>{{ application.verification_ltg_email }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.verification_club_president %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>Club President Verification</td>
+                <td>{{ application.verification_club_president_email }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.verification_faculty_advisor %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>Faculty Advisor Verfication</td>
+                <td>{{ application.verification_faculty_advisor_email }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.verification_applicant %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>Applicant Verification</td>
+                <td>Verified on {{ application.verification_applicant_date|datetimeformat }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}
 {% block admin_scripts %}
