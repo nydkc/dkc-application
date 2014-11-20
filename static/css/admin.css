@@ -15,6 +15,24 @@ body {
     margin-top: 20px;
 }
 
+.download-link a {
+    float: right;
+    margin-top: 2px;
+    padding: 7px;
+    text-decoration: none;
+    font-size: 70%;
+    background-color: #00aeef;
+    color: #fff;
+    -webkit-transition: all .1s ease-in-out;
+    -o-transition: all .1s ease-in-out;
+    transition: all .1s ease-in-out
+}
+
+.download-link a:hover {
+    background-color: #fff;
+    color: #00aeef;
+}
+
 .search-results {
     margin-top: 30px;
 }

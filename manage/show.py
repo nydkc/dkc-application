@@ -11,6 +11,7 @@ class ShowHandler(AdminBaseHandler):
         template_values = {
             'applicant': applicant,
             'application': application,
+            'applicant_id': applicant.get_id(),
             'admin_url': '/admin/show/' + email
         }
         self.render_template('admin-show.html', template_values)

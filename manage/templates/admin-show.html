@@ -1,7 +1,9 @@
 {% extends "admin.html" %}
 {% block admin %}
 <div class="page-header">
-    <h2>{{ applicant.first_name }} {{ applicant.last_name }}</h2>
+    <h2>{{ applicant.first_name }} {{ applicant.last_name }}
+        <small class="download-link hidden-xs"><a href="/application/download/pdf/{{ applicant_id }}"><span class="glyphicon glyphicon-print"></span> Download PDF</a></small>
+    </h2>
 </div>
 
 {% if application.early_submission %}
