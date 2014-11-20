@@ -113,6 +113,17 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     font-size: 11pt;
 }
 
+.body h6 {
+    margin-bottom: 4pt;
+    padding-bottom: 0;
+}
+.section {
+    margin-top: 36pt;
+}
+.project {
+    margin-bottom: 10pt;
+}
+
 </style>
 </head>
 
@@ -138,13 +149,16 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
 
     <pdf:nexttemplate name="page_template" />
 
-    {% include "pdf/application_pdf_profile.html" %}
+    {% include "pdf/application-pdf_profile.html" %}
 
     <pdf:nextpage />
 
-    {% include "pdf/application_pdf_personal_statement.html" %}
+    {% include "pdf/application-pdf_personal_statement.html" %}
 
     <pdf:nextpage />
+
+    {% include "pdf/application-pdf_projects.html" %}
+
     <p>{{ application }}</p>
 </body>
 </html>
