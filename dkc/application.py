@@ -310,7 +310,10 @@ class ApplicationOther(BaseHandler):
         else:
             application.early_submission_points = "-1"
 
-        application.recommender_points = self.request.get('recommender-points')
+        if self.request.get('recommender-checkbox'):
+            application.recommender_points = self.request.get('recommender-points')
+        else:
+            application.recommender_points = "-1"
 
         application.scoring_reason_two = self.request.get('scoring-reason-two')
         application.scoring_reason_three = self.request.get('scoring-reason-three')
