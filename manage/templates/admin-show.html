@@ -209,6 +209,7 @@
 
 <h4>Section 1: K-Family Project</h4>
 <u>Kiwanis One Day Event (5 Points Max, 5 Points per Event)</u>
+{% if application.kiwanis_one_day.event != '' %}
 <div class="row project">
     <div class="col-md-12">
         <strong>Event</strong>: {{ application.kiwanis_one_day.event }}<br>
@@ -218,6 +219,7 @@
         <strong>Description</strong>: {{ application.kiwanis_one_day.description }}
     </div>
 </div>
+{% endif %}
 <div style="height: 10px;"></div>
 <u>K-Family Service Projects (16 Points Max, 4 Point per Event)</u>
 {% for project in application.k_family_projects %}

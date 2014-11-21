@@ -5,4 +5,4 @@
 {% set personal_statement_questions = ["How has Key Club impacted your life? Describe a pivotal moment in your Key Club experience as part of your answer.", "What makes Key Club a unique organization? How has Key Club affected your home, school, or community?", "Why did you join Key Club? How has your perspective on Key Club changed since you joined?", "How do you describe Key Club to a non-Key Club member?"] %}
 
 <div class="personal-statement-prompt"><i><b>Topic:</b> {{ personal_statement_questions[application.personal_statement_choice|int-1] }}</i></div>
-<div class="personal-statement-essay">{{ application.personal_statement|e|replace('\n', '<br><br>') }}</div>
+<div class="personal-statement-essay">{{ application.personal_statement|e|replace('\n', '<br>') }}</div>

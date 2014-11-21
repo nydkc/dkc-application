@@ -59,6 +59,13 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: 1pt solid #ccc;
 }
 
+.text-success {
+    color: #3c763d;
+}
+.text-danger {
+    color: #a94442;
+}
+
 /* Letter size is 612pt x 792pt */
 @page {
     size: letter portrait;
@@ -102,9 +109,6 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
 .profile-table td {
     padding: 4.6pt;
 }
-.profile-table td:first-child {
-    width: 200pt;
-}
 
 .personal-statement-prompt {
     margin-bottom: 6pt;
@@ -117,7 +121,7 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     margin-bottom: 4pt;
     padding-bottom: 0;
 }
-.section {
+.section.together {
     -pdf-keep-with-next: true;
 }
 .separator {
@@ -125,12 +129,32 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
 }
 .section h6 {
     margin-top: 36pt;
+    color: #003366;
 }
 .section h6:first-child {
     margin-top: 0pt;
 }
 .project {
     margin-bottom: 10pt;
+}
+
+.key-club-week-table td {
+    padding: 2pt 4.6pt;
+}
+.key-club-week-table {
+    margin-bottom: 8pt;
+}
+.attendance-table {
+    padding-left: 4.6pt;
+    margin-bottom: 8pt;
+}
+
+.newsletter-submission-table {
+    padding-left: 4.6pt;
+    margin-bottom: 8pt;
+}
+.newsletter-submission-table th {
+    text-align: left;
 }
 
 </style>
@@ -168,6 +192,13 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
 
     {% include "pdf/application-pdf_projects.html" %}
 
-    <p>{{ application }}</p>
+    <pdf:nextpage />
+
+    {% include "pdf/application-pdf_involvement.html" %}
+
+    <pdf:nextpage />
+
+    {% include "pdf/application-pdf_activities.html" %}
+    <!-- <p>{{ application }}</p> -->
 </body>
 </html>
