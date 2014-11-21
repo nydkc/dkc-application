@@ -121,7 +121,7 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     margin-bottom: 4pt;
     padding-bottom: 0;
 }
-.section.together {
+.together {
     -pdf-keep-with-next: true;
 }
 .separator {
@@ -155,6 +155,17 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
 }
 .newsletter-submission-table th {
     text-align: left;
+}
+
+.verification-table {
+    padding-left: 4.6pt;
+}
+.verification-table th {
+    text-align: left;
+}
+.verification-table th, .verification-table td {
+    padding-top: 3pt;
+    padding-bottom: 3pt;
 }
 
 </style>
@@ -199,6 +210,10 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     <pdf:nextpage />
 
     {% include "pdf/application-pdf_activities.html" %}
+
+    <pdf:nextpage />
+
+    {% include "pdf/application-pdf_verification.html" %}
     <!-- <p>{{ application }}</p> -->
 </body>
 </html>

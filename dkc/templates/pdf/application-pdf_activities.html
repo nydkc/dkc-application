@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h3>Projects, Advocacy &amp; Newsletters (60 Points)</h3>
+    <h3>Part 4: Projects, Advocacy &amp; Newsletters</h3>
 </div>
 
 <div class="section">
@@ -24,8 +24,8 @@
 
 <div class="separator">&nbsp;</div>
 
-<div class="section together">
-<h6>Section 2: Interclub Event</h6>
+<div class="section">
+<h6>Section 2: Interclub Events ({{ application.interclub_projects|length }} listed below)</h6>
 {% for project in application.interclub_projects %}
 <div class="project">
     <strong>Event</strong>: {{ project.event }}<br>
@@ -37,7 +37,7 @@
 
 <div class="separator">&nbsp;</div>
 
-<div class="section together">
+<div class="section">
 <h6>Section 3: Advocacy</h6>
 {% if application.advocacy_cause %}
 <div class="project">
@@ -49,7 +49,7 @@
 
 <div class="separator">&nbsp;</div>
 
-<div class="section together">
+<div class="section">
 <h6>Section 4: Committee Involvement</h6>
 {% if application.committee %}
 <div class="project">
@@ -62,7 +62,7 @@
 
 <div class="separator">&nbsp;</div>
 
-<div class="section together">
+<div class="section">
 <h6>Section 5: Newsletter Article Submission</h6>
 <table class="newsletter-submission-table">
     <thead>
@@ -94,8 +94,8 @@
 
 <div class="separator">&nbsp;</div>
 
-<div class="section together">
-<h6>Section 6: Other Project/Fundraisers</h6>
+<div class="section">
+<h6>Section 6: Other Projects/Fundraisers ({{ application.other_projects|length }} listed below)</h6>
 {% for project in application.other_projects %}
 <div class="project">
     <strong>Event</strong>: {{ project.event }}<br>
@@ -104,5 +104,3 @@
 </div>
 {% endfor %}
 </div>
-
-<div class="separator">&nbsp;</div>
