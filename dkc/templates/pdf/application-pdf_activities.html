@@ -5,13 +5,13 @@
 <div class="section">
 <h6>Section 1: K-Family Project</h6>
 <i>Kiwanis One Day Event</i>
+<div class="project">
 {% if application.kiwanis_one_day %}
-<div>
     <strong>Event</strong>: {{ application.kiwanis_one_day.event }}<br>
     <strong>Location</strong>: {{ application.kiwanis_one_day.location }}<br>
     <strong>Description</strong>: {{ application.kiwanis_one_day.description }}
-</div>
 {% endif %}
+</div>
 <br>
 <i>K-Family Service Projects</i>
 {% for project in application.k_family_projects %}
