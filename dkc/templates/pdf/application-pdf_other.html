@@ -1,17 +1,20 @@
 <div class="page-header">
-    <h3>Other &amp; Scoring</h3>
+    <h3>Other</h3>
 </div>
 
 <div class="section">
-<ol class="other-scoring">
-{% if application.early_submission %}
-    <li>I would like to receive 5 points on part {{ application.early_submission_points }}for submitting early. (If the part is -1, then apply to any section</li>
-{% else %}
-    <li>I did not submit this application early.</li>
-{% endif %}
+<ol class="other">
+    <li>I submitted this application on {{ application.submit_time|datetimeformat }}.<br>
+    {% if application.early_submission %}
+        I would like to receive 5 points on Part {{ application.early_submission_points }} for submitting early. <small>(If the part is -1, then apply to any section.)</small></li>
+    {% else %}
+        I did not submit this application early.
+    {% endif %}
+    </li>
 {% if application.recommender_points in ["1","2","3","4"] %}
     <li> I would like to receive 5 points on part {{ application.recommender_points }} for submitting a recommendation.</li>
 {% else %}
     <li>I do not have a recommendation.</li>
 {% endif %}
+</div>
 </div>
