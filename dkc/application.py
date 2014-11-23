@@ -446,6 +446,7 @@ class ApplicationSubmit(BaseHandler):
 
     def _serve_page(self, errors={'profile':False, 'personal_statement':False, 'projects':False, 'involvement':False, 'activities':False, 'other':False, 'verification':False}):
         template_values = {
+            'user_id': self.user.get_id(),
             'application_url': '/application/submit',
             'profile': errors['profile'],
             'personal_statement': errors['personal_statement'],
