@@ -12,7 +12,7 @@
     </div>
     {%- endif -%}
     <div class="alert alert-success">
-        You can download your application in <a href="/application/download/pdf/{{ user_id }}">PDF format</a>.
+        You can download your application in <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf">PDF format</a>.
     </div>
 
     <div class="panel-group" id="overview-sections">
