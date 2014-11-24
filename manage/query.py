@@ -25,9 +25,3 @@ def get_all_applications(applicants=None):
         applications = ndb.get_multi(applications_keys)
         memcache.add(key='all_applications', value=applications, time=600)
     return applications
-
-def get_all_emails():
-    query = User.query()
-    applicants = query.fetch()
-    emails = [a.email for a in applicants]
-    return emails

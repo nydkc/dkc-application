@@ -4,9 +4,31 @@
     <h2>Lists</h2>
 </div>
 
-<h4>Emails</h4>
-{% for email in emails %}
-{{ email }}<br>
+<h4><u>Emails</u></h4>
+<h5>Applicants who have <strong>NOT</strong> yet submitted:</h5>
+<div class="row">
+{% for applicantcolumn in not_submitted_applicants|slice(3) %}
+{% set outerloop = loop %}
+    <div class="col-md-4">
+    {% for applicant in applicantcolumn %}
+        {{ applicant[0].email }}<br>
+    {% endfor %}
+    </div>
 {% endfor %}
-
+</div>
+<div class="clearfix">
+<hr class="col-xs-6 col-xs-offset-3">
+</div>
+<h5>Applicants who <strong>HAVE</strong> submitted:</h5>
+<div class="row">
+{% for applicantcolumn in submitted_applicants|slice(3) %}
+{% set outerloop = loop %}
+    <div class="col-md-4">
+    {% for applicant in applicantcolumn %}
+        {{ applicant[0].email }}<br>
+    {% endfor %}
+    </div>
+{% endfor %}
+</div>
+<hr>
 {% endblock %}
