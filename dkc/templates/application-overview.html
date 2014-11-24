@@ -5,14 +5,12 @@
         <h2>Overview</h2>
     </div>
 
-    {%- if not submitted -%}
     <div class="alert alert-info">
+    {%- if not submitted -%}
         Please note that any changes that you make will only be <strong>saved</strong> online.
         <br>If you would like to submit your application, please go <a href="/application/submit">here</a>.
-    </div>
+        <p class="lead">You can download your application as a PDF <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf">here</a>.</p>
     {%- endif -%}
-    <div class="alert alert-success">
-        You can download your application in <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf">PDF format</a>.
     </div>
 
     <div class="panel-group" id="overview-sections">
@@ -184,7 +182,7 @@
             </div>
             <div id="other-material-upload" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <p>If you have any other materials that you would like to submit with your application, you may upload it here. A few examples are:</p>
+                    <p>If you have any other materials that you would like to submit with your application, you may upload them here. A few examples are:</p>
                     <ul>
                         <li>Articles that you submitted to district or division publications</li>
                         <li>Recommendation of no more than 150 words nominating you for the award</li>
