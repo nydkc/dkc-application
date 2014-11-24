@@ -452,7 +452,7 @@ class ApplicationSubmit(BaseHandler):
             'personal_statement': errors['personal_statement'],
             'projects': errors['projects'],
             'involvement': errors['involvement'],
-            'activites': errors['activities'],
+            'activities': errors['activities'],
             'other': errors['other'],
             'verification': errors['verification']
         }
@@ -474,11 +474,11 @@ class ApplicationSubmit(BaseHandler):
 
         not_complete_personal_statement = (application.personal_statement == None or application.personal_statement == '')
 
-        not_complete_projects = (application.international_projects == None)\
-                and (application.district_projects == None)\
-                and (application.divisionals == None)\
-                and (application.division_projects == None)\
-                    and (application.scoring_reason_two == None)
+        not_complete_projects = (len(application.international_projects) == 0)\
+                and (len(application.district_projects) == 0)\
+                and (len(application.divisionals) == 0)\
+                and (len(application.division_projects) == 0)\
+                    and (application.scoring_reason_two == None or application.scoring_reason_two == '')
 
         not_complete_involvement = (application.key_club_week_mon == None or application.key_club_week_mon == '')\
                 and (application.key_club_week_tue == None or application.key_club_week_tue == '')\
@@ -495,15 +495,14 @@ class ApplicationSubmit(BaseHandler):
                     and (application.scoring_reason_three == None or application.scoring_reason_three == '')
 
         not_complete_activities = (application.kiwanis_one_day == None)\
-                and (application.k_family_projects == None)\
-                and (application.interclub_projects == None)\
-                and (application.interclub_projects == None)\
+                and (len(application.k_family_projects) == 0)\
+                and (len(application.interclub_projects) == 0)\
                 and (application.advocacy_cause == None or application.advocacy_cause == '')\
                 and (application.committee == None or application.committee == '')\
                 and (application.divisional_newsletter == None)\
                 and (application.district_newsletter == None)\
                 and (application.district_website == None)\
-                and (application.other_projects == None)\
+                and (len(application.other_projects) == 0)\
                     and (application.scoring_reason_four == None or application.scoring_reason_four == '')
 
         not_complete_verification = not (application.verification_ltg\
