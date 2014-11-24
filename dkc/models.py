@@ -4,6 +4,7 @@ from google.appengine.ext import ndb
 import webapp2_extras.appengine.auth.models
 from webapp2_extras import security
 from constants import *
+from manage.models import Settings
 
 class DeletedFile(ndb.Model):
     user = ndb.KeyProperty()
@@ -73,7 +74,8 @@ class Application(ndb.Model):
     updated_time = ndb.DateTimeProperty(auto_now=True)
     submit_time = ndb.DateTimeProperty()
     def is_early(self):
-        due_date = datetime.strptime(APPLICATION_DUE_DATE, "%b %d %Y")
+        config = ndb.Key(Settings, 'config').get()
+        due_date = config.due_date
         if self.submit_time:
             return self.submit_time < due_date
         else:

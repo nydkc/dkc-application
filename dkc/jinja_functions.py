@@ -21,7 +21,7 @@ def datetimeformat(value, format='%B %d, %Y - %I:%M %p'):
         value = value.astimezone(Eastern)
         return value.strftime(format)
     except:
-        return None
+        return value
 
 def byteConversion(size):
     i = 0

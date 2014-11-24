@@ -5,6 +5,7 @@ from admin import OverviewHandler
 from search import SearchHandler
 from lists import ListsHandler
 from show import ShowHandler
+from settings import SettingsHandler
 
 class MainPage(webapp2.RequestHandler):
 
@@ -23,5 +24,6 @@ application = webapp2.WSGIApplication([
     ('/admin/search', SearchHandler),
     ('/admin/lists', ListsHandler),
     ('/admin/show/([^/]+)?', ShowHandler),
+    ('/admin/settings', SettingsHandler),
     ('/admin.*', MainPage)
 ], debug=True)
