@@ -13,7 +13,7 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
-                <th>Submitted Early?</th>
+                <th>Submitted?</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +24,8 @@
                 <td>{{ user.last_name }}</td>
                 <td>{{ user.email }}</td>
                 {% if applications[loop.index0].early_submission %}
+                    <td class="text-success"><span class="glyphicon glyphicon-ok"></span> <span class="glyphicon glyphicon-time"></span></td>
+                {% elif applications[loop.index0].submit_time %}
                     <td class="text-success"><span class="glyphicon glyphicon-ok"></span></td>
                 {% else %}
                     <td class="text-danger"><span class="glyphicon glyphicon-remove"></span></td>
