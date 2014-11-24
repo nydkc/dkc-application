@@ -9,7 +9,7 @@
 {% if application.early_submission %}
 <div class="alert alert-success">EARLY SUBMISSION!!!</div>
 {% elif application.submit_time %}
-<div class="alert alert-info">Submitted on {{ application.submit_time }}</div>
+<div class="alert alert-info">Submitted on {{ application.submit_time|datetimeformat }}</div>
 {% else %}
 <div class="alert alert-warning">Not yet submitted...</div>
 {% endif %}
