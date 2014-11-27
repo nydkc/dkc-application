@@ -4,7 +4,7 @@
     <h2>Overview</h2>
 </div>
 
-<p class="lead">There are <strong>{{ pairs|length }}</strong> applicants.</p>
+<p class="lead">There are <strong>{{ applicants|length }}</strong> applicants.</p>
 <div class="table-responsive">
     <table class="table table-condensed table-hover table-striped">
         <thead>
@@ -17,15 +17,15 @@
             </tr>
         </thead>
         <tbody>
-            {% for user in pairs %}
-            <tr class="clickable-row" href="/admin/show/{{ user[0].auth_ids[0] }}">
-                <td>{{ user[0].division }}</td>
-                <td>{{ user[0].first_name }}</td>
-                <td>{{ user[0].last_name }}</td>
-                <td>{{ user[0].email }}</td>
-                {% if user[1].early_submission %}
+            {% for user in applicants %}
+            <tr class="clickable-row" href="/admin/show/{{ user.auth_ids[0] }}">
+                <td>{{ user.division }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.email }}</td>
+                {% if applications[loop.index0].early_submission %}
                     <td class="text-success"><span class="glyphicon glyphicon-ok"></span> <span class="glyphicon glyphicon-time"></span></td>
-                {% elif user[1].submit_time %}
+                {% elif applications[loop.index0].submit_time %}
                     <td class="text-success"><span class="glyphicon glyphicon-ok"></span></td>
                 {% else %}
                     <td class="text-danger"><span class="glyphicon glyphicon-remove"></span></td>

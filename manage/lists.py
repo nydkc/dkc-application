@@ -5,7 +5,7 @@ class ListsHandler(AdminBaseHandler):
 
     def get(self):
         applicants = query.get_all_applicants()
-        applications = query.get_all_applications()
+        applications = query.get_all_applications(applicants)
         submitted_applicants = []
         not_submitted_applicants = []
         for index, applicant in enumerate(applicants):
