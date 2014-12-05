@@ -49,6 +49,8 @@
             </div>
         </div>
 
+        <p class="lead">You may want to view the applicant's entire <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}.pdf?a={{ user_id }}&t={{ token }}">DKC application</a>.</p>
+
         <p>By verifying the application of {{ applicant.first_name|e }} {{ applicant.last_name|e }}, you agree upon the following terms:</p>
         <blockquote>
             I hereby affirm that all of the information included above is true and accurate to the best of my ability. If there should be any false or misleading information, this application is subject to being disqualified and appropriate disciplinary action will be taken.
