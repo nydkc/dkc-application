@@ -19,11 +19,21 @@ class MainPage(webapp2.RequestHandler):
             template = JINJA_ENVIRONMENT.get_template('index.html')
             self.response.out.write(template.render(template_values))
 
+class LogoutHandler(webapp2.RequestHandler):
+
+    def get(self):
+        template_values = {}
+        if users.get_current_user():
+            template_values['logout_url'] = users.create_logout_url('/admin')
+        template = JINJA_ENVIRONMENT.get_template('logout.html')
+        self.response.out.write(template.render(template_values))
+
 application = webapp2.WSGIApplication([
     ('/admin/overview', OverviewHandler),
     ('/admin/search', SearchHandler),
     ('/admin/lists', ListsHandler),
     ('/admin/show/([^/]+)?', ShowHandler),
     ('/admin/settings', SettingsHandler),
+    ('/admin/logout', LogoutHandler),
     ('/admin.*', MainPage)
 ], debug=True)

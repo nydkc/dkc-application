@@ -44,6 +44,8 @@ handlers:
   application_readable: true
 - url: /admin
   script: manage.views.application
+- url: /admin/logout
+  script: manage.views.application
 - url: /admin/stats.*
   script: google.appengine.ext.appstats.ui.app
 - url: /admin.*
