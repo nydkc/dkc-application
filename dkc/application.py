@@ -377,19 +377,19 @@ The New York District Awards Committee
                 application.verification_ltg_token = token
                 application.verification_ltg_sent = True
                 verification_email.to = application.verification_ltg_email
-                verifier = "Lieutenant Governor " + applicant.ltg
+                verifier = "Lieutenant Governor " + applicant.ltg.title()
             elif task == 'club-president':
                 application.verification_club_president_email = self.request.get('club-president-email')
                 application.verification_club_president_token = token
                 application.verification_club_president_sent = True
                 verification_email.to = application.verification_club_president_email
-                verifier = "Lieutenant Governor " + applicant.club_president
+                verifier = "Club President " + applicant.club_president.title()
             elif task == 'faculty-advisor':
                 application.verification_faculty_advisor_email = self.request.get('faculty-advisor-email')
                 application.verification_faculty_advisor_token = token
                 application.verification_faculty_advisor_sent = True
                 verification_email.to = application.verification_faculty_advisor_email
-                verifier = "Lieutenant Governor " + applicant.faculty_advisor
+                verifier = "Faculty Advisor " + applicant.faculty_advisor.title()
 
             template_values = {
                 'applicant': applicant,
