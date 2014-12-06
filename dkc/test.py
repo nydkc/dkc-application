@@ -5,7 +5,7 @@ from download import generate_pdf
 class TestHandler(BaseHandler):
 
     def get(self, resource):
-        if "email" in resource:
+        if "email" in str(resource):
             applicant = self.user
             template_values = {
                 'verifier': "Amazing Position Test User",
