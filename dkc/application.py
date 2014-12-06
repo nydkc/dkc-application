@@ -369,32 +369,37 @@ If you have any questions or concerns, feel free to reply to this email and we w
 Yours in spirit and service,
 The New York District Awards Committee
                                                    """ % (applicant.first_name, applicant.last_name, applicant.email, applicant.email, verification_url, verification_url),
-                                                   html="""
-<h2>You've been requested to verify the application of %s %s</h2>
-<p>Please click the link below to verify your information on the application. If the information is incorrect, please make sure to email or contact the applicant at <a href="mailto:%s">%s</a> so that he/she can put the correct information onto the application.</p>
-<p>In addition to verifying your information, you are also verifying that this applicant is a member in good standing of Key Club International.</p>
-<p><strong>Click the following link to verify:</strong> <a href="%s">%s</a></p>
-<p>If you have any questions or concerns, feel free to reply to this email and we will try our best to address them!</p>
-<p>Yours in spirit and service,<br>
-The New York District Awards Committee</p>
-                                                   """ % (applicant.first_name, applicant.last_name, applicant.email, applicant.email, verification_url, verification_url)
             )
 
+            verifier = ""
             if task == 'ltg':
                 application.verification_ltg_email = self.request.get('ltg-email')
                 application.verification_ltg_token = token
                 application.verification_ltg_sent = True
                 verification_email.to = application.verification_ltg_email
+                verifier = "Lieutenant Governor " + applicant.ltg
             elif task == 'club-president':
                 application.verification_club_president_email = self.request.get('club-president-email')
                 application.verification_club_president_token = token
                 application.verification_club_president_sent = True
                 verification_email.to = application.verification_club_president_email
+                verifier = "Lieutenant Governor " + applicant.club_president
             elif task == 'faculty-advisor':
                 application.verification_faculty_advisor_email = self.request.get('faculty-advisor-email')
                 application.verification_faculty_advisor_token = token
                 application.verification_faculty_advisor_sent = True
                 verification_email.to = application.verification_faculty_advisor_email
+                verifier = "Lieutenant Governor " + applicant.faculty_advisor
+
+            template_values = {
+                'applicant': applicant,
+                'verification_url': verification_url,
+                'verifier': verifier
+            }
+            verification_email.html = JINJA_ENVIRONMENT.get_template('verification-email.html').render(template_values)
+            import html2text
+            htmlhandler = html2text.HTML2Text()
+            verification_email.body = htmlhandler.handle(verification_email.html).encode("UTF+8")
 
             verification_email.send()
         else:
