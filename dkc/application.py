@@ -510,10 +510,16 @@ class ApplicationSubmit(BaseHandler):
                 and (len(application.other_projects) == 0)\
                     and (application.scoring_reason_four == None or application.scoring_reason_four == '')
 
-        not_complete_verification = not (application.verification_ltg\
-                and application.verification_club_president\
-                and application.verification_faculty_advisor\
-                and application.verification_applicant)
+        verification_count = 0
+        if application.verification_ltg:
+            verification_count += 1
+        if application.verification_club_president:
+            verification_count += 1
+        if application.verification_faculty_advisor:
+            verification_count += 1
+        if application.verification_applicant:
+            verification_count += 1
+        not_complete_verification = verification_count < 3 # Need at least 3 of 4 verifications
 
         not_complete_other = (not_complete_projects
                 or not_complete_personal_statement\
