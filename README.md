@@ -39,3 +39,4 @@ Hosted on Google App Engine: [http://dkc-app.nydkc.org](http://dkc-app.nydkc.org
 ## Notes
 - There is a bug with Google App Engine's Push-To-Deploy, so to get the PDF Generation to work correctly, the application must be deployed using the GAE App.
 - Backup datastore using `appcfg.py download_data --email=INSERT_EMAIL_HERE --url=http://dkc-app.appspot.com/_ah/remote_api --filename=backup`
+- Upload datastore to local development using `appcfg.py upload_data --filename=backup --application=dev~dkc-app --url=http://localhost:20000/_ah/remote_api`
