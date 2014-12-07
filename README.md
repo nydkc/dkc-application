@@ -32,6 +32,7 @@ Hosted on Google App Engine: [http://dkc-app.nydkc.org](http://dkc-app.nydkc.org
     - NDB
     - Blobstore
     - Mail
+    - [Sendgrid](https://cloud.google.com/appengine/docs/python/mail/sendgrid)
 - [xhtml2pdf](https://github.com/chrisglass/xhtml2pdf)
     - Install required dependencies using pip: `pip install -r requirements.txt -t lib`
 - [html2text](https://github.com/aaronsw/html2text)

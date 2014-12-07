@@ -1,9 +1,10 @@
-import os, webapp2, jinja2
+import os, webapp2, jinja2, json, html2text, logging
 from datetime import datetime
 from google.appengine.ext import ndb, blobstore
-from google.appengine.api import mail
 from dkc import *
 from models import *
+from sendgrid import SendGridClient
+from sendgrid import Mail
 
 class ApplicationOverview(BaseHandler):
 
@@ -352,43 +353,32 @@ class ApplicationVerification(BaseHandler):
             verification_url = self.uri_for('verification', type='v', user_id=user_id, signup_token=token, _full=True)
             print verification_url
 
-            verification_email = mail.EmailMessage(sender="NYDKC Awards Committee <verification@dkc-app.appspotmail.com>",
-                                                   subject="Distinguished Key Clubber Application Verification for %s %s" % (applicant.first_name, applicant.last_name),
-                                                   reply_to="dkc.applications@nydkc.org",
-                                                   body="""
-You've been requested to verify the application of %s %s
+            config = ndb.Key(Settings, 'config').get()
+            sg = SendGridClient(config.sendgrid_username, config.sendgrid_password, secure=True)
 
-Please click the link below to verify your information on the application. If the information is incorrect, please make sure to email or contact the applicant at <a href="mailto:%s">%s</a> so that he/she can put the correct information onto the application.
-
-In addition to verifying your information, you are also verifying that this applicant is a member in good standing of Key Club International.
-
-Click the following link to verify: <a href="%s">%s</a>
-
-If you have any questions or concerns, feel free to reply to this email and we will try our best to address them!
-
-Yours in spirit and service,
-The New York District Awards Committee
-                                                   """ % (applicant.first_name, applicant.last_name, applicant.email, applicant.email, verification_url, verification_url),
-            )
+            verification_email = Mail(from_name="NYDKC Awards Committee",
+                                      from_email="dkc.applications@nydkc.org",
+                                      subject="Distinguished Key Clubber Application Verification for %s %s" % (applicant.first_name, applicant.last_name),
+                                      reply_to="dkc.applications@nydkc.org")
 
             verifier = ""
             if task == 'ltg':
                 application.verification_ltg_email = self.request.get('ltg-email')
                 application.verification_ltg_token = token
                 application.verification_ltg_sent = True
-                verification_email.to = application.verification_ltg_email
+                verification_email.add_to(application.verification_ltg_email)
                 verifier = "Lieutenant Governor " + applicant.ltg.title()
             elif task == 'club-president':
                 application.verification_club_president_email = self.request.get('club-president-email')
                 application.verification_club_president_token = token
                 application.verification_club_president_sent = True
-                verification_email.to = application.verification_club_president_email
+                verification_email.add_to(application.verification_club_president_email)
                 verifier = "Club President " + applicant.club_president.title()
             elif task == 'faculty-advisor':
                 application.verification_faculty_advisor_email = self.request.get('faculty-advisor-email')
                 application.verification_faculty_advisor_token = token
                 application.verification_faculty_advisor_sent = True
-                verification_email.to = application.verification_faculty_advisor_email
+                verification_email.add_to(application.verification_faculty_advisor_email)
                 verifier = "Faculty Advisor " + applicant.faculty_advisor.title()
 
             template_values = {
@@ -396,12 +386,16 @@ The New York District Awards Committee
                 'verification_url': verification_url,
                 'verifier': verifier
             }
-            verification_email.html = JINJA_ENVIRONMENT.get_template('verification-email.html').render(template_values)
-            import html2text
+            verification_email.set_html(JINJA_ENVIRONMENT.get_template('verification-email.html').render(template_values))
             htmlhandler = html2text.HTML2Text()
-            verification_email.body = htmlhandler.handle(verification_email.html).encode("UTF+8")
+            verification_email.set_text(htmlhandler.handle(verification_email.html).encode("UTF+8"))
 
-            verification_email.send()
+            code, response = sg.send(verification_email)
+            response = json.loads(response)
+            if response["message"] == "error":
+                logging.error(("Problem with sending email to %s: " % verification_email.to) + str(response["errors"]))
+                self._serve_page()
+                return
         else:
             application.verification_applicant = True
             application.verification_applicant_date = datetime.now()

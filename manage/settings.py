@@ -13,6 +13,7 @@ class SettingsHandler(AdminBaseHandler):
         if not config:
             config = Settings(id='config')
 
+        config.secret_key = self.request.get('secret_key')
         due_date = self.request.get('due_date')
         try:
             due_date = datetime.strptime(due_date, "%B %d, %Y - %I:%M %p")
@@ -20,7 +21,9 @@ class SettingsHandler(AdminBaseHandler):
             config.due_date = due_date
         except:
             config.due_date = "Please put in a valid date (ex. February 14, 2015 - 11:59 AM)"
-        config.secret_key = self.request.get('secret_key')
+        config.sendgrid_username = self.request.get('sendgrid_username')
+        config.sendgrid_password = self.request.get('sendgrid_password')
+
         config.put()
         self._serve_page()
 
@@ -28,13 +31,10 @@ class SettingsHandler(AdminBaseHandler):
         config_key = ndb.Key(Settings, 'config')
         if config_key:
             config = config_key.get()
-            due_date = config.due_date if config else ''
-            secret_key = config.secret_key if config else ''
         else:
-            due_date = ''
-            secret_key = ''
+            config = {}
+
         template_values = {
-            'due_date': due_date,
-            'secret_key': secret_key
+            'config': config
         }
         self.render_template('admin-settings.html', template_values)
