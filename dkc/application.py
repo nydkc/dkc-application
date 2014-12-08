@@ -357,9 +357,9 @@ class ApplicationVerification(BaseHandler):
             sg = SendGridClient(config.sendgrid_username, config.sendgrid_password, secure=True)
 
             verification_email = Mail(from_name="NYDKC Awards Committee",
-                                      from_email="dkc.applications@nydkc.org",
-                                      subject="Distinguished Key Clubber Application Verification for %s %s" % (applicant.first_name, applicant.last_name),
-                                      reply_to="dkc.applications@nydkc.org")
+                                      from_email="recognition@nydkc.org",
+                                      subject="Distinguished Key Clubber Application Verification for %s %s" % (applicant.first_name, applicant.last_name)
+            )
 
             verifier = ""
             if task == 'ltg':

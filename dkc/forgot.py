@@ -27,7 +27,7 @@ class ForgotPasswordHandler(BaseHandler):
         mail.send_mail(sender="NYDKC Awards Committee <hello@dkc-app.appspotmail.com>",
                        to=user.email,
                        subject="Resetting your DKC Application Password",
-                       reply_to="dkc.applications@nydkc.org",
+                       reply_to="recognition@nydkc.org",
                        body="""
 You have requested to change the password for your DKC Application.
 
