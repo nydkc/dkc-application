@@ -30,7 +30,6 @@ class SettingsHandler(AdminBaseHandler):
         except:
             config.due_date = "Please put in a valid date (ex. February 14, 2015 - 11:59 PM)"
 
-
         config.sendgrid_username = self.request.get('sendgrid_username')
         config.sendgrid_password = self.request.get('sendgrid_password')
 

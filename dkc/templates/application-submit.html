@@ -8,7 +8,9 @@
     </div>
 
     <p>Before you submit your application, make sure that you have filled out all parts to the <strong>best of your ability</strong>. It is highly recommended that you go back and check that your application best reflects your activities as a Key Clubber this past year.</p>
+    {% if 'Application' is still_early %} {# This is a hack using the custom still_early test #}
     <p>By submitting your application before Feburary 1, 2015, you are eligible to receive 5 extra points on any section which you can specify <a href="/application/scoring">here</a>.</p>
+    {% endif %}
     <p class="lead">If you are sure that you would like to submit your application, please click the <em>Submit</em> button below.</p>
 
     <div class="row">

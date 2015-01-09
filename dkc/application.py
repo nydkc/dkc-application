@@ -324,8 +324,12 @@ class ApplicationOther(BaseHandler):
         self._serve_page()
 
     def _serve_page(self):
+        config = ndb.Key(Settings, 'config').get()
+        if not config:
+            config = {}
         template_values = {
-            'application_url': '/application/other'
+            'application_url': '/application/other',
+            'config': config
         }
         self.render_application('application-other.html', template_values)
 
