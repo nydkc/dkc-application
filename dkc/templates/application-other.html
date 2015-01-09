@@ -22,7 +22,7 @@
             {% endif %}
 
                 <div class="col-lg-2 col-md-3">
-                    {{ select_horizontal("early-submission-points", "", application.early_submission_points, ["","1","2","3","4"], size=0) }}
+                    {{ select_horizontal("early-submission-points", "", application.early_submission_points, ["Any Section","1","2","3","4"], size=0) }}
                 </div>
             </div>
         </li>
@@ -41,7 +41,7 @@
             {% endif %}
 
                 <div class="col-lg-2 col-md-3">
-                    {{ select_horizontal("recommender-points", "", application.recommender_points, ["", "1","2","3","4"], size=0) }}
+                    {{ select_horizontal("recommender-points", "", application.recommender_points, ["No Recommendation", "1","2","3","4"], size=0) }}
                 </div>
             </div>
         </li>
