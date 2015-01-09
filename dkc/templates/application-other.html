@@ -7,7 +7,7 @@
         <h2>Other &amp; Scoring</h2>
     </div>
     <ol>
-        {% if still_early() %}
+        {% if 'Application' is still_early %} {# This is a hack using the custom still_early test #}
         <li>
             Receive 5 points in any part for submitting this application early.
             <div class="form-horizontal row">
