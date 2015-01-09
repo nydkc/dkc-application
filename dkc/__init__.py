@@ -8,12 +8,15 @@ import jinja_functions
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
     extensions=['jinja2.ext.autoescape'])
-JINJA_ENVIRONMENT.filters['datetimeformat'] = jinja_functions.datetimeformat
-JINJA_ENVIRONMENT.filters['getblobdata'] = jinja_functions.getBlobData
-JINJA_ENVIRONMENT.filters['byteconvert'] = jinja_functions.byteConversion
-JINJA_ENVIRONMENT.filters['split_string'] = jinja_functions.splitString
-JINJA_ENVIRONMENT.filters['split_regex'] = jinja_functions.splitRegex
-JINJA_ENVIRONMENT.filters['highlight_search'] = jinja_functions.search
+JINJA_ENVIRONMENT.filters.update({
+    'datetimeformat': jinja_functions.datetimeformat,
+    'getblobdata': jinja_functions.getBlobData,
+    'byteconvert': jinja_functions.byteConversion,
+    'split_string': jinja_functions.splitString,
+    'split_regex': jinja_functions.splitRegex,
+    'highlight_search': jinja_functions.search,
+    'still_early': jinja_functions.getEarlyStatus
+})
 
 config = {
     'webapp2_extras.auth': {

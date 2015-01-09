@@ -62,3 +62,13 @@ def search(value, search):
         return result
     else:
         return value
+
+from datetime import datetime
+from models import Settings
+
+def getEarlyStatus():
+    config = ndb.Key(Settings, 'config').get()
+    try:
+        return datetime.now() < config.early_due_date
+    except:
+        return True

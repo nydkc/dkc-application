@@ -4,9 +4,10 @@
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
 
     <div class="page-header">
-        <h2>Other & Scoring</h2>
+        <h2>Other &amp; Scoring</h2>
     </div>
     <ol>
+        {% if still_early() %}
         <li>
             Receive 5 points in any part for submitting this application early.
             <div class="form-horizontal row">
@@ -25,6 +26,7 @@
                 </div>
             </div>
         </li>
+        {% endif %}
         <li>
             A recommendation may be submitted by a club member, officer or faculty advisor for a total of 5 points. This recommendation should be no more than 150 words nominating you for the award. The recommendation must be signed by the writer. You can upload the recommendation on the <a href="/application/overview#other-material-upload">overview</a> page.
             <div class="form-horizontal row">

@@ -75,9 +75,9 @@ class Application(ndb.Model):
     submit_time = ndb.DateTimeProperty()
     def is_early(self):
         config = ndb.Key(Settings, 'config').get()
-        due_date = config.due_date
+        early_due_date = config.early_due_date
         if self.submit_time:
-            return self.submit_time < due_date
+            return self.submit_time < early_due_date
         else:
             return False
 
