@@ -1,10 +1,12 @@
-{% extends "layout-full.html" %}
+{% extends "layout.html" %}
+{% set title = 'Logout' %}
 {% block body %}
 <div class="page-header text-center">
     <h1>Logout?</h1>
 </div>
 
 <div class="text-center">
+    <p class="lead">This page is purely for development purposes only. If you managed to reach this page, please close your browser, shut down your computer, and then try again. :)</p>
     <a class="btn btn-primary btn-lg" href="{{ logout_url }}">Logout</a>
 </div>
 {% endblock %}

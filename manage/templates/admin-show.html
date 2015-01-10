@@ -1,4 +1,5 @@
 {% extends "admin.html" %}
+{% set title = applicant.first_name ~ ' ' ~ applicant.last_name %}
 {% block admin %}
 <div class="page-header">
     <h2>{{ applicant.first_name }} {{ applicant.last_name }}

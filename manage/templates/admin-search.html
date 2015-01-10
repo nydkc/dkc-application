@@ -1,4 +1,5 @@
 {% extends "admin.html" %}
+{% set title = 'Search' %}
 {% block admin %}
 <div class="page-header">
     <h2>Search</h2>
@@ -30,7 +31,7 @@
                                          ('School Address', [applicant.school_address, applicant.school_city, applicant.school_zip_code]|join(", ") ),
                                          ('Club President', [applicant.club_president, applicant.club_president_phone_number]|join(", ") ),
                                          ('Faculty Advisor', [applicant.faculty_advisor, applicant.faculty_advisor_phone_number]|join(", ") )
-                                        ]%}
+                                        ] %}
                 {% for info in applicant_info %}
                     {% if q|lower in info[1]|e|lower %}
                     <dt>{{ info[0] }}</dt><dd>{{ info[1]|highlight_search(q) }}</dd>

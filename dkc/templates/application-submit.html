@@ -1,4 +1,5 @@
 {% extends "application.html" %}
+{% set title = 'Submit' %}
 {% block application %}
 <form id="submit-application" role="form" action="{{ application_url }}" method="post">
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">

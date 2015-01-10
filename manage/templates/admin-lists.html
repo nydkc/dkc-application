@@ -1,4 +1,5 @@
 {% extends "admin.html" %}
+{% set title = 'Lists' %}
 {% block admin %}
 <div class="page-header">
     <h2>Lists</h2>
@@ -16,9 +17,11 @@
     </div>
 {% endfor %}
 </div>
+
 <div class="clearfix">
-<hr class="col-xs-6 col-xs-offset-3">
+    <hr class="col-xs-6 col-xs-offset-3">
 </div>
+
 <h5>Applicants who <strong>HAVE</strong> submitted:</h5>
 <div class="row">
 {% for applicantcolumn in submitted_applicants|slice(3) %}
