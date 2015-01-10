@@ -19,7 +19,7 @@
     <div class="international-projects">
         {% for project in application.international_projects %}
         <div class="row project project-{{ loop.index }}">
-            <div class="form-horizontal">
+            <div class="form-horizontal col-xs-12">
                 <div class="col-md-3">
                     {{ select_horizontal("international-projects-section", "Section:", project.section, ["Section 1: Governor’s Project: “Water: The Key to Life”","Section 2: Major Emphasis: “Children: Their Focus, Our Future”","Section 3: Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)"], size=4) }}
                 </div>
@@ -30,6 +30,9 @@
                     <strong>Description of the event:</strong>
                     {{ textarea_horizontal("international-projects-description", value=project.description, size=0) }}
                 </div>
+            </div>
+            <div class="project-delete">
+                <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
             </div>
         </div>
         {% endfor %}
@@ -52,7 +55,7 @@
     <div class="district-projects">
         {% for project in application.district_projects %}
         <div class="row project project-{{ loop.index }}">
-            <div class="form-horizontal">
+            <div class="form-horizontal col-xs-12">
                 <div class="col-md-6">
                     {{ input_horizontal("district-projects-event", "Event:", project.event, size=2) }}
                 </div>
@@ -63,6 +66,9 @@
                     <strong>Description of the event:</strong>
                     {{ textarea_horizontal("district-projects-description", value=project.description, size=0) }}
                 </div>
+            </div>
+            <div class="project-delete">
+                <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
             </div>
         </div>
         {% endfor %}
@@ -76,14 +82,17 @@
     <p>Attendance at Divisional Meeting (Max 8 Points, 4 Points per Event)</p>
     <div class="divisional-meetings">
         {% for divisional in application.divisionals %}
-        <div class="row divisional divisional-{{ loop.index }}">
-            <div class="form-horizontal">
+        <div class="row project divisional divisional-{{ loop.index }}">
+            <div class="form-horizontal col-xs-12">
                 <div class="col-md-4">
                     {{ input_horizontal("divisional-meeting-date", "Date:", divisional.date, size=2) }}
                 </div>
                 <div class="col-md-8">
                     {{ input_horizontal("divisional-meeting-location", "Location:", divisional.location, size=2) }}
                 </div>
+            </div>
+            <div class="project-delete">
+                <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
             </div>
         </div>
         {% endfor %}
@@ -94,17 +103,20 @@
     <div class="division-projects">
         {% for project in application.division_projects %}
         <div class="row project project-{{ loop.index }}">
-            <div class="form-horizontal">
+            <div class="form-horizontal col-xs-12">
                 <div class="col-md-6">
                     {{ input_horizontal("division-projects-event", "Event:", project.event, size=2) }}
                 </div>
                 <div class="col-md-6">
-                    {{ input_horizontal("division-projects-location", "Location:", project.location, size=2) }}
+                    {{ input_horizontal("division-projects-location", "Location:", project.location, size=3) }}
                 </div>
                 <div class="col-md-12">
                     <strong>Description of the event:</strong>
                     {{ textarea_horizontal("division-projects-description", value=project.description, size=0) }}
                 </div>
+            </div>
+            <div class="project-delete">
+                <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
             </div>
         </div>
         {% endfor %}
@@ -141,29 +153,33 @@ function selectOtherInput() {
         });
     });
 }
-$(document).ready(function() {
+$(document).ready(buttonAppearanceCheck);
+function buttonAppearanceCheck() {
     selectOtherInput();
-    var count;
-    count = $('.international-projects .project').length;
-    if (count >= 6) {
+    if ($('.international-projects .project').length >= 6) {
         $('#international-projects-button').hide();
+    } else {
+        $('#international-projects-button').fadeIn();
     }
-    count = $('.district-projects .project').length;
-    if (count >= 5) {
+    if ($('.district-projects .project').length >= 5) {
         $('#district-projects-button').hide();
+    } else {
+        $('#district-projects-button').fadeIn();
     }
-    count = $('.divisional-meetings .divisional').length;
-    if (count >= 2) {
+    if ($('.divisional-meetings .divisional').length >= 2) {
         $('#divisional-meetings-button').hide();
+    } else {
+        $('#divisional-meetings-button').fadeIn();
     }
-    count = $('.division-projects .project').length;
-    if (count >= 2) {
+    if ($('.division-projects .project').length >= 2) {
         $('#division-projects-button').hide();
+    } else {
+        $('#division-projects-button').fadeIn();
     }
-});
+}
 $('#international-projects-button').click(function() {
     var count = $('.international-projects .project').length + 1;
-    $('.international-projects').append('<div class="row project project-' + count + '"><div class="form-horizontal"><div class="col-md-3"><div class="form-group"><label for="international-projects-section" class="col-md-4 control-label">Section:</label><div class="col-md-8"><select class="form-control" id="international-projects-section" name="international-projects-section"><option value="Section 1: Governor’s Project: “Water: The Key to Life”">Section 1: Governor’s Project: “Water: The Key to Life”</option><option value="Section 2: Major Emphasis: “Children: Their Focus, Our Future”">Section 2: Major Emphasis: “Children: Their Focus, Our Future”</option><option value="Section 3: Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)">Section 3: Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)</option></select></div></div></div><div class="col-md-9"><div class="form-group"><label for="international-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="international-projects-event" name="international-projects-event" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="international-projects-description" name="international-projects-description" rows="4"></textarea></div></div></div></div></div>');
+    $('<div class="row project project-' + count + '"><div class="form-horizontal col-xs-12"><div class="col-md-3"><div class="form-group"><label for="international-projects-section" class="col-md-4 control-label">Section:</label><div class="col-md-8"><select class="form-control" id="international-projects-section" name="international-projects-section"><option value="Section 1: Governor’s Project: “Water: The Key to Life”">Section 1: Governor’s Project: “Water: The Key to Life”</option><option value="Section 2: Major Emphasis: “Children: Their Focus, Our Future”">Section 2: Major Emphasis: “Children: Their Focus, Our Future”</option><option value="Section 3: Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)">Section 3: Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)</option></select></div></div></div><div class="col-md-9"><div class="form-group"><label for="international-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="international-projects-event" name="international-projects-event" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="international-projects-description" name="international-projects-description" rows="4"></textarea></div></div></div></div><div class="project-delete"><span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span></div></div>').hide().appendTo('.international-projects').slideDown();
     if (count >= 6) {
         $(this).hide();
     }
@@ -171,7 +187,7 @@ $('#international-projects-button').click(function() {
 });
 $('#district-projects-button').click(function() {
     var count = $('.district-projects .project').length + 1;
-    $('.district-projects').append('<div class="row project project' + count +'"><div class="form-horizontal"><div class="col-md-6"><div class="form-group"><label for="district-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="district-projects-event" name="district-projects-event" value=""></div></div></div><div class="col-md-6"><div class="form-group"><label for="district-projects-charity" class="col-md-2 control-label">Charity:</label><div class="col-md-10"><select class="form-control" id="district-projects-charity" name="district-projects-charity"><option value="St. Jude Children’s Hospital">St. Jude Children’s Hospital</option><option value="Make-A-Wish Foundation">Make-A-Wish Foundation</option><option value="Kamp Kiwanis">Kamp Kiwanis</option><option value="Kiwanis Pediatric Trauma Center">Kiwanis Pediatric Trauma Center</option><option value="Pediatric Lyme Disease Foundation">Pediatric Lyme Disease Foundation</option><option value="Other">Other</option></select><input type="text" class="form-control hidden" id="district-projects-charity" name="district-projects-charity" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="district-projects-description" name="district-projects-description" rows="4"></textarea></div></div></div></div></div>');
+    $('<div class="row project project-' + count + '"><div class="form-horizontal col-xs-12"><div class="col-md-6"><div class="form-group"><label for="district-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="district-projects-event" name="district-projects-event" value=""></div></div></div><div class="col-md-6"><div class="form-group"><label for="district-projects-charity" class="col-md-2 control-label">Charity:</label><div class="col-md-10"><select class="form-control" id="district-projects-charity" name="district-projects-charity" style="width: 100%;"><option value="St. Jude Children’s Hospital">St. Jude Children’s Hospital</option><option value="Make-A-Wish Foundation">Make-A-Wish Foundation</option><option value="Kamp Kiwanis" selected="">Kamp Kiwanis</option><option value="Kiwanis Pediatric Trauma Center">Kiwanis Pediatric Trauma Center</option><option value="Pediatric Lyme Disease Foundation">Pediatric Lyme Disease Foundation</option><option value="Other">Other</option></select><input type="text" class="form-control hidden" id="district-projects-charity" value="Kamp Kiwanis"></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="district-projects-description" name="district-projects-description" rows="4"></textarea></div></div></div></div><div class="project-delete"><span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span></div></div>').hide().appendTo('.district-projects').slideDown();
     if (count >= 5) {
         $(this).hide();
     }
@@ -180,7 +196,7 @@ $('#district-projects-button').click(function() {
 });
 $('#divisional-meetings-button').click(function() {
     var count = $('.divisional-meetings .divisional').length + 1;
-    $('.divisional-meetings').append('<div class="row divisional divisional-' + count + '"><div class="form-horizontal"><div class="col-md-4"><div class="form-group"><label for="divisional-meeting-date" class="col-md-2 control-label">Date:</label><div class="col-md-10"><input type="text" class="form-control" id="divisional-meeting-date" name="divisional-meeting-date" value=""></div></div></div><div class="col-md-8"><div class="form-group"><label for="divisional-meeting-location" class="col-md-2 control-label">Location:</label><div class="col-md-10"><input type="text" class="form-control" id="divisional-meeting-location" name="divisional-meeting-location" value=""></div></div></div></div></div>');
+    $('<div class="row project divisional divisional-' + count + '"><div class="form-horizontal col-xs-12"><div class="col-md-4"><div class="form-group"><label for="divisional-meeting-date" class="col-md-2 control-label">Date:</label><div class="col-md-10"><input type="text" class="form-control" id="divisional-meeting-date" name="divisional-meeting-date" value=""></div></div></div><div class="col-md-8"><div class="form-group"><label for="divisional-meeting-location" class="col-md-2 control-label">Location:</label><div class="col-md-10"><input type="text" class="form-control" id="divisional-meeting-location" name="divisional-meeting-location" value=""></div></div></div></div><div class="project-delete"><span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span></div></div>').hide().appendTo('.divisional-meetings').slideDown();
     if (count >= 2) {
         $(this).hide();
     }
@@ -188,11 +204,18 @@ $('#divisional-meetings-button').click(function() {
 });
 $('#division-projects-button').click(function() {
     var count = $('.division-projects .project').length + 1;
-    $('.division-projects').append('<div class="row project project-' + count + '"><div class="form-horizontal"><div class="col-md-6"><div class="form-group"><label for="division-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="division-projects-event" name="division-projects-event" value=""></div></div></div><div class="col-md-6"><div class="form-group"><label for="division-projects-location" class="col-md-2 control-label">Location:</label><div class="col-md-10"><input type="text" class="form-control" id="division-projects-location" name="division-projects-location" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="division-projects-description" name="division-projects-description" rows="4"></textarea></div></div></div></div></div>');
+    $('<div class="row project project-' + count + '"><div class="form-horizontal col-xs-12"><div class="col-md-6"><div class="form-group"><label for="division-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="division-projects-event" name="division-projects-event" value=""></div></div></div><div class="col-md-6"><div class="form-group"><label for="division-projects-location" class="col-md-3 control-label">Location:</label><div class="col-md-9"><input type="text" class="form-control" id="division-projects-location" name="division-projects-location" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="division-projects-description" name="division-projects-description" rows="4"></textarea></div></div></div></div><div class="project-delete"><span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span></div></div>').hide().appendTo('.division-projects').slideDown();
     if (count >= 2) {
         $(this).hide();
     }
     return false;
 });
+function deleteProject(trash) {
+    project = $(trash).parent().parent();
+    project.slideUp(400, function() {
+        $(this).remove();
+        buttonAppearanceCheck();
+    });
+}
 </script>
 {% endblock %}

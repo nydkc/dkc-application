@@ -163,12 +163,46 @@ p.lead:last-child {
 }
 
 .project {
-    padding-top: 3px;
-    padding-bottom: 12px;
+    position: relative;
+    padding-top: 20px;
 }
 
-.project:last-child {
-    padding-bottom: 0;
+.project:first-child {
+    padding-top: 5px;
+}
+
+.project .form-horizontal {
+    width: 97%;
+}
+
+.project .project-delete {
+    position: absolute;
+    left: 97%;
+    margin-left: -20px;
+    bottom: 0;
+    margin-bottom: 12px;
+}
+
+.project.divisional {
+    padding-top: 0;
+}
+
+.project.divisional .project-delete {
+    margin-bottom: 17px;
+}
+
+.glyphicon-trash {
+    -webkit-transition: color .2s ease-out, opacity .2s ease-out;
+    -moz-transition: color .2s ease-out, opacity .2s ease-out;
+    -o-transition: color .2s ease-out, opacity .2s ease-out;
+    transition: color .2s ease-out, opacity .2s ease-out;
+    opacity: .5;
+}
+
+.glyphicon-trash:hover {
+    color: #ff0000;
+    opacity: 1;
+    cursor: pointer;
 }
 
 #application .btn-block {
