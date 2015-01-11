@@ -124,6 +124,7 @@ class Application(ndb.Model):
     early_submission = ndb.ComputedProperty(lambda self: self.is_early())
     early_submission_points = ndb.StringProperty(indexed=False)
     recommender_points = ndb.StringProperty(indexed=False)
+    outstanding_awards = ndb.StringProperty(indexed=False)
     
     scoring_reason_two = ndb.TextProperty()
     scoring_reason_three = ndb.TextProperty()

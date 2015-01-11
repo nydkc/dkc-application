@@ -278,6 +278,8 @@ class ApplicationOther(BaseHandler):
         else:
             application.recommender_points = "No Recommendation Specified"
 
+        application.outstanding_awards = self.request.get('outstanding-awards')
+
         application.scoring_reason_two = self.request.get('scoring-reason-two')
         application.scoring_reason_three = self.request.get('scoring-reason-three')
         application.scoring_reason_four = self.request.get('scoring-reason-four')
@@ -484,7 +486,8 @@ class ApplicationSubmit(BaseHandler):
         not_complete_other = (not_complete_projects
                 or not_complete_personal_statement\
                 or not_complete_involvement\
-                or not_complete_activities)
+                or not_complete_activities\
+                or application.outstanding_awards == None or application.outstanding_awards == '')
 
         return {'profile': not_complete_profile,
                 'personal_statement': not_complete_personal_statement,

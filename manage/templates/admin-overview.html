@@ -15,6 +15,7 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Submitted?</th>
+                <th>Awards</th>
             </tr>
         </thead>
         <tbody>
@@ -31,6 +32,7 @@
                 {% else %}
                     <td class="text-danger"><span class="glyphicon glyphicon-remove"></span></td>
                 {% endif %}
+                <td>{% if 'Outstanding' in applications[loop.index0].outstanding_awards|e %}<span class="glyphicon glyphicon-star"></span>{% endif %}</td>
             </td>
             {% endfor %}
         </tbody>
