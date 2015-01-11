@@ -2,6 +2,7 @@
 {% set title = applicant.first_name|e ~ ' ' ~ applicant.last_name|e %}
 {% block admin %}
 <div id="notetaking" class="panel panel-default">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <div class="panel-heading">Awards Committee Notes (Click to drag)</div>
     <textarea class="panel-body form-control" name="notes" id="notes" rows="6">{{ application.notes|e }}</textarea>
     <button class="btn btn-info btn-block btn-small" id="save-notes-button" data-loading-text="Saving...">Save notes</button>

@@ -99,6 +99,11 @@ hr.separator {
     width: 300px;
 }
 
+#notetaking .close {
+    padding-top: 9px;
+    padding-right: 15px;
+}
+
 @media screen and (min-width: 768px) {
     .dl-horizontal.profile dt {
         width: 42%;
