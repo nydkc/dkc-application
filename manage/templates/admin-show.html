@@ -1,6 +1,12 @@
 {% extends "admin.html" %}
 {% set title = applicant.first_name ~ ' ' ~ applicant.last_name %}
 {% block admin %}
+<div id="notetaking" class="panel panel-default">
+    <div class="panel-heading">Awards Committee Notes (Click to drag)</div>
+    <textarea class="panel-body form-control" name="notes" id="notes" rows="6">{{ application.notes|e }}</textarea>
+    <button class="btn btn-info btn-block btn-small" id="save-notes-button" data-loading-text="Saving...">Save notes</button>
+</div>
+
 <div class="page-header">
     <h2>{{ applicant.first_name }} {{ applicant.last_name }}
         <small class="download-link hidden-xs"><a href="/application/download/pdf/{{ applicant_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf"><span class="glyphicon glyphicon-print"></span> Download PDF</a></small>
@@ -436,5 +442,31 @@ function clickableRows() {
     });
 }
 $(document).ready(clickableRows);
+$('#notetaking').mousedown(handle_mousedown);
+$('#notetaking').css('top', ($(window).height() - $('#notetaking').height() - 5) + 'px');
+$('#notetaking #save-notes-button').click(saveNotes);
+function saveNotes(e) {
+    $(this).button('loading');
+    console.log(e);
+    $.ajax({
+        type: "POST",
+        url: window.location,
+        data: {
+            "notes": $('#notes').val()
+        }
+    })
+    .done(function() {
+        if (e) {
+            sweetAlert("Notes saved!", "", "success");
+        }
+    })
+    .fail(function() {
+        if (e) {
+            sweetAlert("Save failed!", "Are you connected to the internet?", "error");
+        }
+    });
+    $(this).button('reset');
+}
+setInterval(saveNotes, 1*60*1000); // Every minute
 </script>
 {% endblock %}

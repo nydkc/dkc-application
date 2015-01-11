@@ -92,6 +92,13 @@ hr.separator {
     border-top: 4px double #ccc;
 }
 
+#notetaking {
+    position: fixed;
+    right: 5px;
+    opacity: .9;
+    width: 300px;
+}
+
 @media screen and (min-width: 768px) {
     .dl-horizontal.profile dt {
         width: 42%;
