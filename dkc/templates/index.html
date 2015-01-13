@@ -1,4 +1,24 @@
 {% extends "layout-full.html" %}
+
+{% set faq = [
+["Who may apply for the award?", "Any dues-paying Key Club member in good standing may apply for the award."],
+["If I participated in a project or event prior to April 1, 2014, may I still use it in this application?", "Only events, projects, or meetings during the 2014 - 2015 Service Year may be counted towards this application."],
+["Under Part II Section #4, do all five projects have to be distinct?", "No, you could have participated in five projects that benefited the same charities and still qualify for the award."],
+["What is sufficient proof for Advocacy?", "You must include a description of the steps you have taken to advocate your project and include at least one additional document, such as a flier, poster, letter or petition."],
+["Will the Personal Statement be rated on quality?", "Yes, it is important to submit a personal statement of the highest quality. Although there is not a limit on the number of members that may receive the awards, the essay will allow the awards committee to understand you. The personal statement is weighed more than the other three parts (40%)."],
+["Will descriptions be rated on quality?", "Yes, it is important to submit everything with a full description of the event. Since this year's DKC award is judged holistically, you may lose points for incomplete descriptions."],
+["Who can write my recommendation?", "Any Key Club member in good standing, Key Club Officer, Faculty Advisor or Kiwanis Advisor may write your recommendation."],
+["If I participated in a Kiwanis One Day Event that was not on April 5, 2014, can I still receive points?", "Yes."],
+["Will the statement in Involvement #3, Positions Held within Key Club, be rated based on quality?", "Yes, you may receive anywhere from 0 to 5 points based on the quality of work that was submitted."],
+["Can I submit articles to the Empire Key or Divisional Newsletters last minute?", "No."],
+["I can't qualify for the DKC Award because I am unable to fulfill all the criteria in the four parts. What should I do?", "If it is due to an issue or circumstance with your home club or division which is out of your control, please contact the Awards Committee Co-Chair that will be reviewing your application."],
+["Why do you need my personal information?", "All applicants must submit this information so that you may be easily accessible and that records may be kept for the future in case any issues arise."],
+["How are the applications judged?", "Part I will be weighted the most (40%) and the other three parts will be weighed equally. If you complete all parts fully, you will generally receive the award. All other applications are judged holistically. Generally, you will need to complete at least 70% (210 Points) of all the criteria to receive the award."],
+["Who reviews the application?", "The District Awards Committee Co-Chair will be reviewing your award. The award will be based off of the point system."],
+["Who can I contact if I have any more questions?", "You should contact the District Awards Committee Co-Chair that is responsible for your division. Contact Information can be found on the Information & Rules Section."],
+["What is the maximum amount of points I can earn for each part?", "In Part I, you may earn up to 120 points. In all other parts, you may earn up to 60 points each. The total number of points you can score is 300, and the recommended number of points to receive the award is 210."]
+] %}
+
 {% block body %}
 <div class="home-wrapper">
     <div class="home text-center">
@@ -31,39 +51,30 @@
     <div class="page-header text-center">
         <h1>Frequently Asked Questions (FAQ)</h1>
     </div>
-
-    {% set faq = [("Who may apply for the award?", "Any dues-paying Key Club member in good standing may apply for the award."),
-                  ("If I participated in a project or event prior to April 1, 2014, may I still use it in this application?", "Only events, projects, or meetings during the 2014 – 2015 Service Year may be counted towards this application."),
-                  ("Under Part II Section #4, do all five projects have to be distinct?", "No, you could have participated in five projects that benefited the same charities and still qualify for the award."),
-                  ("What is sufficient proof for Advocacy?", "You must include a description of the steps you have taken to advocate your project and include at least one additional document, such as a flier, poster, letter or petition."),
-                  ("Will the Personal Statement be rated on quality?", "Yes, it is important to submit a personal statement of the highest quality. Although there is not a limit on the number of members that may receive the awards, the essay will allow the awards committee to understand you. The personal statement is weighed more than the other three parts (40%)."),
-                  ("Will descriptions be rated on quality?", "Yes, it is important to submit everything with a full description of the event. Since this year’s DKC award is judged holistically, you may lose points for incomplete descriptions."),
-                  ("Who can write my recommendation?", "Any Key Club member in good standing, Key Club Officer, Faculty Advisor or Kiwanis Advisor may write your recommendation."),
-                  ("If I participated in a Kiwanis One Day Event that was not on April 5, 2014, can I still receive points?", "Yes."),
-                  ("Will the statement in Involvement #3, Positions Held within Key Club, be rated based on quality?", "Yes, you may receive anywhere from 0 to 5 points based on the quality of work that was submitted."),
-                  ("Can I submit articles to the Empire Key or Divisional Newsletters last minute?", "No."),
-                  ("I can’t qualify for the DKC Award because I am unable to fulfill all the criteria in the four parts. What should I do?", "If it is due to an issue or circumstance with your home club or division which is out of your control, please contact the Awards Committee Co-Chair that will be reviewing your application."),
-                  ("Why do you need my personal information?", "All applicants must submit this information so that you may be easily accessible and that records may be kept for the future in case any issues arise."),
-                  ("How are the applications judged?", "Part I will be weighted the most (40%) and the other three parts will be weighed equally. If you complete all parts fully, you will generally receive the award. All other applications are judged holistically. Generally, you will need to complete at least 70% (210 Points) of all the criteria to receive the award."),
-                  ("Who reviews the application?", "The District Awards Committee Co-Chair will be reviewing your award. The award will be based off of the point system."),
-                  ("Who can I contact if I have any more questions?", "You should contact the District Awards Committee Co-Chair that is responsible for your division. Contact Information can be found on the Information & Rules Section."),
-                  ("What is the maximum amount of points I can earn for each part?", "In Part I, you may earn up to 120 points. In all other parts, you may earn up to 60 points each. The total number of points you can score is 300, and the recommended number of points to receive the award is 210.")
-                  ] %}
-
-    <div class="panel-group" id="questions">
+    <div class="row search-questions">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="input-group">
+                <input type="text" class="form-control" id="search-input" placeholder="What is your question?" autocomplete="off">
+                <span class="input-group-btn">
+                    <button class="btn btn-default search-button" type="button" onclick="searchFAQ()"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row panel-group" id="questions">
     {% for column in faq|slice(2) -%}
         <div class="col-md-6">
             {% set outerloop = loop %}
             {%- for question in column -%}
-            <div class="panel panel-default">
+            <div class="panel panel-default" id="qref-{{ outerloop.index0 * faq|length // 2 + loop.index }}">
                 <div class="panel-heading">
                     <div class="panel-title question">
-                        <a data-toggle="collapse" href="#question-{{ outerloop.index0 }}{{ loop.index }}">
+                        <a data-toggle="collapse" href="#faqquestion-{{ outerloop.index0 * faq|length // 2 + loop.index }}">
                             {{ question[0] }}
                         </a>
                     </div>
                 </div>
-                <div id="question-{{ outerloop.index0 }}{{ loop.index }}" class="panel-collapse collapse">
+                <div id="faqquestion-{{ outerloop.index0 * faq|length // 2 + loop.index }}" class="panel-collapse collapse COLLAPSE-PLACEHOLDER">
                     <div class="panel-body">
                         {{ question[1] }}
                     </div>
@@ -73,7 +84,65 @@
         </div>
     {%- endfor %}
     </div>
-
+    <div class="row">
+        <div id="search-results" class="col-md-8 col-md-offset-2 panel-group"></div>
+    </div>
 </div>
-
+{% endblock %}
+{% block scripts %}
+<script src="/js/lunr.min.js"></script>
+<script>
+var raw = {{ faq }};
+var idx = lunr(function() {
+    this.ref('id'),
+    this.field('question', {multiplier: 10}),
+    this.field('answer')
+});
+for (var i=0; i<raw.length; ++i) {
+    var entry = raw[i];
+    var qa = {
+        id: i+1,
+        question: entry[0],
+        answer: entry[1]
+    }
+    idx.add(qa);
+}
+var search = function (term) {
+    return idx.search(term).map(function (result) {
+        return result;
+    });
+}
+var getEntries = function(results) {
+    return results.map(function(result, index) {
+        var entry = '<div class="panel panel-default">' + $('#qref-' + result.ref).html() + '</div>';
+        entry = entry.replace(/faqquestion/g, 'resultquestion'); // Hack to get panels working on results
+        if (result.score > .3 || index == 0) {
+            entry = entry.replace('COLLAPSE-PLACEHOLDER', 'in')
+        }
+        return entry;
+    });
+}
+function searchFAQ() {
+    var query = $('#search-input').val();
+    if (query != '') {
+        $('#questions').slideUp();
+        var results = search(query);
+        if (results.length == 0) {
+            $('#search-results').html('<div class="text-center"><p class="lead"><span class="glyphicon glyphicon-thumbs-down"></span><br>No questions matched your search. Try clarifying or continue typing...<br>Otherwise, please contact us at <a href="mailto:recognition@nydkc.org">recognition@nydkc.org</a></p></div>');
+        }
+        else {
+            var entries = getEntries(results);
+            $('#search-results').html(entries.join(''));
+        }
+        $('#search-results').fadeIn();
+    }
+    else {
+        $('#search-results').fadeOut();
+        $('#questions').slideDown();
+    }
+}
+$(document).ready(function() {
+    $('#search-input').keyup(searchFAQ);
+});
+</script>
 {% endblock %}

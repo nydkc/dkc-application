@@ -47,6 +47,10 @@ html, body {
     transition: none;
 }
 
+.search-questions .search-button {
+    max-height: 34px;
+}
+
 .alert {
     text-align: center;
 }
