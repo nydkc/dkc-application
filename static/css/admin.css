@@ -95,13 +95,47 @@ hr.separator {
 #notetaking {
     position: fixed;
     right: 5px;
-    opacity: .9;
     width: 300px;
+    margin-bottom: 0;
+    opacity: .9;
+    z-index: 100;
+}
+
+#notetaking.small {
+    left: 0 !important;
+    right: auto;
+    width: 100%;
+}
+
+#notetaking .panel-heading,
+#notetaking .panel-heading:focus {
+    cursor: move;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline-style:none;
 }
 
 #notetaking .close {
     padding-top: 9px;
     padding-right: 15px;
+}
+
+#notetaking-button {
+    cursor: pointer;
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 15px;
+    background-color: #FFDC00;
+    line-height: 0;
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
 }
 
 @media screen and (min-width: 768px) {

@@ -2,11 +2,12 @@
 {% set title = applicant.first_name|e ~ ' ' ~ applicant.last_name|e %}
 {% block admin %}
 <div id="notetaking" class="panel panel-default">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <div class="panel-heading">Awards Committee Notes (Click to drag)</div>
     <textarea class="panel-body form-control" name="notes" id="notes" rows="6">{{ application.notes|e }}</textarea>
     <button class="btn btn-info btn-block btn-small" id="save-notes-button" data-loading-text="Saving...">Save notes</button>
 </div>
+<div id="notetaking-button"><span class="glyphicon glyphicon-pencil"></span></div>
 
 <div class="page-header">
     <h2>{{ applicant.first_name|e }} {{ applicant.last_name|e }}
@@ -446,10 +447,28 @@ function clickableRows() {
         window.open($(this).attr('href'), '_blank');
     });
 }
-$(document).ready(clickableRows);
-$('#notetaking').mousedown(handle_mousedown);
-$('#notetaking').css('top', ($(window).height() - $('#notetaking').height() - 5) + 'px');
 $('#notetaking #save-notes-button').click(saveNotes);
+$('#notetaking').css('top', ($(window).height() - $('#notetaking').height() - 5) + 'px');
+function setupNotetaking() {
+    if ($(window).width() >= 768) {
+        $('.admin').removeAttr("style");
+        $('#notetaking').removeClass("small");
+        $('#notetaking').mousedown(handle_mousedown);
+    }
+    else {
+        $('.admin').css('padding-bottom', $('#notetaking').height() + 20);
+        $('#notetaking').unbind("mousedown");
+        $('#notetaking').addClass("small");
+    }
+}
+$('#notetaking .close').click(function () {
+    $('#notetaking').fadeOut();
+    $('#notetaking-button').fadeIn();
+});
+$('#notetaking-button').click(function() {
+    $('#notetaking').fadeIn();
+    $(this).fadeOut();
+});
 function saveNotes(e) {
     $(this).button('loading');
     console.log(e);
@@ -473,5 +492,10 @@ function saveNotes(e) {
     $(this).button('reset');
 }
 setInterval(saveNotes, 1*60*1000); // Every minute
+$(document).ready(function() {
+    clickableRows();
+    setupNotetaking();
+});
+$(window).resize(setupNotetaking);
 </script>
 {% endblock %}
