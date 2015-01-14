@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <p class="lead">You may want to view the applicant's entire <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}.pdf?a={{ user_id }}&t={{ token }}">DKC application</a>.</p>
+        <p class="lead">You may want to view the applicant's entire <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf?a={{ user_id }}&t={{ token }}">DKC application</a>.</p>
 
         <p>By verifying the application of {{ applicant.first_name|e }} {{ applicant.last_name|e }}, you agree upon the following terms:</p>
         <blockquote>
