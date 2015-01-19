@@ -81,15 +81,15 @@ class Application(ndb.Model):
         else:
             return False
 
-    other_materials = ndb.BlobKeyProperty(repeated=True)
+    other_materials = ndb.BlobKeyProperty(repeated=True, indexed=False)
 
     personal_statement_choice = ndb.StringProperty(indexed=False)
     personal_statement = ndb.TextProperty()
 
-    international_projects = ndb.StructuredProperty(InternationalProject, repeated=True)
-    district_projects = ndb.StructuredProperty(DistrictProject, repeated=True)
-    divisionals = ndb.StructuredProperty(Divisional, repeated=True)
-    division_projects = ndb.StructuredProperty(GeneralProject, repeated=True) 
+    international_projects = ndb.StructuredProperty(InternationalProject, repeated=True, indexed=False)
+    district_projects = ndb.StructuredProperty(DistrictProject, repeated=True, indexed=False)
+    divisionals = ndb.StructuredProperty(Divisional, repeated=True, indexed=False)
+    division_projects = ndb.StructuredProperty(GeneralProject, repeated=True, indexed=False)
     
     key_club_week_mon = ndb.TextProperty()
     key_club_week_tue = ndb.TextProperty()
@@ -104,9 +104,9 @@ class Application(ndb.Model):
     attendance_icon = ndb.BooleanProperty()
     positions = ndb.TextProperty()
 
-    kiwanis_one_day = ndb.StructuredProperty(GeneralProject)
-    k_family_projects = ndb.StructuredProperty(GeneralProject, repeated=True) 
-    interclub_projects = ndb.StructuredProperty(GeneralProject, repeated=True) 
+    kiwanis_one_day = ndb.StructuredProperty(GeneralProject, indexed=False)
+    k_family_projects = ndb.StructuredProperty(GeneralProject, repeated=True, indexed=False) 
+    interclub_projects = ndb.StructuredProperty(GeneralProject, repeated=True, indexed=False) 
     advocacy_cause = ndb.StringProperty(indexed=False)
     advocacy_description = ndb.TextProperty()
     advocacy_materials = ndb.BlobKeyProperty(repeated=True)
@@ -119,12 +119,12 @@ class Application(ndb.Model):
     district_newsletter_info = ndb.TextProperty()
     district_website = ndb.BooleanProperty()
     district_website_info = ndb.TextProperty()
-    other_projects = ndb.StructuredProperty(GeneralProject, repeated=True)
+    other_projects = ndb.StructuredProperty(GeneralProject, repeated=True, indexed=False)
 
     early_submission = ndb.ComputedProperty(lambda self: self.is_early())
     early_submission_points = ndb.StringProperty(indexed=False)
     recommender_points = ndb.StringProperty(indexed=False)
-    outstanding_awards = ndb.StringProperty(indexed=False)
+    outstanding_awards = ndb.StringProperty()
     
     scoring_reason_two = ndb.TextProperty()
     scoring_reason_three = ndb.TextProperty()

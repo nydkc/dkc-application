@@ -14,7 +14,8 @@ JINJA_ENVIRONMENT.filters.update({
     'byteconvert': jinja_functions.byteConversion,
     'split_string': jinja_functions.splitString,
     'split_regex': jinja_functions.splitRegex,
-    'highlight_search': jinja_functions.search
+    'highlight_search': jinja_functions.search,
+    'getvars': jinja_functions.getVars
 })
 JINJA_ENVIRONMENT.tests.update({
     'still_early': jinja_functions.getEarlyStatus

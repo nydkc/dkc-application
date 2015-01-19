@@ -25,3 +25,7 @@ def get_all_applications(applicants=None):
         applications = ndb.get_multi(applications_keys)
         memcache.add(key='all_applications', value=applications, time=600)
     return applications
+
+def run_gql(querystring):
+    query = ndb.gql(querystring)
+    return query.fetch()

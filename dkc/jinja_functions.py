@@ -63,6 +63,9 @@ def search(value, search):
     else:
         return value
 
+def getVars(classobject):
+    return [attr for attr in dir(classobject) if not callable(attr) and not attr.startswith("_")]
+
 from datetime import datetime
 from models import Settings
 

@@ -138,6 +138,15 @@ hr.separator {
     border-top-left-radius: 5px;
 }
 
+#query-results {
+    margin-top: 20px;
+    height: 500px;
+    overflow: scroll;
+    border: 1px #ccc solid;
+    padding: 10px;
+    word-break: break-word;
+}
+
 @media screen and (min-width: 768px) {
     .dl-horizontal.profile dt {
         width: 42%;
