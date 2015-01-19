@@ -19,7 +19,7 @@
 
     <ul class="list-unstyled">
     {% for result in query_results %}
-        {% set keyid = result.key|replace("'","-")|replace(" ","")|replace(",","")|replace("(","")|replace(")","") %}
+        {% set keyid = result.key|replace("'","")|replace(" ","")|replace(",","-")|replace("(","")|replace(")","")|replace(".","")|replace(":","")|replace("@","") %}
         <li><button type="button" class="btn btn-link" data-toggle="modal" data-target="#{{ keyid }}">{{ result.key }}</button></li>
         <div class="modal fade" id="{{ keyid }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
