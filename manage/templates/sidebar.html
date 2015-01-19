@@ -6,10 +6,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <h3 class="visible-xs">{{ user.email }}</h3>
+        <h4 class="current-user visible-xs">{{ user.email }}</h4>
     </div>
     <div id="menu" class="collapse navbar-collapse">
-        <h3 class="hidden-xs">{{ user.email }}</h3>
+        <h4 class="current-user hidden-xs">{{ user.email }}</h4>
         <ul class="sidebar nav nav-pills nav-stacked">
             <li{% if admin_url == '/admin/overview' %} class="active"{% endif %}>
                 <a href="/admin/overview">Overview</a>

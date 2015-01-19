@@ -93,10 +93,6 @@ strong label {
     float: none;
 }
 
-#menu-header h3 {
-    margin: 14px 0 10px;
-}
-
 #menu-header button {
     margin-right: 0;
 }
@@ -105,11 +101,13 @@ strong label {
     padding: 0;
 }
 
-#menu h3, #menu-header h3 {
+#menu .current-user, #menu-header .current-user {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     min-height: 30px;
+    margin-top: 20px;
+    margin-bottom: 0;
 }
 
 #menu .sidebar {
