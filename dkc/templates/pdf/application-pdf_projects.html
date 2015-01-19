@@ -30,7 +30,7 @@
 
 <div class="section">
 <h6>Section 5: Divisional Involvement</h6>
-<i>Attendance at Divisional Meeting</i>
+<i>Attendance at Divisional Meeting ({{ application.divisionals|length }} listed below)</i>
 <table class="divisional">
     <tbody>
         {% for divisional in application.divisionals %}
@@ -42,7 +42,7 @@
     </tbody>
 </table>
 <br>
-<i>Attendance at a Divisional Project/Event</i>
+<i>Attendance at a Divisional Project/Event ({{ application.division_projects|length }} listed below)</i>
 {% for project in application.division_projects %}
 <div class="project">
     <strong>Event</strong>: {{ project.event }}<br>

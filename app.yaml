@@ -43,7 +43,7 @@ handlers:
   expiration: 7d
 - url: /fonts
   static_dir: static/fonts
-  expiration: 7d
+  expiration: 30d
   application_readable: true
 - url: /admin
   script: manage.views.application

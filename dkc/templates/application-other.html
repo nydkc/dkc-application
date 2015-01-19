@@ -46,15 +46,15 @@
                 </div>
             </div>
         </li>
-        <li>The deadline for early submission is <strong>{{ config.early_due_date|datetimeformat }}</strong>. The deadline for regular submission is <strong>{{ config.due_date|datetimeformat }}</strong>. For all late submission, 5 points will be deducted per day from each part. Submissions sent in three days after the deadline will not be accepted.</li>
         <li>
-            Are you applying for any of the Outstanding Officer/Member awards? The answer to this question is <strong>REQUIRED</strong> for anyone thinking about applying.
+            Are you applying for any of the Outstanding Officer/Member awards? The answer to this question is <strong>REQUIRED</strong> for anyone applying.
             <div class="form-horizontal row">
                 <div class="col-md-7 col-md-offset-1">
                     {{ select_horizontal("outstanding-awards", "I am applying for ", application.outstanding_awards, ["", "None", "Outstanding Key Club Member","Outstanding Club President","Outstanding Club Vice-President","Outstanding Club Secretary","Outstanding Club Treasurer","Outstanding Club Bulletin Editor","Outstanding Club Webmaster"], size=4) }}
                 </div>
             </div>
         </li>
+        <li>The deadline for early submission is <strong>{{ config.early_due_date|datetimeformat }}</strong>. The deadline for regular submission is <strong>{{ config.due_date|datetimeformat }}</strong>. For all late submission, 5 points will be deducted per day from each part. Submissions sent in three days after the deadline will not be accepted.</li>
     </ol>
 
     <hr>
