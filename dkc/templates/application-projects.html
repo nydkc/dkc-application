@@ -11,7 +11,9 @@
         <br>Required Points: 20 Points
         <br>Recommended Points: 40 Points
     </p>
-    <p>Complete the following three sections. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description. You may receive up to four points per event with a maximum of twenty four points.</p>
+
+    <h4>Sections 1,2,3: International Projects (Max 24 Points, 4 Points per Event)</h4>
+    <p>Complete the following three sections. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
     <ul>
         <li>Section 1:&nbsp;&nbsp;&nbsp;Governor’s Project: “Water: The Key to Life”</li>
         <li>Section 2:&nbsp;&nbsp;&nbsp;Major Emphasis: “Children: Their Focus, Our Future”</li>
@@ -42,8 +44,7 @@
 
     <hr>
 
-    <p>Complete the following section. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description. You may receive up to four points per event with a maximum of 20 points.</p>
-    <h4>Section 4: District Projects &amp; Local Causes</h4>
+    <h4>Section 4: District Projects &amp; Local Causes (Max 20 Points, 4 Points per Event)</h4>
     <p>Describe five projects or events that you have participated in relating to either the District Projects or Local Causes. At least one project must be a District Project. You must include all information as requested. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description. The District Projects are:</p>
     <ul>
         <li>St. Jude Children’s Hospital</li>
@@ -78,9 +79,9 @@
 
     <hr>
 
-    <p>Complete the following section. Attendance at a divisional meeting is 4 points per meeting, with a maximum of 8 points. Attendance at a Divisional project/event is 4 points per event with a maximum of 8 points. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
     <h4>Section 5: Divisional Involvement</h4>
-    <p>Attendance at Divisional Meeting (Max 8 Points, 4 Points per Event)</p>
+    <strong>Attendance at Divisional Meeting (Max 8 Points, 4 Points per Event)</strong>
+    <p>List any divisionals that you have attended. Please include the date and location of each divisional.</p>
     <div class="divisional-meetings">
         {% for divisional in application.divisionals %}
         <div class="row project divisional divisional-{{ loop.index }}">
@@ -100,7 +101,8 @@
     </div>
     <button class="btn btn-inverse btn-block" id="divisional-meetings-button"><span class="glyphicon glyphicon-plus"></span> Add more divisionals...</button>
 
-    <p style="margin-top: 20px;">Attendance at a Divisional Project/Event (Max 8 Points, 4 Points per Event)</p>
+    <div style="margin-top: 10px;"><strong>Attendance at a Divisional Project/Event (Max 8 Points, 4 Points per Event)</strong></div>
+    <p>If you have participated in a divisional service project or any division-hosted event, please fill out this section. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
     <div class="division-projects">
         {% for project in application.division_projects %}
         <div class="row project project-{{ loop.index }}">
