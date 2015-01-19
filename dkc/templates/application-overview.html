@@ -8,8 +8,7 @@
 
     <div class="alert alert-info">
     {%- if not submitted -%}
-        Please note that any changes that you make will only be <strong>saved</strong> online.
-        <br>If you would like to submit your application, please go <a href="/application/submit">here</a>.
+        Please note that any changes that you make will be <strong>saved</strong> online.
     {%- endif -%}
         <p class="lead">You can download your application as a PDF <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf">here</a>.</p>
     </div>
@@ -19,7 +18,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#overview-sections" href="#introduction">
-                        Introduction
+                        <span class="glyphicon glyphicon-heart-empty"></span> Introduction
                     </a>
                 </h4>
             </div>
@@ -48,7 +47,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#overview-sections" href="#instruction-rules">
-                        Instructions & Rules
+                        <span class="glyphicon glyphicon-question-sign"></span> Instructions & Rules
                     </a>
                 </h4>
             </div>
@@ -96,7 +95,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#overview-sections" href="#example-submissions">
-                        Example Submissions
+                        <span class="glyphicon glyphicon-edit"></span> Example Submissions
                     </a>
                 </h4>
             </div>
@@ -160,7 +159,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#overview-sections" href="#resources">
-                        Additional Resources
+                        <span class="glyphicon glyphicon-list-alt"></span> Additional Resources
                     </a>
                 </h4>
             </div>
@@ -177,7 +176,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" href="#other-material-upload">
-                        Upload Other Materials
+                        <span class="glyphicon glyphicon-cloud-upload"></span> Upload Other Materials
                     </a>
                 </h4>
             </div>
