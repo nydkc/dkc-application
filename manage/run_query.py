@@ -16,6 +16,7 @@ class QueryHandler(AdminBaseHandler):
         except:
             results = []
         template_values = {
+            'querystring': querystring,
             'query_results': results
         }
         self.render_template('admin-run_query.html', template_values)
