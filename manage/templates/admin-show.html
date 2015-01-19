@@ -65,24 +65,27 @@
 <div class="page-header">
     <h3 id="projects">International, District &amp; Divisional Projects <span class="text-nowrap">(60 Points)</span></h3>
 </div>
-<h4>Sections 1, 2, 3: International Projects</h4>
+<h4>Sections 1, 2, 3: International Projects (Max 24 Points, 4 Points per Event)</h4>
+<div class="international-projects">
 {% for project in application.international_projects %}
-<div class="row project">
-    <div class="col-sm-12">
-        <strong>Section</strong>: {{ project.section|e }}<br>
-        <strong>Event</strong>: {{ project.event|e }}
+    <div class="row project">
+        <div class="col-sm-12">
+            <strong>Section</strong>: {{ project.section|e }}<br>
+            <strong>Event</strong>: {{ project.event|e }}
+        </div>
+        <div class="col-sm-12">
+            <strong>Description:</strong> {{ project.description|e }}
+        </div>
     </div>
-    <div class="col-sm-12">
-        <strong>Description:</strong> {{ project.description|e }}
-    </div>
-</div>
 {% endfor %}
+</div>
 
 <div class="clearfix">
     <hr class="col-xs-6 col-xs-offset-3">
 </div>
 
-<h4>Section 4: District Projects & Local Causes</h4>
+<h4>Section 4: District Projects & Local Causes (Max 20 Points, 4 Points per Event)</h4>
+<div class="district-projects">
 {% for project in application.district_projects %}
 <div class="row project">
     <div class="col-md-12">
@@ -94,6 +97,7 @@
     </div>
 </div>
 {% endfor %}
+</div>
 
 <div class="clearfix">
     <hr class="col-xs-6 col-xs-offset-3">
@@ -101,31 +105,35 @@
 
 <h4>Section 5: Divisional Involvement</h4>
 <u>Attendance at Divisional Meetings (Max 8 Points, 4 Points per Event)</u>
+<div class="divisional-meetings">
 {% for divisional in application.divisionals %}
-<div class="row divisional">
-    <div class="col-sm-4">
-        <strong>Date</strong>: {{ divisional.date|e }}
+    <div class="row divisional">
+        <div class="col-sm-4">
+            <strong>Date</strong>: {{ divisional.date|e }}
+        </div>
+        <div class="col-sm-8">
+            <strong>Location</strong>: {{ divisional.location|e }}
+        </div>
     </div>
-    <div class="col-sm-8">
-        <strong>Location</strong>: {{ divisional.location|e }}
-    </div>
-</div>
 {% endfor %}
-<div style="height: 10px;"></div>
+</div>
+<div style="height: 20px;"></div>
 <u>Attendance at a Divisional Project/Event (Max 8 Points, 4 Points per Event)</u>
+<div class="division-projects">
 {% for project in application.division_projects %}
-<div class="row project">
-    <div class="col-md-6">
-        <strong>Event</strong>: {{ project.event|e }}
+    <div class="row project">
+        <div class="col-md-6">
+            <strong>Event</strong>: {{ project.event|e }}
+        </div>
+        <div class="col-md-6">
+            <strong>Location</strong>: {{ project.location|e }}
+        </div>
+        <div class="col-md-12">
+            {{ project.description|e }}
+        </div>
     </div>
-    <div class="col-md-6">
-        <strong>Location</strong>: {{ project.location|e }}
-    </div>
-    <div class="col-md-12">
-        {{ project.description|e }}
-    </div>
-</div>
 {% endfor %}
+</div>
 
 <div class="clearfix">
     <hr class="col-xs-6 col-xs-offset-3">
@@ -140,7 +148,7 @@
     <h3 id="involvement">Involvement in Key Club Functions <span class="text-nowrap">(60 Points)</span></h3>
 </div>
 
-<h4>Section 1: Key Club Week Participation (Max 15 Points, 3 Point per Day)</h4>
+<h4>Section 1: Key Club Week Participation (Max 15 Points, 3 Points per Day)</h4>
 <div class="table-responsive">
     <table class="table table-bordered">
         <tbody>
@@ -226,47 +234,51 @@
 
 <h4>Section 1: K-Family Project</h4>
 <u>Kiwanis One Day Event (5 Points Max, 5 Points per Event)</u>
-{% if application.kiwanis_one_day.event != '' %}
-<div class="row project">
-    <div class="col-md-12">
-        <strong>Event</strong>: {{ application.kiwanis_one_day.event|e }}<br>
-        <strong>Location</strong>: {{ application.kiwanis_one_day.location|e }}
-    </div>
-    <div class="col-md-12">
-        <strong>Description</strong>: {{ application.kiwanis_one_day.description|e }}
+<div class="kiwanis-one-day">
+    <div class="row project">
+        <div class="col-md-12">
+            <strong>Event</strong>: {{ application.kiwanis_one_day.event|e }}<br>
+            <strong>Location</strong>: {{ application.kiwanis_one_day.location|e }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description</strong>: {{ application.kiwanis_one_day.description|e }}
+        </div>
     </div>
 </div>
-{% endif %}
-<div style="height: 10px;"></div>
-<u>K-Family Service Projects (16 Points Max, 4 Point per Event)</u>
+<div style="height: 20px;"></div>
+<u>K-Family Service Projects (16 Points Max, 4 Points per Event)</u>
+<div class="k-family-projects">
 {% for project in application.k_family_projects %}
-<div class="row project">
-    <div class="col-md-12">
-        <strong>Event</strong>: {{ project.event|e }}<br>
-        <strong>Location</strong>: {{ project.location|e }}
+    <div class="row project">
+        <div class="col-md-12">
+            <strong>Event</strong>: {{ project.event|e }}<br>
+            <strong>Location</strong>: {{ project.location|e }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description</strong>: {{ project.description|e }}
+        </div>
     </div>
-    <div class="col-md-12">
-        <strong>Description</strong>: {{ project.description|e }}
-    </div>
-</div>
 {% endfor %}
+</div>
 
 <div class="clearfix">
     <hr class="col-xs-6 col-xs-offset-3">
 </div>
 
-<h4>Section 2: Interclub Events (Max 16 Points, 4 Point per Event)</h4>
+<h4>Section 2: Interclub Events (Max 16 Points, 4 Points per Event)</h4>
+<div class="interclub-projects">
 {% for project in application.interclub_projects %}
-<div class="row project">
-    <div class="col-md-12">
-        <strong>Event</strong>: {{ project.event|e }}<br>
-        <strong>Location</strong>: {{ project.location|e }}
+    <div class="row project">
+        <div class="col-md-12">
+            <strong>Event</strong>: {{ project.event|e }}<br>
+            <strong>Location</strong>: {{ project.location|e }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description</strong>: {{ project.description|e }}
+        </div>
     </div>
-    <div class="col-md-12">
-        <strong>Description</strong>: {{ project.description|e }}
-    </div>
-</div>
 {% endfor %}
+</div>
 
 <div class="clearfix">
     <hr class="col-xs-6 col-xs-offset-3">
@@ -300,7 +312,7 @@
     <hr class="col-xs-6 col-xs-offset-3">
 </div>
 
-<h4>Section 4: Committee Involvement (Max 3 Points, 3 Points per committee)</h4>
+<h4>Section 4: Committee Involvement (Max 3 Points, 3 Points per Committee)</h4>
 <div class="row">
     <div class="col-sm-8">
         <strong>Committee</strong>: {{ application.committee|e }}
@@ -308,7 +320,7 @@
     <div class="col-sm-4">
         <strong>Type</strong>: {{ application.comittee_type|e }}
     </div>
-    <div class="col-md-12">
+    <div class="col-sm-12">
         <strong>Description</strong>: {{ application.committee_description|e }}
     </div>
 </div>
@@ -351,18 +363,20 @@
     <hr class="col-xs-6 col-xs-offset-3">
 </div>
 
-<h4>Section 6: Other Projects/Fundraisers (Max 12 Points, 2 Point per Project/Fundraiser)</h4>
+<h4>Section 6: Other Projects/Fundraisers (Max 12 Points, 2 Points per Project/Fundraiser)</h4>
+<div class="other-projects">
 {% for project in application.other_projects %}
-<div class="row project">
-    <div class="col-md-12">
-        <strong>Event</strong>: {{ project.event|e }}<br>
-        <strong>Location</strong>: {{ project.location|e }}
+    <div class="row project">
+        <div class="col-md-12">
+            <strong>Event</strong>: {{ project.event|e }}<br>
+            <strong>Location</strong>: {{ project.location|e }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description</strong>: {{ project.description|e }}
+        </div>
     </div>
-    <div class="col-md-12">
-        <strong>Description</strong>: {{ project.description|e }}
-    </div>
-</div>
 {% endfor %}
+</div>
 
 <div class="clearfix">
     <hr class="col-xs-6 col-xs-offset-3">
@@ -438,6 +452,10 @@
         </tbody>
     </table>
 </div>
+
+<hr class="separator" style="margin-top: 40px;">
+
+<p class="lead">Submitted at {{ application.submit_time|datetimeformat }}</p>
 
 {% endblock %}
 {% block admin_scripts %}
