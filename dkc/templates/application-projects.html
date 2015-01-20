@@ -23,10 +23,10 @@
         {% for project in application.international_projects %}
         <div class="row project project-{{ loop.index }}">
             <div class="form-horizontal col-xs-12">
-                <div class="col-md-3">
+                <div class="col-md-4 col-lg-3">
                     {{ select_horizontal("international-projects-section", "Section:", project.section, ["Section 1: Governor’s Project: “Water: The Key to Life”","Section 2: Major Emphasis: “Children: Their Focus, Our Future”","Section 3: Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)"], size=4) }}
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-8 col-lg-9">
                     {{ input_horizontal("international-projects-event", "Event:", project.event, size=2) }}
                 </div>
                 <div class="col-md-12">
