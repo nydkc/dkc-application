@@ -22,7 +22,7 @@
     <li>I do not have a recommendation.</li>
 {% endif %}
 
-{% if "Outstanding" in application.outstanding_awards %}
+{% if "Outstanding" in application.outstanding_awards|e %}
     <li>I am submitting an application for the {{ application.outstanding_awards|e }}. This DKC Application is part of the requirements for the {{ application.outstanding_awards }} award.</li>
 {% else %}
     <li>I am only submitting my application for the DKC Award.</li>
