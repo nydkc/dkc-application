@@ -1,4 +1,4 @@
-import os, webapp2, jinja2, logging
+import logging
 from webapp2_extras import auth, sessions
 from webapp2_extras.auth import InvalidAuthIdError, InvalidPasswordError
 from dkc import *

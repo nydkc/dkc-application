@@ -1,10 +1,10 @@
-import os, webapp2, jinja2, json, html2text, logging
+import json, html2text, logging
 from datetime import datetime
 from google.appengine.ext import ndb, blobstore
-from dkc import *
-from models import *
 from sendgrid import SendGridClient
 from sendgrid import Mail
+from dkc import *
+from models import *
 
 class ApplicationOverview(BaseHandler):
 

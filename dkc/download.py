@@ -1,9 +1,9 @@
 import logging
-from dkc import *
-from dkc.models import User
-from google.appengine.api import users
 from StringIO import StringIO
+from google.appengine.api import users
 import xhtml2pdf.pisa as pisa
+from dkc import *
+from models import User
 
 class PDFGeneration(BaseHandler):
 

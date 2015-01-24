@@ -1,4 +1,4 @@
-import os, webapp2, jinja2, time, logging
+import time, logging
 from webapp2_extras import auth, sessions
 from google.appengine.api import mail
 from dkc import *

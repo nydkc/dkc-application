@@ -1,4 +1,4 @@
-import os, webapp2, jinja2
+import webapp2
 from dkc import *
 from application import *
 from application_verify import ApplicationVerificationHandler

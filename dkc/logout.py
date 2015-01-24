@@ -1,4 +1,3 @@
-import os, webapp2, jinja2
 from dkc import *
 
 class LogoutPage(BaseHandler):

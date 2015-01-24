@@ -1,6 +1,6 @@
-from manage.models import *
-from datetime import datetime
 from google.appengine.ext import ndb
+from datetime import datetime
+from manage.models import Settings
 
 config = ndb.Key(Settings, 'config').get()
 if not config:
