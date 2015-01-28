@@ -33,10 +33,10 @@ class ApplicationActivitiesUploadHandler(BaseHandler, blobstore_handlers.Blobsto
             application.put()
 
             self.response.write('<script language="javascript" type="text/javascript">window.top.window.finishUpload(')
-            self.response.write('[')
+            response = []
             for blob_info in upload_files:
-                self.response.write('\'{"key": "%s", "filename": "%s", "content_type": "%s", "size": "%s"}\', ' % (blob_info.key(), blob_info.filename, blob_info.content_type, byteConversion(blob_info.size)))
-            self.response.write(']')
+                response.append('{"key": "%s", "filename": "%s", "content_type": "%s", "size": "%s"}' % (blob_info.key(), blob_info.filename, blob_info.content_type, byteConversion(blob_info.size)))
+            self.response.write(json.dumps(response))
             self.response.write(');</script>')
         except Exception, e:
             logging.error("Error with uploading: %s" % e)
