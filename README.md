@@ -15,15 +15,19 @@ Hosted on Google App Engine: [http://dkc-app.nydkc.org](http://dkc-app.nydkc.org
     - Part 4: Projects, Advocacy & Newsletters
     - Other & Scoring
     - Verification
+    - Upload files on Overview and Advocacy
 - Account management
     - Password reset
     - Access control for logged in users
     - Block modification after submission
     - Download application as PDF
 - Admin Interface
+    - Settings (Due dates, Sendgrid credentials)
     - View applications
     - Search users by profile information
     - Lists emails of applicants split by submitted status
+    - Run datastore queries
+    - Handle deleted files
 
 ## Requirements
 
@@ -39,5 +43,5 @@ Hosted on Google App Engine: [http://dkc-app.nydkc.org](http://dkc-app.nydkc.org
 
 ## Notes
 - There is a bug with Google App Engine's Push-To-Deploy, so to get the PDF Generation to work correctly, the application must be deployed using the GAE App.
-- Backup datastore using `appcfg.py download_data --email=INSERT_EMAIL_HERE --url=http://dkc-app.appspot.com/_ah/remote_api --filename=backup`
+- Backup datastore using `appcfg.py download_data --url=http://dkc-app.appspot.com/_ah/remote_api --filename=backup`
 - Upload datastore to local development using `appcfg.py upload_data --filename=backup --application=dev~dkc-app --url=http://localhost:20000/_ah/remote_api`
