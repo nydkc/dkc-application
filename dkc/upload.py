@@ -68,6 +68,9 @@ class ApplicationUploadHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHa
             return
 
         upload_files = self.get_uploads('other-material')
+        if len(application.other_materials) + len(upload_files) > 3:
+            upload_files = upload_files[0: 3-len(application.other_materials)]
+
         for blob_info in upload_files:
             application.other_materials.append(blob_info.key())
         application.put()
@@ -109,4 +112,4 @@ class DeleteHandler(BaseHandler):
         deleted = DeletedFile(user=self.user.key, blob=blob_info.key())
         deleted.put()
 
-        self.redirect('/application')
+        self.response.write("Delete Successful: %s" % resource)
