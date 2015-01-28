@@ -1,7 +1,7 @@
 import urllib
 from google.appengine.ext import ndb
 from manage import *
-from dkc.models import User
+from dkc.models import User, DeletedFile
 
 def get_application_by_email(email):
     applicant = User.get_by_auth_id(email)
@@ -28,4 +28,8 @@ def get_all_applications(applicants=None):
 
 def run_gql(querystring):
     query = ndb.gql(querystring)
+    return query.fetch()
+
+def get_deleted_files():
+    query = DeletedFile.query()
     return query.fetch()
