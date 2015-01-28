@@ -86,11 +86,14 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self, resource):
         resource = str(urllib.unquote(resource))
         blob_info = blobstore.BlobInfo.get(resource)
-        if "image" in blob_info.content_type:
-            image_url = images.get_serving_url(resource) + "=s0"
-            self.redirect(image_url)
+        if blob_info == None:
+            self.abort(404)
         else:
-            self.send_blob(blob_info)
+            if "image" in blob_info.content_type:
+                image_url = images.get_serving_url(resource) + "=s0"
+                self.redirect(image_url)
+            else:
+                self.send_blob(blob_info)
 
 class DeleteHandler(BaseHandler):
 
