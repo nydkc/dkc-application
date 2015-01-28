@@ -7,9 +7,9 @@ def getBlobData(blob_keys):
         blob_info = blobstore.BlobInfo.get(blob_key)
         blobs.append({
             "blob_key": blob_key,
-            "filename": blob_info.filename,
-            "content_type": blob_info.content_type,
-            "size": blob_info.size
+            "filename": blob_info.filename if blob_info else None,
+            "content_type": blob_info.content_type if blob_info else None,
+            "size": blob_info.size if blob_info else None
         })
     return blobs
 
