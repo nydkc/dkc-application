@@ -28,6 +28,8 @@ class ApplicationActivitiesUploadHandler(BaseHandler, blobstore_handlers.Blobsto
 
         upload_files = self.get_uploads('advocacy-material')
         if len(application.advocacy_materials) + len(upload_files) > 5:
+            for stopped_upload_file in upload_files[5-len(application.advocacy_materials):]:
+                stopped_upload_file.delete()
             upload_files = upload_files[0: 5-len(application.advocacy_materials)]
 
         try:
@@ -69,6 +71,8 @@ class ApplicationUploadHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHa
 
         upload_files = self.get_uploads('other-material')
         if len(application.other_materials) + len(upload_files) > 3:
+            for stopped_upload_file in upload_files[5-len(application.advocacy_materials):]:
+                stopped_upload_file.delete()
             upload_files = upload_files[0: 3-len(application.other_materials)]
 
         for blob_info in upload_files:
