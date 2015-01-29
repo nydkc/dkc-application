@@ -59,5 +59,9 @@ handlers:
 - url: /.*
   script: dkc.views.application
 
+error_handlers:
+- error_code: over_quota
+  file: error_pages/over_quota.html
+
 env_variables:
     TZ: 'EST'
