@@ -45,6 +45,8 @@ handlers:
   static_dir: static/fonts
   expiration: 30d
   application_readable: true
+- url: /sendgrid.*
+  script: dkc.bounce.application
 - url: /admin
   script: manage.views.application
 - url: /admin/logout

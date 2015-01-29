@@ -1,8 +1,8 @@
 import json, html2text, logging
 from datetime import datetime
 from google.appengine.ext import ndb, blobstore
-from sendgrid import SendGridClient
-from sendgrid import Mail
+from sendgrid import Mail, SendGridClient
+from smtpapi import *
 from dkc import *
 from models import *
 
@@ -357,6 +357,7 @@ class ApplicationVerification(BaseHandler):
             verification_email.set_html(JINJA_ENVIRONMENT.get_template('verification-email.html').render(template_values))
             htmlhandler = html2text.HTML2Text()
             verification_email.set_text(htmlhandler.handle(verification_email.html).encode("UTF+8"))
+            verification_email.add_unique_arg('user_id', user_id)
 
             code, response = sg.send(verification_email)
             response = json.loads(response)
