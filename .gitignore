@@ -1,7 +1,19 @@
+# OS Junk
 .DS_Store
-*.pyc
+
+# Text Editor Backup Files
 *.swp
+
+# Python Compiled Files
+*.pyc
+
+# C Compiled Files
 a.out
 
+# Pip Install Files
+*.so
+*.egg-info/
+
+# GAE Files
 bulkloader*
 backup
