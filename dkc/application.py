@@ -276,7 +276,7 @@ class ApplicationOther(BaseHandler):
         if self.request.get('recommender-checkbox'):
             application.recommender_points = self.request.get('recommender-points')
         else:
-            application.recommender_points = "No Recommendation Specified"
+            application.recommender_points = "No Recommendation"
 
         application.outstanding_awards = self.request.get('outstanding-awards')
 

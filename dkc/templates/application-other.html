@@ -12,16 +12,9 @@
         <li>
             Receive 5 points in any part for submitting this application early.
             <div class="form-horizontal row">
-            {% if application.early_submission_points %}
                 <div class="col-lg-5 col-md-6 col-md-offset-1">
-                    <strong>{{ checkbox("early-submission-checkbox", "Yes I would like to apply these points to part:", not (application.early_submission_points == '-1')) }}</strong>
+                    <strong>{{ checkbox("early-submission-checkbox", "Yes I would like to apply these points to part:", True) }}</strong>
                 </div>
-            {% else %}
-                <div class="col-lg-5 col-md-6 col-md-offset-1">
-                    <strong>{{ checkbox("early-submission-checkbox", "Yes I would like to apply these points to part:", False) }}</strong>
-                </div>
-            {% endif %}
-
                 <div class="col-lg-2 col-md-3">
                     {{ select_horizontal("early-submission-points", "", application.early_submission_points, ["Any Section","1","2","3","4"], size=0) }}
                 </div>
@@ -31,9 +24,9 @@
         <li>
             A recommendation may be submitted by a club member, officer or faculty advisor for a total of 5 points. This recommendation should be no more than 150 words nominating you for the award. The recommendation must be signed by the writer. You can upload the recommendation on the <a href="/application/overview#other-material-upload">overview</a> page.
             <div class="form-horizontal row">
-            {% if application.early_submission_points %}
+            {% if application.recommender_points %}
                 <div class="col-lg-5 col-md-6 col-md-offset-1">
-                    <strong>{{ checkbox("recommender-checkbox", "Yes I would like to apply these points to part:", not (application.recommender_points == '-1')) }}</strong>
+                    <strong>{{ checkbox("recommender-checkbox", "Yes I would like to apply these points to part:", not (application.recommender_points == 'No Recommendation')) }}</strong>
                 </div>
             {% else %}
                 <div class="col-lg-5 col-md-6 col-md-offset-1">
