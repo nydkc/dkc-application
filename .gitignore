@@ -13,6 +13,7 @@ a.out
 # Pip Install Files
 *.so
 *.egg-info/
+*.dist-info/
 
 # GAE Files
 bulkloader*
