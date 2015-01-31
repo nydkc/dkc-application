@@ -34,21 +34,22 @@ def get_all_applicants_applications_no_cache():
     return applicants, applications
 
 class OverviewApplication():
-    def __init__(self, submit_time, outstanding_awards):
+    def __init__(self, submit_time, early_submission, outstanding_awards):
         self.submit_time = submit_time
+        self.early_submission = early_submission
         self.outstanding_awards = outstanding_awards
 
 def get_all_overview():
     applicants = memcache.get('overview_applicants')
     applications = memcache.get('overview_applications')
-    if not applicants or applications:
+    if not applicants or not applications:
         applicants_query = User.query().order(User.division, User.first_name, User.last_name)
-        applicants = applicants_query.fetch(projection=[User.auth_ids, User.first_name, User.last_name, User.email, User.division, User.application])
+        applicants = applicants_query.fetch()
         memcache.add(key='overview_applicants', value=applicants, time=600)
         application_keys = [a.application for a in applicants]
         applications = ndb.get_multi(application_keys)
-        applications_filtered = [OverviewApplication(a.submit_time, a.outstanding_awards) for a in applications]
-        memcache.add(key='overview_applications', value=applicants, time=600)
+        applications_filtered = [OverviewApplication(a.submit_time, a.early_submission, a.outstanding_awards) for a in applications]
+        memcache.add(key='overview_applications', value=applications_filtered, time=600)
     return applicants, applications
 
 def run_gql(querystring):
