@@ -4,8 +4,7 @@ import query
 class ListsHandler(AdminBaseHandler):
 
     def get(self):
-        applicants = query.get_all_applicants()
-        applications = query.get_all_applications(applicants)
+        applicants, applications = query.get_all_applicants_applications_no_cache()
         submitted_applicants = []
         not_submitted_applicants = []
         for index, applicant in enumerate(applicants):

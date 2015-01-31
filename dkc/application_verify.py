@@ -30,7 +30,7 @@ class ApplicationVerificationHandler(BaseHandler):
         application.put()
 
         template_values = {
-            'applicant': user,
+            'applicant': user
         }
         self.render_template('verification-success.html', template_values)
 

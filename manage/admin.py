@@ -5,8 +5,7 @@ import query
 class OverviewHandler(AdminBaseHandler):
 
     def get(self):
-        applicants = query.get_all_applicants()
-        applications = query.get_all_applications(applicants)
+        applicants, applications = query.get_all_overview()
         template_values = {
             'applicants': applicants,
             'applications': applications,

@@ -15,3 +15,12 @@ indexes:
   - name: division
   - name: first_name
   - name: last_name
+
+- kind: User
+  properties:
+  - name: division
+  - name: first_name
+  - name: last_name
+  - name: application
+  - name: auth_ids
+  - name: email
