@@ -7,13 +7,13 @@
 
 <p class="lead">There are <strong>{{ applicants|length }}</strong> applicants.</p>
 <div class="table-responsive">
-    <table class="table table-condensed table-hover table-striped">
+    <table class="table table-condensed table-hover table-striped" id="overview-applicants">
         <thead>
             <tr>
                 <th>Division</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
+                <th class="text-nowrap">First Name</th>
+                <th class="text-nowrap">Last Name</th>
+                <th class="hidden-sm">Email</th>
                 <th>Submitted?</th>
                 <th>Awards</th>
             </tr>
@@ -24,15 +24,15 @@
                 <td>{{ user.division }}</td>
                 <td>{{ user.first_name }}</td>
                 <td>{{ user.last_name }}</td>
-                <td>{{ user.email }}</td>
+                <td class="hidden-sm">{{ user.email }}</td>
                 {% if applications[loop.index0].early_submission %}
-                    <td class="text-success"><span class="glyphicon glyphicon-ok"></span> <span class="glyphicon glyphicon-time"></span></td>
+                    <td class="text-success"><span class="glyphicon glyphicon-ok"></span> <span class="glyphicon glyphicon-time"></span><span class="hidden">0</span></td>
                 {% elif applications[loop.index0].submit_time %}
-                    <td class="text-success"><span class="glyphicon glyphicon-ok"></span></td>
+                    <td class="text-success"><span class="glyphicon glyphicon-ok"></span><span class="hidden">0</span></td>
                 {% else %}
-                    <td class="text-danger"><span class="glyphicon glyphicon-remove"></span></td>
+                    <td class="text-danger"><span class="glyphicon glyphicon-remove"></span><span class="hidden">1</span></td>
                 {% endif %}
-                <td>{% if 'Outstanding' in applications[loop.index0].outstanding_awards|e %}<span class="glyphicon glyphicon-star"></span>{% endif %}</td>
+                <td>{% if 'Outstanding' in applications[loop.index0].outstanding_awards|e %}<span class="glyphicon glyphicon-star"></span><span class="hidden">0</span>{% else %}<span class="hidden">1</span>{% endif %}</td>
             </td>
             {% endfor %}
         </tbody>
@@ -40,12 +40,16 @@
 </div>
 {% endblock %}
 {% block admin_scripts %}
+<script src="/js/tablesorter.min.js"></script>
 <script>
 function clickableRows() {
     $(".clickable-row").click(function() {
         window.open($(this).attr('href'), '_blank');
     });
 }
-$(document).ready(clickableRows);
+$(document).ready(function() {
+    clickableRows();
+    $("#overview-applicants").tablesorter();
+});
 </script>
 {% endblock %}

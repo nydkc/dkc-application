@@ -6,6 +6,27 @@ body {
     margin-top: 14%;
 }
 
+th.header {
+    background-image: url('data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==');
+    cursor: pointer;
+    font-weight: bold;
+    background-repeat: no-repeat;
+    background-position: center right;
+    padding-right: 20px !important;
+}
+
+th.headerSortDown {
+    background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+    background-color: #00aeef;
+    color: #fff;
+}
+
+th.headerSortUp {
+    background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7');
+    background-color: #00aeef;
+    color: #fff;
+}
+
 .nav-pills li.active a, .nav-pills li.active a:hover, .nav-pills li.active a:focus {
     background-color: #00aeef;
     color: #fff;
