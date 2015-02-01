@@ -6,6 +6,10 @@ body {
     margin-top: 14%;
 }
 
+.graded-row td {
+    background-color: #dff0d8 !important;
+}
+
 th.header {
     background-image: url('data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==');
     cursor: pointer;
@@ -157,6 +161,12 @@ hr.separator {
     -webkit-border-top-left-radius: 5px;
     -moz-border-radius-topleft: 5px;
     border-top-left-radius: 5px;
+}
+
+#graded-status label {
+    margin-left: 20px;
+    width: 100%;
+    padding: 20px;
 }
 
 #query-results {

@@ -149,3 +149,4 @@ class Application(ndb.Model):
     verification_applicant_date = ndb.DateTimeProperty()
 
     notes = ndb.TextProperty(default="")
+    graded = ndb.BooleanProperty()

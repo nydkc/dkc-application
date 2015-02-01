@@ -34,10 +34,11 @@ def get_all_applicants_applications_no_cache():
     return applicants, applications
 
 class OverviewApplication():
-    def __init__(self, submit_time, early_submission, outstanding_awards):
+    def __init__(self, submit_time, early_submission, outstanding_awards, graded):
         self.submit_time = submit_time
         self.early_submission = early_submission
         self.outstanding_awards = outstanding_awards
+        self.graded = graded
 
 def get_all_overview():
     applicants = memcache.get('overview_applicants')
@@ -48,7 +49,7 @@ def get_all_overview():
         memcache.add(key='overview_applicants', value=applicants, time=600)
         application_keys = [a.application for a in applicants]
         applications = ndb.get_multi(application_keys)
-        applications_filtered = [OverviewApplication(a.submit_time, a.early_submission, a.outstanding_awards) for a in applications]
+        applications_filtered = [OverviewApplication(a.submit_time, a.early_submission, a.outstanding_awards, a.graded) for a in applications]
         memcache.add(key='overview_applications', value=applications_filtered, time=600)
     return applicants, applications
 

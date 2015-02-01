@@ -456,6 +456,12 @@
 <hr class="separator" style="margin-top: 40px;">
 
 <p class="lead">Submitted on {{ application.submit_time|datetimeformat }}</p>
+<div id="graded-status" class="checkbox {% if application.graded %}bg-success{% else %}bg-danger{% endif %}">
+    <label>
+        <input type="checkbox" {% if application.graded %}checked{% endif %} value="graded">
+        Graded?
+    </label>
+</div>
 
 {% endblock %}
 {% block admin_scripts %}
@@ -463,6 +469,23 @@
 function clickableRows() {
     $(".clickable-row").click(function() {
         window.open($(this).attr('href'), '_blank');
+    });
+}
+function setupGraded() {
+    $('#graded-status input').change(function() {
+        $.ajax({
+            type: 'POST',
+            url: window.location,
+            data: {
+                'graded': $(this).val()
+            }
+        })
+        .done(function() {
+            $('#graded-status').toggleClass('bg-success').toggleClass('bg-danger');
+        })
+        .fail(function() {
+            sweet("Sorry!", "The graded status could not be updated with the server!");
+        });
     });
 }
 $('#notetaking #save-notes-button').click(saveNotes);
@@ -513,6 +536,7 @@ setInterval(saveNotes, 1*60*1000); // Every minute
 $(document).ready(function() {
     clickableRows();
     setupNotetaking();
+    setupGraded();
 });
 $(window).resize(setupNotetaking);
 </script>

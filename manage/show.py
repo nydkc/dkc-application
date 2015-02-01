@@ -20,5 +20,8 @@ class ShowHandler(AdminBaseHandler):
         email = str(urllib.unquote(email))
         applicant, application = query.get_application_by_email(email)
 
-        application.notes = self.request.get('notes')
+        if self.request.get('notes'):
+            application.notes = self.request.get('notes')
+        elif self.request.get('graded'):
+            application.graded = not application.graded
         application.put()
