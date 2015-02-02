@@ -319,7 +319,7 @@ class ApplicationVerification(BaseHandler):
             user_id = self.user.get_id()
             token = self.user_model.create_signup_token(user_id)
             verification_url = self.uri_for('verification', type='v', user_id=user_id, signup_token=token, _full=True)
-            print verification_url
+            logging.info(verification_url)
 
             config = ndb.Key(Settings, 'config').get()
             sg = SendGridClient(config.sendgrid_username, config.sendgrid_password, secure=True)
@@ -408,9 +408,35 @@ class ApplicationSubmit(BaseHandler):
             self.response.set_status(204)
             self._serve_page(errors=self._not_complete())
         else:
+            applicant = self.user
             application.submit_time = datetime.now()
             application.put()
-            self.redirect('/')
+
+            config = ndb.Key(Settings, 'config').get()
+            sg = SendGridClient(config.sendgrid_username, config.sendgrid_password, secure=True)
+
+            verification_email = Mail(from_name="NYDKC Awards Committee",
+                                      from_email="recognition@nydkc.org",
+                                      subject="DKC Application Confirmation for %s %s" % (applicant.first_name, applicant.last_name),
+                                      to=applicant.email
+            )
+
+            template_values = {
+                'applicant': applicant,
+                'application': application
+            }
+            verification_email.set_html(JINJA_ENVIRONMENT.get_template('confirmation-email.html').render(template_values))
+            htmlhandler = html2text.HTML2Text()
+            verification_email.set_text(htmlhandler.handle(verification_email.html).encode("UTF+8"))
+
+            code, response = sg.send(verification_email)
+            response = json.loads(response)
+            if response["message"] == "error":
+                logging.error(("Problem with sending email to %s: " % verification_email.to) + str(response["errors"]))
+                self._serve_page()
+                return
+
+            self.redirect('/application')
 
     def _serve_page(self, errors={'profile':False, 'personal_statement':False, 'projects':False, 'involvement':False, 'activities':False, 'other':False, 'verification':False}):
         template_values = {
