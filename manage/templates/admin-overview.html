@@ -27,9 +27,13 @@
                 <td>{{ user.last_name|e }}</td>
                 <td class="hidden-sm">{{ user.email|e }}</td>
                 {% if application.early_submission %}
-                    <td class="text-success"><span class="glyphicon glyphicon-ok"></span> <span class="glyphicon glyphicon-time"></span><span class="hidden">0</span></td>
+                    <td class="text-success"><span class="glyphicon glyphicon-ok"></span> <span class="glyphicon glyphicon-thumbs-up"></span><span class="hidden">0</span></td>
                 {% elif application.submit_time %}
-                    <td class="text-success"><span class="glyphicon glyphicon-ok"></span><span class="hidden">0</span></td>
+                    {% if application.submit_time < DUE_DATE %}
+                        <td class="text-success"><span class="glyphicon glyphicon-ok"></span><span class="hidden">0</span></td>
+                    {% else %}
+                        <td class="text-success"><span class="glyphicon glyphicon-ok"></span> <span class="text-danger glyphicon glyphicon-thumbs-down"></span><span class="hidden">0</span></td>
+                    {% endif %}
                 {% else %}
                     <td class="text-danger"><span class="glyphicon glyphicon-remove"></span><span class="hidden">1</span></td>
                 {% endif %}
