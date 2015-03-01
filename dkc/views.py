@@ -9,6 +9,7 @@ from forgot import ForgotPasswordHandler, SetPasswordHandler
 from verify import VerificationHandler
 from upload import *
 from download import *
+from survey import SurveyHandler
 from test import TestHandler
 
 class MainPage(BaseHandler):
@@ -38,6 +39,7 @@ application = webapp2.WSGIApplication([
     webapp2.Route('/<type:p|v>/<user_id:\d+>-<signup_token:.+>', handler=VerificationHandler, name='verification'),
     ('/serve/([^/]+)/?.*', ServeHandler),
     ('/delete/([^/]+)?', DeleteHandler),
+    ('/survey.*', SurveyHandler),
     ('/test/([^/]+)?', TestHandler),
     ('/.*', MainPage)
 ], debug=True, config=config)

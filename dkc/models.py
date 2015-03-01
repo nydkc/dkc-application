@@ -6,6 +6,9 @@ from webapp2_extras import security
 from constants import *
 from manage.models import Settings
 
+class SurveyResponse(ndb.Expando):
+    timestamp = ndb.DateTimeProperty(auto_now_add=True)
+
 class DeletedFile(ndb.Model):
     user = ndb.KeyProperty()
     blob = ndb.BlobKeyProperty()
