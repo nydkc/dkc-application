@@ -179,8 +179,10 @@ class ApplicationInvolvement(BaseHandler):
         self._serve_page()
 
     def _serve_page(self):
+        config = ndb.Key(Settings, 'config').get()
         template_values = {
-            'application_url': '/application/involvement'
+            'application_url': '/application/involvement',
+            'config': config
         }
         self.render_application('application-involvement.html', template_values)
 
@@ -289,8 +291,6 @@ class ApplicationOther(BaseHandler):
 
     def _serve_page(self):
         config = ndb.Key(Settings, 'config').get()
-        if not config:
-            config = {}
         template_values = {
             'application_url': '/application/other',
             'config': config

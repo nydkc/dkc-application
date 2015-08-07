@@ -1,4 +1,5 @@
 import webapp2
+from google.appengine.ext import ndb
 from dkc import *
 from application import *
 from application_verify import ApplicationVerificationHandler
@@ -15,7 +16,11 @@ from test import TestHandler
 class MainPage(BaseHandler):
 
     def get(self):
-        self.render_template('index.html')
+        config = ndb.Key(Settings, 'config').get()
+        template_values = {
+            'config': config
+        }
+        self.render_template('index.html', template_values)
 
 application = webapp2.WSGIApplication([
     ('/application/personal-statement', ApplicationPersonalStatement),

@@ -1,21 +1,21 @@
 {% extends "layout-full.html" %}
 
 {% set faq = [
-["When is the application deadline for applying?", "The application has two due dates: February 1 for Early applications and February 15 for Regular applications. You may submit your application up to 11:59 PM EST on these dates. Please note that any applications submitted after the regular deadline will incure a <strong> late penalty. </strong>"],
+["When is the application deadline for applying?", "The application has two due dates: " ~ config.early_due_date | datetimeformat("%B %e, %Y") ~ " for Early applications and " ~ config.due_date | datetimeformat("%B %e, %Y") ~ " for Regular applications. You may submit your application up until 11:59 PM EST on these dates. Please note that any applications submitted after the regular deadline will incure a <strong> late penalty. </strong>"],
 ["Who may apply for the award?", "Any dues-paying Key Club member in good standing may apply for the award."],
 ["Why do you need my personal information?", "All applicants must submit this information so that you may be easily accessible and that records may be kept for the future in case any issues arise."],
 ["Who reviews the application?", "The District Awards Committee Co-Chair will be reviewing your award. The award will be based off of the point system."],
 ["How are the applications judged?", "Part I will be weighted the most (40%) and the other three parts will be weighed equally. If you complete all parts fully, you will generally receive the award. All other applications are judged holistically. Generally, you will need to complete at least 70% (210 Points) of all the criteria to receive the award."],
 ["What is the maximum amount of points I can earn for each part?", "In Part I, you may earn up to 120 points. In all other parts, you may earn up to 60 points each. The total number of points you can score is 300, and the recommended number of points to receive the award is 210."],
 ["I can't qualify for the DKC Award because I am unable to fulfill all the criteria in the four parts. What should I do?", "If it is due to an issue or circumstance with your home club or division which is out of your control, please contact the Awards Committee Co-Chair that will be reviewing your application."],
-["If I participated in a project or event prior to April 1, 2014, may I still use it in this application?", "Only events, projects, or meetings during the 2014 - 2015 Service Year may be counted towards this application."],
+["If I participated in a project or event prior to April 1, " ~ config.due_date | datetimeformat("%Y") ~ ", may I still use it in this application?", "No, only events, projects, or meetings during the " ~ config.due_date | datetimeformat("%Y") ~ " - " ~ (config.due_date | datetimeformat("%Y") | int + 1) ~ " <strong> service year </strong> may be counted towards this application."],
 ["Will the Personal Statement be rated on quality?", "Yes, it is important to submit a personal statement of the highest quality. Although there is not a limit on the number of members that may receive the awards, the essay will allow the awards committee to understand you. The personal statement is weighed more than the other three parts (40%)."],
 ["Will descriptions be rated on quality?", "Yes, it is important to submit everything with a full description of the event. Since this year's DKC award is judged holistically, you may lose points for incomplete descriptions."],
 ["Will the statement in Part 3, Section 3, Positions Held within Key Club, be rated based on quality?", "Yes, you may receive anywhere from 0 to 10 points based on the quality of work that was submitted."],
 ["What is sufficient proof for Advocacy?", "You must include a description of the steps you have taken to advocate your project and include at least one additional document, such as a flier, poster, letter or petition."],
 ["Who can write my recommendation?", "Any Key Club member in good standing, Key Club Officer, Faculty Advisor or Kiwanis Advisor may write your recommendation."],
 ["Under Part 2, Section 4, do all five projects have to be distinct?", "No, you could have participated in five projects that benefited the same charities and still qualify for the award."],
-["If I participated in a Kiwanis One Day Event that was not on April 5, 2014, can I still receive points?", "Yes."],
+["If I participated in a Kiwanis One Day Event that was not on the date specified by Kiwanis International, can I still receive points?", "Yes."],
 ["What does \"Local Causes\" mean? Can they be any organization that I volunteered for?", "Local causes refer to any organization that is not listed under another category. Key Club International strongly believes that clubs should decide what projects each one undertakes so we have decided to include the general category."],
 ["Does Trick-or-Treat for UNICEF count as an event for Major Emphasis Service Partners?", "Trick-or-Treat for UNICEF should be listed as a Major Emphasis Service Partners project."],
 ["Can I submit articles to the Empire Key or Divisional Newsletters last minute?", "No."],
@@ -98,7 +98,8 @@
 {% block scripts %}
 <script src="/js/lunr.min.js"></script>
 <script>
-var raw = {{ faq }};
+{# This is a hack to prevent u' from showing up in the javascript array #}
+var raw = {{ faq | string | replace("u'", "'") }};
 var idx = lunr(function() {
     this.ref('id'),
     this.field('question', {multiplier: 10}),
