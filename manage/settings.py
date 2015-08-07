@@ -44,6 +44,7 @@ class SettingsHandler(AdminBaseHandler):
             config = {}
 
         template_values = {
-            'config': config
+            'config': config,
+            'admin_url': '/admin/settings'
         }
         self.render_template('admin-settings.html', template_values)
