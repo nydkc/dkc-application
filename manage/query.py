@@ -5,8 +5,11 @@ from dkc.models import *
 
 def get_application_by_email(email):
     applicant = User.get_by_auth_id(email)
-    application = applicant.application.get()
-    return applicant, application
+    if applicant:
+        application = applicant.application.get()
+        return applicant, application
+    else:
+        return None, None
 
 def get_all_applicants():
     applicants = memcache.get('all_applicants')
