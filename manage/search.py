@@ -1,3 +1,4 @@
+import time
 from manage import *
 from dkc.models import User
 import query
@@ -8,12 +9,16 @@ class SearchHandler(AdminBaseHandler):
         search = self.request.get('q')
         applicants = query.get_all_applicants()
         results = []
+
+        start = time.time()
         for applicant in applicants:
             if self.match(applicant, search):
                 results.append(applicant)
+        elapsed = time.time() - start
 
         template_values = {
             'q': search,
+            'elapsed': elapsed,
             'applicants': results,
             'admin_url': '/admin/search'
         }

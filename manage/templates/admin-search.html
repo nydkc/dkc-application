@@ -15,7 +15,7 @@
 </form>
 
 {% if q %}
-<div class="text-right">There are {{ applicants|length }} matches.</div>
+<div class="text-right">There are {{ applicants|length }} matches. ({{ elapsed }} seconds) </div>
 <div class="search-results">
     {% for applicant in applicants %}
     <div class="result">
