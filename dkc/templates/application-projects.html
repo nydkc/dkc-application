@@ -15,7 +15,7 @@
     <h4>Sections 1,2,3: International Projects (Max 24 Points, 4 Points per Event)</h4>
     <p>Complete the following three sections. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
     <ul>
-        <li>Section 1:&nbsp;&nbsp;&nbsp;Governor’s Project: “Water: The Key to Life”</li>
+        <li>Section 1:&nbsp;&nbsp;&nbsp;Governor’s Project: “Hunger”</li>
         <li>Section 2:&nbsp;&nbsp;&nbsp;Major Emphasis: “Children: Their Focus, Our Future”</li>
         <li>Section 3:&nbsp;&nbsp;&nbsp;Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)</li>
     </ul>
@@ -24,7 +24,7 @@
         <div class="row project project-{{ loop.index }}">
             <div class="form-horizontal col-xs-12">
                 <div class="col-md-4 col-lg-3">
-                    {{ select_horizontal("international-projects-section", "Section:", project.section, ["Section 1: Governor’s Project: “Water: The Key to Life”","Section 2: Major Emphasis: “Children: Their Focus, Our Future”","Section 3: Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)"], size=4) }}
+                    {{ select_horizontal("international-projects-section", "Section:", project.section, ["Section 1: Governor’s Project: “Hunger”","Section 2: Major Emphasis: “Children: Their Focus, Our Future”","Section 3: Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)"], size=4) }}
                 </div>
                 <div class="col-md-8 col-lg-9">
                     {{ input_horizontal("international-projects-event", "Event:", project.event, size=2) }}
@@ -182,7 +182,7 @@ function buttonAppearanceCheck() {
 }
 $('#international-projects-button').click(function() {
     var count = $('.international-projects .project').length + 1;
-    $('<div class="row project project-' + count + '"><div class="form-horizontal col-xs-12"><div class="col-md-3"><div class="form-group"><label for="international-projects-section" class="col-md-4 control-label">Section:</label><div class="col-md-8"><select class="form-control" id="international-projects-section" name="international-projects-section"><option value="Section 1: Governor’s Project: “Water: The Key to Life”">Section 1: Governor’s Project: “Water: The Key to Life”</option><option value="Section 2: Major Emphasis: “Children: Their Focus, Our Future”">Section 2: Major Emphasis: “Children: Their Focus, Our Future”</option><option value="Section 3: Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)">Section 3: Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)</option></select></div></div></div><div class="col-md-9"><div class="form-group"><label for="international-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="international-projects-event" name="international-projects-event" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="international-projects-description" name="international-projects-description" rows="4"></textarea></div></div></div></div><div class="project-delete"><span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span></div></div>').hide().appendTo('.international-projects').slideDown();
+    $('<div class="row project project-' + count + '"><div class="form-horizontal col-xs-12"><div class="col-md-3"><div class="form-group"><label for="international-projects-section" class="col-md-4 control-label">Section:</label><div class="col-md-8"><select class="form-control" id="international-projects-section" name="international-projects-section"><option value="Section 1: Governor’s Project: “Hunger”">Section 1: Governor’s Project: “Hunger”</option><option value="Section 2: Major Emphasis: “Children: Their Focus, Our Future”">Section 2: Major Emphasis: “Children: Their Focus, Our Future”</option><option value="Section 3: Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)">Section 3: Major Emphasis Service Partners (UNICEF, Children’s Miracle Network, Eliminate, March of Dimes)</option></select></div></div></div><div class="col-md-9"><div class="form-group"><label for="international-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="international-projects-event" name="international-projects-event" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="international-projects-description" name="international-projects-description" rows="4"></textarea></div></div></div></div><div class="project-delete"><span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span></div></div>').hide().appendTo('.international-projects').slideDown();
     if (count >= 6) {
         $(this).hide();
     }
