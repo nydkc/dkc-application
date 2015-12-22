@@ -16,8 +16,13 @@ import shutil
 import string
 import sys
 import tempfile
-import types
 import urllib
+
+if sys.version[0] == '2':
+    TextType = unicode
+else:
+    TextType = str
+
 try:
     import urllib2
 except ImportError:
@@ -41,7 +46,7 @@ except ImportError:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-rgb_re = re.compile("^.*?rgb[(]([0-9]+).*?([0-9]+).*?([0-9]+)[)].*?[ ]*$")
+rgb_re = re.compile("^.*?rgb[a]?[(]([0-9]+).*?([0-9]+).*?([0-9]+)(?:.*?(?:[01]\.(?:[0-9]+)))?[)].*?[ ]*$")
 
 _reportlab_version = tuple(map(int, reportlab.Version.split('.')))
 if _reportlab_version < (2, 1):
@@ -52,13 +57,7 @@ REPORTLAB22 = _reportlab_version >= (2, 2)
 
 log = logging.getLogger("xhtml2pdf")
 
-try:
-    import cStringIO as io
-except:
-    try:
-        import StringIO as io
-    except ImportError:
-        import io
+import io
 
 try:
     import PyPDF2
@@ -74,7 +73,6 @@ try:
     from reportlab.graphics import renderSVG
 except:
     renderSVG = None
-
 
 #=========================================================================
 # Memoize decorator
@@ -102,7 +100,10 @@ class memoized(object):
     def __call__(self, *args, **kwargs):
         # Make sure the following line is not actually slower than what you're
         # trying to memoize
-        args_plus = tuple(kwargs.iteritems())
+        if sys.version[0] == '2':
+            args_plus = tuple(kwargs.iteritems())
+        else:
+            args_plus = tuple(iter(kwargs.items()))
         key = (args, args_plus)
         try:
             if key not in self.cache:
@@ -119,7 +120,6 @@ def ErrorMsg():
     Helper to get a nice traceback as string
     """
     import traceback
-    import sys
 
     type = value = tb = limit = None
     type, value, tb = sys.exc_info()
@@ -131,7 +131,7 @@ def ErrorMsg():
 
 
 def toList(value):
-    if type(value) not in (types.ListType, types.TupleType):
+    if type(value) not in (list, tuple):
         return [value]
     return list(value)
 
@@ -223,11 +223,11 @@ def getSize(value, relative=0, base=None, default=0.0):
         original = value
         if value is None:
             return relative
-        elif type(value) is types.FloatType:
+        elif type(value) is float:
             return value
         elif isinstance(value, int):
             return float(value)
-        elif type(value) in (types.TupleType, types.ListType):
+        elif type(value) in (tuple, list):
             value = "".join(value)
         value = str(value).strip().lower().replace(",", ".")
         if value[-2:] == 'cm':
@@ -503,6 +503,15 @@ class pisaTempFile(object):
                     (self.tell() + len_value) >= self.capacity
             if needs_new_strategy:
                 self.makeTempFile()
+
+        if not isinstance(value, TextType) and not isinstance(self._delegate, tempfile._TemporaryFileWrapper):
+            # tempfile.NamedTemporaryFile needs bytes, I think we should change all this to io.BytesIO
+            try:
+                # reportlab encodes in latin1
+                value = value.decode("latin1")
+            except UnicodeDecodeError:
+                pass
+
         self._delegate.write(value)
 
     def __getattr__(self, name):
@@ -534,14 +543,15 @@ class pisaFileObject:
         self.local = None
         self.tmp_file = None
         uri = uri or str()
-        uri = uri.encode('utf-8')
+        if type(uri) != str:
+            uri = uri.decode("utf-8")
         log.debug("FileObject %r, Basepath: %r", uri, basepath)
 
         # Data URI
         if uri.startswith("data:"):
             m = _rx_datauri.match(uri)
             self.mimetype = m.group("mime")
-            self.data = base64.decodestring(m.group("data"))
+            self.data = base64.decodebytes(m.group("data").encode("utf-8"))
 
         else:
             # Check if we have an external scheme
@@ -661,10 +671,13 @@ class pisaFileObject:
 
 
 def getFile(*a, **kw):
-    file = pisaFileObject(*a, **kw)
-    if file.notFound():
+    try:
+        file = pisaFileObject(*a, **kw)
+        if file.notFound():
+            return None
+        return file
+    except:
         return None
-    return file
 
 
 COLOR_BY_NAME = {

@@ -172,7 +172,12 @@ class pisaTagTABLE(pisaTag):
         for i, row in enumerate(data):
             data[i] += [''] * (maxcols - len(row))
 
-        cols_with_no_width = len(filter(lambda col: col is None, tdata.colw))
+        filter_len = filter(lambda col: col is None, tdata.colw)
+        try:
+            filter_len = len(filter_len)
+        except Exception:
+            filter_len = sum(1 for _ in filter_len)
+        cols_with_no_width = filter_len
         if cols_with_no_width:  # any col width not defined
             bad_cols = filter(lambda tup: tup[1] is None, enumerate(tdata.colw))
             fair_division = str(100 / float(cols_with_no_width)) + '%' # get fair %
@@ -280,12 +285,20 @@ class pisaTagTD(pisaTag):
             # If is value, the set it in the right place in the arry
             if width is not None:
                 tdata.colw[col] = _width(width)
+            else:
+               # If there are no child nodes, nothing within the column can change the
+               # width.  Set the column width to the sum of the right and left padding
+               # rather than letting it default.
+               if len(self.node.childNodes) == 0:
+                   width = c.frag.paddingLeft + c.frag.paddingRight
+                   tdata.colw[col] = _width(width)
+
 
         # Calculate heights
         if row + 1 > len(tdata.rowh):
             tdata.rowh = tdata.rowh + ((row + 1 - len(tdata.rowh)) * [_width()])
         if not rspan:
-            height = None
+            height = c.frag.height or self.attr.get('height', None)
             if height is not None:
                 tdata.rowh[row] = _height(height)
                 tdata.add_style(('FONTSIZE', begin, end, 1.0))
@@ -320,10 +333,12 @@ class pisaTagTD(pisaTag):
         # Keep in frame if needed since Reportlab does no split inside of cells
         if not c.frag.insideStaticFrame:
             # tdata.keepinframe["content"] = cell
+            mode = c.cssAttr.get("-pdf-keep-in-frame-mode", "shrink")
+            # keepInFrame mode is passed to Platypus for rendering
             cell = PmlKeepInFrame(
                 maxWidth=0,
                 maxHeight=0,
-                mode='shrink',
+                mode=mode,
                 content=cell)
 
         c.swapStory(self.story)

@@ -26,14 +26,21 @@ from reportlab.platypus.tableofcontents import TableOfContents
 from reportlab.platypus.tables import Table, TableStyle
 from xhtml2pdf.reportlab_paragraph import Paragraph
 from xhtml2pdf.util import getUID, getBorderStyle
-from types import StringType, TupleType, ListType, IntType
-import StringIO
+
+import sys
+
+try:
+    import StringIO
+except Exception:
+    from io import StringIO
+    StringIO_old = StringIO
+    class StringIO(object):
+        StringIO = StringIO_old
+
 import cgi
 import copy
 import logging
 import reportlab.pdfbase.pdfform as pdfform
-import sys
-
 
 try:
     import PIL.Image as PILImage
@@ -72,8 +79,10 @@ class PmlMaxHeightMixIn:
                 self.availHeightValue = self.canv.maxAvailHeightValue = max(
                     availHeight,
                     self.canv.maxAvailHeightValue)
+        # TODO: Useless condition
         else:
             self.availHeightValue = availHeight
+        # TODO: availHeightValue is set above
         if not hasattr(self, "availHeightValue"):
             self.availHeightValue = 0
         return self.availHeightValue
@@ -99,22 +108,17 @@ class PmlBaseDoc(BaseDocTemplate):
         '''
         # Convert to ASCII because there is a Bug in Reportlab not
         # supporting other than ASCII. Send to list on 23.1.2007
-
         author = toString(self.pml_data.get("author", "")).encode("ascii","ignore")
         subject = toString(self.pml_data.get("subject", "")).encode("ascii","ignore")
         title = toString(self.pml_data.get("title", "")).encode("ascii","ignore")
         # print repr((author,title,subject))
-
         self.canv.setAuthor(author)
         self.canv.setSubject(subject)
         self.canv.setTitle(title)
-
         if self.pml_data.get("fullscreen", 0):
             self.canv.showFullScreen0()
-
         if self.pml_data.get("showoutline", 0):
             self.canv.showOutline()
-
         if self.pml_data.get("duration", None) is not None:
             self.canv.setPageDuration(self.pml_data["duration"])
         '''
@@ -138,7 +142,7 @@ class PmlBaseDoc(BaseDocTemplate):
             pt = [pt + '_left', pt + '_right']
 
         '''On endPage change to the page template with name or index pt'''
-        if type(pt) is StringType:
+        if type(pt) is str:
             if hasattr(self, '_nextPageTemplateCycle'):
                 del self._nextPageTemplateCycle
             for t in self.pageTemplates:
@@ -146,11 +150,11 @@ class PmlBaseDoc(BaseDocTemplate):
                     self._nextPageTemplateIndex = self.pageTemplates.index(t)
                     return
             raise ValueError("can't find template('%s')" % pt)
-        elif type(pt) is IntType:
+        elif type(pt) is int:
             if hasattr(self, '_nextPageTemplateCycle'):
                 del self._nextPageTemplateCycle
             self._nextPageTemplateIndex = pt
-        elif type(pt) in (ListType, TupleType):
+        elif type(pt) in (list, tuple):
             #used for alternating left/right pages
             #collect the refs to the template objects, complain if any are bad
             c = PTCycle()
@@ -194,6 +198,12 @@ class PmlPageTemplate(PageTemplate):
         self._page_count = 0
         self._first_flow = True
 
+        ### Background Image ###
+        self.img = None
+        self.ph = 0
+        self.h = 0
+        self.w = 0
+
     def isFirstFlow(self, canvas):
         if self._first_flow:
             if canvas.getPageNumber() <= self._page_count:
@@ -224,25 +234,23 @@ class PmlPageTemplate(PageTemplate):
                 if self.pisaBackground.mimetype.startswith("image/"):
 
                     try:
-                        img = PmlImageReader(StringIO.StringIO(self.pisaBackground.getData()))
-                        iw, ih = img.getSize()
-                        pw, ph = canvas._pagesize
+                        self.img = PmlImageReader(StringIO.StringIO(self.pisaBackground.getData()))
+                        iw, ih = self.img.getSize()
+                        pw, self.ph = canvas._pagesize
 
                         width = pw  # min(iw, pw) # max
                         wfactor = float(width) / iw
-                        height = ph  # min(ih, ph) # max
+                        height = self.ph  # min(ih, ph) # max
                         hfactor = float(height) / ih
                         factor_min = min(wfactor, hfactor)
 
                         if self.isPortrait():
-                            w = iw * factor_min
-                            h = ih * factor_min
-                            canvas.drawImage(img, 0, ph - h, w, h)
+                            self.w = iw * factor_min
+                            self.h = ih * factor_min
                         elif self.isLandscape():
                             factor_max = max(wfactor, hfactor)
-                            h = ih * factor_max
-                            w = iw * factor_min
-                            canvas.drawImage(img, 0, 0, w, h)
+                            self.h = ih * factor_max
+                            self.w = iw * factor_min
                     except:
                         log.exception("Draw background")
 
@@ -252,6 +260,11 @@ class PmlPageTemplate(PageTemplate):
 
             if pisaBackground:
                 self.pisaBackgroundList.append(pisaBackground)
+            else:
+                if self.isPortrait():
+                    canvas.drawImage(self.img, 0, self.ph - self.h, self.w, self.h)
+                elif self.isLandscape():
+                    canvas.drawImage(self.img, 0, 0, self.w, self.h)
 
             def pageNumbering(objList):
                 for obj in flatten(objList):
@@ -359,7 +372,7 @@ class PmlImageReader(object):  # TODO We need a factory here, returning either a
                 if hasattr(ev, 'args'):
                     a = str(ev.args[- 1]) + (' fileName=%r' % fileName)
                     ev.args = ev.args[: - 1] + (a,)
-                    raise et, ev, tb
+                    raise RuntimeError("{0} {1} {2}".format(et, ev, tb))
                 else:
                     raise
 

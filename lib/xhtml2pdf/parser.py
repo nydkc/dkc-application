@@ -30,7 +30,17 @@ import copy
 import html5lib
 import logging
 import re
-import types
+
+import sys
+#support python 3
+#import types
+if sys.version[0] == '2':
+    StringTypes = (str,unicode)
+    TextType = unicode
+else:
+    TextType = str
+    StringTypes = (str,)
+
 import xhtml2pdf.w3c.cssDOMElementInterface as cssDOMElementInterface
 import xml.dom.minidom
 
@@ -66,11 +76,16 @@ def pisaGetAttributes(c, tag, attributes):
         block, adef = TAGS[tag]
         adef["id"] = STRING
         # print block, adef
-        for k, v in adef.iteritems():
+        try:
+            iteritems = adef.iteritems()
+        except Exception:
+            iteritems = iter(adef.items())
+
+        for k, v in iteritems:
             nattrs[k] = None
             # print k, v
             # defaults, wenn vorhanden
-            if type(v) == types.TupleType:
+            if type(v) == tuple:
                 if v[1] == MUST:
                     if k not in attrs:
                         log.warn(c.warning("Attribute '%s' must be set!", k))
@@ -84,7 +99,7 @@ def pisaGetAttributes(c, tag, attributes):
                 dfl = None
 
             if nv is not None:
-                if type(v) == types.ListType:
+                if type(v) == list:
                     nv = nv.strip().lower()
                     if nv not in v:
                         #~ raise PML_EXCEPTION, "attribute '%s' of wrong value, allowed is one of: %s" % (k, repr(v))
@@ -265,6 +280,12 @@ def CSSCollect(node, c):
 
     return node.cssAttrs
 
+def lower(sequence):
+    if type(sequence) in StringTypes:
+        return sequence.lower()
+    else:
+        return sequence[0].lower()
+
 def CSS2Frag(c, kw, isBlock):
     # COLORS
     if "color" in c.cssAttr:
@@ -289,7 +310,7 @@ def CSS2Frag(c, kw, isBlock):
         c.frag.leadingSpace = getSize("".join(c.cssAttr["-pdf-line-spacing"]))
         # print "line-spacing", c.cssAttr["-pdf-line-spacing"], c.frag.leading
     if "font-weight" in c.cssAttr:
-        value = c.cssAttr["font-weight"].lower()
+        value = lower(c.cssAttr["font-weight"])
         if value in ("bold", "bolder", "500", "600", "700", "800", "900"):
             c.frag.bold = 1
         else:
@@ -303,7 +324,7 @@ def CSS2Frag(c, kw, isBlock):
             c.frag.underline = 0
             c.frag.strike = 0
     if "font-style" in c.cssAttr:
-        value = c.cssAttr["font-style"].lower()
+        value = lower(c.cssAttr["font-style"])
         if value in ("italic", "oblique"):
             c.frag.italic = 1
         else:
@@ -318,11 +339,18 @@ def CSS2Frag(c, kw, isBlock):
         c.frag.vAlign = c.cssAttr["vertical-align"]
         # HEIGHT & WIDTH
     if "height" in c.cssAttr:
-        c.frag.height = "".join(toList(c.cssAttr["height"]))  # XXX Relative is not correct!
+        try:
+            c.frag.height = "".join(toList(c.cssAttr["height"]))  # XXX Relative is not correct!
+        except TypeError:
+            # sequence item 0: expected string, tuple found
+            c.frag.height = "".join(toList(c.cssAttr["height"][0]))
         if c.frag.height in ("auto",):
             c.frag.height = None
     if "width" in c.cssAttr:
-        c.frag.width = "".join(toList(c.cssAttr["width"]))  # XXX Relative is not correct!
+        try:
+            c.frag.width = "".join(toList(c.cssAttr["width"]))  # XXX Relative is not correct!
+        except TypeError:
+            c.frag.width = "".join(toList(c.cssAttr["width"][0]))
         if c.frag.width in ("auto",):
             c.frag.width = None
         # ZOOM
@@ -476,7 +504,7 @@ def pisaLoop(node, context, path=None, **kw):
 
         pageBreakAfter = False
         frameBreakAfter = False
-        display = context.cssAttr.get("display", "inline").lower()
+        display = lower(context.cssAttr.get("display", "inline"))
         # print indent, node.tagName, display, context.cssAttr.get("background-color", None), attr
         isBlock = (display == "block")
 
@@ -543,6 +571,9 @@ def pisaLoop(node, context, path=None, **kw):
             value = str(context.cssAttr["-pdf-keep-in-frame-mode"]).strip().lower()
             if value in ("shrink", "error", "overflow", "truncate"):
                 keepInFrameMode = value
+            else:
+                keepInFrameMode = "shrink"
+            # Added because we need a default value.
         if "-pdf-keep-in-frame-max-width" in context.cssAttr:
             keepInFrameMaxWidth = getSize("".join(context.cssAttr["-pdf-keep-in-frame-max-width"]))
         if "-pdf-keep-in-frame-max-height" in context.cssAttr:
@@ -606,7 +637,9 @@ def pisaLoop(node, context, path=None, **kw):
                 KeepInFrame(
                     content=substory,
                     maxWidth=keepInFrameMaxWidth,
-                    maxHeight=keepInFrameMaxHeight))
+                    maxHeight=keepInFrameMaxHeight,
+                    mode=keepInFrameMode))
+            # mode wasn't being used; it is necessary for tables or images at end of page.
             context.keepInFrameIndex = None
 
         # Static block, END
@@ -647,8 +680,8 @@ def pisaParser(src, context, default_css="", xhtml=False, encoding=None, xml_out
     else:
         parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("dom"))
 
-    if type(src) in types.StringTypes:
-        if type(src) is types.UnicodeType:
+    if type(src) in StringTypes:
+        if type(src) is TextType:
             # If an encoding was provided, do not change it.
             if not encoding:
                 encoding = "utf-8"

@@ -7,7 +7,7 @@ from reportlab.platypus.flowables import Spacer, HRFlowable, PageBreak, Flowable
 from reportlab.platypus.frames import Frame
 from reportlab.platypus.paraparser import tt2ps, ABag
 from xhtml2pdf import xhtml2pdf_reportlab
-from xhtml2pdf.util import getColor, getSize, getAlign, dpi96
+from xhtml2pdf.util import getColor, getSize, getAlign, dpi96, TextType
 from xhtml2pdf.xhtml2pdf_reportlab import PmlImage, PmlPageTemplate
 import copy
 import logging
@@ -180,13 +180,13 @@ class pisaTagH6(pisaTagP):
 
 def listDecimal(c):
     c.listCounter += 1
-    return unicode("%d." % c.listCounter)
+    return TextType("%d." % c.listCounter)
 
 
-roman_numeral_map = zip(
+roman_numeral_map = tuple(zip(
     (1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1),
     ('M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I')
-)
+))
 
 
 def int_to_roman(i):
@@ -201,7 +201,7 @@ def int_to_roman(i):
 def listUpperRoman(c):
     c.listCounter += 1
     roman = int_to_roman(c.listCounter)
-    return unicode("%s." % roman)
+    return TextType("%s." % roman)
 
 
 def listLowerRoman(c):
@@ -218,7 +218,7 @@ def listUpperAlpha(c):
         # this will probably fail for anything past the 2nd time
         alpha = string.ascii_uppercase[index - 26]
         alpha *= 2
-    return unicode("%s." % alpha)
+    return TextType("%s." % alpha)
 
 
 def listLowerAlpha(c):
@@ -337,16 +337,16 @@ class pisaTagIMG(pisaTag):
                 img.drawWidth *= dpi96
 
                 if (width is None) and (height is not None):
-                    factor = getSize(height) / img.drawHeight
+                    factor = getSize(height, default=img.drawHeight) / img.drawHeight
                     img.drawWidth *= factor
-                    img.drawHeight = getSize(height)
+                    img.drawHeight = getSize(height, default=img.drawHeight)
                 elif (height is None) and (width is not None):
-                    factor = getSize(width) / img.drawWidth
+                    factor = getSize(width, default=img.drawWidth) / img.drawWidth
                     img.drawHeight *= factor
-                    img.drawWidth = getSize(width)
+                    img.drawWidth = getSize(width, default=img.drawWidth)
                 elif (width is not None) and (height is not None):
-                    img.drawWidth = getSize(width)
-                    img.drawHeight = getSize(height)
+                    img.drawWidth = getSize(width, default=img.drawWidth)
+                    img.drawHeight = getSize(height, default=img.drawHeight)
 
                 img.drawWidth *= img.pisaZoom
                 img.drawHeight *= img.pisaZoom
