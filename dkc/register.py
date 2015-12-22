@@ -29,7 +29,7 @@ class RegisterPage(BaseHandler):
         user.application = new_application_key
         user.put()
         logging.info('Created new user %s %s, with email %s', first_name, last_name, email)
-        self.redirect('/application')
+        self.redirect('/login?new=1')
 
     def _serve_page(self, error=None):
         template_values = {

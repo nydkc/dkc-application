@@ -9,6 +9,9 @@
 {% if failed %}
 <div class="alert alert-danger"><strong>Login failed! </strong>Please check your credentials and try again.</div>
 {% endif %}
+{% if new_account %}
+<div class="alert alert-success"><strong>New account created. </strong>Access your application with your email and password.</div>
+{% endif %}
 {% if changed %}
 <div class="alert alert-success"><strong>Password Changed. </strong>Access your application with your new credentials.</div>
 {% endif %}
