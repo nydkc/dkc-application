@@ -28,6 +28,7 @@ class RegisterPage(BaseHandler):
         new_application_key = new_application.put()
         user.application = new_application_key
         user.put()
+        logging.info('Created new user %s %s, with email %s', first_name, last_name, email)
         self.redirect('/application')
 
     def _serve_page(self, error=None):
