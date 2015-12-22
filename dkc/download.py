@@ -40,7 +40,7 @@ class PDFGeneration(BaseHandler):
         template_values = {
             'applicant': applicant,
             'application': application,
-            'STATIC_DIR': os.path.join(os.path.dirname(__file__), '../static')
+            'STATIC_DIR': os.path.normpath(os.path.join(os.path.dirname(__file__), '../static'))
         }
         template = JINJA_ENVIRONMENT.get_template('pdf/application-pdf.html')
         html = template.render(template_values)
