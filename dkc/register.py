@@ -25,6 +25,8 @@ class RegisterPage(BaseHandler):
             return
         user_name = email
         password = self.request.get('password')
+        if len(password) < 6:
+            self._serve_page(error="Your password must be at least 6 characters.")
         
         unique_properties = ['email']
         success, user = self.user_model.create_user(user_name, unique_properties,
