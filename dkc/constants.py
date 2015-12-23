@@ -6,8 +6,7 @@ config = ndb.Key(Settings, 'config').get()
 if not config:
     config = Settings(id='config')
 
-# Generate one using /generate_secret_key.py
-SECRET_KEY = 'HJ20pzoDQblIyj3ygyLIo9WObPLHPqXbhm2lXKsm1iY8T2TXkdQZP5ViCRBbfUPXrHE6LaZORHnxRIAQ6gDdxAnBWuSBMduqSJIc'
+SECRET_KEY = 'Generate a secret key using /generate_secret_key.py'
 try:
     SECRET_KEY = config.secret_key
 except:
@@ -40,5 +39,12 @@ except:
     config.sendgrid_password = SENDGRID_PASSWORD
 SENDGRID_USERNAME = config.sendgrid_username
 SENDGRID_PASSWORD = config.sendgrid_password
+
+RECAPTCHA_SECRET = "Go to https://www.google.com/recaptcha/admin to create a recaptcha secret key"
+try:
+    RECAPTCHA_SECRET = config.recaptcha_secret
+except:
+    config.recaptcha_secret = RECAPTCHA_SECRET
+RECAPTCHA_SECRET = config.recaptcha_secret
 
 config.put()

@@ -32,6 +32,10 @@
             </div>
         </div>
     </div>
+    <div class="form-group">
+        <label for="recaptcha-secret">Recaptcha Secret</label>
+        <input type="text" class="form-control" id="recaptcha-secret" name="recaptcha_secret" value="{{ config.recaptcha_secret }}" placeholder="Enter the recaptcha secret key from https://www.google.com/recaptcha/admin" autocomplete="off" readonly>
+    </div>
 
     <button type="submit" class="btn btn-default">Update</button>
 </form>

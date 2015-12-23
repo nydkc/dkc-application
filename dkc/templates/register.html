@@ -51,6 +51,12 @@
         </div>
     </div>
     <div class="form-group">
+        <label class="col-md-2 control-label" for="captcha"></label>
+        <div class="col-md-10">
+            <div class="g-recaptcha" data-sitekey="6LeOifgSAAAAADr640hD0l252oXVGangmunoh67r"></div>
+        </div>
+    </div>
+    <div class="form-group">
         <div class="col-md-2 col-md-offset-2">
             <button type="submit" class="btn btn-default">Register</button>
         </div>
@@ -58,6 +64,7 @@
 </form>
 {% endblock %}
 {% block scripts %}
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script>
 var first = $('#first-name');
 function checkFirstName() {
@@ -148,13 +155,15 @@ password.blur(function() {
 function validateForm() {
     var errors = [];
     var cf = checkFirstName();
-        if (cf != "") {errors.push(cf)};
+        if (cf != "") { errors.push(cf) };
     var cl = checkLastName();
-        if (cl != "") {errors.push(cl)};
+        if (cl != "") { errors.push(cl) };
     var ce = checkEmail();
-        if (ce != "") {errors.push(ce)};
+        if (ce != "") { errors.push(ce) };
     var cp = checkPassword();
-        if (cp != "") {errors.push(cp)};
+        if (cp != "") { errors.push(cp) };
+    var cc = grecaptcha.getResponse();
+        if (cc == "") { errors.push("Captcha must be solved."); }
 
     if (errors.length > 0) {
         var html = "<ul>";

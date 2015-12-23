@@ -1,4 +1,5 @@
-import re, logging
+import re, json, logging
+import urllib, urllib2
 from webapp2_extras import auth, sessions
 from dkc import *
 from models import *
@@ -11,6 +12,21 @@ class RegisterPage(BaseHandler):
 
     @guest_only
     def post(self):
+        config = ndb.Key(Settings, 'config').get()
+        grecaptcha = self.request.get('g-recaptcha-response')
+        grecaptcha_verification_data = {
+                "secret": config.recaptcha_secret,
+                "response": grecaptcha
+        }
+        try:
+            recaptcha_response = json.loads(urllib2.urlopen("https://www.google.com/recaptcha/api/siteverify", data=urllib.urlencode(grecaptcha_verification_data)).read())
+            recaptcha_success = recaptcha_response['success']
+        except:
+            recaptcha_success = False
+        if not recaptcha_success and self.request.get('g-recaptcha-bypass') != config.recaptcha_secret:
+            self._serve_page(error="Captcha must be solved.")
+            return
+
         first_name = self.request.get('first-name')
         if first_name == '':
             self._serve_page(error="Your first name cannot be blank.")
@@ -27,6 +43,7 @@ class RegisterPage(BaseHandler):
         password = self.request.get('password')
         if len(password) < 6:
             self._serve_page(error="Your password must be at least 6 characters.")
+            return
         
         unique_properties = ['email']
         success, user = self.user_model.create_user(user_name, unique_properties,
