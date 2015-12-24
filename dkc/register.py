@@ -1,8 +1,8 @@
-import re, json, logging
-import urllib, urllib2
+import re, logging
 from webapp2_extras import auth, sessions
 from dkc import *
 from models import *
+import util
 
 class RegisterPage(BaseHandler):
 
@@ -14,15 +14,7 @@ class RegisterPage(BaseHandler):
     def post(self):
         config = ndb.Key(Settings, 'config').get()
         grecaptcha = self.request.get('g-recaptcha-response')
-        grecaptcha_verification_data = {
-                "secret": config.recaptcha_secret,
-                "response": grecaptcha
-        }
-        try:
-            recaptcha_response = json.loads(urllib2.urlopen("https://www.google.com/recaptcha/api/siteverify", data=urllib.urlencode(grecaptcha_verification_data)).read())
-            recaptcha_success = recaptcha_response['success']
-        except:
-            recaptcha_success = False
+        recaptcha_success = util.verify_captcha(config.recaptcha_secret, grecaptcha)
         if not recaptcha_success and self.request.get('g-recaptcha-bypass') != config.recaptcha_secret:
             self._serve_page(error="Captcha must be solved.")
             return
