@@ -15,20 +15,42 @@ class LoginPage(BaseHandler):
 
     @guest_only
     def post(self):
+        failures_cookie = self.request.cookies.get('failures')
+        try:
+            failures = int(failures_cookie) + 1
+        except:
+            failures = 1
+        self.response.set_cookie('failures', str(failures), max_age=3600)
+        if failures > 5:
+            config = ndb.Key(Settings, 'config').get()
+            grecaptcha = self.request.get('g-recaptcha-response')
+            recaptcha_success = util.verify_captcha(config.recaptcha_secret, grecaptcha)
+            if not recaptcha_success:
+                self._serve_page(failed=True)
+                return
+
         username = self.request.get('email')
         password = self.request.get('password')
         try:
             user = self.auth.get_user_by_password(username, password, remember=True)
+            self.response.delete_cookie('failures')
             self.redirect('/application')
         except (InvalidAuthIdError, InvalidPasswordError) as e:
             logging.info('Login failed for user %s because of %s', username, type(e))
             self._serve_page(failed=True)
 
     def _serve_page(self, failed=False, new_account=False):
+        failures_cookie = self.request.cookies.get('failures')
+        try:
+            failures = int(failures_cookie)
+        except:
+            failures = 0
+
         username = self.request.get('email')
         template_values = {
             'email': username,
             'failed': failed,
+            'failures': failures,
             'new_account': new_account
         }
         self.render_template('login.html', template_values)
