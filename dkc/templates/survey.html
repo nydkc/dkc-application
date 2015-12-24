@@ -23,30 +23,16 @@
             <table class="table">
                 <thead>
                     <th></th>
-                    <th class="text-center">1</th>
-                    <th class="text-center">2</th>
-                    <th class="text-center">3</th>
-                    <th class="text-center">4</th>
-                    <th class="text-center">5</th>
-                    <th class="text-center">6</th>
-                    <th class="text-center">7</th>
-                    <th class="text-center">8</th>
-                    <th class="text-center">9</th>
-                    <th class="text-center">10</th>
+                    {% for i in range(1, 11) %}
+                    <th class="text-center">{{ i }}</th>
+                    {% endfor %}
                     <th></th>
                 </thead>
                 <tbody class="text-center">
                     <td class="text-right">Terrible</td>
-                    <td><input type="radio" name="rating" value="1"></td>
-                    <td><input type="radio" name="rating" value="2"></td>
-                    <td><input type="radio" name="rating" value="3"></td>
-                    <td><input type="radio" name="rating" value="4"></td>
-                    <td><input type="radio" name="rating" value="5"></td>
-                    <td><input type="radio" name="rating" value="6"></td>
-                    <td><input type="radio" name="rating" value="7"></td>
-                    <td><input type="radio" name="rating" value="8"></td>
-                    <td><input type="radio" name="rating" value="9"></td>
-                    <td><input type="radio" name="rating" value="10"></td>
+                    {% for i in range(1, 11) %}
+                    <td><input type="radio" name="rating" value="{{ i }}"></td>
+                    {% endfor %}
                     <td class="text-left">Amazing!</td>
                 </tbody>
             </table>
