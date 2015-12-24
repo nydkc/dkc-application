@@ -5,16 +5,19 @@
     <h2>Run Query</h2>
 </div>
 
-<form class="form-inline clearfix" id="query-form" method="post">
+<form class="form-inline clearfix" id="query-form" method="GET">
     <div class="form-group col-sm-9 col-md-10">
-        <input type="text" class="form-control" placeholder="SELECT * FROM Application WHERE early_submission=TRUE" name="querystring" style="width: 100%;" autocomplete="off" value="{{ querystring }}">
+        <input type="text" class="form-control" placeholder="SELECT * FROM Application WHERE early_submission=TRUE" name="querystring" style="width: 100%;" autocomplete="off" value="{{ querystring|e }}">
     </div>
     <button type="submit" class="btn btn-info col-xs-12 col-sm-2 col-md-1">Run &raquo;</button>
 </form>
 
 <div id="query-results">
-    {% if query_results|length == 0 %}
+    {% if error != None %}
     <p class="lead">There was a problem running your query!</p>
+    <p class="text-danger">{{ error }}</p>
+    {% elif query_results|length == 0 %}
+    <p class="lead">No matches :(</p>
     {% endif %}
 
     <ul class="list-unstyled">

@@ -9,14 +9,17 @@ class QueryHandler(AdminBaseHandler):
     def post(self):
         self._serve_page()
 
-    def _serve_page(self):
+    def _serve_page(self, error=None):
         querystring = self.request.get('querystring')
         try:
             results = query.run_gql(querystring)
-        except:
+        except Exception as e:
             results = []
+            error = e
+
         template_values = {
             'querystring': querystring,
-            'query_results': results
+            'query_results': results,
+            'error': error
         }
         self.render_template('admin-run_query.html', template_values)
