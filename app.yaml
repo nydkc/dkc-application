@@ -17,6 +17,7 @@ libraries:
   version: latest
 
 builtins:
+- appstats: on
 - remote_api: on
 
 handlers:
@@ -54,8 +55,6 @@ handlers:
   script: manage.views.application
 - url: /admin/logout
   script: manage.views.application
-- url: /admin/stats.*
-  script: google.appengine.ext.appstats.ui.app
 - url: /admin.*
   script: manage.views.application
   login: admin
