@@ -52,11 +52,14 @@ class RegisterPage(BaseHandler):
         self.redirect('/login?new=1')
 
     def _serve_page(self, error=None):
+        config = ndb.Key(Settings, 'config').get()
+        recaptcha_site_key = config.recaptcha_site_key
         template_values = {
             'first_name': self.request.get('first-name'),
             'last_name': self.request.get('last-name'),
             'email': self.request.get('email'),
             'password': self.request.get('password'),
-            'error': error
+            'error': error,
+            'recaptcha_site_key': recaptcha_site_key
         }
         self.render_template('register.html', template_values)

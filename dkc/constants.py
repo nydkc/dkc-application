@@ -41,10 +41,14 @@ SENDGRID_USERNAME = config.sendgrid_username
 SENDGRID_PASSWORD = config.sendgrid_password
 
 RECAPTCHA_SECRET = "Go to https://www.google.com/recaptcha/admin to create a recaptcha secret key"
+RECAPTCHA_SITE_KEY = "Go to https://www.google.com/recaptcha/admin to create a recaptcha site key"
 try:
     RECAPTCHA_SECRET = config.recaptcha_secret
+    RECAPTCHA_SITE_KEY = config.recaptcha_site_key
 except:
     config.recaptcha_secret = RECAPTCHA_SECRET
+    config.recaptcha_site_key = RECAPTCHA_SITE_KEY
 RECAPTCHA_SECRET = config.recaptcha_secret
+RECAPTCHA_SITE_KEY = config.recaptcha_site_key
 
 config.put()

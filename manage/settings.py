@@ -33,6 +33,7 @@ class SettingsHandler(AdminBaseHandler):
         config.sendgrid_username = self.request.get('sendgrid_username')
         config.sendgrid_password = self.request.get('sendgrid_password')
 
+        config.recaptcha_site_key = self.request.get('recaptcha_site_key')
         config.recaptcha_secret = self.request.get('recaptcha_secret')
 
         config.put()

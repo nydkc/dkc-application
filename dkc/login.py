@@ -46,11 +46,15 @@ class LoginPage(BaseHandler):
         except:
             failures = 0
 
+        config = ndb.Key(Settings, 'config').get()
+        recaptcha_site_key = config.recaptcha_site_key
+
         username = self.request.get('email')
         template_values = {
             'email': username,
             'failed': failed,
             'failures': failures,
-            'new_account': new_account
+            'new_account': new_account,
+            'recaptcha_site_key': recaptcha_site_key
         }
         self.render_template('login.html', template_values)
