@@ -1,0 +1,4 @@
+cron:
+- description: Clean up old user auth tokens
+  url: /cron/auth_token_cleanup
+  schedule: every day 00:00
