@@ -1,4 +1,3 @@
-import urllib
 from google.appengine.ext import ndb
 from manage import *
 from dkc.models import *
@@ -19,11 +18,10 @@ def get_all_applicants():
         memcache.add(key='all_applicants', value=applicants, time=600)
     return applicants
 
-def get_all_applications(applicants=None):
+def get_all_applications():
     applications = memcache.get('all_applications')
     if not applications:
-        if applicants == None:
-            applicants = get_all_applicants()
+        applicants = get_all_applicants()
         applications_keys = [a.application for a in applicants]
         applications = ndb.get_multi(applications_keys)
         memcache.add(key='all_applications', value=applications, time=600)

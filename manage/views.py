@@ -8,6 +8,7 @@ from show import ShowHandler
 from settings import SettingsHandler
 from run_query import QueryHandler
 from deleted_files import DeletedFilesHandler, DeleteDeletedFilesHandler
+from delete import DeleteAccountHandler
 
 class MainPage(webapp2.RequestHandler):
 
@@ -40,5 +41,6 @@ application = webapp2.WSGIApplication([
     ('/admin/query', QueryHandler),
     ('/admin/deleted_files/delete/([^/]+)?', DeleteDeletedFilesHandler),
     ('/admin/deleted_files', DeletedFilesHandler),
+    ('/admin/delete/account', DeleteAccountHandler),
     ('/admin.*', MainPage)
 ], debug=True)
