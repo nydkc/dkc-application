@@ -5,9 +5,9 @@
 # Modifications by Dirk Holtwick, 2008
 
 try:
-    join = str.join #python 3
-except Exception:
     from string import join #python 2
+except Exception:
+    join = str.join #python 3
 
 
 #validate version sys.version[0] == 2 -> is python 2
