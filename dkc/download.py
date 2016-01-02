@@ -35,9 +35,11 @@ class PDFGeneration(BaseHandler):
                 self.display_message("%s %s, please do not attempt to access the applications of other applicants." % (applicant.first_name, applicant.last_name))
                 return
 
+        config = ndb.Key(Settings, 'config').get()
         applicant = User.get_by_id(int(user_id))
         application = applicant.application.get()
         template_values = {
+            'config': config,
             'applicant': applicant,
             'application': application,
             'STATIC_DIR': os.path.normpath(os.path.join(os.path.dirname(__file__), '../static'))

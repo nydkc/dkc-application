@@ -204,7 +204,7 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     </div>
 
     <!-- Content for Static Frame 'header_frame' -->
-    <div id="header_content" class="header text-center">{{ applicant.first_name }} {{ applicant.last_name }} &nbsp;&nbsp;|&nbsp;&nbsp; 2014-2015 Distinguished Key Clubber Application</div>
+    <div id="header_content" class="header text-center">{{ applicant.first_name }} {{ applicant.last_name }} &nbsp;&nbsp;|&nbsp;&nbsp; {{ config.due_date | datetimeformat("%Y") | int - 1 }}-{{ config.due_date | datetimeformat("%Y") }} Distinguished Key Clubber Application</div>
 
     <!-- Content for Static Frame 'footer_frame' -->
     <div id="footer_content" class="footer text-center">© New York District of Key Club International &nbsp;&nbsp;|&nbsp;&nbsp; Page <pdf:pagenumber> of <pdf:pagecount> </div>
