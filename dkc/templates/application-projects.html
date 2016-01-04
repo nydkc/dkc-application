@@ -47,8 +47,6 @@
     <h4>Section 4: District Projects &amp; Local Causes (Max 20 Points, 4 Points per Event)</h4>
     <p>Describe five projects or events that you have participated in relating to either the District Projects or Local Causes. At least one project must be a District Project. You must include all information as requested. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description. The District Projects are:</p>
     <ul>
-        <li>St. Jude Children’s Hospital</li>
-        <li>Make-A-Wish Foundation</li>
         <li>Kamp Kiwanis</li>
         <li>Kiwanis Pediatric Trauma Center</li>
         <li>Pediatric Lyme Disease Foundation</li>
@@ -62,7 +60,7 @@
                     {{ input_horizontal("district-projects-event", "Event:", project.event, size=2) }}
                 </div>
                 <div class="col-md-6">
-                    {{ select_horizontal("district-projects-charity", "Charity:", project.charity, ["St. Jude Children’s Hospital", "Make-A-Wish Foundation", "Kamp Kiwanis", "Kiwanis Pediatric Trauma Center", "Pediatric Lyme Disease Foundation", "Other"], size=2) }}
+                    {{ select_horizontal("district-projects-charity", "Charity:", project.charity, ["Kamp Kiwanis", "Kiwanis Pediatric Trauma Center", "Pediatric Lyme Disease Foundation", "Other"], size=2) }}
                 </div>
                 <div class="col-md-12">
                     <strong>Description of the event:</strong>
