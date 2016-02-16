@@ -22,7 +22,7 @@ class ForgotPasswordHandler(BaseHandler):
         token = self.user_model.create_signup_token(user_id)
 
         verification_url = self.uri_for('verification', type='p', user_id=user_id, signup_token=token, _full=True)
-        print verification_url
+        logging.debug(verification_url)
         
         mail.send_mail(sender="NYDKC Awards Committee <hello@dkc-app.appspotmail.com>",
                        to=user.email,
