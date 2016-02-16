@@ -7,7 +7,7 @@ class EventHandler(webapp2.RequestHandler):
     def post(self):
         email_events = json.loads(self.request.body)
         for email_event in email_events:
-            if email_event['event'] == "bounce":
+            if email_event['event'] == "bounce" or email_event['event'] == "dropped":
                 if email_event.has_key('user_id'):
                     user_id = email_event['user_id'] # All sendgrid events should have a user_id
                     applicant = User.get_by_id(int(user_id))
