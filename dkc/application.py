@@ -357,7 +357,7 @@ class ApplicationVerification(BaseHandler):
             verification_email.set_html(JINJA_ENVIRONMENT.get_template('verification-email.html').render(template_values))
             htmlhandler = html2text.HTML2Text()
             verification_email.set_text(htmlhandler.handle(verification_email.html).encode("UTF+8"))
-            verification_email.add_unique_arg('user_id', user_id)
+            verification_email.add_unique_arg('user_id', str(user_id))
 
             code, response = sg.send(verification_email)
             response = json.loads(response)
