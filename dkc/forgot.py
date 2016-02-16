@@ -78,6 +78,7 @@ class SetPasswordHandler(BaseHandler):
         self.auth.unset_session()
 
         template_values = {
-            'changed': True
+            'changed': True,
+            'failures': 0
         }
         self.render_template('login.html', template_values)
