@@ -21,7 +21,7 @@ except:
     config.early_due_date = datetime.strptime(EARLY_DUE_DATE, "%B %d, %Y - %I:%M %p")
 APPLICATION_EARLY_DUE_DATE = config.early_due_date 
 
-DUE_DATE = "February 22, 2017 - 04:59 AM" # UTC Time
+DUE_DATE = "February 18, 2017 - 04:59 AM" # UTC Time
 try:
     APPLICATION_DUE_DATE = config.due_date 
 except:
