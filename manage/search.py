@@ -26,4 +26,4 @@ class SearchHandler(AdminBaseHandler):
 
     def match(self, applicant, search):
         applicant_info = [applicant.first_name, applicant.last_name, applicant.email, applicant.grade, applicant.address, applicant.city, applicant.zip_code, applicant.phone_number, applicant.division, applicant.ltg, applicant.school, applicant.school_address, applicant.school_city, applicant.school_zip_code, applicant.club_president, applicant.club_president_phone_number, applicant.faculty_advisor, applicant.faculty_advisor_phone_number]
-        return search.lower() in "###".join(map(str, applicant_info)).lower()
+        return search.lower() in "###".join(map(unicode, applicant_info)).lower()
