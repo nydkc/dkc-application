@@ -98,7 +98,7 @@
 {% block scripts %}
 <script src="/js/lunr.min.js"></script>
 <script>
-{# This is a hack to prevent u' from showing up in the javascript array #}
+{# This is a hack to prevent u from showing up in the javascript array #}
 var raw = {{ faq | string | replace("u'", "'") }};
 var idx = lunr(function() {
     this.ref('id'),
