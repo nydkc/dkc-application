@@ -8,19 +8,6 @@
         <h2>Other &amp; Scoring</h2>
     </div>
     <ol>
-        {% if 'Application' is still_early %} {# This is a hack using the custom still_early test #}
-        <li>
-            Receive 5 points in any part for submitting this application early.
-            <div class="form-horizontal row">
-                <div class="col-lg-5 col-md-6 col-md-offset-1">
-                    <strong>{{ checkbox("early-submission-checkbox", "Yes I would like to apply these points to part:", True) }}</strong>
-                </div>
-                <div class="col-lg-3 col-md-4">
-                    {{ select_horizontal("early-submission-points", "", application.early_submission_points, ["Any Section","1","2","3","4"], size=0) }}
-                </div>
-            </div>
-        </li>
-        {% endif %}
         <li>
             A recommendation may be submitted by a club member, officer or faculty advisor for a total of 5 points. This recommendation should be no more than 150 words nominating you for the award. The recommendation must be signed by the writer. You can upload the recommendation on the <a href="/application/overview#other-material-upload">overview</a> page.
             <div class="form-horizontal row">
@@ -47,7 +34,6 @@
                 </div>
             </div>
         </li>
-        <li>The deadline for early submission is <strong>{{ config.early_due_date|datetimeformat }}</strong>. The deadline for regular submission is <strong>{{ config.due_date|datetimeformat }}</strong>. For all late submission, 5 points will be deducted per day from each part. Submissions sent in three days after the deadline will not be accepted.</li>
     </ol>
 
     <hr>
