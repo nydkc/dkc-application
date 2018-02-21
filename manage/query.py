@@ -46,9 +46,9 @@ def get_all_overview():
     applications = memcache.get('overview_applications')
     if not applicants or not applications:
         applicants_query = User.query().order(User.division, User.first_name, User.last_name)
-        applicants = applicants_query.fetch()
+        applicants = [a for a in applicants_query.fetch() if a.application is not None]
         memcache.add(key='overview_applicants', value=applicants, time=600)
-        application_keys = [a.application for a in applicants]
+        application_keys = [a.application for a in applicants if a.application is not None]
         applications = ndb.get_multi(application_keys)
         applications_filtered = [OverviewApplication(a.submit_time, a.early_submission, a.outstanding_awards, a.graded) for a in applications]
         memcache.add(key='overview_applications', value=applications_filtered, time=600)

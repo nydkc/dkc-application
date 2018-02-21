@@ -1,4 +1,5 @@
-
+application: dkc-app
+version: 9000
 runtime: python27
 api_version: 1
 threadsafe: true
