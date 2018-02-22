@@ -22,15 +22,15 @@ def get_all_applications():
     applications = memcache.get('all_applications')
     if not applications:
         applicants = get_all_applicants()
-        applications_keys = [a.application for a in applicants]
+        applications_keys = [a.application for a in applicants if a.application is not None]
         applications = ndb.get_multi(applications_keys)
         memcache.add(key='all_applications', value=applications, time=600)
     return applications
 
 def get_all_applicants_applications_no_cache():
     applicants_query = User.query().order(User.division, User.first_name, User.last_name)
-    applicants = applicants_query.fetch()
-    applications_keys = [a.application for a in applicants]
+    applicants = [a for a in applicants_query.fetch() if a.application is not None]
+    applications_keys = [a.application for a in applicants if a.application is not None]
     applications = ndb.get_multi(applications_keys)
     return applicants, applications
 
