@@ -5,15 +5,15 @@
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
 
     <div class="page-header">
-        <h2>Part III: Involvement in Key Club Functions <span class="text-nowrap">(60 Points)</span></h2>
+        <h2>Part III: Involvement in Key Club Functions <span class="text-nowrap">(20 Points)</span></h2>
     </div>
     <p class="text-center">This part will show how involved you are at the club, division and district level. 
-        <br>Required Points: 20 Points
-        <br>Recommended Points: 40 Points
+        <br>Required Points: 10 Points
+        <br>Recommended Points: 15 Points
     </p>
 
-    <h4>Section 1: Key Club Week Participation (Max 15 Points, 3 Points per Day)</h4>
-    <p>Key Club Week was celebrated from November 6 to November 10. Below, please indicate what you have done during Key Club Week. If your club celebrated Key Club week at a different time, events are still counted towards this section.</p>
+    <h4>Section 1: Key Club Week Participation (Max 5 Points, 1 Points per Day)</h4>
+    <p>Key Club Week was celebrated from November 5 to November 9. Below, please indicate what you have done during Key Club Week. If your club celebrated Key Club week at a different time, events are still counted towards this section.</p>
 
     <div class="form-horizontal">
         {{ input_horizontal("key-club-week-monday", "Monday", application.key_club_week_mon, size=2) }}
@@ -29,11 +29,11 @@
     <p>If you attended any of the following conferences or programs, please indicate which programs by checking the boxes below. Only check off ones that you attended in the {{ config.due_date | datetimeformat("%Y") | int - 1 }} - {{ config.due_date | datetimeformat("%Y") }} service year.</p>
     <div class="row">
         <div class="col-sm-11 col-sm-offset-1">
-            {{ checkbox("attendance-dtc", "(5 points) Divisional Training Conference/Personal Training", application.attendance_dtc) }}
-            {{ checkbox("attendance-fall-rally", "(5 points) Fall Rally", application.attendance_fall_rally) }}
-            {{ checkbox("attendance-kamp-kiwanis", "(5 points) Kamp Kiwanis", application.attendance_kamp_kiwanis) }}
-            {{ checkbox("attendance-key-leader", "(5 points) Key Leader", application.attendance_key_leader) }}
-            {{ checkbox("attendance-ltc", "(7 points) Leadership Training Conference", application.attendance_ltc) }}
+            {{ checkbox("attendance-dtc", "(2.5 points) Divisional Training Conference/Personal Training", application.attendance_dtc) }}
+            {{ checkbox("attendance-fall-rally", "(2.5 points) Fall Rally", application.attendance_fall_rally) }}
+            {{ checkbox("attendance-kamp-kiwanis", "(2.5 points) Kamp Kiwanis", application.attendance_kamp_kiwanis) }}
+            {{ checkbox("attendance-key-leader", "(2.5 points) Key Leader", application.attendance_key_leader) }}
+            {{ checkbox("attendance-ltc", "(5 points) Leadership Training Conference", application.attendance_ltc) }}
             {{ checkbox("attendance-icon", "(8 points) International Convention", application.attendance_icon) }}
         </div>
     </div>

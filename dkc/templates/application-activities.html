@@ -5,17 +5,17 @@
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
 
     <div class="page-header">
-        <h2>Part IV: Projects, Advocacy &amp; Newsletters <span class="text-nowrap">(60 Points)</span></h2>
+        <h2>Part IV: Projects, Advocacy &amp; Newsletters <span class="text-nowrap">(20 Points)</span></h2>
     </div>
     <p class="text-center">This part will show what projects or activities you have participated in.
-        <br>Required Points: 20 Points
-        <br>Recommended Points: 40 Points
+        <br>Required Points: 10 Points
+        <br>Recommended Points: 15 Points
     </p>
 
     <h4>Section 1: K-Family Projects</h4>
     <p>If you have participated in any event or project with another member of the Kiwanis Family, describe the project in this segment. Members of the K-Family include: Kiwanis Club, Circle K, Builders Club, K-Kids and AKTION Club. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
 
-    <strong>Kiwanis One Day Event (5 Points Max, 5 Points per Event)</strong>
+    <strong>Kiwanis One Day Event (5 Points Max, 1 Points per Event)</strong>
     <p>Kiwanis One Day is typically held on the 4th Saturday of October. If you have participated in a Kiwanis One Day event or project, please fill out this section.</p>
     <div class="kiwanis-one-day">
         {% if application.kiwanis_one_day %}
@@ -40,7 +40,7 @@
     </div>
     <button class="btn btn-inverse btn-block" id="kiwanis-one-day-button"><span class="glyphicon glyphicon-plus"></span> Add an event...</button>
 
-    <div style="margin-top: 10px;"><strong>K-Family Service Projects (16 Points Max, 4 Points per Event)</strong></div>
+    <div style="margin-top: 10px;"><strong>K-Family Service Projects (5 Points Max, 1 Points per Event)</strong></div>
     <p>Describe any projects or events you have participated in with another branch of the Kiwanis Family.</p>
     <div class="k-family-projects">
         {% for project in application.k_family_projects %}
@@ -67,7 +67,7 @@
 
     <hr>
 
-    <h4>Section 2: Interclub Event (Max 16 Points, 4 Points per Event)</h4>
+    <h4>Section 2: Interclub Event (Max 5 Points, 1 Points per Event)</h4>
     <p>If you have participated in any event or project with other clubs, fill out this section. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
     <div class="interclub-projects">
         {% for project in application.interclub_projects %}
@@ -94,7 +94,7 @@
 
     <hr>
 
-    <h4>Section 3: Advocacy (Max 3 Points, 3 Points per Project)</h4>
+    <h4>Section 3: Advocacy (Max 3 Points, 1 Points per Project)</h4>
     <p>In this section, describe any advocacy project that you may have started or participated in. Include a description of the cause you are advocating for, why it is important to you, and what steps you have taken to promote it. Please include any materials, such as petitions, letters and fliers to your application.</p>
     <div class="row">
         <div class="form-horizontal col-xs-12">
@@ -137,7 +137,7 @@
 
     <hr>
 
-    <h4>Section 4: Committee Involvement (Max 3 Points, 3 Points per Committee)</h4>
+    <h4>Section 4: Committee Involvement (Max 3 Points, 1 Points per Committee)</h4>
     <p>If you were part of a Key Club committee, whether it is a club committee, divisional committee, or international committee, please fill out this section. Indicate the name of the committee and the type (club, division) of committee. Briefly describe what you have done in the committee.</p>
     <div class="row">
         <div class="form-horizontal col-xs-12">
@@ -189,7 +189,7 @@
 
     <hr>
 
-    <h4>Section 6: Other Project/Fundraisers (Max 12 Points, 2 Point per Project/Fundraiser)</h4>
+    <h4>Section 6: Other Project/Fundraisers (Max 5 Points, 1 Point per Project/Fundraiser)</h4>
     <p>Please list and describe any service project that you have participated in. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
     <div class="other-projects">
         {% for project in application.other_projects %}
