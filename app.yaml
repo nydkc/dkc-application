@@ -1,5 +1,3 @@
-application: dkc-app
-version: 20180221t133719
 runtime: python27
 api_version: 1
 threadsafe: true
