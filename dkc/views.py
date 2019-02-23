@@ -34,7 +34,7 @@ application = webapp2.WSGIApplication([
     ('/application/profile', ApplicationProfile),
     ('/application/upload', ApplicationUploadHandler),
     ('/application/submit', ApplicationSubmit),
-    ('/application/download/pdf/([^/]+)?-.*.pdf', PDFGeneration),
+    ('/application/download/pdf/(\d+)-.*.pdf', PDFGeneration),
     ('/application.*', ApplicationOverview),
     ('/login', LoginPage),
     ('/logout', LogoutPage),

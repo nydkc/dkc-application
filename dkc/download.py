@@ -23,7 +23,7 @@ class PDFGeneration(BaseHandler):
                 self.display_message("You are not an admin! Only admins are allowed to view applications.")
                 return
         else:
-            if self.user == None: # Prevent access from users no logged in
+            if self.user is None: # Prevent access from users not logged in
                 logging.info("Unauthorized access of application %s", user_id)
                 self.response.set_status(401);
                 self.display_message("You are not authorized to view this application!")
