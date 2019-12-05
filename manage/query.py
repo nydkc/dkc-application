@@ -58,6 +58,10 @@ def run_gql(querystring):
     query = ndb.gql(querystring)
     return query.fetch()
 
-def get_deleted_files():
+def get_all_deleted_files():
     query = DeletedFile.query()
+    return query.fetch()
+
+def get_deleted_files_by_user(user_key):
+    query = DeletedFile.query(ancestor=user_key)
     return query.fetch()

@@ -4,6 +4,7 @@ from google.appengine.ext import ndb
 from webapp2_extras.appengine.auth.models import Unique
 from manage import *
 from dkc.models import *
+import deleted_files
 import query
 
 def delete(emails_to_delete):
@@ -12,11 +13,13 @@ def delete(emails_to_delete):
     applicants_to_delete = []
     applications_to_delete = []
     uniques_to_delete = []
+    deleted_files_to_delete = []
     for email in emails_to_delete:
         applicant, application = query.get_application_by_email(email)
         if applicant:
             applicants_to_delete.append(applicant.key)
             emails_deleted.append(email)
+            deleted_files_to_delete += query.get_deleted_files_by_user(applicant.key)
         if application:
             applications_to_delete.append(application.key)
         # Delete auth ids which are just emails
@@ -25,8 +28,10 @@ def delete(emails_to_delete):
         uniques_to_delete.append('User.email:' + email)
     ndb.delete_multi(applicants_to_delete + applications_to_delete)
     Unique.delete_multi(uniques_to_delete)
+    for deleted_file in deleted_files_to_delete:
+        deleted_files.delete_deleted_file(deleted_file.key.urlsafe())
     logging.warning("Deleted applicants: %s", ', '.join(emails_deleted))
-    return applicants_to_delete, applications_to_delete, uniques_to_delete
+    return applicants_to_delete, applications_to_delete, uniques_to_delete, deleted_files_to_delete
 
 class DeleteAccountHandler(AdminBaseHandler):
     """
@@ -39,11 +44,12 @@ class DeleteAccountHandler(AdminBaseHandler):
     def post(self):
         emails_to_delete = self.request.get_all('email')
         emails_to_delete = map(lambda e: e.strip(), emails_to_delete)
-        applicants_to_delete, applications_to_delete, uniques_to_delete = delete(emails_to_delete)
+        applicants_to_delete, applications_to_delete, uniques_to_delete, deleted_files_to_delete = delete(emails_to_delete)
         self.response.write("Deleted:\n")
         self.response.write("\t- %d applicants\n" % len(applicants_to_delete))
         self.response.write("\t- %d applications\n" % len(applications_to_delete))
         self.response.write("\t- %d uniques\n" % len(uniques_to_delete))
+        self.response.write("\t- %d deleted_files\n" % len(deleted_files_to_delete))
 
 class DeleteAccountsByYearHandler(AdminBaseHandler):
     """
@@ -56,7 +62,7 @@ class DeleteAccountsByYearHandler(AdminBaseHandler):
         filter_date = datetime.strptime(time_to_delete, "%Y-%m-%dT%H:%M:%S.%fZ")
         applicants = query.get_all_applicants()
         emails_to_delete = map(lambda u: u.email, filter(lambda u: u.application.get().updated_time < filter_date, applicants))
-        self.response.write("Can delete::\n")
+        self.response.write("Can delete:\n")
         self.response.write(len(emails_to_delete))
         self.response.write("\n")
         self.response.write(emails_to_delete)
