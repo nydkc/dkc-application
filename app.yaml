@@ -51,13 +51,17 @@ handlers:
   script: dkc.bounce.application
 - url: /admin
   script: manage.views.application
+  secure: always
 - url: /admin/logout
   script: manage.views.application
+  secure: always
 - url: /admin.*
   script: manage.views.application
+  secure: always
   login: admin
 - url: /.*
   script: dkc.views.application
+  secure: always
 
 error_handlers:
 - error_code: over_quota
