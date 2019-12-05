@@ -13,7 +13,7 @@
     </p>
 
     <h4>Sections 1,2,3: International Projects (Max 24 Points, 4 Points per Event)</h4>
-    <p>Complete the following three sections. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
+    <p>Complete the following three sections if applicable. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
     <ul>
         <li>Section 1:&nbsp;&nbsp;&nbsp;Governor’s Project: “Special Olympics New York”</li>
         <li>Section 2:&nbsp;&nbsp;&nbsp;Major Emphasis: “Children: Their Focus, Our Future”</li>
@@ -45,7 +45,7 @@
     <hr>
 
     <h4>Section 4: District Projects &amp; Local Causes (Max 20 Points, 4 Points per Event)</h4>
-    <p>Describe five projects or events that you have participated in relating to either the District Projects or Local Causes. At least one project must be a District Project. You must include all information as requested. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description. The District Projects are:</p>
+    <p>Describe up to five projects or events that you have participated in relating to either the District Projects or Local Causes. At least one project must be a District Project. You must include all information as requested. Please include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description. The District Projects are:</p>
     <ul>
         <li>Kamp Kiwanis</li>
         <li>Kiwanis Pediatric Trauma Center</li>
@@ -189,7 +189,7 @@ $('#international-projects-button').click(function() {
 });
 $('#district-projects-button').click(function() {
     var count = $('.district-projects .project').length + 1;
-    $('<div class="row project project-' + count + '"><div class="form-horizontal col-xs-12"><div class="col-md-6"><div class="form-group"><label for="district-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="district-projects-event" name="district-projects-event" value=""></div></div></div><div class="col-md-6"><div class="form-group"><label for="district-projects-charity" class="col-md-2 control-label">Charity:</label><div class="col-md-10"><select class="form-control" id="district-projects-charity" name="district-projects-charity" style="width: 100%;"><option value="Kamp Kiwanis" selected="">Kamp Kiwanis</option><option value="Kiwanis Pediatric Trauma Center">Kiwanis Pediatric Trauma Center</option><option value="Pediatric Lyme Disease Foundation">Pediatric Lyme Disease Foundation</option><option value="One Tree Planted">One Tree Planted</option><option value="Other">Other</option></select><input type="text" class="form-control hidden" id="district-projects-charity" value="Kamp Kiwanis"></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="district-projects-description" name="district-projects-description" rows="4"></textarea></div></div></div></div><div class="project-delete"><span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span></div></div>').hide().appendTo('.district-projects').slideDown();
+    $('<div class="row project project-' + count + '"><div class="form-horizontal col-xs-12"><div class="col-md-6"><div class="form-group"><label for="district-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="district-projects-event" name="district-projects-event" value=""></div></div></div><div class="col-md-6"><div class="form-group"><label for="district-projects-charity" class="col-md-2 control-label">Charity:</label><div class="col-md-10"><select class="form-control" id="district-projects-charity" name="district-projects-charity" style="width: 100%;"><option value="Kamp Kiwanis" selected="">Kamp Kiwanis</option><option value="Kiwanis Pediatric Trauma Center">Kiwanis Pediatric Trauma Center</option><option value="Pediatric Lyme Disease Foundation">Pediatric Lyme Disease Foundation</option><option value="Project Semicolon">Project Semicolon</option><option value="Other">Other</option></select><input type="text" class="form-control hidden" id="district-projects-charity" value=""></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="district-projects-description" name="district-projects-description" rows="4"></textarea></div></div></div></div><div class="project-delete"><span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span></div></div>').hide().appendTo('.district-projects').slideDown();
     if (count >= 5) {
         $(this).hide();
     }
