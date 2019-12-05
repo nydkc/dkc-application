@@ -14,6 +14,11 @@
         <label for="due-date">Due Date</label>
         <input type="text" class="form-control" id="due-date" name="due_date" value="{{ config.due_date|datetimeformat }}" placeholder="February 15, 2016 - 11:59 PM" autocomplete="off">
     </div>
+    <div>
+        <label for="awards-booklet-url">Awards Booklet URL</label>
+        <input type="text" class="form-control" id="awards-booklet-url" name="awards_booklet_url" value="{{ config.awards_booklet_url }}" placeholder="https://.../....pdf" autocomplete="off">
+    </div>
+    <hr>
     <div class="form-group">
         <label for="secret-key">Secret Key</label>
         <input type="text" class="form-control" id="secret-key" name="secret_key" value="{{ config.secret_key }}" placeholder="Enter a long secret key used for cookie generation" autocomplete="off" readonly>

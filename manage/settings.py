@@ -7,7 +7,7 @@ class SettingsHandler(AdminBaseHandler):
 
     def get(self):
         self._serve_page()
-        
+
     def post(self):
         config = ndb.Key(Settings, 'config').get()
         if not config:
@@ -29,6 +29,8 @@ class SettingsHandler(AdminBaseHandler):
             config.due_date = due_date
         except:
             config.due_date = "Please put in a valid date (ex. February 14, 2015 - 11:59 PM)"
+
+        config.awards_booklet_url = self.request.get('awards_booklet_url')
 
         config.sendgrid_username = self.request.get('sendgrid_username')
         config.sendgrid_password = self.request.get('sendgrid_password')

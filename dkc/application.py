@@ -17,9 +17,11 @@ class ApplicationOverview(BaseHandler):
         self._serve_page()
 
     def _serve_page(self):
+        config = ndb.Key(Settings, 'config').get()
         template_values = {
             'user_id': self.user.get_id(),
-            'application_url': '/application/overview'
+            'application_url': '/application/overview',
+            'config': config,
         }
         self.render_application('application-overview.html', template_values)
 
