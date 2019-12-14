@@ -124,7 +124,7 @@
         {% endfor %}
     </div>
     <button class="btn btn-inverse btn-block" id="division-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
- 
+
     <hr>
 
     <div id="updated-text" class="text-center" style="display:none"></div>
@@ -133,31 +133,26 @@
 {% endblock %}
 {% block application_scripts %}
 <script>
-function selectOtherInput() {
+function selectInputOtherFieldExpand() {
     $('select#district-projects-charity').each(function() {
-        if ($(this).val() == "Other") {
-            $(this).parent().find('input').removeClass("hidden").attr('name', 'district-projects-charity');
-            $(this).removeAttr('name').css('width', '27%');
-        }
-        else {
-            $(this).parent().find('input').addClass("hidden").removeAttr('name');
-            $(this).attr('name', 'district-projects-charity').css('width', '100%');
-        }
-        $(this).change(function() {
-            if ($(this).val() == "Other") {
-                $(this).parent().find('input').removeClass("hidden").attr('name', 'district-projects-charity');
-                $(this).removeAttr('name').css('width', '27%');
+        var selectInput = $(this);
+        var toggleOtherInputField = function() {
+            if (selectInput.val() == "Other") {
+                selectInput.parent().find('input').removeClass("hidden").attr('name', 'district-projects-charity');
+                selectInput.removeAttr('name').css('width', '27%');
             }
             else {
-                $(this).parent().find('input').addClass("hidden").removeAttr('name');
-                $(this).attr('name', 'district-projects-charity').css('width', '100%');
+                selectInput.parent().find('input').addClass("hidden").removeAttr('name');
+                selectInput.attr('name', 'district-projects-charity').css('width', '100%');
+            }
         }
-        });
+        toggleOtherInputField();
+        selectInput.change(toggleOtherInputField);
     });
 }
 $(document).ready(buttonAppearanceCheck);
 function buttonAppearanceCheck() {
-    selectOtherInput();
+    selectInputOtherFieldExpand();
     if ($('.international-projects .project').length >= 6) {
         $('#international-projects-button').hide();
     } else {
@@ -193,7 +188,7 @@ $('#district-projects-button').click(function() {
     if (count >= 5) {
         $(this).hide();
     }
-    selectOtherInput();
+    selectInputOtherFieldExpand();
     return false;
 });
 $('#divisional-meetings-button').click(function() {
