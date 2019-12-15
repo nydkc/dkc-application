@@ -11,15 +11,9 @@
         <li>
             A recommendation may be submitted by a club member, officer or faculty advisor for an extra 5 points. This recommendation should be no more than 150 words nominating you for the award. The recommendation must be signed by the writer. You can upload the recommendation on the <a href="/application/overview#other-material-upload">overview</a> page.
             <div class="form-horizontal row">
-            {% if application.recommender_points %}
                 <div class="col-lg-5 col-md-6 col-md-offset-1">
-                    <strong>{{ checkbox("recommender-checkbox", "Yes I would like to apply these points to part:", not (application.recommender_points == 'No Recommendation')) }}</strong>
+                    <strong>{{ checkbox("recommender-checkbox", "Yes I would like to apply these points to part:", application.recommender_points and application.recommender_points != 'No Recommendation') }}</strong>
                 </div>
-            {% else %}
-                <div class="col-lg-5 col-md-6 col-md-offset-1">
-                    <strong>{{ checkbox("recommender-checkbox", "Yes I would like to apply these points to part:", False) }}</strong>
-                </div>
-            {% endif %}
 
                 <div class="col-lg-3 col-md-4">
                     {{ select_horizontal("recommender-points", "", application.recommender_points, ["No Recommendation", "1","2","3","4"], size=0) }}
@@ -30,7 +24,7 @@
             Are you applying for any of the Outstanding Officer/Member awards? The answer to this question is <strong>REQUIRED</strong> for anyone applying.
             <div class="form-horizontal row">
                 <div class="col-lg-7 col-md-offset-1 col-md-8">
-                    {{ select_horizontal("outstanding-awards", "I am applying for ", application.outstanding_awards, ["", "None", "Outstanding Key Club Member","Outstanding Club President","Outstanding Club Vice-President","Outstanding Club Secretary","Outstanding Club Treasurer","Outstanding Club Bulletin Editor","Outstanding Club Webmaster"], size=4) }}
+                    {{ select_horizontal("outstanding-awards", "I am applying for ", application.outstanding_awards, ["-", "Outstanding Key Club Member","Outstanding Club President","Outstanding Club Vice-President","Outstanding Club Secretary","Outstanding Club Treasurer","Outstanding Club Bulletin Editor","Outstanding Club Webmaster"], size=4) }}
                 </div>
             </div>
         </li>
@@ -51,26 +45,22 @@
 {% endblock %}
 {% block application_scripts %}
 <script>
-$(document).ready(function() {
+function checkboxEnableSelect() {
     $('input[type=checkbox]').each(function() {
-        var infoBox = $(this).parent().parent().parent().parent().parent().find('select');
-        if ($(this).is(':checked')) {
-            infoBox.removeAttr('disabled');
+        var checkbox = $(this);
+        var closestSelectInput = checkbox.parent().parent().parent().parent().parent().find('select');
+        var toggleSelectInput = function() {
+            if (checkbox.is(':checked')) {
+                closestSelectInput.removeAttr('disabled');
+            }
+            else {
+                closestSelectInput.attr('disabled', 'disabled');
+            }
         }
-        else {
-            infoBox.attr('disabled', 'disabled');
-        }
+        toggleSelectInput();
+        checkbox.change(toggleSelectInput);
     });
-});
-
-$('input[type=checkbox]').click(function() {
-    var infoBox = $(this).parent().parent().parent().parent().parent().find('select');
-    if ($(this).is(':checked')) {
-        infoBox.removeAttr('disabled');
-    }
-    else {
-        infoBox.attr('disabled', 'disabled');
-    }
-});
+}
+$(document).ready(checkboxEnableSelect);
 </script>
 {% endblock %}
