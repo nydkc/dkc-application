@@ -1,5 +1,82 @@
 {% extends "application.html" %}
 {% set title = 'Activities' %}
+{% macro kiwanis_one_day_input(project) %}
+<div class="row project">
+    <div class="form-horizontal col-xs-12">
+        <div class="col-md-6">
+            {{ input_horizontal("kiwanis-one-day-event", "Event:", project.event, size=2) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_horizontal("kiwanis-one-day-location", "Location:", project.location, size=3) }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description of the event:</strong>
+            {{ textarea_horizontal("kiwanis-one-day-description", value=project.description, size=0) }}
+        </div>
+    </div>
+    <div class="project-delete">
+        <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
+    </div>
+</div>
+{% endmacro %}
+{% macro k_family_project_input(project) %}
+<div class="row project">
+    <div class="form-horizontal col-xs-12">
+        <div class="col-md-6">
+            {{ input_horizontal("k-family-projects-event", "Event:", project.event, size=2) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_horizontal("k-family-projects-location", "Location:", project.location, size=3) }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description of the event:</strong>
+            {{ textarea_horizontal("k-family-projects-description", value=project.description, size=0) }}
+        </div>
+    </div>
+    <div class="project-delete">
+        <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
+    </div>
+</div>
+{% endmacro %}
+{% macro interclub_project_input(project) %}
+<div class="row project">
+    <div class="form-horizontal col-xs-12">
+        <div class="col-md-6">
+            {{ input_horizontal("interclub-projects-event", "Event:", project.event, size=2) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_horizontal("interclub-projects-location", "Location:", project.location, size=3) }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description of the event:</strong>
+            {{ textarea_horizontal("interclub-projects-description", value=project.description, size=0) }}
+        </div>
+    </div>
+    <div class="project-delete">
+        <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
+    </div>
+</div>
+{% endmacro %}
+{% macro other_project_input(project) %}
+<div class="row project">
+    <div class="form-horizontal col-xs-12">
+        <div class="col-md-6">
+            {{ input_horizontal("other-projects-event", "Event:", project.event, size=2) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_horizontal("other-projects-location", "Location:", project.location, size=3) }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description of the event:</strong>
+            {{ textarea_horizontal("other-projects-description", value=project.description, size=0) }}
+        </div>
+    </div>
+    <div class="project-delete">
+        <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
+    </div>
+</div>
+{% endmacro %}
+
 {% block application %}
 <form id="application" role="form" action="{{ application_url }}" method="post">
     <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
@@ -19,23 +96,7 @@
     <p>Kiwanis One Day is typically held on the 4th Saturday of October. If you have participated in a Kiwanis One Day event or project, please fill out this section.</p>
     <div class="kiwanis-one-day">
         {% if application.kiwanis_one_day %}
-        <div class="row project">
-            <div class="form-horizontal col-xs-12">
-                <div class="col-md-6">
-                    {{ input_horizontal("kiwanis-one-day-event", "Event:", application.kiwanis_one_day.event, size=2) }}
-                </div>
-                <div class="col-md-6">
-                    {{ input_horizontal("kiwanis-one-day-location", "Location:", application.kiwanis_one_day.location, size=3) }}
-                </div>
-                <div class="col-md-12">
-                    <strong>Description of the event:</strong>
-                    {{ textarea_horizontal("kiwanis-one-day-description", value=application.kiwanis_one_day.description, size=0) }}
-                </div>
-            </div>
-            <div class="project-delete">
-                <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
-            </div>
-        </div>
+        {{ kiwanis_one_day_input(application.kiwanis_one_day) }}
         {% endif %}
     </div>
     <button class="btn btn-inverse btn-block" id="kiwanis-one-day-button"><span class="glyphicon glyphicon-plus"></span> Add an event...</button>
@@ -44,23 +105,7 @@
     <p>Describe any projects or events you have participated in with another branch of the Kiwanis Family.</p>
     <div class="k-family-projects">
         {% for project in application.k_family_projects %}
-        <div class="row project project-{{ loop.index }}">
-            <div class="form-horizontal col-xs-12">
-                <div class="col-md-6">
-                    {{ input_horizontal("k-family-projects-event", "Event:", project.event, size=2) }}
-                </div>
-                <div class="col-md-6">
-                    {{ input_horizontal("k-family-projects-location", "Location:", project.location, size=3) }}
-                </div>
-                <div class="col-md-12">
-                    <strong>Description of the event:</strong>
-                    {{ textarea_horizontal("k-family-projects-description", value=project.description, size=0) }}
-                </div>
-            </div>
-            <div class="project-delete">
-                <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
-            </div>
-        </div>
+        {{ k_family_project_input(project) }}
         {% endfor %}
     </div>
     <button class="btn btn-inverse btn-block" id="k-family-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
@@ -71,23 +116,7 @@
     <p>If you have participated in any event or project with other clubs, fill out this section. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
     <div class="interclub-projects">
         {% for project in application.interclub_projects %}
-        <div class="row project project-{{ loop.index }}">
-            <div class="form-horizontal col-xs-12">
-                <div class="col-md-6">
-                    {{ input_horizontal("interclub-projects-event", "Event:", project.event, size=2) }}
-                </div>
-                <div class="col-md-6">
-                    {{ input_horizontal("interclub-projects-location", "Location:", project.location, size=3) }}
-                </div>
-                <div class="col-md-12">
-                    <strong>Description of the event:</strong>
-                    {{ textarea_horizontal("interclub-projects-description", value=project.description, size=0) }}
-                </div>
-            </div>
-            <div class="project-delete">
-                <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
-            </div>
-        </div>
+        {{ interclub_project_input(project) }}
         {% endfor %}
     </div>
     <button class="btn btn-inverse btn-block" id="interclub-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
@@ -193,23 +222,7 @@
     <p>Please list and describe any service project that you have participated in. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
     <div class="other-projects">
         {% for project in application.other_projects %}
-        <div class="row project project-{{ loop.index }}">
-            <div class="form-horizontal col-xs-12">
-                <div class="col-md-6">
-                    {{ input_horizontal("other-projects-event", "Event:", project.event, size=2) }}
-                </div>
-                <div class="col-md-6">
-                    {{ input_horizontal("other-projects-location", "Location:", project.location, size=3) }}
-                </div>
-                <div class="col-md-12">
-                    <strong>Description of the event:</strong>
-                    {{ textarea_horizontal("other-projects-description", value=project.description, size=0) }}
-                </div>
-            </div>
-            <div class="project-delete">
-                <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
-            </div>
-        </div>
+        {{ other_project_input(project) }}
         {% endfor %}
     </div>
     <button class="btn btn-inverse btn-block" id="other-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
@@ -336,7 +349,13 @@ $('input[type=checkbox]').click(function() {
 });
 </script>
 <script>
-$(document).ready(buttonAppearanceCheck);
+function deleteProject(trash) {
+    project = $(trash).parent().parent();
+    project.slideUp(400, function() {
+        $(this).remove();
+        buttonAppearanceCheck();
+    });
+}
 function buttonAppearanceCheck() {
     if ($('.kiwanis-one-day .project').length >= 1) {
         $('#kiwanis-one-day-button').hide();
@@ -359,41 +378,26 @@ function buttonAppearanceCheck() {
         $('#other-projects-button').fadeIn();
     }
 }
+$(document).ready(buttonAppearanceCheck);
 $('#kiwanis-one-day-button').click(function() {
-    $('<div class="row project"><div class="form-horizontal col-xs-12"><div class="col-md-6"><div class="form-group"><label for="kiwanis-one-day-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="kiwanis-one-day-event" name="kiwanis-one-day-event"></div></div></div><div class="col-md-6"><div class="form-group"><label for="kiwanis-one-day-location" class="col-md-3 control-label">Location:</label><div class="col-md-9"><input type="text" class="form-control" id="kiwanis-one-day-location" name="kiwanis-one-day-location"></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="kiwanis-one-day-description" name="kiwanis-one-day-description" rows="4"></textarea></div></div></div></div><div class="project-delete"><span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span></div></div>').hide().appendTo('.kiwanis-one-day').slideDown();
-    $(this).hide();
+    $('{{ kiwanis_one_day_input({}) | replace("\n", "") }}').hide().appendTo('.kiwanis-one-day').slideDown();
+    buttonAppearanceCheck();
     return false;
 });
 $('#k-family-projects-button').click(function() {
-    var count = $('.k-family-projects .project').length + 1;
-    $('<div class="row project project-' + count + '"><div class="form-horizontal col-xs-12"><div class="col-md-6"><div class="form-group"><label for="k-family-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="k-family-projects-event" name="k-family-projects-event"></div></div></div><div class="col-md-6"><div class="form-group"><label for="k-family-projects-location" class="col-md-3 control-label">Location:</label><div class="col-md-9"><input type="text" class="form-control" id="k-family-projects-location" name="k-family-projects-location"></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="k-family-projects-description" name="k-family-projects-description" rows="4"></textarea></div></div></div></div><div class="project-delete"><span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span></div></div>').hide().appendTo('.k-family-projects').slideDown();
-    if (count >= 4) {
-        $(this).hide();
-    }
+    $('{{ k_family_project_input({}) | replace("\n", "") }}').hide().appendTo('.k-family-projects').slideDown();
+    buttonAppearanceCheck();
     return false;
 });
 $('#interclub-projects-button').click(function() {
-    var count = $('.interclub-projects .project').length + 1;
-    $('<div class="row project project-' + count + '"><div class="form-horizontal col-xs-12"><div class="col-md-6"><div class="form-group"><label for="interclub-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="interclub-projects-event" name="interclub-projects-event"></div></div></div><div class="col-md-6"><div class="form-group"><label for="interclub-projects-location" class="col-md-3 control-label">Location:</label><div class="col-md-9"><input type="text" class="form-control" id="interclub-projects-location" name="interclub-projects-location"></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="interclub-projects-description" name="interclub-projects-description" rows="4"></textarea></div></div></div></div><div class="project-delete"><span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span></div></div>').hide().appendTo('.interclub-projects').slideDown();
-    if (count >= 4) {
-        $(this).hide();
-    }
+    $('{{ interclub_project_input({}) | replace("\n", "") }}').hide().appendTo('.interclub-projects').slideDown();
+    buttonAppearanceCheck();
     return false;
 });
 $('#other-projects-button').click(function() {
-    var count = $('.other-projects .project').length + 1;
-    $('<div class="row project project-' + count + '"><div class="form-horizontal col-xs-12"><div class="col-md-6"><div class="form-group"><label for="other-projects-event" class="col-md-2 control-label">Event:</label><div class="col-md-10"><input type="text" class="form-control" id="other-projects-event" name="other-projects-event"></div></div></div><div class="col-md-6"><div class="form-group"><label for="other-projects-location" class="col-md-3 control-label">Location:</label><div class="col-md-9"><input type="text" class="form-control" id="other-projects-location" name="other-projects-location"></div></div></div><div class="col-md-12"><strong>Description of the event:</strong><div class="form-group"><div class="col-md-12"><textarea class="form-control" id="other-projects-description" name="other-projects-description" rows="4"></textarea></div></div></div></div><div class="project-delete"><span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span></div></div>').hide().appendTo('.other-projects').slideDown();
-    if (count >= 6) {
-        $(this).hide();
-    }
+    $('{{ other_project_input({}) | replace("\n", "") }}').hide().appendTo('.other-projects').slideDown();
+    buttonAppearanceCheck();
     return false;
 });
-function deleteProject(trash) {
-    project = $(trash).parent().parent();
-    project.slideUp(400, function() {
-        $(this).remove();
-        buttonAppearanceCheck();
-    });
-}
 </script>
 {% endblock %}
