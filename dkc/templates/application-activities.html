@@ -326,27 +326,23 @@ function clickableRows() {
 $(document).ready(clickableRows);
 </script>
 <script>
-$(document).ready(function() {
+function checkboxEnableTextInput() {
     $('input[type=checkbox]').each(function() {
-         var infoBox = $(this).parent().parent().parent().parent().find('input[type=text]');
-        if ($(this).is(':checked')) {
-            infoBox.removeAttr('disabled');
+        var checkbox = $(this);
+        var closestTextInput = checkbox.parent().parent().parent().parent().find('input[type=text]');
+        var toggleTextInput = function() {
+            if (checkbox.is(':checked')) {
+                closestTextInput.removeAttr('disabled');
+            }
+            else {
+                closestTextInput.attr('disabled', 'disabled');
+            }
         }
-        else {
-            infoBox.attr('disabled', 'disabled');
-        }
+        toggleTextInput();
+        checkbox.change(toggleTextInput);
     });
-});
-
-$('input[type=checkbox]').click(function() {
-    var infoBox = $(this).parent().parent().parent().parent().find('input[type=text]');
-    if ($(this).is(':checked')) {
-        infoBox.removeAttr('disabled');
-    }
-    else {
-        infoBox.attr('disabled', 'disabled');
-    }
-});
+}
+$(document).ready(checkboxEnableTextInput);
 </script>
 <script>
 function deleteProject(trash) {
