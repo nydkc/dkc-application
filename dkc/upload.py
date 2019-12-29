@@ -90,14 +90,15 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self, resource):
         resource = str(urllib.unquote(resource))
         blob_info = blobstore.BlobInfo.get(resource)
-        if blob_info == None:
+        if blob_info is None:
             self.abort(404)
+            return
+
+        if "image" in blob_info.content_type:
+            image_url = images.get_serving_url(resource) + "=s0"
+            self.redirect(image_url)
         else:
-            if "image" in blob_info.content_type:
-                image_url = images.get_serving_url(resource) + "=s0"
-                self.redirect(image_url)
-            else:
-                self.send_blob(blob_info)
+            self.send_blob(blob_info)
 
 class DeleteHandler(BaseHandler):
 
@@ -105,6 +106,9 @@ class DeleteHandler(BaseHandler):
     def get(self, resource):
         resource = str(urllib.unquote(resource))
         blob_info = blobstore.BlobInfo.get(resource)
+        if blob_info is None:
+            self.abort(404)
+            return
 
         applicant = self.user
         application_key = applicant.application
@@ -115,6 +119,10 @@ class DeleteHandler(BaseHandler):
         elif resource in application.advocacy_materials:
             application.advocacy_materials.remove(resource)
             self.redirect('/application/activities')
+        # Users should not know about files that are not part of their application
+        else:
+            self.abort(404)
+            return
         application.put()
         deleted = DeletedFile(parent=self.user.key, user=self.user.key, blob=blob_info.key())
         deleted.put()

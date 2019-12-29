@@ -8,8 +8,8 @@ from login import LoginPage
 from logout import LogoutPage
 from forgot import ForgotPasswordHandler, SetPasswordHandler
 from verify import VerificationHandler
-from upload import *
-from download import *
+from upload import ApplicationActivitiesUploadHandler, ApplicationUploadHandler, ServeHandler, DeleteHandler
+from download import PDFGeneration
 from survey import SurveyHandler
 from test import TestHandler
 
@@ -42,8 +42,8 @@ application = webapp2.WSGIApplication([
     ('/forgot', ForgotPasswordHandler),
     ('/reset_password', SetPasswordHandler),
     webapp2.Route('/<type:p|v>/<user_id:\d+>-<signup_token:.+>', handler=VerificationHandler, name='verification'),
-    ('/serve/([^/]+)/?.*', ServeHandler),
-    ('/delete/([^/]+)?', DeleteHandler),
+    ('/serve/([^/]+)/.*', ServeHandler),
+    ('/delete/([^/]+)', DeleteHandler),
     ('/survey.*', SurveyHandler),
     ('/test/([^/]+)?', TestHandler),
     ('/.*', MainPage)
