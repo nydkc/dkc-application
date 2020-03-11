@@ -21,7 +21,7 @@ JINJA_ENVIRONMENT.tests.update({
     'still_early': jinja_functions.getEarlyStatus
 })
 
-config = {
+WEBAPP2_CONFIG = {
     'webapp2_extras.auth': {
         'user_model': 'dkc.models.User',
         'user_attributes': ['email']
@@ -62,7 +62,7 @@ class BaseHandler(webapp2.RequestHandler):
         in the session.
 
         The list of attributes to store in the session is specified in
-        config['webapp2_extras.auth']['user_attributes'].
+        WEBAPP2_CONFIG['webapp2_extras.auth']['user_attributes'].
         :returns
         A dictionary with most user information
         """
@@ -84,8 +84,8 @@ class BaseHandler(webapp2.RequestHandler):
     @webapp2.cached_property
     def user_model(self):
         """Returns the implementation of the user model.
-        It is consistent with config['webapp2_extras.auth']['user_model'], if set.
-        """   
+        It is consistent with WEBAPP2_CONFIG['webapp2_extras.auth']['user_model'], if set.
+        """
         return self.auth.store.user_model
 
     @webapp2.cached_property

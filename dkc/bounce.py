@@ -1,5 +1,5 @@
 import webapp2, json, logging
-from dkc import *
+from dkc import WEBAPP2_CONFIG
 from models import User
 
 class EventHandler(webapp2.RequestHandler):
@@ -32,4 +32,4 @@ class EventHandler(webapp2.RequestHandler):
 
 application = webapp2.WSGIApplication([
     ('/sendgrid/event', EventHandler),
-], debug=True, config=config)
+], debug=True, config=WEBAPP2_CONFIG)

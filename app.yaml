@@ -49,6 +49,7 @@ handlers:
   login: admin
 - url: /sendgrid.*
   script: dkc.bounce.application
+# Separate admin paths that don't require a login
 - url: /admin
   script: manage.views.application
   secure: always

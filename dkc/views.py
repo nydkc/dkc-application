@@ -1,6 +1,6 @@
 import webapp2
 from google.appengine.ext import ndb
-from dkc import *
+from dkc import BaseHandler, WEBAPP2_CONFIG
 from application import *
 from application_verify import ApplicationVerificationHandler
 from register import RegisterPage
@@ -12,6 +12,7 @@ from upload import ApplicationActivitiesUploadHandler, ApplicationUploadHandler,
 from download import PDFGeneration
 from survey import SurveyHandler
 from test import TestHandler
+from manage.models import Settings
 
 class MainPage(BaseHandler):
 
@@ -47,4 +48,4 @@ application = webapp2.WSGIApplication([
     ('/survey.*', SurveyHandler),
     ('/test/([^/]+)?', TestHandler),
     ('/.*', MainPage)
-], debug=True, config=config)
+], debug=True, config=WEBAPP2_CONFIG)
