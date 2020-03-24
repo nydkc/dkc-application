@@ -1,7 +1,7 @@
 {% extends "layout-full.html" %}
 
 {% set faq = [
-["When is the application deadline for applying?", "The application due date: " ~ config.early_due_date | datetimeformat("%B %e, %Y") ~ " You may submit your application up until 11:59 PM EST on this date. </strong>"],
+["When is the application deadline for applying?", "The application due date is " ~ config.due_date | datetimeformat("%B %e, %Y") ~ ". You may submit your application up until 11:59 PM EST on this date."],
 ["Who may apply for the award?", "Any dues-paying Key Club member in good standing may apply for the award."],
 ["Why do you need my personal information?", "All applicants must submit this information so that you may be easily accessible and that records may be kept for the future in case any issues arise."],
 ["Who reviews the application?", "The District Awards Committee. The award will be based off of the point system."],
