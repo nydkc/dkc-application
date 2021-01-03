@@ -18,8 +18,8 @@ int main (int argc, char**argv) {
      FILE * inways;
      if (argc != 2)
         printf("Usage: %s font.ttf\n\nPublic Domain software by Tom 7. Use at your own risk.\n",argv[0]);
-     else if (inways = fopen(argv[1],"rb+")) {
-        int a,x;
+     else if ((inways = fopen(argv[1],"rb+"))) {
+        int x;
         char type[5];
         type[4]=0;
         fseek(inways,12,0);

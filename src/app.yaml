@@ -3,6 +3,7 @@ api_version: 1
 threadsafe: true
 inbound_services:
 - warmup
+max_instances: 1
 
 skip_files:
 - ^(.*/)?.*\.pyc

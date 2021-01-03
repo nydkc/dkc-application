@@ -4,16 +4,19 @@
 # Text Editor Backup Files
 *.swp
 
-# Python Compiled Files
-*.pyc
-
 # C Compiled Files
 a.out
+
+# Python Compiled Files
+*.pyc
 
 # Pip Install Files
 *.so
 *.egg-info/
 *.dist-info/
+
+# Python Virtualenv
+/venv/
 
 # GAE Files
 bulkloader*
