@@ -16,17 +16,17 @@ PASSWORD_SECRET_KEY = config.secret_key
 # Specific due dates for applications (early, regular)
 EARLY_DUE_DATE = "February 16, 2018 - 04:59 AM" # UTC Time (Subtract 5 to get US/Eastern)
 try:
-    APPLICATION_DUE_DATE = config.early_due_date 
+    APPLICATION_DUE_DATE = config.early_due_date
 except:
     config.early_due_date = datetime.strptime(EARLY_DUE_DATE, "%B %d, %Y - %I:%M %p")
-APPLICATION_EARLY_DUE_DATE = config.early_due_date 
+APPLICATION_EARLY_DUE_DATE = config.early_due_date
 
 DUE_DATE = "February 16, 2018 - 04:59 AM" # UTC Time
 try:
-    APPLICATION_DUE_DATE = config.due_date 
+    APPLICATION_DUE_DATE = config.due_date
 except:
     config.due_date = datetime.strptime(DUE_DATE, "%B %d, %Y - %I:%M %p")
-APPLICATION_DUE_DATE = config.due_date 
+APPLICATION_DUE_DATE = config.due_date
 
 # Used for bulk email sending
 SENDGRID_USERNAME = "< Sendgrid Username >"

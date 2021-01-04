@@ -1,7 +1,5 @@
 import logging
-from StringIO import StringIO
 from google.appengine.api import users
-import xhtml2pdf.pisa as pisa
 from dkc import *
 from models import User
 
@@ -49,18 +47,3 @@ class PDFGeneration(BaseHandler):
         #self.response.write(html)
         self.response.headers['content-type'] = 'application/pdf'
         self.response.write(generate_pdf(html))
- 
-def generate_pdf(html_data):
-    html_data = html_data.encode('utf8')
-    html_data = StringIO(html_data)
-
-    output = StringIO()
-    pisa.log.setLevel('WARNING') #suppress debug log output
-    pdf = pisa.CreatePDF(
-        html_data,
-        output,
-        encoding='utf-8',
-    )
-
-    pdf_data = pdf.dest.getvalue()
-    return pdf_data
