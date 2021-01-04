@@ -1,5 +1,5 @@
 import logging
-from google.appengine.ext import ndb
+from google.cloud import ndb
 from dkc import *
 from models import *
 

@@ -1,6 +1,6 @@
 import urllib, logging
 from datetime import datetime
-from google.appengine.ext import ndb
+from google.cloud import ndb
 from webapp2_extras.appengine.auth.models import Unique
 from manage import *
 from dkc.models import *

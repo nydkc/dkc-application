@@ -1,6 +1,6 @@
 import time
 from datetime import datetime
-from google.appengine.ext import ndb
+from google.cloud import ndb
 import webapp2_extras.appengine.auth.models
 from webapp2_extras import security
 from constants import *

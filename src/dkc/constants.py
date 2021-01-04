@@ -1,4 +1,4 @@
-from google.appengine.ext import ndb
+from google.cloud import ndb
 from datetime import datetime
 from manage.models import Settings
 

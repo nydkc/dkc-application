@@ -1,2 +1,3 @@
 reportlab==3.5.58
 xhtml2pdf==0.2.5
+google-cloud-ndb

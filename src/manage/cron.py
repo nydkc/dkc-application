@@ -1,7 +1,7 @@
 import webapp2
 import logging
 from datetime import datetime, timedelta
-from google.appengine.ext import ndb
+from google.cloud import ndb
 from webapp2_extras.appengine.auth.models import UserToken
 
 class AuthTokenCleanupHandler(webapp2.RequestHandler):

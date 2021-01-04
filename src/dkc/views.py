@@ -1,5 +1,5 @@
 import webapp2
-from google.appengine.ext import ndb
+from google.cloud import ndb
 from dkc import BaseHandler, WEBAPP2_CONFIG
 from application import *
 from application_verify import ApplicationVerificationHandler
