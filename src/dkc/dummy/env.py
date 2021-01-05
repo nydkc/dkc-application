@@ -1,6 +1,7 @@
 import html
+import io
 import os
-from flask import request, make_response, render_template
+from flask import request, make_response, render_template, send_file
 from dkc.util import generate_pdf
 from . import dummy_bp
 
@@ -18,9 +19,9 @@ def env():
     response_html = "".join(table)
 
     if request.args.get("media") == "pdf":
-        response = make_response(generate_pdf(response_html))
-        response.headers["content-type"] = "application/pdf"
-        return response
+        return send_file(
+            io.BytesIO(generate_pdf(response_html)), attachment_filename="env.pdf"
+        )
     else:
         return response_html
 
