@@ -1,23 +1,23 @@
-runtime: python27
-api_version: 1
-threadsafe: true
-inbound_services:
-- warmup
-max_instances: 1
+runtime: python37
+# api_version: 1
+# threadsafe: true
+# inbound_services:
+# - warmup
+# max_instances: 1
 
 skip_files:
 - ^(.*/)?.*\.pyc
 - .*\.DS_Store
 
-libraries:
-- name: webapp2
-  version: latest
-- name: jinja2
-  version: latest
+# libraries:
+# - name: webapp2
+#   version: latest
+# - name: jinja2
+#   version: latest
 
-builtins:
-- appstats: on
-- remote_api: on
+# builtins:
+# - appstats: on
+# - remote_api: on
 
 handlers:
 - url: /favicon\.ico
@@ -45,29 +45,29 @@ handlers:
   static_dir: static/fonts
   expiration: 30d
   application_readable: true
-- url: /cron/.*
-  script: manage.cron.application
-  login: admin
-- url: /sendgrid.*
-  script: dkc.bounce.application
-# Separate admin paths that don't require a login
-- url: /admin
-  script: manage.views.application
-  secure: always
-- url: /admin/logout
-  script: manage.views.application
-  secure: always
-- url: /admin.*
-  script: manage.views.application
-  secure: always
-  login: admin
-- url: /.*
-  script: dkc.views.application
-  secure: always
+# - url: /cron/.*
+#   script: manage.cron.application
+#   login: admin
+# - url: /sendgrid.*
+#   script: dkc.bounce.application
+# # Separate admin paths that don't require a login
+# - url: /admin
+#   script: manage.views.application
+#   secure: always
+# - url: /admin/logout
+#   script: manage.views.application
+#   secure: always
+# - url: /admin.*
+#   script: manage.views.application
+#   secure: always
+#   login: admin
+# - url: /.*
+#   script: dkc.views.application
+#   secure: always
 
-error_handlers:
-- error_code: over_quota
-  file: error_pages/over_quota.html
+# error_handlers:
+# - error_code: over_quota
+#   file: error_pages/over_quota.html
 
 env_variables:
     TZ: 'EST'

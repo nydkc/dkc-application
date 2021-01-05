@@ -14,15 +14,6 @@
 # from test import TestHandler
 # from manage.models import Settings
 
-# class MainPage(BaseHandler):
-
-#     def get(self):
-#         config = ndb.Key(Settings, 'config').get()
-#         template_values = {
-#             'config': config
-#         }
-#         self.render_template('index.html', template_values)
-
 # application = webapp2.WSGIApplication([
 #     ('/application/personal-statement', ApplicationPersonalStatement),
 #     ('/application/projects', ApplicationProjects),
@@ -51,8 +42,12 @@
 # ], debug=True, config=WEBAPP2_CONFIG)
 
 
+from dkc.index import index_bp
+from dkc.auth.views import auth_bp
 from dkc.dummy.views import dummy_bp
 
 
 def register_blueprints_to(app):
-    app.register_blueprint(dummy_bp, url_prefix='/dummy')
+    app.register_blueprint(index_bp)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(dummy_bp, url_prefix="/dummy")

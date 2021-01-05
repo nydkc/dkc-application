@@ -1,19 +1,22 @@
 import re
-from google.appengine.ext import blobstore, ndb
+from google.cloud import ndb
+# from google.appengine.ext import blobstore
+from dkc.timezone import UTC, Eastern
+from datetime import datetime
+# from models import Settings
 
-def getBlobData(blob_keys):
-    blobs = []
-    for blob_key in blob_keys:
-        blob_info = blobstore.BlobInfo.get(blob_key)
-        blobs.append({
-            "blob_key": blob_key,
-            "filename": blob_info.filename if blob_info else None,
-            "content_type": blob_info.content_type if blob_info else None,
-            "size": blob_info.size if blob_info else None
-        })
-    return blobs
 
-from timezone import UTC, Eastern
+# def getBlobData(blob_keys):
+#     blobs = []
+#     for blob_key in blob_keys:
+#         blob_info = blobstore.BlobInfo.get(blob_key)
+#         blobs.append({
+#             "blob_key": blob_key,
+#             "filename": blob_info.filename if blob_info else None,
+#             "content_type": blob_info.content_type if blob_info else None,
+#             "size": blob_info.size if blob_info else None
+#         })
+#     return blobs
 
 def datetimeformat(value, format='%B %d, %Y - %I:%M %p'):
     try:
@@ -66,12 +69,9 @@ def search(value, search):
 def getVars(classobject):
     return [attr for attr in dir(classobject) if not callable(attr) and not attr.startswith("_")]
 
-from datetime import datetime
-from models import Settings
-
-def getEarlyStatus(value=None):
-    config = ndb.Key(Settings, 'config').get()
-    try:
-        return datetime.now() < config.early_due_date
-    except:
-        return True
+# def getEarlyStatus(value=None):
+#     config = ndb.Key(Settings, 'config').get()
+#     try:
+#         return datetime.now() < config.early_due_date
+#     except:
+#         return True
