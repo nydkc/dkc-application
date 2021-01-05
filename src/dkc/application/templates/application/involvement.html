@@ -1,4 +1,4 @@
-{% extends "application.html" %}
+{% extends "application/application.html" %}
 {% set title = 'Involvement' %}
 {% block application %}
 <form id="application" role="form" action="{{ application_url }}" method="post">
@@ -7,7 +7,7 @@
     <div class="page-header">
         <h2>Part III: Involvement in Key Club Functions <span class="text-nowrap">(60 Points)</span></h2>
     </div>
-    <p class="text-center">This part will show how involved you are at the club, division and district level. 
+    <p class="text-center">This part will show how involved you are at the club, division and district level.
         <br>Required Points: 20 Points
         <br>Recommended Points: 40 Points
     </p>
@@ -26,7 +26,7 @@
     <hr>
 
     <h4>Section 2: Attendance at Key Club Functions</h4>
-    <p>If you attended any of the following conferences or programs, please indicate which programs by checking the boxes below. Only check off ones that you attended in the {{ config.due_date | datetimeformat("%Y") | int - 1 }} - {{ config.due_date | datetimeformat("%Y") }} service year.</p>
+    <p>If you attended any of the following conferences or programs, please indicate which programs by checking the boxes below. Only check off ones that you attended in the {{ settings.due_date | datetimeformat("%Y") | int - 1 }} - {{ settings.due_date | datetimeformat("%Y") }} service year.</p>
     <div class="row">
         <div class="col-sm-11 col-sm-offset-1">
             {{ checkbox("attendance-dtc", "(5 points) Divisional Training Conference/Personal Training", application.attendance_dtc) }}

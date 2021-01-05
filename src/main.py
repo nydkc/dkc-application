@@ -10,6 +10,7 @@ from dkc import JINJA_OPTIONS, ADDITIONAL_JINJA_FILTERS
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.jinja_options = JINJA_OPTIONS
 app.jinja_env.filters.update(ADDITIONAL_JINJA_FILTERS)
+app.config['EXPLAIN_TEMPLATE_LOADING'] = True
 
 # app.wsgi_app = g_ndb_wsgi_middleware(app.wsgi_app)
 g_login_manager.init_app(app)

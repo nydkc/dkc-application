@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template
-from datetime import datetime
 
 index_bp = Blueprint("index", __name__, template_folder="templates")
 
@@ -15,10 +14,8 @@ index_bp = Blueprint("index", __name__, template_folder="templates")
 
 @index_bp.route("/")
 def index():
-    # TODO(dannyqiu): update with settings from ndb
-    template_values = {
-        'settings': {
-            'due_date': datetime.now(),
-        }
+    settings = {
+        "due_date": 2020,
     }
+    template_values = {"settings": settings}
     return render_template("index.html", **template_values)

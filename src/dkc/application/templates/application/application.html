@@ -7,7 +7,7 @@
 {%- endif -%}
 <div class="row application{% if submitted %} submitted-application{% endif %}">
     <aside class="col-sm-3">
-{% include "sidebar.html" %}
+{% include "application/sidebar.html" %}
     </aside>
     <div class="col-sm-9 application-content">
 {% block application %}{% endblock %}
@@ -71,7 +71,7 @@ setInterval(function() {
 </script>
 {% endblock %}
 
-{% macro input(name, label='', value='', type='text', disabled='', size) -%}
+{% macro input(name, label='', value='', type='text', disabled='', size='') -%}
 <div class="form-group">
     {% if label != '' %}<label for="{{ name }}">{{ label }}</label>{% endif %}
     <input type="{{ type }}" class="form-control {% if size %}{{ size }}{% endif %}" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }} autocomplete="off">
@@ -85,7 +85,7 @@ setInterval(function() {
 </div>
 {%- endmacro %}
 
-{% macro select(name, label='', selected, choices, disabled='') -%}
+{% macro select(name, label='', selected='', choices=[], disabled='') -%}
 <div class="form-group">
     <label for="{{ name }}" class="control-label">{{ label }}</label>
     <select class="form-control" id="{{ name }}" name="{{ name }}" {{ disabled }}>
@@ -123,7 +123,7 @@ setInterval(function() {
 </div>
 {%- endmacro %}
 
-{% macro select_horizontal(name, label='', selected, choices, disabled='', size=4) -%}
+{% macro select_horizontal(name, label='', selected='', choices=[], disabled='', size=4) -%}
 <div class="form-group">
     {% if label != '' %}<label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>{% endif %}
     <div class="col-md-{{ 12 - size }}">
