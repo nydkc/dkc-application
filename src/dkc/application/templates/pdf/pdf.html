@@ -211,41 +211,42 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     </div>
 
     <!-- Content for Static Frame 'header_frame' -->
-    <div id="header_content" class="header text-center">{{ applicant.first_name }} {{ applicant.last_name }} &nbsp;&nbsp;|&nbsp;&nbsp; {{ config.due_date | datetimeformat("%Y") | int - 1 }}-{{ config.due_date | datetimeformat("%Y") }} Distinguished Key Clubber Application</div>
+    <div id="header_content" class="header text-center">{{ applicant.first_name }} {{ applicant.last_name }} &nbsp;&nbsp;|&nbsp;&nbsp; {{ settings.due_date | datetimeformat("%Y") | int - 1 }}-{{ settings.due_date | datetimeformat("%Y") }} Distinguished Key Clubber Application</div>
 
     <!-- Content for Static Frame 'footer_frame' -->
     <div id="footer_content" class="footer text-center">© New York District of Key Club International &nbsp;&nbsp;|&nbsp;&nbsp; Page <pdf:pagenumber> of <pdf:pagecount> </div>
 
     <pdf:nexttemplate name="page_template" />
 
-    {% include "pdf/application-pdf_profile.html" %}
+    {% include "pdf/profile.html" %}
 
     <pdf:nextpage />
 
-    {% include "pdf/application-pdf_personal_statement.html" %}
+    {% include "pdf/personal-statement.html" %}
 
     <pdf:nextpage />
 
-    {% include "pdf/application-pdf_projects.html" %}
+    {% include "pdf/projects.html" %}
 
     <pdf:nextpage />
 
-    {% include "pdf/application-pdf_involvement.html" %}
+    {% include "pdf/involvement.html" %}
 
     <pdf:nextpage />
 
-    {% include "pdf/application-pdf_activities.html" %}
+    {% include "pdf/activities.html" %}
 
     <pdf:nextpage />
 
-    {% include "pdf/application-pdf_other.html" %}
-    <div class="separator">&nbsp;</div>
-    {% include "pdf/application-pdf_scoring.html" %}
+    {% include "pdf/other.html" %}
     <div class="separator">&nbsp;</div>
 
+    {% include "pdf/scoring.html" %}
+    <div class="separator">&nbsp;</div>
+
     <pdf:nextpage />
 
-    {% include "pdf/application-pdf_verification.html" %}
+    {% include "pdf/verification.html" %}
     <!-- <p>{{ application }}</p> -->
 </body>
 </html>

@@ -8,3 +8,4 @@ from . import activities
 from . import other
 from . import verification
 from . import submit
+from . import download_pdf
