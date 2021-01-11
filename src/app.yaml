@@ -19,6 +19,8 @@ skip_files:
 # - appstats: on
 # - remote_api: on
 
+entrypoint: gunicorn -b :$PORT main:app
+
 handlers:
 - url: /favicon\.ico
   static_files: static/favicon.ico
