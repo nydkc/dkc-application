@@ -1,65 +1,100 @@
-import re, logging
-from webapp2_extras import auth, sessions
-from dkc import *
-from models import *
-import util
+import logging
+import uuid
 
-class RegisterPage(BaseHandler):
+from flask import redirect, render_template, request, url_for
+from flask_wtf import FlaskForm, Recaptcha, RecaptchaField
+from google.cloud import ndb
+from passlib.hash import bcrypt_sha256
+from wtforms import PasswordField, StringField
+from wtforms.fields.html5 import EmailField
+from wtforms.validators import Email, EqualTo, InputRequired, Length
+from wtforms.widgets import PasswordInput
 
-    @guest_only
-    def get(self):
-        self._serve_page()
+from common.models import Settings
+from dkc import util
+from dkc.application.models import Application
+from . import auth_bp
+from .models import User, UniqueUserTracking
 
-    @guest_only
-    def post(self):
-        config = ndb.Key(Settings, 'config').get()
-        grecaptcha = self.request.get('g-recaptcha-response')
-        recaptcha_success = util.verify_captcha(config.recaptcha_secret, grecaptcha)
-        if not recaptcha_success and self.request.get('g-recaptcha-bypass') != config.recaptcha_secret:
-            self._serve_page(error="Captcha must be solved.")
-            return
 
-        first_name = self.request.get('first-name')
-        if first_name == '':
-            self._serve_page(error="Your first name cannot be blank.")
-            return
-        last_name = self.request.get('last-name')
-        if last_name == '':
-            self._serve_page(error="Your last name cannot be blank.")
-            return
-        email = self.request.get('email')
-        if re.search(r'^([a-zA-Z0-9+_\-\.])+@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,6})$', email) == None:
-            self._serve_page(error="Please use a valid email address.")
-            return
-        user_name = email
-        password = self.request.get('password')
-        if len(password) < 6:
-            self._serve_page(error="Your password must be at least 6 characters.")
-            return
-        
-        unique_properties = ['email']
-        success, user = self.user_model.create_user(user_name, unique_properties,
-            email=email, password_raw=password, first_name=first_name, last_name=last_name, pw=password)
-        if not success:
-            self._serve_page(error='The email, %s is already taken. Please use a different email.' % (user_name))
-            return
+class RegistrationForm(FlaskForm):
+    first_name = StringField(
+        "first_name", [InputRequired("Your first name cannot be blank.")]
+    )
+    last_name = StringField(
+        "last_name", [InputRequired("Your last name cannot be blank.")]
+    )
+    email = EmailField("email", [Email("Please enter a valid email address.")])
+    password = PasswordField(
+        "password",
+        [Length(min=8, message="Your password must be at least 8 characters.")],
+        widget=PasswordInput(hide_value=False),
+    )
+    confirm_password = PasswordField(
+        "confirm_password",
+        [EqualTo("password", message="Passwords must match.")],
+    )
+    recaptcha = RecaptchaField(
+        validators=[Recaptcha(message="reCAPTCHA must be solved.")]
+    )
 
-        new_application = Application(parent=user.key)
-        new_application_key = new_application.put()
-        user.application = new_application_key
-        user.put()
-        logging.info('Created new user %s %s, with email %s', first_name, last_name, email)
-        self.redirect('/login?new=1')
 
-    def _serve_page(self, error=None):
-        config = ndb.Key(Settings, 'config').get()
-        recaptcha_site_key = config.recaptcha_site_key
-        template_values = {
-            'first_name': self.request.get('first-name'),
-            'last_name': self.request.get('last-name'),
-            'email': self.request.get('email'),
-            'password': self.request.get('password'),
-            'error': error,
-            'recaptcha_site_key': recaptcha_site_key
-        }
-        self.render_template('register.html', template_values)
+class EmailAlreadyExistsError(Exception):
+    pass
+
+
+@ndb.transactional()
+def create_user_application(email: str, password: str, first_name: str, last_name: str):
+    auth_credential_id = uuid.uuid4().hex
+    new_user = User(
+        email=email,
+        password_hash=bcrypt_sha256.hash(password),
+        first_name=first_name,
+        last_name=last_name,
+        auth_credential_id=auth_credential_id,
+    )
+    # Check for email duplication
+    if UniqueUserTracking.get_by_id(new_user._get_unique_attributes_id()) is not None:
+        raise EmailAlreadyExistsError()
+    new_user_key = new_user.put()
+    new_application = Application(parent=new_user_key)
+    new_application_key = new_application.put()
+    # Update user with bidirectional pointer to application
+    new_user.application = new_application_key
+    new_user.put()
+    # Track the newly created user's email to prevent future duplication
+    UniqueUserTracking(id=new_user._get_unique_attributes_id()).put()
+    return new_user
+
+
+@auth_bp.route("/register", methods=["GET", "POST"])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+        password = form.password.data
+        email = form.email.data
+        try:
+            new_user = create_user_application(email, password, first_name, last_name)
+            logging.info(
+                "Created new user '%s %s', with email: %s",
+                new_user.first_name,
+                new_user.last_name,
+                new_user.email,
+            )
+            return redirect(url_for(".login", new=1))
+        except EmailAlreadyExistsError:
+            # Add email already taken error and fall-through to template rendering
+            logging.warning(
+                "Attempted to create an account with an existing email: %s", email
+            )
+            form.email.errors.append(
+                "The email '{}' is already taken. Please use a different email.".format(
+                    email
+                )
+            )
+    template_values = {
+        "form": form,
+    }
+    return render_template("auth/register.html", **template_values)

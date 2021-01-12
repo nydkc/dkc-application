@@ -108,7 +108,7 @@
 #             self.session_store.save_sessions(self.response)
 
 import jinja2
-import dkc.jinja_functions
+from common import jinja_functions
 
 JINJA_OPTIONS = {
     "extensions": ["jinja2.ext.autoescape"],

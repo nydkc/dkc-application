@@ -6,4 +6,4 @@ g_login_manager = LoginManager()
 
 @g_login_manager.user_loader
 def load_user(user_id: str):
-    return ndb.Key(models.User.__name__, user_id).get()
+    return models.User.find_by_auth_credential_id(user_id)
