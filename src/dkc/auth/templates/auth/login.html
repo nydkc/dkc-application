@@ -2,38 +2,51 @@
 {% set title = 'Login' %}
 {% block body %}
 
+{% macro with_errors(field) %}
+    {% if field.errors %}
+        <div class="has-error">
+    {% else %}
+        <div>
+    {% endif %}
+            {% set css_class = 'form-control ' + kwargs.pop('class', '') %}
+            {{ field(class=css_class, **kwargs) }}
+            <span class="help-block text-danger" {% if not field.errors %}style="display:none;"{% endif %}>
+                {% for error in field.errors %}{{ error|e }}{% endfor %}
+            </span>
+        </div>
+{% endmacro %}
+
 <div class="page-header text-center">
     <h1>Login</h1>
 </div>
 
-{% if failed %}
-<div class="alert alert-danger"><strong>Login failed! </strong>Please check your credentials and try again.</div>
-{% endif %}
-{% if new_account %}
-<div class="alert alert-success"><strong>New account created. </strong>Access your application with your email and password.</div>
-{% endif %}
-{% if changed %}
-<div class="alert alert-success"><strong>Password Changed. </strong>Access your application with your new credentials.</div>
+{% if form.errors %}
+<div class="alert alert-danger"><strong>Login failed!</strong> Please check your credentials and try again.</div>
+{% elif is_new_account %}
+<div class="alert alert-success"><strong>New account created.</strong> Access your application with your email and password.</div>
+{% elif is_password_changed %}
+<div class="alert alert-success"><strong>Password Changed.</strong> Access your application with your new credentials.</div>
 {% endif %}
 
 <div class="row">
     <form id="login" class="form-horizontal col-md-6 col-md-offset-3" role="form" action="/login" method="post">
+    {{ form.csrf_token }}
         <div class="form-group">
             <label class="col-md-2 control-label" for="email">Email</label>
             <div class="col-md-10">
-                <input type="email" class="form-control" id="email" name="email" value="{{ email }}" placeholder="email@example.com">
+                {{ with_errors(form.email, placeholder="email@example.com") }}
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label" for="password">Password</label>
             <div class="col-md-10">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Choose a password">
+                {{ with_errors(form.password, placeholder="password") }}
             </div>
         </div>
-        {% if failures >= 5 %}
+        {% if form.recaptcha %}
         <div class="form-group">
             <div class="col-md-10 col-md-offset-2">
-                <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+                {{ with_errors(form.recaptcha) }}
             </div>
         </div>
         {% endif %}
@@ -51,17 +64,49 @@
 
 {% endblock %}
 {% block scripts %}
-<script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
-function validateForm() {
-    errors = [];
-    var cc = grecaptcha.getResponse();
-    if (cc == "") { errors.push("Captcha must be solved."); }
-
-    if (errors.length != 0) {
-        swal("Could not log in!", errors.join('\n'), "error");
-        return false;
+function showHelpBlockForField(elem, isSuccess, message) {
+    if (isSuccess) {
+        elem.parent().addClass('has-success').removeClass('has-error');
+        elem.siblings('.help-block').hide();
     }
+    else {
+        elem.parent().addClass('has-error').removeClass('has-success');
+        elem.siblings('.help-block').text(message).show();
+    }
+}
+
+var email = $('#email');
+function checkEmail() {
+    return email.val() != '';
+}
+email.blur(() => showHelpBlockForField(email, checkEmail(), "Email cannot be blank."));
+
+var password = $('#password');
+function checkPassword() {
+    return password.val() != '';
+}
+password.blur(() => showHelpBlockForField(password, checkPassword(), "Password cannot be blank."));
+
+{% if form.recaptcha %}
+var captcha = $('.g-recaptcha');
+function checkCaptcha() {
+    return grecaptcha.getResponse() != "";
+}
+{% endif %}
+
+function validateForm() {
+    email.blur();
+    password.blur();
+
+    var checks = checkEmail() && checkPassword();
+
+{% if form.recaptcha %}
+    showHelpBlockForField(captcha, checkCaptcha(), "reCAPTCHA must be solved.");
+    return checks && checkCaptcha();
+{% else %}
+    return checks;
+{% endif %}
 }
 $('#login').submit(validateForm);
 </script>

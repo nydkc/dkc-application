@@ -4,7 +4,6 @@ import uuid
 from flask import redirect, render_template, request, url_for
 from flask_wtf import FlaskForm, Recaptcha, RecaptchaField
 from google.cloud import ndb
-from passlib.hash import bcrypt_sha256
 from wtforms import PasswordField, StringField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import Email, EqualTo, InputRequired, Length
@@ -48,7 +47,7 @@ def create_user_application(email: str, password: str, first_name: str, last_nam
     auth_credential_id = uuid.uuid4().hex
     new_user = User(
         email=email,
-        password_hash=bcrypt_sha256.hash(password),
+        password_hash=User.hash_password(password),
         first_name=first_name,
         last_name=last_name,
         auth_credential_id=auth_credential_id,

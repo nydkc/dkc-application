@@ -12,7 +12,7 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 app.secret_key = SECRET_KEY
 app.config['RECAPTCHA_PUBLIC_KEY'] = RECAPTCHA_SITE_KEY
 app.config['RECAPTCHA_PRIVATE_KEY'] = RECAPTCHA_SECRET
-app.testing = True
+# app.testing = True
 app.jinja_options = JINJA_OPTIONS
 app.jinja_env.filters.update(ADDITIONAL_JINJA_FILTERS)
 app.config['EXPLAIN_TEMPLATE_LOADING'] = True

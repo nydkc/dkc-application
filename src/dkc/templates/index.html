@@ -35,8 +35,8 @@
 
         <img src="/images/key-club-logo.png">
 
-    {% if user %}
-        <h4>Logged in as: {{ user.email }}</h4>
+    {% if current_user.is_authenticated %}
+        <h4>Logged in as: {{ current_user.email }}</h4>
         <a class="btn btn-warning btn-block" href="/application">Access your application</a>
     {% else %}
         <div class="row">
