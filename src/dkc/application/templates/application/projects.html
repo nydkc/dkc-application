@@ -86,8 +86,6 @@
 
 {% block application %}
 <form id="application" role="form" action="{{ application_url }}" method="post">
-    <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
-
     <div class="page-header">
         <h2>Part II: International, District &amp; Divisional Projects <span class="text-nowrap">(60 Points)</span></h2>
     </div>
@@ -161,23 +159,6 @@ function deleteProject(trash) {
     project.slideUp(400, function() {
         $(this).remove();
         buttonAppearanceCheck();
-    });
-}
-function selectInputOtherFieldExpand() {
-    $('select#district-projects-charity').each(function() {
-        var selectInput = $(this);
-        var toggleOtherInputField = function() {
-            if (selectInput.val() == "Other") {
-                selectInput.parent().find('input').removeClass("hidden").attr('name', 'district-projects-charity');
-                selectInput.removeAttr('name').css('width', '27%');
-            }
-            else {
-                selectInput.parent().find('input').addClass("hidden").removeAttr('name');
-                selectInput.attr('name', 'district-projects-charity').css('width', '100%');
-            }
-        }
-        toggleOtherInputField();
-        selectInput.change(toggleOtherInputField);
     });
 }
 function buttonAppearanceCheck() {

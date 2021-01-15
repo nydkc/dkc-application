@@ -71,6 +71,25 @@ function submitApplication(e) {
 setInterval(function() {
     submitApplication('auto');
 }, 1*60*1000);
+
+function selectInputOtherFieldExpand() {
+    $('select').each(function() {
+        var selectInput = $(this);
+        var selectInputName = selectInput.attr('name');
+        var toggleOtherInputField = function() {
+            if (selectInput.val() == "Other") {
+                selectInput.siblings('input').removeClass("hidden").attr('name', selectInputName);
+                selectInput.removeAttr('name').css('width', '27%');
+            }
+            else {
+                selectInput.parent().find('input').addClass("hidden").removeAttr('name');
+                selectInput.attr('name', selectInputName).css('width', '100%');
+            }
+        }
+        toggleOtherInputField();
+        selectInput.change(toggleOtherInputField);
+    });
+}
 </script>
 {% endblock %}
 

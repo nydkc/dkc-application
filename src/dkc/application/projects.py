@@ -1,70 +1,92 @@
-from flask import render_template
+import logging
+from flask import render_template, request
+from flask_login import current_user, login_required
 from google.cloud import ndb
+from common.models import Settings
+from .models import DistrictProject, Divisional, GeneralProject, InternationalProject
 from . import application_bp
-
-# class ApplicationProjects(BaseHandler):
-
-#     @user_required
-#     def get(self):
-#         self._serve_page()
-
-#     @user_required
-#     def post(self):
-#         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
-#         application = application_key.get()
-
-#         if application.submit_time:
-#             logging.info("Attempt to modify projects by %s", applicant.email)
-#             self._serve_page()
-#             return
-
-#         international_project_sections = self.request.get_all('international-projects-section')
-#         international_project_events = self.request.get_all('international-projects-event')
-#         international_project_descriptions = self.request.get_all('international-projects-description')
-#         application.international_projects = []
-#         for i in range(0, len(international_project_sections)):
-#             application.international_projects.append(InternationalProject(section=international_project_sections[i], event=international_project_events[i], description=international_project_descriptions[i]))
-
-#         district_project_events = self.request.get_all('district-projects-event')
-#         district_project_charities = self.request.get_all('district-projects-charity')
-#         district_project_descriptions = self.request.get_all('district-projects-description')
-#         application.district_projects = []
-#         for i in range(0, len(district_project_events)):
-#             application.district_projects.append(DistrictProject(event=district_project_events[i], charity=district_project_charities[i], description=district_project_descriptions[i]))
-
-#         divisional_dates = self.request.get_all('divisional-meeting-date')
-#         divisional_locations = self.request.get_all('divisional-meeting-location')
-#         application.divisionals = []
-#         for i in range(0, len(divisional_dates)):
-#             application.divisionals.append(Divisional(date=divisional_dates[i], location=divisional_locations[i]))
-
-#         division_project_events = self.request.get_all('division-projects-event')
-#         division_project_locations = self.request.get_all('division-projects-location')
-#         division_project_descriptions = self.request.get_all('division-projects-description')
-#         application.division_projects = []
-#         for i in range(0, len(division_project_events)):
-#             application.division_projects.append(GeneralProject(event=division_project_events[i], location=division_project_locations[i], description=division_project_descriptions[i]))
-
-#         application.put()
-#         self._serve_page()
-
-#     def _serve_page(self):
-#         template_values = {
-#             'application_url': '/application/projects'
-#         }
-#         self.render_application('application-projects.html', template_values)
 
 
 @application_bp.route("/projects", methods=["GET", "POST"])
+@login_required
 def projects():
-    settings = {
-        "due_date": 2020,
-    }
-    applicant = {}
-    application = {}
+    settings = ndb.Key(Settings, "config").get()
+    applicant = current_user
+    application = applicant.application.get()
+
+    if request.method == "POST":
+        handle_post(applicant, application)
+
     template_values = {
-        "settings": settings,
         "applicant": applicant,
         "application": application,
+        "application_url": "/application/projects",
+        "settings": settings,
     }
     return render_template("application/projects.html", **template_values)
+
+
+def handle_post(applicant, application):
+    if application.submit_time:
+        logging.info(
+            "Attempt to modify projects by %s after submission",
+            applicant.email,
+        )
+        return
+
+    international_project_sections = request.form.getlist(
+        "international-projects-section"
+    )
+    international_project_events = request.form.getlist("international-projects-event")
+    international_project_descriptions = request.form.getlist(
+        "international-projects-description"
+    )
+    application.international_projects = []
+    for i in range(len(international_project_sections)):
+        application.international_projects.append(
+            InternationalProject(
+                section=international_project_sections[i],
+                event=international_project_events[i],
+                description=international_project_descriptions[i],
+            )
+        )
+
+    district_project_events = request.form.getlist("district-projects-event")
+    district_project_charities = request.form.getlist("district-projects-charity")
+    district_project_descriptions = request.form.getlist(
+        "district-projects-description"
+    )
+    application.district_projects = []
+    for i in range(len(district_project_events)):
+        application.district_projects.append(
+            DistrictProject(
+                event=district_project_events[i],
+                charity=district_project_charities[i],
+                description=district_project_descriptions[i],
+            )
+        )
+
+    divisional_dates = request.form.getlist("divisional-meeting-date")
+    divisional_locations = request.form.getlist("divisional-meeting-location")
+    application.divisionals = []
+    for i in range(len(divisional_dates)):
+        application.divisionals.append(
+            Divisional(date=divisional_dates[i], location=divisional_locations[i])
+        )
+
+    division_project_events = request.form.getlist("division-projects-event")
+    division_project_locations = request.form.getlist("division-projects-location")
+    division_project_descriptions = request.form.getlist(
+        "division-projects-description"
+    )
+    application.division_projects = []
+    for i in range(len(division_project_events)):
+        application.division_projects.append(
+            GeneralProject(
+                event=division_project_events[i],
+                location=division_project_locations[i],
+                description=division_project_descriptions[i],
+            )
+        )
+
+    application.put()
