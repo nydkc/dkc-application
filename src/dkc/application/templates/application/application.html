@@ -157,3 +157,12 @@ setInterval(function() {
     </label>
 </div>
 {%- endmacro %}
+
+{% macro radio(name, label='', value='', checked=False, disabled='') -%}
+<div class="radio {{ disabled }}">
+    <label>
+        <input type="radio" name="{{ name }}" value="{{ value }}"{% if checked %} checked{% endif %} {{ disabled }}>
+        {{ label }}
+    </label>
+</div>
+{%- endmacro %}
