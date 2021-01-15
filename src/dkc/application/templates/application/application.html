@@ -96,11 +96,11 @@ setInterval(function() {
 </div>
 {%- endmacro %}
 
-{% macro input_horizontal(name, label='', value='', type='text', disabled='', size=4) -%}
+{% macro input_horizontal(name, label='', value='', type='text', disabled='', size=4, extra_attrs=[]) -%}
 <div class="form-group">
     <label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>
     <div class="col-md-{{ 12 - size }}">
-        <input type="{{ type }}" class="form-control" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }}>
+        <input type="{{ type }}" class="form-control" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }} {% for attr in extra_attrs %} {{ attr | safe }}{% endfor %}>
     </div>
 </div>
 {%- endmacro %}
@@ -128,18 +128,20 @@ setInterval(function() {
     {% if label != '' %}<label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>{% endif %}
     <div class="col-md-{{ 12 - size }}">
         <select class="form-control" id="{{ name }}" name="{{ name }}" {{ disabled }}>
-        {% for choice in choices %}
-            {%- if "Other" not in choice -%}
+        {%- for choice in choices %}
+            {%- if choice == '' %}
+            <option disabled selected value="{{ choice }}"></option>
+            {%- elif choice != "Other" %}
             <option value="{{ choice }}"{% if choice == selected %} selected{% endif %}>{{ choice }}</option>
-            {%- endif -%}
-        {% endfor %}
-        {%- if "Other" in choices -%}
+            {%- endif %}
+        {%- endfor %}
+        {%- if "Other" in choices %}
             <option value="Other"{% if selected not in choices %} selected{% endif %}>Other</option>
         </select>
         <input type="text" class="form-control{% if selected in choices %} hidden{% endif %}" id="{{ name }}" name="{{ name }}" value="{{ selected|e }}">
-        {%- else -%}
+        {%- else %}
         </select>
-        {%- endif -%}
+        {%- endif %}
     </div>
 </div>
 {%- endmacro %}
