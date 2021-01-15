@@ -1,9 +1,9 @@
 {% extends "application/application.html" %}
 {% set title = 'Involvement' %}
+{% set key_club_week_days = "from November 4, 2019 to November 8, 2019" %}
+{% set positions_word_limit = 250 %}
 {% block application %}
 <form id="application" role="form" action="{{ application_url }}" method="post">
-    <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
-
     <div class="page-header">
         <h2>Part III: Involvement in Key Club Functions <span class="text-nowrap">(60 Points)</span></h2>
     </div>
@@ -13,7 +13,7 @@
     </p>
 
     <h4>Section 1: Key Club Week Participation (Max 15 Points, 3 Points per Day)</h4>
-    <p>Key Club Week was celebrated from November 4 to November 8. Below, please indicate what you have done during Key Club Week. If your club celebrated Key Club week at a different time, events are still counted towards this section.</p>
+    <p>Key Club Week was celebrated {{ key_club_week_days }}. Below, please indicate what you have done during Key Club Week. If your club celebrated Key Club week at a different time, events are still counted towards this section.</p>
 
     <div class="form-horizontal">
         {{ input_horizontal("key-club-week-monday", "Monday", application.key_club_week_mon, size=2) }}
@@ -41,7 +41,7 @@
     <hr>
 
     <h4>Section 3: Positions Held within Key Club (10 Points)</h4>
-    <p>Please include a typed essay of up to 250 words, that describes any offices or positions that you have held, whether elected (club, district, or international office) or appointed (committee chair, project chair person, project captains, etc.)</p>
+    <p>Please include a typed essay of up to {{ positions_word_limit }} words, that describes any offices or positions that you have held, whether elected (club, district, or international office) or appointed (committee chair, project chair person, project captains, etc.)</p>
     {{ textarea("positions", value=application.positions, rows="10") }}
 
     <hr>
@@ -52,6 +52,6 @@
 {% endblock %}
 {% block application_scripts %}
 <script>
-$('#positions').textareaCounter({limit: 250});
+$('#positions').textareaCounter({limit: {{ positions_word_limit }} });
 </script>
 {% endblock %}
