@@ -79,8 +79,6 @@
 
 {% block application %}
 <form id="application" role="form" action="{{ application_url }}" method="post">
-    <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
-
     <div class="page-header">
         <h2>Part IV: Projects, Advocacy &amp; Newsletters <span class="text-nowrap">(60 Points)</span></h2>
     </div>
@@ -149,7 +147,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for file in application.advocacy_materials|getblobdata %}
+            {% for file in application.advocacy_materials %}
                 <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
                     <td>{{ file.content_type }}</td>
                     <td>{{ file.filename|e }}</td>
@@ -167,14 +165,14 @@
     <hr>
 
     <h4>Section 4: Committee Involvement (Max 3 Points, 3 Points per Committee)</h4>
-    <p>If you were part of a Key Club committee, whether it is a club committee, divisional committee, or international committee, please fill out this section. Indicate the name of the committee and the type (club, division) of committee. Briefly describe what you have done in the committee.</p>
+    <p>If you were part of a Key Club committee, whether it is a club committee, divisional committee, district committee, or international committee, please fill out this section. Indicate the name of the committee and the type of the committee (club, divisional, district, international). Briefly describe what you have done in the committee.</p>
     <div class="row">
         <div class="form-horizontal col-xs-12">
             <div class="col-md-8">
                 {{ input_horizontal("committee", "Committee:", application.committee, size=2) }}
             </div>
             <div class="col-md-4">
-                {{ input_horizontal("committee-type", "Type:", application.committee_type, size=2) }}
+                {{ select_horizontal("committee-type", "Type:", application.committee_type, [" ", "Club", "Divisional", "District", "International"], size=2) }}
             </div>
             <div class="col-md-12">
                 <strong>Description of the committee:</strong>
