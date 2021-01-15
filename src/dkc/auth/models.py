@@ -4,7 +4,8 @@ from passlib.hash import bcrypt_sha256
 
 
 class User(ndb.Model, UserMixin):
-    date_created = ndb.DateTimeProperty(auto_now_add=True)
+    creation_time = ndb.DateTimeProperty(auto_now_add=True)
+    updated_time = ndb.DateTimeProperty(auto_now=True)
     email = ndb.StringProperty()
     password_hash = ndb.StringProperty()
 

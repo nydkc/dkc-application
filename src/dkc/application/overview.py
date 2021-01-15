@@ -1,33 +1,21 @@
 from flask import render_template
+from flask_login import current_user, login_required
 from google.cloud import ndb
+from common.models import Settings
 from . import application_bp
-
-# class ApplicationOverview(BaseHandler):
-
-#     @user_required
-#     def get(self):
-#         self._serve_page()
-
-#     @user_required
-#     def post(self):
-#         self._serve_page()
-
-#     def _serve_page(self):
-#         config = ndb.Key(Settings, 'config').get()
-#         template_values = {
-#             'user_id': self.user.get_id(),
-#             'application_url': '/application/overview',
-#             'config': config,
-#         }
-#         self.render_application('application-overview.html', template_values)
 
 
 @application_bp.route("/")
+@application_bp.route("/overview")
+@login_required
 def overview():
-    settings = {
-        "due_date": 2020,
-    }
+    settings = ndb.Key(Settings, "config").get()
+    applicant = current_user
+    user_id = current_user.key.id()
     template_values = {
+        "applicant": applicant,
+        "user_id": user_id,
+        "application_url": "/application/overview",
         "settings": settings,
     }
-    return render_template('application/overview.html', **template_values)
+    return render_template("application/overview.html", **template_values)

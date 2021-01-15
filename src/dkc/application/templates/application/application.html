@@ -2,7 +2,7 @@
 {% block body %}
 {%- if submitted -%}
 <div class="submitted-overlay alert alert-warning">
-    <p class="lead">You have submitted your application on {{ application.submit_time|datetimeformat('%B %d, %Y at %I:%M %p') }}. While you may still view your application, you may <strong>not</strong> change anything.</p>
+    <p class="lead">You submitted your application on {{ application.submit_time | datetimeformat('%B %d, %Y at %I:%M %p %Z') }}. While you may still view your application, you may <strong>not</strong> change anything.</p>
 </div>
 {%- endif -%}
 <div class="row application{% if submitted %} submitted-application{% endif %}">

@@ -18,7 +18,7 @@ from datetime import datetime
 #         })
 #     return blobs
 
-def datetimeformat(value, format='%B %d, %Y - %I:%M %p'):
+def datetimeformat(value, format='%B %d, %Y - %I:%M %p %Z'):
     try:
         value = value.replace(tzinfo=UTC())
         value = value.astimezone(Eastern)
