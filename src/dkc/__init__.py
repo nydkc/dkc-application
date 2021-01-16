@@ -115,8 +115,8 @@ JINJA_OPTIONS = {
 }
 ADDITIONAL_JINJA_FILTERS = {
     "datetimeformat": jinja_functions.datetimeformat,
-    # 'getblobdata': jinja_functions.getBlobData,
     "byteconvert": jinja_functions.byteConversion,
+    "to_file_info": jinja_functions.toFileInfo,
     "split_string": jinja_functions.splitString,
     "split_regex": jinja_functions.splitRegex,
     "highlight_search": jinja_functions.search,

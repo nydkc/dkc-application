@@ -1,24 +1,12 @@
 import re
-from google.cloud import ndb
-# from google.appengine.ext import blobstore
-from dkc.timezone import UTC, Eastern
 from datetime import datetime
+from typing import Iterable
+from google.cloud import ndb
+from .timezone import UTC, Eastern
 # from models import Settings
 
 
-# def getBlobData(blob_keys):
-#     blobs = []
-#     for blob_key in blob_keys:
-#         blob_info = blobstore.BlobInfo.get(blob_key)
-#         blobs.append({
-#             "blob_key": blob_key,
-#             "filename": blob_info.filename if blob_info else None,
-#             "content_type": blob_info.content_type if blob_info else None,
-#             "size": blob_info.size if blob_info else None
-#         })
-#     return blobs
-
-def datetimeformat(value, format='%B %d, %Y - %I:%M %p %Z'):
+def datetimeformat(value, format="%B %d, %Y - %I:%M %p %Z"):
     try:
         value = value.replace(tzinfo=UTC())
         value = value.astimezone(Eastern)
@@ -26,22 +14,39 @@ def datetimeformat(value, format='%B %d, %Y - %I:%M %p %Z'):
     except:
         return value
 
+
 def byteConversion(size):
     i = 0
-    while (size > 1024):
-        size = size >> 10
+    while size > 1024:
+        size /= 1024
         i += 1
     notation = ["B", "KB", "MB", "GB"][i]
-    return "%s %s" % (size, notation)
+    return "{:.2f} {}".format(size, notation)
 
-def splitString(value, separator=' '):
+
+def toFileInfo(gcs_obj_ref_keys):
+    file_infos = []
+    for key in gcs_obj_ref_keys:
+        obj_ref = key.get()
+        file_infos.append({
+            "key": obj_ref.key.urlsafe().decode("utf-8"),
+            "filename": obj_ref.filename,
+            "content_type": obj_ref.content_type,
+            "size": byteConversion(obj_ref.bytes_size),
+        })
+    return file_infos
+
+
+def splitString(value, separator=" "):
     return value.split(separator)
+
 
 def splitRegex(value, seperator_pattern):
     return re.split(seperator_pattern, value)
 
+
 def search(value, search):
-    if value == None: # Hack to take care of Nonetype
+    if value == None:  # Hack to take care of Nonetype
         value = "None"
     value_lower = value.lower()
     search_lower = search.lower()
@@ -58,7 +63,9 @@ def search(value, search):
         result = ""
         while s < len(found_indexes):
             pos = found_indexes[s]
-            result += value[start:pos] + "<mark>" + value[pos:pos+len(search)] + "</mark>"
+            result += (
+                value[start:pos] + "<mark>" + value[pos : pos + len(search)] + "</mark>"
+            )
             start = pos + len(search)
             s += 1
         result += value[start:]
@@ -66,8 +73,14 @@ def search(value, search):
     else:
         return value
 
+
 def getVars(classobject):
-    return [attr for attr in dir(classobject) if not callable(attr) and not attr.startswith("_")]
+    return [
+        attr
+        for attr in dir(classobject)
+        if not callable(attr) and not attr.startswith("_")
+    ]
+
 
 # def getEarlyStatus(value=None):
 #     config = ndb.Key(Settings, 'config').get()

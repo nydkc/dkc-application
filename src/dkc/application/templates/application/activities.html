@@ -76,6 +76,28 @@
     </div>
 </div>
 {% endmacro %}
+{% macro file_info_table(id, file_infos, style='') %}
+<table id="{{ id }}" class="table table-striped table-condensed table-hover" style="{{ style }}">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Filename</th>
+            <th>Size</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for file_info in file_infos %}
+        <tr href="/serve/{{ file_info.key }}/{{ file_info.filename | e }}" class="clickable-row">
+            <td>{{ file_info.content_type | e }}</td>
+            <td>{{ file_info.filename | e }}</td>
+            <td class="text-nowrap">{{ file_info.size }}</td>
+            <td><a href="/delete/{{ file_info.key }}"><span class="glyphicon glyphicon-trash"></span></a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endmacro %}
 
 {% block application %}
 <form id="application" role="form" action="{{ application_url }}" method="post">
@@ -137,29 +159,17 @@
 
     <h5>Advocacy Materials <small>(Max. 5)</small></h5>
     <div class="table-responsive">
-        <table id="advocacy-upload" class="table table-striped table-condensed table-hover">
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Filename</th>
-                    <th>Size</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for file in application.advocacy_materials %}
-                <tr href="/serve/{{ file.blob_key }}/{{ file.filename }}" class="clickable-row">
-                    <td>{{ file.content_type }}</td>
-                    <td>{{ file.filename|e }}</td>
-                    <td class="text-nowrap">{{ file.size|byteconvert }}</td>
-                    <td><a href="/delete/{{ file.blob_key }}"><span class="glyphicon glyphicon-trash"></span></a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {{ file_info_table("advocacy-upload", (application.advocacy_materials | to_file_info)) }}
     </div>
     <div class="text-center">
-        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#advocacy-upload-modal"><span class="glyphicon glyphicon-upload"></span> Upload</button>
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                data-target="#upload-modal"
+                data-upload-material="Advocacy Materials"
+                data-upload-url="/application/upload/activities/advocacy"
+                data-upload-file-info-table-target="advocacy-upload"
+                data-upload-max-file-size="{{ 10 * 1024 * 1024 }}">
+            <span class="glyphicon glyphicon-upload"></span> Open Upload Window...
+        </button>
     </div>
 
     <hr>
@@ -184,7 +194,7 @@
     <hr>
 
     <h4>Section 5: Newsletter Article Submission (Max 5 Points)</h4>
-    <p>Submit a service spotlight to either the district or divisional newsletter. Use any combination to receive up to 5 points in this section. Attach all articles with your submission by uploading them on the <a href="/application/overview#other-material-upload">overview</a> page. Each article can only qualify once. Be sure to specify the date the newsletter was published and the link to the article if possible. Please include the number of articles submitted for each newsletter.</p>
+    <p>Submit a service spotlight to either the district or divisional newsletter. Use any combination to receive up to 5 points in this section. Attach all articles with your submission by uploading them on the <a href="/application/other#other-material-upload">overview</a> page. Each article can only qualify once. Be sure to specify the date the newsletter was published and the link to the article if possible. Please include the number of articles submitted for each newsletter.</p>
     <div class="row form-horizontal newsletters">
         <div class="col-md-10 col-md-offset-1">
             <div class="row">
@@ -231,80 +241,159 @@
     <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success btn-block">Update</button>
 </form>
 
-<form class="modal fade" id="advocacy-upload-modal" tabindex="-1" role="dialog" aria-labelledby="advocacy-upload-window-title" aria-hidden="true" method="post" enctype="multipart/form-data" target="upload_target">
+<form class="modal fade" id="upload-modal" tabindex="-1" role="dialog" aria-labelledby="upload-window-title" aria-hidden="true" method="post" enctype="multipart/form-data">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h3 class="modal-title" id="advocacy-upload-window-title">Upload Advocacy Materials</h3>
+                <h3 class="modal-title" id="upload-window-title">_PLACEHOLDER_TEXT_</h3>
             </div>
             <div class="modal-body">
-                <p>Upload your files one at a time in the field below.</p>
-                <p id="result" class="lead text-center"></p>
-                <div id="advocacy-uploaded-files" class="bg-success" style="display:none;">
-                    Uploaded files:
-                    <ul></ul>
+                <p class="description">_PLACEHOLDER_TEXT_</p>
+                {{ file_info_table("uploaded-files", [], style="display:none;") }}
+                <div class="row">
+                    <div class="col-sm-8 col-md-9">
+                        <input id="upload-file-input" class="upload-field" name="upload_file" type="file">
+                        <p class="warning-file-size text-warning" style="display:none;"></p>
+                    </div>
+                    <div class="col-sm-4 col-md-3">
+                        <button id="upload-button" type="button" class="btn btn-primary btn-block upload-button disabled">
+                            <span class="glyphicon glyphicon-upload"></span> Upload
+                        </button>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="progress" style="display:none;">
+                            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                <span class="sr-only"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="loader" style="display:none;">Loading...</div>
-                <p class="warning-file-size text-warning" style="display:none;"></p>
-                <input id="advocacy-upload-field" class="upload-field" name="advocacy-material" type="file" multiple>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Upload</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </form>
-<iframe id="upload_target" name="upload_target" class="hidden"></iframe>
 {% endblock %}
 {% block application_scripts %}
 <script>
-$('#advocacy-upload-field').change(function() {
+var uploadModal = $('#upload-modal');
+uploadModal.on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var uploadMaterial = button.data('upload-material');
+    var modal = $(this);
+    modal.find('.modal-title').text('Upload ' + uploadMaterial);
+    modal.find('.modal-body p.description').text('Upload additional files for ' + uploadMaterial + ' below.');
+    // Clear any file infos from previous uploads
+    $('#uploaded-files').hide();
+    $('#uploaded-files tbody').html('');
+    // Copy over data attributes from button
+    modal.data('upload-url', button.data('upload-url'));
+    modal.data('max-file-size', button.data('upload-max-file-size'));
+    modal.data('file-info-table-target', button.data('upload-file-info-table-target'));
+});
+function resetUploadModal() {
+    uploadModal[0].reset();
+    $('#upload-button').addClass('disabled');
+}
+$('#upload-file-input').change(function() {
     var file = $(this)[0].files[0];
-    if (file.size > 10485760) {
+    var maxFileSize = parseInt(uploadModal.data("max-file-size"));
+    if (file.size > maxFileSize) {
         var warning = $(this).siblings('.warning-file-size');
-        warning.html('<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;&nbsp;&nbsp;File size of "' + file.name + '" is too big! Only files &lt;10 MB are allowed.');
+        warning.html('<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;&nbsp;&nbsp;File size of "' + file.name + '" is too big! Only files less than ' + maxFileSize / 1024 / 1024 + ' MB are allowed.');
         warning.fadeIn(200);
         setTimeout(function() { warning.fadeOut(700); }, 5000);
-        $('#advocacy-upload-modal')[0].reset();
+        resetUploadModal();
+    } else {
+        $('#upload-button').removeClass('disabled');
     }
 });
-function resetUploadForm() {
-    $.get('/application/activities/upload', function(data) {
-        $('#advocacy-upload-modal').attr("action", data);
+function getUploadLink(cb) {
+    var uploadUrl = uploadModal.data("upload-url");
+    $.get(uploadUrl, function(data) {
+        uploadModal.attr("action", data);
+        cb(data);
     })
      .fail(function() {
           sweetAlert("Unable to upload!", "It appears that you are not connected to the internet.", "error");
      });
 }
-$('#advocacy-upload-modal').on('show.bs.modal', resetUploadForm);
-$('#advocacy-upload-modal').submit(function() {
-    $('.loader').show();
-    return true;
-});
-function finishUpload(blobs) {
-    $('.loader').hide();
-    if (blobs == 0) {
-        $('#result').text('There was an error during file upload!').addClass('text-danger').removeClass('text-success');
-    }
-    else if (blobs == 1) {
-        $('#result').text('Unable to upload! You may only upload a total of 5 items.').addClass('text-danger').removeClass('text-success');
-    }
-    else {
-        $('#result').text('The file was uploaded successfully!').addClass('text-success').removeClass('text-danger');
-        for (var i=0; i<blobs.length; i++) {
-            var blobInfo = $.parseJSON(blobs[i]);
-            $('#advocacy-uploaded-files ul').append('<li>' + blobInfo.filename + '</li>');
-            $('#advocacy-uploaded-files').show();
-            $('#advocacy-upload tbody').append('<tr href="/serve/' + blobInfo.key + '/' + blobInfo.filename + '" class="clickable-row"><td>' + blobInfo.content_type + '</td><td>' + blobInfo.filename + '</td><td class="text-nowrap">' + blobInfo.size + '</td><td><a href="/delete/' + blobInfo.key + '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>');
+function progressHandlerWrapper(progressElement) {
+    function progressHandler(e) {
+        if (e.lengthComputable) {
+            var percent = e.loaded / e.total * 100;
+            var progressBar = progressElement.children('.progress-bar');
+            if (percent >= 100) {
+                progressBar.removeClass('active').removeClass('progress-bar-striped');
+                progressElement.fadeOut(1500);
+                setTimeout(function() { progressBar.width(0); }, 1600);
+            }
+            else {
+                progressBar.addClass('active').addClass('progress-bar-striped');
+            }
+            percent += "%";
+            progressBar.css('width', percent);
+            progressBar.children('.sr-only').text(percent);
         }
-        $('#advocacy-upload-modal')[0].reset();
     }
-    resetUploadForm();
-    clickableRows();
-    return true;
+    return progressHandler;
 }
+$('#upload-button').click(function() {
+    // Check if any files are selected before proceeding
+    if ($('#upload-field').val() == '') {
+        return false;
+    }
+    getUploadLink(function(url) {
+        var formData = new FormData(uploadModal[0]);
+        $.ajax({
+            url: url,
+            type: 'post',
+            contentType: false,
+            xhr: function() {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                    var progressElement = uploadModal.find('.progress');
+                    progressElement.show();
+                    myXhr.upload.addEventListener('progress', progressHandlerWrapper(progressElement), false);
+                }
+                return myXhr;
+            },
+            dataType: "text",
+            data: formData,
+            processData: false,
+        })
+        .done(function(data) {
+            var uploadedFiles = $.parseJSON(data);
+            var uploadedFilenames = [];
+            for (var i = 0; i < uploadedFiles.length; i++) {
+                var fileInfo = uploadedFiles[i];
+                uploadedFilenames.push(fileInfo.filename);
+                var fileInfoRow = '<tr href="/serve/' + fileInfo.key + '/' + fileInfo.filename + '" class="clickable-row"><td>' + fileInfo.content_type + '</td><td>' + fileInfo.filename + '</td><td class="text-nowrap">' + fileInfo.size + '</td><td><a href="/delete/' + fileInfo.key + '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
+                $('#' + uploadModal.data('file-info-table-target') + ' tbody').append(fileInfoRow);
+                $('#uploaded-files tbody').append(fileInfoRow);
+                $('#uploaded-files').show();
+            }
+            sweetAlert("File uploaded!", "You have successfully uploaded '" + uploadedFilenames.join("', '") + "'.", "success");
+            clickableRows();
+            resetUploadModal();
+        })
+        .fail(function(xhr) {
+            var data = xhr.responseText;
+            switch (xhr.status) {
+                case 400:
+                    sweetAlert("Unable to upload!", JSON.parse(data)["message"], "error");
+                    break;
+                default:
+                    sweetAlert("Unable to upload!", "Something has gone terribly wrong on our end. Please refresh the page or try again later.", "error");
+                    break;
+            }
+        });
+    });
+});
+
 function clickableRows() {
     $(".clickable-row td:not(:last-child)").click(function() {
         window.open($(this).parent().attr('href'), '_blank');

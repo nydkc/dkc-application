@@ -182,14 +182,9 @@ p.lead:last-child {
     margin-bottom: 0;
 }
 
-#upload-form .progress {
+.progress {
     margin-top: 10px;
     margin-bottom: 0;
-}
-
-#other-material-upload-button {
-    margin-top: 4px;
-    margin-bottom: 3px;
 }
 
 #other-material-upload-table {
@@ -259,15 +254,16 @@ input#district-projects-charity {
     margin-bottom: 0;
 }
 
-#advocacy-uploaded-files {
-    padding: 15px;
-    margin: 10px 0;
-}
-
 .upload-field {
     border: 4px dashed #ddd;
     width: 100%;
     padding: 13px;
+}
+
+.upload-button {
+    padding: 8px;
+    margin-top: 9px;
+    margin-bottom: 9px;
 }
 
 .verification {

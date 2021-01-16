@@ -20,6 +20,13 @@ class GeneralProject(ndb.Model):
     location = ndb.StringProperty()
     description = ndb.TextProperty()
 
+class GCSObjectReference(ndb.Model):
+    bucket_name = ndb.StringProperty()
+    object_name = ndb.StringProperty()
+    filename = ndb.StringProperty()
+    content_type = ndb.StringProperty()
+    bytes_size = ndb.IntegerProperty()
+
 class Application(ndb.Model):
     start_time = ndb.DateTimeProperty(auto_now_add=True)
     updated_time = ndb.DateTimeProperty(auto_now=True)
@@ -81,7 +88,7 @@ class Application(ndb.Model):
     interclub_projects = ndb.StructuredProperty(GeneralProject, repeated=True)
     advocacy_cause = ndb.StringProperty()
     advocacy_description = ndb.TextProperty()
-    advocacy_materials = ndb.BlobKeyProperty(repeated=True)
+    advocacy_materials = ndb.KeyProperty(GCSObjectReference, repeated=True)
     committee = ndb.StringProperty()
     committee_type = ndb.StringProperty()
     committee_description = ndb.TextProperty()
@@ -91,6 +98,7 @@ class Application(ndb.Model):
     district_newsletter_info = ndb.TextProperty()
     district_website = ndb.BooleanProperty()
     district_website_info = ndb.TextProperty()
+    newsletter_materials = ndb.KeyProperty(GCSObjectReference, repeated=True)
     other_projects = ndb.StructuredProperty(GeneralProject, repeated=True)
 
     # Other
