@@ -266,6 +266,18 @@ input#district-projects-charity {
     margin-bottom: 9px;
 }
 
+.upload-button.loading .description {
+    display: none;
+}
+
+.upload-button:not(.loading) .loader {
+    display: none;
+}
+
+.warning-file-size {
+    margin-top: 6px;
+}
+
 .verification {
     margin-top: 20px;
 }
@@ -376,6 +388,9 @@ input#district-projects-charity {
     }
 }
 
+.loader.loader-sm {
+    font-size: 4px;
+}
 .loader:before,
 .loader:after,
 .loader {
@@ -389,7 +404,6 @@ input#district-projects-charity {
 }
 .loader {
   margin: -1.5em auto 4em;
-  font-size: 9px;
   position: relative;
   text-indent: -9999em;
   -webkit-animation-delay: 0.16s;

@@ -2,7 +2,9 @@ runtime: python37
 # inbound_services:
 # - warmup
 
-entrypoint: gunicorn -b :$PORT main:app
+entrypoint: >
+  gunicorn -b :$PORT main:app
+    --timeout 60
 
 automatic_scaling:
   max_instances: 1
