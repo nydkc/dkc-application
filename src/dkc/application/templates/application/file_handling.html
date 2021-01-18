@@ -1,0 +1,226 @@
+{% macro file_info_table(id, file_infos, style='', include_delete=True) -%}
+<table id="{{ id }}" class="table table-striped table-condensed table-hover" style="{{ style }}">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Filename</th>
+            <th>Size</th>
+            <th>
+            {%- if include_delete -%}
+                Delete
+            {%- endif -%}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    {%- for file_info in file_infos %}
+        <tr href="/application/download/f/{{ file_info.key }}/{{ file_info.filename | e }}" class="clickable-row">
+            <td>{{ file_info.content_type | e }}</td>
+            <td>{{ file_info.filename | e }}</td>
+            <td class="text-nowrap">{{ file_info.size }}</td>
+            <td>
+            {%- if include_delete -%}
+                <a href="/application/delete/f/{{ file_info.key }}"><span class="glyphicon glyphicon-trash"></span></a>
+            {%- endif -%}
+            </td>
+        </tr>
+    {%- endfor %}
+    </tbody>
+</table>
+{%- endmacro %}
+
+<form class="modal fade" id="upload-modal" tabindex="-1" role="dialog" aria-labelledby="upload-window-title" aria-hidden="true" method="post" enctype="multipart/form-data">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title" id="upload-window-title">_PLACEHOLDER_TEXT_</h3>
+            </div>
+            <div class="modal-body">
+                <p class="description">_PLACEHOLDER_TEXT_</p>
+                {{ file_info_table("uploaded-files", [], style="display:none;", include_delete=False) }}
+                <div class="row">
+                    <div class="col-sm-8 col-md-9">
+                        <input id="upload-file-input" class="upload-field" name="upload_file" type="file">
+                        <p class="warning-file-size text-warning" style="display:none;"></p>
+                    </div>
+                    <div class="col-sm-4 col-md-3">
+                        <button id="upload-button" type="button" class="btn btn-primary btn-block upload-button disabled">
+                            <div class="description">
+                                <span class="glyphicon glyphicon-upload"></span> Upload
+                            </div>
+                            <div class="loader loader-sm"></div>
+                        </button>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="upload-progress" class="progress" style="display:none;">
+                            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                <span class="sr-only"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+$(document).ready(function() {
+    $('#upload-modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var uploadMaterial = button.data('upload-material');
+        var modal = $(this);
+        modal.find('.modal-title').text('Upload ' + uploadMaterial);
+        modal.find('.modal-body p.description').text('Upload additional files for ' + uploadMaterial + ' below.');
+        // Clear any file infos from previous uploads
+        $('#uploaded-files').hide();
+        $('#uploaded-files tbody').html('');
+        // Copy over data attributes from button
+        modal.data('upload-url', button.data('upload-url'));
+        modal.data('max-file-size', button.data('upload-max-file-size'));
+        modal.data('file-info-table-target', button.data('upload-file-info-table-target'));
+        resetUploadModal();
+    });
+    $('#upload-file-input').change(function() {
+        var file = $(this)[0].files[0];
+        var maxFileSize = parseInt($('#upload-modal').data("max-file-size"));
+        if (!file) {
+            resetUploadModal();
+        } else if (file.size > maxFileSize) {
+            var warning = $(this).siblings('.warning-file-size');
+            warning.html('<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;&nbsp;&nbsp;File "' + file.name + '" is too large! Only files less than ' + maxFileSize / 1024 / 1024 + ' MB are allowed.');
+            warning.fadeIn(200);
+            setTimeout(function() { warning.fadeOut(700); }, 5000);
+            resetUploadModal();
+        } else {
+            $('#upload-button').removeClass('disabled');
+        }
+    });
+});
+function resetUploadModal() {
+    $('#upload-modal')[0].reset();
+    $('#upload-button').addClass('disabled');
+}
+function getUploadLink(cb) {
+    var uploadUrl = $('#upload-modal').data("upload-url");
+    $.get(uploadUrl, function(data) {
+        cb(data);
+    })
+    .fail(function() {
+        sweetAlert("Unable to upload!", "It appears that you are not connected to the internet.", "error");
+    });
+}
+function setProgressBarPercent(percent) {
+    var progressElement = $('#upload-progress');
+    var progressBar = progressElement.children('.progress-bar');
+    percent += "%";
+    progressBar.width(percent)
+    progressBar.children('.sr-only').text(percent);
+}
+function fadeOutProgressBar() {
+    var progressElement = $('#upload-progress');
+    var progressBar = progressElement.children('.progress-bar');
+    // Ensure that progress bar is at 100% before fading out.
+    setProgressBarPercent(100);
+    progressBar.removeClass('active').removeClass('progress-bar-striped');
+    progressElement.fadeOut(1500);
+    setTimeout(function() { progressBar.width(0); }, 1600);
+}
+function progressHandler(e) {
+    if (e.lengthComputable) {
+        var progressElement = $('#upload-progress');
+        var progressBar = progressElement.children('.progress-bar');
+        var percent = e.loaded / e.total * 100;
+        // Artificially make this incomplete so that it can be moved to 100% when the server responds.
+        percent *= .97;
+        setProgressBarPercent(percent);
+        progressBar.addClass('active').addClass('progress-bar-striped');
+    }
+}
+$('#upload-button').click(function(e) {
+    e.preventDefault();
+    // Check if any files are selected before proceeding
+    if ($('#upload-file-input').val() == '') {
+        return false;
+    }
+    getUploadLink(function(url) {
+        // Prevent user from submitting while the previous file is in-flight
+        $('#upload-button').addClass('disabled').addClass('loading');
+        var formData = new FormData($('#upload-modal')[0]);
+        $.ajax({
+            url: url,
+            type: 'post',
+            contentType: false,
+            xhr: function() {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                    $('#upload-modal').find('.progress').show();
+                    myXhr.upload.addEventListener('progress', progressHandler);
+                }
+                return myXhr;
+            },
+            dataType: "text",
+            data: formData,
+            processData: false,
+        })
+        .done(function(data) {
+            var uploadedFiles = $.parseJSON(data);
+            var uploadedFilenames = [];
+            for (var i = 0; i < uploadedFiles.length; i++) {
+                var fileInfo = uploadedFiles[i];
+                uploadedFilenames.push(fileInfo.filename);
+                var fileInfoRow = '<tr href="/application/download/f/' + fileInfo.key + '/' + fileInfo.filename + '" class="clickable-row"><td>' + fileInfo.content_type + '</td><td>' + fileInfo.filename + '</td><td class="text-nowrap">' + fileInfo.size + '</td><td><a href="/application/delete/f/' + fileInfo.key + '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
+                var fileInfoRowWithoutDelete = '<tr href="/application/download/f/' + fileInfo.key + '/' + fileInfo.filename + '" class="clickable-row"><td>' + fileInfo.content_type + '</td><td>' + fileInfo.filename + '</td><td class="text-nowrap">' + fileInfo.size + '</td><td></td></tr>';
+                $('#' + $('#upload-modal').data('file-info-table-target') + ' tbody').append(fileInfoRow);
+                $('#uploaded-files tbody').append(fileInfoRowWithoutDelete);
+                $('#uploaded-files').show();
+            }
+            sweetAlert("File uploaded!", 'You have successfully uploaded "' + uploadedFilenames.join('", ') + '".', "success");
+            clickableRows();
+            $('#upload-button').removeClass('loading');
+            fadeOutProgressBar();
+            resetUploadModal();
+        })
+        .fail(function(xhr) {
+            var data = xhr.responseText;
+            switch (xhr.status) {
+                case 400:
+                case 413:
+                    var message = data;
+                    try {
+                        message = JSON.parse(data)["message"];
+                    } catch (_) {}
+                    sweetAlert("Unable to upload!", message, "error");
+                    break;
+                default:
+                    sweetAlert("Unable to upload!", "Something has gone terribly wrong on our end. Please refresh the page or try again later.", "error");
+                    break;
+            }
+            $('#upload-button').removeClass('disabled').removeClass('loading');
+            fadeOutProgressBar();
+        });
+    });
+});
+
+function clickableRows() {
+    $(".clickable-row td:not(:last-child)").click(function() {
+        window.open($(this).parent().attr('href'), '_blank');
+    });
+    $('.clickable-row td a').click(function() {
+        var trash = $(this);
+        $.post(trash.attr('href'))
+         .done(function() {
+             trash.parent().parent().fadeOut(500);
+         })
+         .error(function() {
+             sweetAlert("Delete failed!", "Something went wrong with deleting this file. Please refresh the page or try again later.", "error");
+         });
+        return false;
+    });
+}
+$(document).ready(clickableRows);
+</script>

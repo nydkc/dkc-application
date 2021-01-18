@@ -108,7 +108,7 @@ class Application(ndb.Model):
     scoring_reason_two = ndb.TextProperty()
     scoring_reason_three = ndb.TextProperty()
     scoring_reason_four = ndb.TextProperty()
-    other_materials = ndb.BlobKeyProperty(repeated=True)
+    other_materials = ndb.KeyProperty(GCSObjectReference, repeated=True)
 
     # Verification
     verification_ltg = ndb.BooleanProperty()

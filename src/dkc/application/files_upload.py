@@ -13,7 +13,11 @@ from . import application_bp
 gcs = storage.Client()
 
 MAX_ADVOCACY_UPLOAD_SIZE_BYTES = 10 * 1024 * 1024
-MAX_NEWSLETTER_UPLOAD_SIZE_BYTES = 25 * 1024 * 1024
+MAX_ADVOCACY_ITEMS = 5
+MAX_NEWSLETTER_UPLOAD_SIZE_BYTES = 10 * 1024 * 1024
+MAX_NEWSLETTER_ITEMS = 5
+MAX_OTHER_UPLOAD_SIZE_BYTES = 25 * 1024 * 1024
+MAX_OTHER_ITEMS = 3
 
 
 @application_bp.route("/upload/activities/advocacy", methods=["GET", "POST"])
@@ -43,8 +47,13 @@ def handle_activities_advocacy_post():
             400,
             description="Cannot upload materials for an already submitted application.",
         )
-    if len(application.advocacy_materials) >= 5:
-        return abort(400, description="Cannot upload more than 5 advocacy materials.")
+    if len(application.advocacy_materials) >= MAX_ADVOCACY_ITEMS:
+        return abort(
+            400,
+            description="Cannot upload more than {} advocacy materials.".format(
+                MAX_ADVOCACY_ITEMS
+            ),
+        )
 
     new_gcs_obj_ref_key = handle_upload_file(
         applicant, application, MAX_ADVOCACY_UPLOAD_SIZE_BYTES
@@ -84,8 +93,13 @@ def handle_activities_newsletter_post():
             400,
             description="Cannot upload materials for an already submitted application.",
         )
-    if len(application.newsletter_materials) >= 5:
-        return abort(400, description="Cannot upload more than 5 newsletter materials.")
+    if len(application.newsletter_materials) >= MAX_NEWSLETTER_ITEMS:
+        return abort(
+            400,
+            description="Cannot upload more than {} newsletter materials.".format(
+                MAX_NEWSLETTER_ITEMS
+            ),
+        )
 
     new_gcs_obj_ref_key = handle_upload_file(
         applicant, application, MAX_NEWSLETTER_UPLOAD_SIZE_BYTES
@@ -93,6 +107,52 @@ def handle_activities_newsletter_post():
     if not application.newsletter_materials:
         application.newsletter_materials = []
     application.newsletter_materials.append(new_gcs_obj_ref_key)
+    application.put()
+
+    return json.dumps(toFileInfo([new_gcs_obj_ref_key]))
+
+
+@application_bp.route("/upload/other", methods=["GET", "POST"])
+@login_required
+def upload_other():
+    if request.method == "GET":
+        return get_upload_link(request.url)
+    else:
+        # Even if we don't use this value now, we need Flask to consume the
+        # users' request files, otherwise they'll get a connection reset error
+        # (because their file content was not read by the server), if we abort
+        # the request.
+        upload_files = request.files.getlist("upload_file")
+        return handle_activities_other_post()
+
+
+def handle_activities_other_post():
+    applicant = current_user
+    application = applicant.application.get()
+
+    if application.submit_time:
+        logging.info(
+            "Attempt to upload other material by %s after submission",
+            applicant.email,
+        )
+        return abort(
+            400,
+            description="Cannot upload materials for an already submitted application.",
+        )
+    if len(application.other_materials) >= MAX_OTHER_ITEMS:
+        return abort(
+            400,
+            description="Cannot upload more than {} other materials.".format(
+                MAX_OTHER_ITEMS
+            ),
+        )
+
+    new_gcs_obj_ref_key = handle_upload_file(
+        applicant, application, MAX_OTHER_UPLOAD_SIZE_BYTES
+    )
+    if not application.other_materials:
+        application.other_materials = []
+    application.other_materials.append(new_gcs_obj_ref_key)
     application.put()
 
     return json.dumps(toFileInfo([new_gcs_obj_ref_key]))
