@@ -13,9 +13,7 @@ else:
     os.environ["DATASTORE_EMULATOR_HOST_PATH"] = "localhost:8500/datastore"
     os.environ["DATASTORE_HOST"] = "http://localhost:8500"
 
-    from unittest.mock import Mock
-
-    credentials = Mock(spec=google.auth.credentials.Credentials)
+    credentials = google.auth.credentials.AnonymousCredentials()
     db = ndb.Client(credentials=credentials)
 
 

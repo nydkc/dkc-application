@@ -1,6 +1,5 @@
 import logging
 import os
-import urllib.parse
 import json
 from flask import abort, request
 from flask_login import current_user, login_required
@@ -137,7 +136,7 @@ def handle_upload_file(applicant, application, max_size_bytes):
     settings = ndb.Key(Settings, "config").get()
     bucket = gcs.get_bucket(settings.gcs_bucket)
     key = GCSObjectReference.allocate_ids(parent=application.key, size=1)[0]
-    obj_name = "uploads/{}/{}-{}".format(
+    obj_name = "uploads/{}/{}/{}".format(
         settings.due_date.strftime("%Y"),
         key.urlsafe().decode("utf-8"),
         upload_file.filename,
@@ -153,7 +152,7 @@ def handle_upload_file(applicant, application, max_size_bytes):
         logging.error(
             "Encountered an error while uploading file from %s to GCS: %s",
             applicant.email,
-            obj.id,
+            obj.name,
         )
         raise
     obj.reload()
@@ -168,48 +167,3 @@ def handle_upload_file(applicant, application, max_size_bytes):
     )
     obj_ref_key = obj_ref.put()
     return obj_ref_key
-
-
-# class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
-
-#     def get(self, resource):
-#         resource = str(urllib.unquote(resource))
-#         blob_info = blobstore.BlobInfo.get(resource)
-#         if blob_info is None:
-#             self.abort(404)
-#             return
-
-#         if "image" in blob_info.content_type:
-#             image_url = images.get_serving_url(resource) + "=s0"
-#             self.redirect(image_url)
-#         else:
-#             self.send_blob(blob_info)
-
-# class DeleteHandler(BaseHandler):
-
-#     @user_required
-#     def get(self, resource):
-#         resource = str(urllib.unquote(resource))
-#         blob_info = blobstore.BlobInfo.get(resource)
-#         if blob_info is None:
-#             self.abort(404)
-#             return
-
-#         applicant = self.user
-#         application_key = applicant.application
-#         application = application_key.get()
-
-#         if resource in application.other_materials:
-#             application.other_materials.remove(resource)
-#         elif resource in application.advocacy_materials:
-#             application.advocacy_materials.remove(resource)
-#             self.redirect('/application/activities')
-#         # Users should not know about files that are not part of their application
-#         else:
-#             self.abort(404)
-#             return
-#         application.put()
-#         deleted = DeletedFile(parent=self.user.key, user=self.user.key, blob=blob_info.key())
-#         deleted.put()
-
-#         self.response.write("Delete Successful: %s" % resource)

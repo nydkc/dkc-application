@@ -76,23 +76,31 @@
     </div>
 </div>
 {% endmacro %}
-{% macro file_info_table(id, file_infos, style='') %}
+{% macro file_info_table(id, file_infos, style='', include_delete=True) %}
 <table id="{{ id }}" class="table table-striped table-condensed table-hover" style="{{ style }}">
     <thead>
         <tr>
             <th>Type</th>
             <th>Filename</th>
             <th>Size</th>
-            <th>Delete</th>
+            <th>
+            {% if include_delete %}
+                Delete
+            {% endif %}
+            </th>
         </tr>
     </thead>
     <tbody>
     {% for file_info in file_infos %}
-        <tr href="/serve/{{ file_info.key }}/{{ file_info.filename | e }}" class="clickable-row">
+        <tr href="/application/download/f/{{ file_info.key }}/{{ file_info.filename | e }}" class="clickable-row">
             <td>{{ file_info.content_type | e }}</td>
             <td>{{ file_info.filename | e }}</td>
             <td class="text-nowrap">{{ file_info.size }}</td>
-            <td><a href="/delete/{{ file_info.key }}"><span class="glyphicon glyphicon-trash"></span></a></td>
+            <td>
+            {% if include_delete %}
+                <a href="/application/delete/f/{{ file_info.key }}"><span class="glyphicon glyphicon-trash"></span></a>
+            {% endif %}
+            </td>
         </tr>
     {% endfor %}
     </tbody>
@@ -264,7 +272,7 @@
             </div>
             <div class="modal-body">
                 <p class="description">_PLACEHOLDER_TEXT_</p>
-                {{ file_info_table("uploaded-files", [], style="display:none;") }}
+                {{ file_info_table("uploaded-files", [], style="display:none;", include_delete=False) }}
                 <div class="row">
                     <div class="col-sm-8 col-md-9">
                         <input id="upload-file-input" class="upload-field" name="upload_file" type="file">
@@ -400,9 +408,10 @@ $('#upload-button').click(function(e) {
             for (var i = 0; i < uploadedFiles.length; i++) {
                 var fileInfo = uploadedFiles[i];
                 uploadedFilenames.push(fileInfo.filename);
-                var fileInfoRow = '<tr href="/serve/' + fileInfo.key + '/' + fileInfo.filename + '" class="clickable-row"><td>' + fileInfo.content_type + '</td><td>' + fileInfo.filename + '</td><td class="text-nowrap">' + fileInfo.size + '</td><td><a href="/delete/' + fileInfo.key + '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
+                var fileInfoRow = '<tr href="/application/download/f/' + fileInfo.key + '/' + fileInfo.filename + '" class="clickable-row"><td>' + fileInfo.content_type + '</td><td>' + fileInfo.filename + '</td><td class="text-nowrap">' + fileInfo.size + '</td><td><a href="/application/delete/f/' + fileInfo.key + '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
+                var fileInfoRowWithoutDelete = '<tr href="/application/download/f/' + fileInfo.key + '/' + fileInfo.filename + '" class="clickable-row"><td>' + fileInfo.content_type + '</td><td>' + fileInfo.filename + '</td><td class="text-nowrap">' + fileInfo.size + '</td><td></td></tr>';
                 $('#' + uploadModal.data('file-info-table-target') + ' tbody').append(fileInfoRow);
-                $('#uploaded-files tbody').append(fileInfoRow);
+                $('#uploaded-files tbody').append(fileInfoRowWithoutDelete);
                 $('#uploaded-files').show();
             }
             sweetAlert("File uploaded!", 'You have successfully uploaded "' + uploadedFilenames.join('", ') + '".', "success");
@@ -438,12 +447,12 @@ function clickableRows() {
     });
     $('.clickable-row td a').click(function() {
         var trash = $(this);
-        $.get(trash.attr('href'))
+        $.post(trash.attr('href'))
          .done(function() {
              trash.parent().parent().fadeOut(500);
          })
          .error(function() {
-             sweetAlert("Delete failed!", "Something went wrong with deleting the file...", "error");
+             sweetAlert("Delete failed!", "Something went wrong with deleting this file. Please refresh the page or try again later.", "error");
          });
         return false;
     });

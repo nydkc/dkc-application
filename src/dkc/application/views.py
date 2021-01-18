@@ -10,3 +10,5 @@ from . import verification
 from . import submit
 from . import download_pdf
 from . import files_upload
+from . import files_download
+from . import files_delete
