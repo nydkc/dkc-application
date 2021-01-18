@@ -46,12 +46,15 @@ with db.context():
     # Used for bulk email sending
     _SENDGRID_USERNAME = "< Sendgrid Username >"
     _SENDGRID_PASSWORD = "< Sendgrid Password >"
+    _SENDGRID_API_KEY = "Get an API key at https://app.sendgrid.com/settings/api_keys"
     try:
         _SENDGRID_USERNAME = config.sendgrid_username
         _SENDGRID_PASSWORD = config.sendgrid_password
+        _SENDGRID_API_KEY = config.sendgrid_api_key
     except:
         config.sendgrid_username = _SENDGRID_USERNAME
         config.sendgrid_password = _SENDGRID_PASSWORD
+        config.sendgrid_api_key = _SENDGRID_API_KEY
 
     # Used for application content uploads
     _GCS_BUCKET = "{}.appspot.com".format(os.environ.get("GOOGLE_CLOUD_PROJECT", "dkc-app"))

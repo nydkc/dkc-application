@@ -1,5 +1,15 @@
 {% extends "application/application.html" %}
 {% set title = 'Overview' %}
+{% set awards_cochairs = [
+    "Division 8 LTG AJ Zheng",
+    "Division 11 LTG Kiln Chen",
+] %}
+{% set divisional_contacts = [
+    ("Divisions 1-7", "LTG Kiln Chen", "division11@nydkc.org"),
+    ("Divisions 8, 8A, 9, 10, & 12", "LTG Avery Blank", "division25@nydkc.org"),
+    ("Division 11", "LTG Tatiana Solodova", "division23@nydkc.org"),
+    ("Divisions 13-27", "LTG AJ Zheng", "division8@nydkc.org"),
+] %}
 {% block application %}
 <div id="application" role="form">
     <div class="page-header">
@@ -31,14 +41,11 @@
                         <p>We wish you the best of luck in your application and look forward to your submission.</p>
                         <div class="text-right">
                             <p>Yours in Care and in Service,</p>
-                            {% set cochairs = [
-                                "Division 8 LTG AJ Zheng",
-                                "Division 11 LTG Kiln Chen",
-                            ] %}
 
-                            {% for cochair in cochairs %}
+                            {% for cochair in awards_cochairs %}
                             <p>{{ cochair }}
-                                <br>District Awards Committee Co-Chair</p>
+                                <br>District Awards Committee Co-Chair
+                            </p>
                             {% endfor %}
                         </div>
                     </blockquote>
@@ -78,19 +85,13 @@
                     </ul>
                     <div class="text-center">
                         <h5><u><strong>Divisional Contacts</strong></u></h5>
-                        {% set contacts = [
-                            ("Divisions 1-7", "LTG Kiln Chen", "division11@nydkc.org"),
-                            ("Divisions 8, 8A, 9, 10, & 12", "LTG Avery Blank", "division25@nydkc.org"),
-                            ("Division 11", "LTG Tatiana Solodova", "division23@nydkc.org"),
-                            ("Divisions 13-27", "LTG AJ Zheng", "division8@nydkc.org"),
-                        ] %}
 
-                        {% for contact in contacts %}
-                        <p>{{ contact[0] }}
+                        {%- for contact in divisional_contacts %}
+                        <p>Awards Representative for {{ contact[0] }}
                             <br>{{ contact[1] }}
                             <br><a href="mailto:{{ contact[2] }}">{{ contact[2] }}</a>
                         </p>
-                        {% endfor %}
+                        {%- endfor %}
                     </div>
                 </div>
             </div>

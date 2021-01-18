@@ -1,5 +1,6 @@
 from google.cloud import ndb
 from common.models import Settings
+from dkc.auth.models import AuthToken
 
 class InternationalProject(ndb.Model):
     section = ndb.TextProperty()
@@ -114,17 +115,17 @@ class Application(ndb.Model):
     verification_ltg = ndb.BooleanProperty()
     verification_ltg_email = ndb.StringProperty()
     verification_ltg_sent = ndb.BooleanProperty()
-    verification_ltg_token = ndb.StringProperty()
+    verification_ltg_token = ndb.KeyProperty(AuthToken)
 
     verification_club_president = ndb.BooleanProperty()
     verification_club_president_email = ndb.StringProperty()
     verification_club_president_sent = ndb.BooleanProperty()
-    verification_club_president_token = ndb.StringProperty()
+    verification_club_president_token = ndb.KeyProperty(AuthToken)
 
     verification_faculty_advisor = ndb.BooleanProperty()
     verification_faculty_advisor_email = ndb.StringProperty()
     verification_faculty_advisor_sent = ndb.BooleanProperty()
-    verification_faculty_advisor_token = ndb.StringProperty()
+    verification_faculty_advisor_token = ndb.KeyProperty(AuthToken)
 
     verification_applicant = ndb.BooleanProperty()
     verification_applicant_date = ndb.DateTimeProperty()

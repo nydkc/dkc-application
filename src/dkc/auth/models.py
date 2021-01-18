@@ -53,3 +53,10 @@ class UniqueUserTracking(ndb.Model):
     """
 
     pass
+
+
+class AuthToken(ndb.Model):
+    """AuthTokens that are associated with a user."""
+
+    created = ndb.DateTimeProperty(auto_now_add=True)
+    type = ndb.StringProperty()

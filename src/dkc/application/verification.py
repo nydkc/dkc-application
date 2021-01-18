@@ -1,113 +1,162 @@
-from flask import render_template
+import json
+import logging
+from datetime import datetime
+from flask import abort, render_template, request, url_for
+from flask_login import current_user, login_required
 from google.cloud import ndb
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import (
+    Content,
+    CustomArg,
+    From,
+    HtmlContent,
+    Mail,
+    Subject,
+    To,
+)
+from common.models import Settings
+from dkc.auth.models import AuthToken
 from . import application_bp
-
-# class ApplicationVerification(BaseHandler):
-
-#     @user_required
-#     def get(self):
-#         self._serve_page()
-
-#     @user_required
-#     def post(self):
-#         applicant = self.user
-#         application_key = ndb.Key(urlsafe=self.request.get('form-key'))
-#         application = application_key.get()
-
-#         if self._no_verify() or application.submit_time:
-#             logging.info("Attempt to modify verification by %s", applicant.email)
-#             self._serve_page()
-#             return
-
-#         task = self.request.get('task')
-#         if task != 'applicant':
-#             user_id = self.user.get_id()
-#             token = self.user_model.create_signup_token(user_id)
-#             verification_url = self.uri_for('verification', type='v', user_id=user_id, signup_token=token, _full=True)
-#             logging.info(verification_url)
-
-#             config = ndb.Key(Settings, 'config').get()
-#             sg = SendGridClient(config.sendgrid_username, config.sendgrid_password, secure=True)
-
-#             verification_email = Mail(from_name="NYDKC Awards Committee",
-#                                       from_email="recognition@nydkc.org",
-#                                       subject="Distinguished Key Clubber Application Verification for %s %s" % (applicant.first_name, applicant.last_name)
-#             )
-
-#             verifier = ""
-#             if task == 'ltg':
-#                 application.verification_ltg_email = self.request.get('ltg-email')
-#                 application.verification_ltg_token = token
-#                 application.verification_ltg_sent = True
-#                 verification_email.add_to(application.verification_ltg_email)
-#                 verifier = "Lieutenant Governor " + applicant.ltg.title()
-#             elif task == 'club-president':
-#                 application.verification_club_president_email = self.request.get('club-president-email')
-#                 application.verification_club_president_token = token
-#                 application.verification_club_president_sent = True
-#                 verification_email.add_to(application.verification_club_president_email)
-#                 verifier = "Club President " + applicant.club_president.title()
-#             elif task == 'faculty-advisor':
-#                 application.verification_faculty_advisor_email = self.request.get('faculty-advisor-email')
-#                 application.verification_faculty_advisor_token = token
-#                 application.verification_faculty_advisor_sent = True
-#                 verification_email.add_to(application.verification_faculty_advisor_email)
-#                 verifier = "Faculty Advisor " + applicant.faculty_advisor.title()
-
-#             template_values = {
-#                 'applicant': applicant,
-#                 'verification_url': verification_url,
-#                 'verifier': verifier
-#             }
-#             verification_email.set_html(JINJA_ENVIRONMENT.get_template('verification-email.html').render(template_values))
-#             htmlhandler = html2text.HTML2Text()
-#             verification_email.set_text(htmlhandler.handle(verification_email.html).encode("UTF+8"))
-#             verification_email.add_unique_arg('user_id', str(user_id))
-
-#             code, response = sg.send(verification_email)
-#             response = json.loads(response)
-#             if response["message"] == "error":
-#                 logging.error(("Problem with sending email to %s: " % verification_email.to) + str(response["errors"]))
-#                 self._serve_page()
-#                 return
-#         else:
-#             application.verification_applicant = True
-#             application.verification_applicant_date = datetime.now()
-
-#         application.put()
-#         self._serve_page()
-
-#     def _serve_page(self):
-#         template_values = {
-#             'application_url': '/application/verification',
-#             'no_verify': self._no_verify()
-#         }
-#         self.render_application('application-verification.html', template_values)
-
-#     def _no_verify(self):
-#         applicant = self.user
-#         no_verify = (applicant.first_name == '' or applicant.first_name == None)\
-#                 or (applicant.last_name == '' or applicant.last_name == None)\
-#                 or (applicant.school == '' or applicant.school == None)\
-#                 or (applicant.division == '' or applicant.division == None)\
-#                 or (applicant.ltg == '' or applicant.ltg == None)\
-#                 or (applicant.club_president == '' or applicant.club_president == None)\
-#                 or (applicant.club_president_phone_number == '' or applicant.club_president_phone_number == None)\
-#                 or (applicant.faculty_advisor == '' or applicant.faculty_advisor == None)\
-#                 or (applicant.faculty_advisor_phone_number == '' or applicant.faculty_advisor_phone_number == None)
-#         return no_verify
 
 
 @application_bp.route("/verification", methods=["GET", "POST"])
 def verification():
-    settings = {
-        "due_date": 2020,
-    }
-    applicant = {}
-    application = {}
+    settings = ndb.Key(Settings, "config").get()
+    applicant = current_user
+    application = applicant.application.get()
+
+    if request.method == "POST":
+        handle_post(applicant, application)
+
     template_values = {
-        "settings": settings,
         "applicant": applicant,
         "application": application,
+        "application_url": "/application/verification",
+        "is_profile_invalid": profile_has_invalid_fields(applicant, application),
+        "settings": settings,
     }
     return render_template("application/verification.html", **template_values)
+
+
+def handle_post(applicant, application):
+    if application.submit_time:
+        logging.info(
+            "Attempt to modify verification by %s after submission",
+            applicant.email,
+        )
+        return
+
+    if profile_has_invalid_fields(applicant, application):
+        logging.warning(
+            "Cannot send emails for %s without completed profile", applicant.email
+        )
+        return abort(400, description="Profile must be completed first.")
+
+    task = request.form.get("task")
+    if task == "applicant":
+        application.verification_applicant = True
+        application.verification_applicant_date = datetime.now()
+    else:
+        token_key = create_verification_auth_token(application)
+        if task == "ltg" and not application.verification_ltg:
+            application.verification_ltg_email = request.form.get("ltg-email")
+            application.verification_ltg_token = token_key
+            application.verification_ltg_sent = True
+            verifier_email = application.verification_ltg_email
+            verifier_name = "Lieutenant Governor " + application.ltg.title()
+        elif task == "club-president" and not application.verification_club_president:
+            application.verification_club_president_email = request.form.get(
+                "club-president-email"
+            )
+            application.verification_club_president_token = token_key
+            application.verification_club_president_sent = True
+            verifier_name = "Club President " + application.club_president.title()
+            verifier_email = application.verification_club_president_email
+        elif task == "faculty-advisor" and not application.verification_faculty_advisor:
+            application.verification_faculty_advisor_email = request.form.get(
+                "faculty-advisor-email"
+            )
+            application.verification_faculty_advisor_token = token_key
+            application.verification_faculty_advisor_sent = True
+            verifier_name = "Faculty Advisor " + application.faculty_advisor.title()
+            verifier_email = application.verification_faculty_advisor_email
+        send_verification_email(
+            applicant, application, token_key, verifier_name, verifier_email
+        )
+
+    application.put()
+
+
+def create_verification_auth_token(application):
+    token = AuthToken(parent=application.key, type="v")
+    token_key = token.put()
+    return token_key
+
+
+def send_verification_email(
+    applicant, application, token_key, recipient_name, recipient_email
+):
+    settings = ndb.Key(Settings, "config").get()
+    verification_url = url_for(
+        "verify.external_verification",
+        token_key=token_key.urlsafe().decode("utf-8"),
+        _external=True,
+    )
+    logging.debug(
+        "Generated verification url for %s to verify application of %s",
+        recipient_email,
+        applicant.email,
+    )
+
+    template_values = {
+        "applicant": applicant,
+        "application": application,
+        "settings": settings,
+        "verification_url": verification_url,
+        "verifier_name": recipient_name,
+    }
+    email_html = render_template(
+        "application/verification-email.html", **template_values
+    )
+
+    settings = ndb.Key(Settings, "config").get()
+    sg = SendGridAPIClient(api_key=settings.sendgrid_api_key)
+    message = Mail(
+        from_email=From("recognition@nydkc.org", "NYDKC Awards Committee"),
+        to_emails=To(recipient_email),
+        subject=Subject(
+            "Please verify Distinguished Key Clubber Application for {} {}".format(
+                applicant.first_name, applicant.last_name
+            )
+        ),
+        html_content=HtmlContent(email_html),
+    )
+    message.add_custom_arg(
+        CustomArg(key="application", value=application.key.urlsafe().decode("utf-8"))
+    )
+
+    response = sg.client.mail.send.post(request_body=message.get())
+    if response.status_code != 202:
+        json_response = json.loads(response.body)
+        logging.error(
+            "Error sending email to %s: %s", message.to, json_response["errors"]
+        )
+        return abort(503)
+
+
+def profile_has_invalid_fields(applicant, application):
+    def is_empty_or_none(f):
+        return f == "" or f is None
+
+    fields = [
+        applicant.first_name,
+        applicant.last_name,
+        application.school,
+        application.division,
+        application.ltg,
+        application.club_president,
+        application.club_president_phone_number,
+        application.faculty_advisor,
+        application.faculty_advisor_phone_number,
+    ]
+    return any(map(is_empty_or_none, fields))
