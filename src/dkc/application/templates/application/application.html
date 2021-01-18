@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 {% block body %}
-{%- if application.submit_time -%}
+{%- if application.submit_time %}
 <div class="submitted-overlay alert alert-warning">
     <p class="lead">
         You submitted your application on {{ application.submit_time | datetimeformat('%B %d, %Y at %I:%M %p %Z') }}.
         While you may still view your application, you may <strong>not</strong> change anything.
     </p>
 </div>
-{%- endif -%}
+{%- endif %}
 <div class="row application{% if application.submit_time %} submitted-application{% endif %}">
     <aside class="col-sm-3">
 {% include "application/sidebar.html" %}
@@ -22,14 +22,14 @@
 <script src="/js/textareaCounter.js"></script>
 {% block application_scripts %}{% endblock %}
 <script>
-{% if application.submit_time %}
+{%- if application.submit_time %}
 $(document).ready(function() {
     $('.application-content textarea').each(function() { $(this).attr('disabled', 'disabled'); });
     $('.application-content input').each(function() { $(this).attr('disabled', 'disabled'); });
     $('.application-content select').each(function() { $(this).attr('disabled', 'disabled'); });
     $('.application-content button').each(function() { $(this).attr('disabled', 'disabled'); });
 });
-{% endif %}
+{%- endif %}
 var formData;
 $(document).ready(function() {
     formData = $('#application').serialize();

@@ -1,6 +1,6 @@
 {% extends "application/application.html" %}
 {% set title = 'Activities' %}
-{% macro kiwanis_one_day_input(project) %}
+{% macro kiwanis_one_day_input(project) -%}
 <div class="row project">
     <div class="form-horizontal col-xs-12">
         <div class="col-md-6">
@@ -18,8 +18,8 @@
         <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
     </div>
 </div>
-{% endmacro %}
-{% macro k_family_project_input(project) %}
+{%- endmacro %}
+{% macro k_family_project_input(project) -%}
 <div class="row project">
     <div class="form-horizontal col-xs-12">
         <div class="col-md-6">
@@ -37,8 +37,8 @@
         <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
     </div>
 </div>
-{% endmacro %}
-{% macro interclub_project_input(project) %}
+{%- endmacro %}
+{% macro interclub_project_input(project) -%}
 <div class="row project">
     <div class="form-horizontal col-xs-12">
         <div class="col-md-6">
@@ -56,8 +56,8 @@
         <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
     </div>
 </div>
-{% endmacro %}
-{% macro other_project_input(project) %}
+{%- endmacro %}
+{% macro other_project_input(project) -%}
 <div class="row project">
     <div class="form-horizontal col-xs-12">
         <div class="col-md-6">
@@ -75,7 +75,7 @@
         <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
     </div>
 </div>
-{% endmacro %}
+{%- endmacro %}
 {% macro file_info_table(id, file_infos, style='', include_delete=True) %}
 <table id="{{ id }}" class="table table-striped table-condensed table-hover" style="{{ style }}">
     <thead>
@@ -123,18 +123,18 @@
     <strong>Kiwanis One Day Event (5 Points Max, 1 Points per Event)</strong>
     <p>Kiwanis One Day is typically held on the 4th Saturday of October. If you have participated in a Kiwanis One Day event or project, please fill out this section.</p>
     <div class="kiwanis-one-day">
-        {% if application.kiwanis_one_day %}
+        {%- if application.kiwanis_one_day %}
         {{ kiwanis_one_day_input(application.kiwanis_one_day) }}
-        {% endif %}
+        {%- endif %}
     </div>
     <button class="btn btn-inverse btn-block" id="kiwanis-one-day-button"><span class="glyphicon glyphicon-plus"></span> Add an event...</button>
 
     <div style="margin-top: 10px;"><strong>K-Family Service Projects (16 Points Max, 4 Points per Event)</strong></div>
     <p>Describe any projects or events you have participated in with another branch of the Kiwanis Family.</p>
     <div class="k-family-projects">
-        {% for project in application.k_family_projects %}
+        {%- for project in application.k_family_projects %}
         {{ k_family_project_input(project) }}
-        {% endfor %}
+        {%- endfor %}
     </div>
     <button class="btn btn-inverse btn-block" id="k-family-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
 
@@ -143,9 +143,9 @@
     <h4>Section 2: Interclub Event (Max 16 Points, 4 Points per Event)</h4>
     <p>If you have participated in any event or project with other clubs, fill out this section. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
     <div class="interclub-projects">
-        {% for project in application.interclub_projects %}
+        {%- for project in application.interclub_projects %}
         {{ interclub_project_input(project) }}
-        {% endfor %}
+        {%- endfor %}
     </div>
     <button class="btn btn-inverse btn-block" id="interclub-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
 
@@ -251,9 +251,9 @@
     <h4>Section 6: Other Project/Fundraisers (Max 12 Points, 2 Points per Project/Fundraiser)</h4>
     <p>Please list and describe any service project that you have participated in. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
     <div class="other-projects">
-        {% for project in application.other_projects %}
+        {%- for project in application.other_projects %}
         {{ other_project_input(project) }}
-        {% endfor %}
+        {%- endfor %}
     </div>
     <button class="btn btn-inverse btn-block" id="other-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
 
