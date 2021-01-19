@@ -1,3 +1,4 @@
+from datetime import timezone
 from google.cloud import ndb
 from common.models import Settings
 from dkc.auth.models import AuthToken
@@ -35,10 +36,9 @@ class Application(ndb.Model):
 
     @ndb.model.ComputedProperty
     def is_early_submission(self):
-        config = ndb.Key(Settings, 'config').get()
-        early_due_date = config.early_due_date
         if self.submit_time is not None:
-            return self.submit_time < early_due_date
+            settings = ndb.Key(Settings, 'config').get()
+            return self.submit_time.replace(tzinfo=timezone.utc) < settings.early_due_date
         else:
             return False
 

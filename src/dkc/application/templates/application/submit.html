@@ -1,14 +1,19 @@
 {% extends "application/application.html" %}
 {% set title = 'Submit' %}
+{% macro check_or_x(val) -%}
+    {%- if val %}
+        <span class="text-danger glyphicon glyphicon-remove"></span>
+    {%- else %}
+        <span class="text-success glyphicon glyphicon-ok"></span>
+    {% endif %}
+{%- endmacro %}
 {% block application %}
 <form id="submit-application" role="form" action="{{ application_url }}" method="post">
-    <input type="hidden" id="form-key" name="form-key" value="{{ form_key }}">
-
     <div class="page-header">
         <h2>Submit Application</h2>
     </div>
 
-    <p>Before you submit your application, make sure that you have filled out all parts to the <strong>best of your ability</strong>. It is highly recommended that you go back and check that your application best reflects your activities as a Key Clubber this past year.</p>
+    <p>Before you submit your application, make sure that you have filled out all parts to the <strong>best of your ability</strong>. It is highly recommended that you go back and check that your application best reflects your activities as a Key Clubber this past service year.</p>
     <p class="lead">If you are sure that you would like to submit your application, please click the <em>Submit</em> button below.</p>
 
     <div class="row">
@@ -16,31 +21,31 @@
             <table class="table table-striped table-bordered">
                 <tbody>
                     <tr>
-                        <td>{% if profile %}<span class="text-danger glyphicon glyphicon-remove"></span>{% else %}<span class="text-success glyphicon glyphicon-ok"></span>{% endif %}</td>
+                        <td>{{ check_or_x(is_profile_incomplete) }}</td>
                         <td>Profile</td>
                     </tr>
                     <tr>
-                        <td>{% if personal_statement %}<span class="text-danger glyphicon glyphicon-remove"></span>{% else %}<span class="text-success glyphicon glyphicon-ok"></span>{% endif %}</td>
+                        <td>{{ check_or_x(is_personal_statement_incomplete) }}</td>
                         <td>Pt. 1: Personal Statement</td>
                     </tr>
                     <tr>
-                        <td>{% if projects %}<span class="text-danger glyphicon glyphicon-remove"></span>{% else %}<span class="text-success glyphicon glyphicon-ok"></span>{% endif %}</td>
+                        <td>{{ check_or_x(is_projects_incomplete) }}</td>
                         <td>Pt. 2: International, District &amp; Divisional Projects</td>
                     </tr>
                     <tr>
-                        <td>{% if involvement %}<span class="text-danger glyphicon glyphicon-remove"></span>{% else %}<span class="text-success glyphicon glyphicon-ok"></span>{% endif %}</td>
+                        <td>{{ check_or_x(is_involvement_incomplete) }}</td>
                         <td>Pt. 3: Involvement in Key Club Functions</td>
                     </tr>
                     <tr>
-                        <td>{% if activities %}<span class="text-danger glyphicon glyphicon-remove"></span>{% else %}<span class="text-success glyphicon glyphicon-ok"></span>{% endif %}</td>
+                        <td>{{ check_or_x(is_activities_incomplete) }}</td>
                         <td>Pt. 4: Projects, Advocacy &amp; Newsletters</td>
                     </tr>
                     <tr>
-                        <td>{% if other %}<span class="text-danger glyphicon glyphicon-remove"></span>{% else %}<span class="text-success glyphicon glyphicon-ok"></span>{% endif %}</td>
+                        <td>{{ check_or_x(is_other_incomplete) }}</td>
                         <td>Other &amp; Scoring</td>
                     </tr>
                     <tr>
-                        <td>{% if verification %}<span class="text-danger glyphicon glyphicon-remove"></span>{% else %}<span class="text-success glyphicon glyphicon-ok"></span>{% endif %}</td>
+                        <td>{{ check_or_x(is_verification_incomplete) }}</td>
                         <td>Verification</td>
                     </tr>
                 </tbody>
@@ -50,7 +55,10 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1 text-center">
             <p><em>The above checklist is only to help you see which sections you have <strong>not</strong> filled out. It is <strong>best</strong> for you to go over your application yourself before submitting it.</em></p>
-            <p class="lead">You can preview your application as a PDF <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf">here</a>.</p>
+            <p class="lead">
+                You can preview your application as a
+                <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf">PDF <span class="glyphicon glyphicon-save"></span></a>.
+            </p>
         </div>
     </div>
 
@@ -58,7 +66,7 @@
 
 {% if application.submit_time %}
     <div class="text-center">
-        <button type="submit" class="btn btn-primary btn-lg disabled">Your application has already been submitted!</a>
+        <button class="btn btn-primary btn-lg disabled">Your application has already been submitted!</a>
     </div>
 {% else %}
     <div class="text-center">
@@ -72,25 +80,37 @@
 <script>
 $('#submit-application').submit(function(e) {
     e.preventDefault();
-    swal({
+    sweetAlert({
         title: "Are you sure?",
         text: "You will not be able to edit your application once you submit!",
         type: "info",
         showCancelButton: true,
         confirmButtonColor: "#5cb85c",
         confirmButtonText: "Yes, Submit!",
-        allowOutsideClicl: true
     },
     function() {
         $.ajax({
             type: 'POST',
             url: '{{ application_url }}',
-            data: {'form-key': '{{ form_key }}'},
-            statusCode: {
-                200: function() { window.location = '/application/overview'; },
-                204: function() { alert("Your application is not completed!"); }
-            }
-        });
+        })
+         .done(function() {
+             window.location = '/application/overview';
+         })
+         .fail(function(xhr) {
+             var data = xhr.responseText;
+             switch (xhr.status) {
+                case 400:
+                    var message = data;
+                    try {
+                        message = JSON.parse(data)["message"];
+                    } catch (_) {}
+                    sweetAlert("Submission failed", message, "error");
+                    break;
+                default:
+                    sweetAlert("Submission failed", "Please refresh the page or try again later.", "error");
+                    break;
+                }
+             });
     });
 });
 </script>

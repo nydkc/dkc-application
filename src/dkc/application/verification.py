@@ -6,7 +6,6 @@ from flask_login import current_user, login_required
 from google.cloud import ndb
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import (
-    Content,
     CustomArg,
     From,
     HtmlContent,

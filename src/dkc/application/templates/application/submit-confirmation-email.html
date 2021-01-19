@@ -1,0 +1,55 @@
+{% set awards_cochairs = [
+    "Division 8 LTG AJ Zheng",
+    "Division 11 LTG Kiln Chen",
+] %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>DKC Application Submission Confirmation for {{ applicant.first_name }} {{ applicant.last_name }}</title>
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body style="font-family:Helvetica,Trebuchet MS,Arial,Sans-Serif;font-size:14px;">
+        <table style="min-width:480px;width:100%;max-width:800px;border:none;margin:auto;">
+            <tr>
+                <td style="border-bottom:#00aeef 4px ridge;">
+                    <table style="width:auto;margin:auto;padding:6px 0;">
+                        <tr>
+                            <td>
+                                <img src="https://dkc-application.nydkc.org/images/key-club-logo.png" style="height:70px;max-height:70px;width:70px;max-width:70px;padding-right:20px;" alt="Key Club Logo">
+                            </td>
+                            <td style="vertical-align:middle;">
+                                <h3 style="font-size:20px;font-family:'Century Gothic',Helvetica,Trebuchet MS,Arial,Sans-Serif;">New York District of Key Club International</h3>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="margin-bottom:18px;">Dear {{ applicant.first_name }} {{ applicant.last_name }},</p>
+                    <p>Congratulations! You have successfully submitted your DKC Application!</p>
+                    <p>This email serves as confirmation that you submitted on {{ application.submit_time | datetimeformat("%B %d, %Y at %I:%M %p %Z") }}.</p>
+                    <p>We thank you for an amazing year of service and we look forward to reading your application.</p>
+                    <hr>
+                </td>
+            </tr>
+            <tr>
+                <td style="color:#777;text-decoration:none;">
+                    <p style="margin-bottom:6px;">Yours in Care and Service,</p>
+                    <p style="margin:0;">
+                        {%- for cochair in awards_cochairs -%}
+                            {%- if loop.index0 != 0 -%}
+                                &nbsp;&amp;&nbsp;
+                            {%- endif -%}
+                            {{ cochair }}
+                        {%- endfor %}
+                        <br>{{ (settings.due_date | datetimeformat("%Y") | int - 1) ~ "-" ~ (settings.due_date | datetimeformat("%Y")) }} District Awards Committee Co-Chairs
+                        <br>New York District of Key Club International
+                        <br><a href="https://nydkc.org">https://nydkc.org</a> | <a href="https://dkc-app.nydkc.org">https://dkc-app.nydkc.org</a>
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

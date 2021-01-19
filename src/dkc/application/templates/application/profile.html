@@ -12,8 +12,8 @@
     {{ input_horizontal("email", "Email", applicant.email, disabled="disabled") }}
     {{ input_horizontal("grade", "Grade", application.grade, type="number", extra_attrs=["min=1", "max=12"]) }}
     {{ input_horizontal("address", "Home Address", application.address) }}
-    {{ input_horizontal("city", "City", application.city) }}
-    {{ input_horizontal("zip-code", "Zip Code", application.zip_code) }}
+    {{ input_horizontal("city", "Home City", application.city) }}
+    {{ input_horizontal("zip-code", "Home Zip Code", application.zip_code) }}
     {{ input_horizontal("phone-number", "Phone Number", application.phone_number, type="tel") }}
 
     {{ select_horizontal("division", "Division", application.division, [""] + division_options) }}
