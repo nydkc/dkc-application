@@ -1,15 +1,13 @@
 import io
+import os
 import logging
-from flask import render_template, send_file
+from flask import abort, render_template, request, send_file
+from flask_login import current_user
 from google.cloud import ndb
 from dkc.util import generate_pdf
+from dkc.auth.models import User
+from common.models import Settings
 from . import application_bp
-
-# from google.appengine.api import users
-# from dkc import *
-# from models import User
-
-# class PDFGeneration(BaseHandler):
 
 #     def get(self, user_id,):
 #         token = self.request.get("t")
@@ -39,33 +37,38 @@ from . import application_bp
 #                 self.display_message("%s %s, please do not attempt to access the applications of other applicants." % (applicant.first_name, applicant.last_name))
 #                 return
 
-#         config = ndb.Key(Settings, 'config').get()
-#         applicant = User.get_by_id(int(user_id))
-#         application = applicant.application.get()
-#         template_values = {
-#             'config': config,
-#             'applicant': applicant,
-#             'application': application,
-#             'STATIC_DIR': os.path.normpath(os.path.join(os.path.dirname(__file__), '../static'))
-#         }
-#         template = JINJA_ENVIRONMENT.get_template('pdf/application-pdf.html')
-#         html = template.render(template_values)
-#         #self.response.write(html)
-#         self.response.headers['content-type'] = 'application/pdf'
-#         self.response.write(generate_pdf(html))
 
-
-@application_bp.route("/download/pdf/<string:user_id>-<string:name>.pdf")
+@application_bp.route("/download/pdf/<int:user_id>-<string:name>.pdf")
 def download_pdf(user_id, name):
-    settings = {
-        "due_date": 2020,
-    }
-    applicant = {}
-    application = {}
+    applicant_key = ndb.Key(User, user_id)
+    token_key = request.args.get("t")
+    if token_key:
+        try:
+            token_key = ndb.Key(urlsafe=token_key.encode("utf-8"))
+        except:
+            logging.error("Could not decode key %s", token_key)
+            return abort(400, description="Invalid token")
+        # Check that token matches that of the application to download
+        if applicant_key != token_key.parent().parent():
+            return abort(401)
+    elif current_user is None or not current_user.is_authenticated:
+        # Anonymous access is not allowed
+        return abort(401)
+    elif current_user.key != applicant_key:
+        # Cannot access another user's application
+        return abort(403)
+
+    applicant = applicant_key.get()
+    application = applicant.application.get()
+    settings = ndb.Key(Settings, "config").get()
     template_values = {
         "settings": settings,
         "applicant": applicant,
         "application": application,
+        # TODO: use a more pythonic way of getting to the static dir (maybe using flask?)
+        "STATIC_DIR": os.path.normpath(
+            os.path.join(os.path.dirname(__file__), "../../static")
+        ),
     }
     filename = "{}.pdf".format(name)
     return send_file(

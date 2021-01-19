@@ -7,7 +7,7 @@
     <thead>
         <tr>
             <th style="width:40px;"></th>
-            <th>Source of Verification</th>
+            <th style="width:260px;">Source of Verification</th>
             <th>Email</th>
         </tr>
     </thead>
@@ -30,16 +30,8 @@
         <tr>
             <td>{% if application.verification_applicant %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
             <td>Applicant Verification</td>
-            <td>Verified on {{ application.verification_applicant_date|datetimeformat }}</td>
+            <td>Verified on {{ application.verification_applicant_date | datetimeformat("%B %d, %Y at %I:%M %p %Z") }}</td>
         </tr>
     </tbody>
 </table>
 </div>
-
-<div class="separator">&nbsp;</div>
-<hr>
-<div class="separator">&nbsp;</div>
-
-{% if application.submit_time %}
-<h4 class="text-center">This application was submitted on <br> {{ application.submit_time|datetimeformat }}.</h4>
-{% endif %}

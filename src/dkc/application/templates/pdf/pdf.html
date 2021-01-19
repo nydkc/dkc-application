@@ -205,8 +205,8 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
         <img src="{{ STATIC_DIR }}/images/key-club-logo.jpg" style="zoom: 40%">
         <h4 class="title-bottom text-center">
             {{ applicant.first_name }} {{ applicant.last_name }}
-            <br>{{ applicant.school }} Key Club
-            <br>New York District – Division {{ applicant.division }}
+            <br>{{ application.school }} Key Club
+            <br>New York District – Division {{ application.division }}
         </h4>
     </div>
 
@@ -247,6 +247,18 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     <pdf:nextpage />
 
     {% include "pdf/verification.html" %}
+
+    <div class="separator">&nbsp;</div>
+    <hr>
+    <div class="separator">&nbsp;</div>
+
+    {% if application.submit_time %}
+    <h4 class="text-center">
+        This application was submitted on
+        <br>{{ application.submit_time | datetimeformat("%B %d, %Y at %I:%M %p %Z") }}.
+    </h4>
+    {% endif %}
+
     <!-- <p>{{ application }}</p> -->
 </body>
 </html>
