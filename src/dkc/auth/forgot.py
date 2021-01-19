@@ -23,7 +23,7 @@ class ForgotPasswordHandler(BaseHandler):
 
         verification_url = self.uri_for('verification', type='p', user_id=user_id, signup_token=token, _full=True)
         logging.debug(verification_url)
-        
+
         mail.send_mail(sender="NYDKC Awards Committee <hello@dkc-app.appspotmail.com>",
                        to=user.email,
                        subject="Resetting your DKC Application Password",
@@ -82,3 +82,11 @@ class SetPasswordHandler(BaseHandler):
             'failures': 0
         }
         self.render_template('login.html', template_values)
+
+# from verify.py
+# if verification_type == 'p':
+#     self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
+#     template_values = {
+#         'token': signup_token
+#     }
+#     self.render_template('reset_password.html', template_values)

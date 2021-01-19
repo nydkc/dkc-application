@@ -1,15 +1,17 @@
 {% extends "layout.html" %}
-{% set title = 'LTG Verification' %}
 {% block body %}
 
 <div class="page-header text-center">
-    <h1>LTG Verification</h1>
+    <h1>{{ title }}</h1>
 </div>
 
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <p>Hello.</p>
-        <p>You have reached this page because a Distinguished Key Clubber applicant wishes to verify the information in his/her application with you. If any of the information is incorrect, please contact the individual to have him/her fix his/her application before agreeing to the terms outlined below.</p>
+        <p>To whom it may concern,</p>
+        <p>
+            You have reached this page because a Distinguished Key Clubber applicant wishes to verify the information in their application with you.
+            If any of the information is incorrect, please contact the individual to their application before agreeing to the terms outlined below.
+        </p>
 
         <div class="verification-information form-horizontal">
             <div class="form-group">
@@ -27,39 +29,32 @@
             <div class="form-group">
                 <label class="col-xs-6 control-label">Applicant School</label>
                 <div class="col-xs-6">
-                    <p class="form-control-static">{{ applicant.school|e }}</p>
+                    <p class="form-control-static">{{ application.school|e }}</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-6 control-label">Applicant Division</label>
                 <div class="col-xs-6">
-                    <p class="form-control-static">{{ applicant.division|e }}</p>
+                    <p class="form-control-static">{{ application.division|e }}</p>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-xs-6 control-label">Lieutenant Governor</label>
-                <div class="col-xs-6">
-                    <p class="form-control-static">{{ applicant.ltg|e }}</p>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-xs-6 control-label">Lieutenant Governor Email</label>
-                <div class="col-xs-6">
-                    <p class="form-control-static">{{ application.verification_ltg_email|e }}</p>
-                </div>
-            </div>
+            {% block verifier_information %}{% endblock %}
         </div>
 
-        <p class="lead">You may want to view the applicant's entire <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf?a={{ user_id }}&t={{ token }}">DKC application</a>.</p>
+        <p class="lead">
+            You may want to view the applicant's entire DKC Application as a
+            <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf?t={{ token_key }}">PDF <span class="glyphicon glyphicon-save"></span></a>.
+        </p>
+
+        <hr>
 
         <p>By verifying the application of {{ applicant.first_name|e }} {{ applicant.last_name|e }}, you agree upon the following terms:</p>
         <blockquote>
             I hereby affirm that all of the information included above is true and accurate to the best of my ability. If there should be any false or misleading information, this application is subject to being disqualified and appropriate disciplinary action will be taken.
         </blockquote>
 
-        <form role="form" action="/verification_success" method="post">
-            <input type="hidden" name="user-id" value="{{ user_id }}">
-            <input type="hidden" name="token" value="{{ token }}">
+        <form role="form" action="{{ verification_agree_url }}" method="post">
+            {{ form.csrf_token }}
             <button class="btn btn-primary btn-block">I agree</button>
         </form>
     </div>

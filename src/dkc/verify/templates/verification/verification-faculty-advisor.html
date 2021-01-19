@@ -1,0 +1,22 @@
+{% extends "verification/verification.html" %}
+{% set title = 'Faculty Advisor Verification' %}
+{% block verifier_information %}
+<div class="form-group">
+    <label class="col-xs-6 control-label">Faculty Advisor</label>
+    <div class="col-xs-6">
+        <p class="form-control-static">{{ application.faculty_advisor|e }}</p>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-xs-6 control-label">Faculty Advisor Phone Number</label>
+    <div class="col-xs-6">
+        <p class="form-control-static">{{ application.faculty_advisor_phone_number|e }}</p>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-xs-6 control-label">Faculty Advisor Email</label>
+    <div class="col-xs-6">
+        <p class="form-control-static">{{ application.verification_faculty_advisor_email|e }}</p>
+    </div>
+</div>
+{% endblock %}

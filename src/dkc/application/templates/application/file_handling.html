@@ -49,7 +49,7 @@
                             <div class="description">
                                 <span class="glyphicon glyphicon-upload"></span> Upload
                             </div>
-                            <div class="loader loader-sm"></div>
+                            <div class="loader loader-lg"></div>
                         </button>
                     </div>
                     <div class="col-md-12">
@@ -181,7 +181,6 @@ $('#upload-button').click(function(e) {
             }
             sweetAlert("File uploaded!", 'You have successfully uploaded "' + uploadedFilenames.join('", ') + '".', "success");
             clickableRows();
-            $('#upload-button').removeClass('loading');
             fadeOutProgressBar();
             resetUploadModal();
         })
@@ -200,8 +199,11 @@ $('#upload-button').click(function(e) {
                     sweetAlert("Unable to upload!", "Something has gone terribly wrong on our end. Please refresh the page or try again later.", "error");
                     break;
             }
-            $('#upload-button').removeClass('disabled').removeClass('loading');
+            $('#upload-button').removeClass('disabled');
             fadeOutProgressBar();
+        })
+        .always(function() {
+            $('#upload-button').removeClass('loading');
         });
     });
 });

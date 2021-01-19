@@ -266,10 +266,16 @@ input#district-projects-charity {
     margin-bottom: 9px;
 }
 
+.send-button {
+    min-width: 60px;
+}
+
+.send-button.loading .description,
 .upload-button.loading .description {
     display: none;
 }
 
+.send-button:not(.loading) .loader,
 .upload-button:not(.loading) .loader {
     display: none;
 }
@@ -387,8 +393,10 @@ input#district-projects-charity {
         margin-top: 60px;
     }
 }
-
 .loader.loader-sm {
+    font-size: 3.5px;
+}
+.loader.loader-lg {
     font-size: 4px;
 }
 .loader:before,

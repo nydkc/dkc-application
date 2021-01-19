@@ -20,7 +20,10 @@
     {% if not submitted %}
         <p>Please note that any changes that you make will be <strong>saved</strong> online.</p>
     {% endif %}
-        <p class="lead">You can download your application as a PDF <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf">here</a>.</p>
+        <p class="lead">
+            You can download your application as a
+            <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf">PDF <span class="glyphicon glyphicon-save"></span></a>.
+        </p>
     </div>
 
     <div class="panel-group" id="overview-sections">
