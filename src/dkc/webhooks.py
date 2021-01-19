@@ -1,0 +1,25 @@
+import json
+import logging
+from flask import Blueprint, request
+from dkc.verify.bounce import on_verification_bounce_event
+
+webhooks_bp = Blueprint("webhooks", __name__)
+
+@webhooks_bp.route('/sendgrid/event', methods=['POST'])
+def sendgrid_event():
+    email_events = json.loads(request.body)
+    for email_event in email_events:
+        if email_event['event'] == "bounce" or email_event['event'] == "dropped":
+            handle_bounced_event(email_event)
+        else:
+            logging.error("Received unrecognized Sendgrid event: %s", email_event)
+
+def handle_bounced_event(email_event):
+    if not email_event.has_key('purpose'):
+        logging.error("Received Sengrid event with no purpose: %s", email_event)
+        return
+
+    if email_event['purpose'] == 'verification':
+        on_verification_bounce_event(email_event)
+    else:
+        logging.error("Received Sendgrid event with unrecognized purpose: %s", email_event)
