@@ -7,12 +7,14 @@ def bounced_message(email):
 
 
 def on_verification_bounce_event(email_event):
-    assert email_event.has_key("purpose") == "verification"
-    if not email_event.has_key("application_key"):
+    assert email_event["dkc_purpose"] == "verification"
+    if "dkc_application_key" not in email_event:
         logging.error("No application key in bounced email: %s", email_event)
         return
 
-    application = ndb.Key(urlsafe=email_event["application_key"].encode("utf-8")).get()
+    application = ndb.Key(
+        urlsafe=email_event["dkc_application_key"].encode("utf-8")
+    ).get()
     applicant = application.key.parent().get()
     email_sent_to = email_event["email"]
 
@@ -25,11 +27,18 @@ def on_verification_bounce_event(email_event):
     if email_sent_to == application.verification_faculty_advisor_email:
         application.verification_faculty_advisor_sent = False
         application.verification_faculty_advisor_email = bounced_message(email_sent_to)
+    else:
+        logging.warning(
+            "Could not match failed send event to %s under user %s",
+            email_sent_to,
+            applicant.email,
+        )
+        return
 
     application.put()
 
     logging.error(
-        "Verification email sending failed for %s under user %s",
+        "Marked failure sending verification email to %s under user %s",
         email_sent_to,
         applicant.email,
     )

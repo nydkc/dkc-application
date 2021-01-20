@@ -142,8 +142,8 @@ def send_verification_email(
         html_content=HtmlContent(email_html),
     )
     message.custom_arg = [
-        CustomArg(key="application_key", value=application.key.urlsafe().decode("utf-8")),
-        CustomArg(key="purpose", value="verification"),
+        CustomArg(key="dkc_application_key", value=application.key.urlsafe().decode("utf-8")),
+        CustomArg(key="dkc_purpose", value="verification"),
     ]
 
     response = sg.client.mail.send.post(request_body=message.get())
