@@ -152,7 +152,9 @@ function selectInputOtherFieldExpand() {
         <select class="form-control" id="{{ name }}" name="{{ name }}" {{ disabled }}>
         {%- for choice in choices %}
             {%- if choice == '' %}
-            <option disabled selected value="{{ choice }}"></option>
+                {%- if selected == '' %}
+                    <option disabled selected value=''></option>
+                {%- endif %}
             {%- elif choice != "Other" %}
             <option value="{{ choice }}"{% if choice == selected %} selected{% endif %}>{{ choice }}</option>
             {%- endif %}

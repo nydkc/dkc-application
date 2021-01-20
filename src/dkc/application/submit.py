@@ -197,11 +197,12 @@ def check_submission_incomplete_status(applicant, application):
         )
     )
 
-    # Other is incomplete if all fields are empty
-    is_other_incomplete = all(
+    # Other is incomplete if any fields are empty
+    is_other_incomplete = any(
         map(
             is_empty_or_none,
             [
+                application.recommender_points,
                 application.outstanding_awards,
             ],
         )

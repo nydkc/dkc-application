@@ -11,7 +11,7 @@
             <p>A recommendation may be submitted by a club member, officer or faculty advisor for an extra 5 points. This recommendation should be no more than 150 words nominating you for the award. The recommendation must be signed by the writer. You can upload the recommendation at the bottom of this page.</p>
             <div class="form-horizontal row">
                 <div class="col-lg-5 col-md-6 col-md-offset-1">
-                    <strong>{{ checkbox("recommender-checkbox", "Yes I would like to apply these points to part:", application.recommender_points and application.recommender_points != 'No Recommendation') }}</strong>
+                    <strong>{{ checkbox("recommender-checkbox", "Yes, I would like to apply these points to part:", application.recommender_points and application.recommender_points != 'No Recommendation') }}</strong>
                 </div>
 
                 <div class="col-lg-3 col-md-4">
@@ -23,7 +23,7 @@
             <p>Are you applying for any of the Outstanding Officer/Member awards? The answer to this question is <strong>REQUIRED</strong> for anyone applying.</p>
             <div class="form-horizontal row">
                 <div class="col-lg-7 col-md-offset-1 col-md-8">
-                    {{ select_horizontal("outstanding-awards", "I am applying for ", application.outstanding_awards, ["n/a", "Outstanding Key Club Member","Outstanding Club President","Outstanding Club Vice-President","Outstanding Club Secretary","Outstanding Club Treasurer","Outstanding Club Bulletin Editor","Outstanding Club Webmaster"], size=4) }}
+                    {{ select_horizontal("outstanding-awards", "I am applying for ", application.outstanding_awards, ["", "n/a", "Outstanding Key Club Member","Outstanding Club President","Outstanding Club Vice-President","Outstanding Club Secretary","Outstanding Club Treasurer","Outstanding Club Bulletin Editor","Outstanding Club Webmaster"], size=4) }}
                 </div>
             </div>
         </li>
