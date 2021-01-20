@@ -23,7 +23,7 @@ def external_verification(token_key):
             token_key,
             type(token),
         )
-        return render_template("verification/error.html"), 400
+        return render_template("verification/error.html"), 403
 
     form = VerificationForm()
 
