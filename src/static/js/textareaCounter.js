@@ -11,7 +11,7 @@
         // $("textarea").textareaCounter({ limit: 100 });
         var defaults = {
             limit: 100
-        };  
+        };
         var options = $.extend(defaults, options);
 
         // and the plugin begins
@@ -35,7 +35,7 @@
                     $(this).val(limited);
                 } else {
                     $("#counter-text").html((options.limit - wordcount)+' words left');
-                } 
+                }
             });
         });
     };
