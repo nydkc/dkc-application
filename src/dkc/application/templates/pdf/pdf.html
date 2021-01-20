@@ -115,10 +115,9 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
 }
 
 .profile-table td {
-    padding: 0pt 4.6pt;
+    padding-left: 4.6pt;
     padding-top: 7pt;
     padding-bottom: 3pt;
-    width: 100%;
 }
 .profile-table tr {
     border-bottom: 1pt solid #eee;
@@ -149,7 +148,9 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
 }
 
 .key-club-week-table td {
-    padding: 2pt 4.6pt;
+    padding-left: 4.6pt;
+    padding-top: 2pt;
+    padding-bottom: 2pt;
 }
 .key-club-week-table .day {
     width: 150pt;
@@ -184,7 +185,11 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     padding-bottom: 3pt;
 }
 
+.other {
+    margin-top: 10pt;
+}
 .other h6 {
+    margin-top: 10pt;
     padding-bottom: 0pt;
     margin-bottom: 0pt;
 }
@@ -252,12 +257,14 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     <hr>
     <div class="separator">&nbsp;</div>
 
-    {% if application.submit_time %}
     <h4 class="text-center">
+    {% if application.submit_time %}
         This application was submitted on
         <br>{{ application.submit_time | datetimeformat("%B %d, %Y at %I:%M %p %Z") }}.
-    </h4>
+    {% else %}
+        DRAFT - This application has not been submitted.
     {% endif %}
+    </h4>
 
     <!-- <p>{{ application }}</p> -->
 </body>

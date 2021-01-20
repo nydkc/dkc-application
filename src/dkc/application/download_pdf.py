@@ -37,11 +37,8 @@ from . import application_bp
 #                 self.display_message("%s %s, please do not attempt to access the applications of other applicants." % (applicant.first_name, applicant.last_name))
 #                 return
 
-
-@application_bp.route("/download/pdf/<int:user_id>-<string:name>.pdf")
-def download_pdf(user_id, name):
-    applicant_key = ndb.Key(User, user_id)
-    token_key = request.args.get("t")
+def check_access(applicant_key, token_key):
+    """Checks that the token key or current user can view the application."""
     if token_key:
         try:
             token_key = ndb.Key(urlsafe=token_key.encode("utf-8"))
@@ -57,6 +54,12 @@ def download_pdf(user_id, name):
     elif current_user.key != applicant_key:
         # Cannot access another user's application
         return abort(403)
+
+@application_bp.route("/download/pdf/<int:user_id>-<string:name>.pdf")
+def download_pdf(user_id, name):
+    applicant_key = ndb.Key(User, user_id)
+    token_key = request.args.get("t")
+    check_access(applicant_key, token_key)
 
     applicant = applicant_key.get()
     application = applicant.application.get()
@@ -75,3 +78,23 @@ def download_pdf(user_id, name):
         io.BytesIO(generate_pdf(render_template("pdf/pdf.html", **template_values))),
         attachment_filename=filename,
     )
+
+
+@application_bp.route("/download/html/<int:user_id>-<string:name>.<string:ext>")
+def download_html(user_id, name, ext):
+    applicant_key = ndb.Key(User, user_id)
+    token_key = request.args.get("t")
+    check_access(applicant_key, token_key)
+
+    applicant = applicant_key.get()
+    application = applicant.application.get()
+    settings = ndb.Key(Settings, "config").get()
+    template_values = {
+        "settings": settings,
+        "applicant": applicant,
+        "application": application,
+        # TODO: use a more pythonic way of getting to the static dir (maybe using flask?)
+        "STATIC_DIR": "",
+    }
+    filename = "{}.pdf".format(name)
+    return render_template("pdf/pdf.html", **template_values)
