@@ -19,9 +19,9 @@
 ["Does Trick-or-Treat for UNICEF count as an event for Major Emphasis Service Partners?", "Trick-or-Treat for UNICEF should be listed as a Major Emphasis Service Partners project."],
 ["Can I submit articles to the Empire Key or Divisional Newsletters last minute?", "No."],
 ["My files fail to upload! What should I do?", "Please make sure that you are running the latest version of your browser or upgrade to a <a href=\"http://browsehappy.com\">supported browser.</a>"],
-["If I have any technical problems, who should I contact?", "Please send an email to the District Awards Committee (email is on the Overview tab when you log in) by <strong>8:00 PM EST</strong> on the night the application is due (" ~ settings.due_date | datetimeformat("%B %e, %Y") ~ "). Requests after this time may not be honored."],
+["If I have any technical problems, who should I contact?", "Please send an email to the District Awards Committee (email is on the Overview tab after logging in, under Additional Resources) by <strong>8:00 PM EST</strong> on the night the application is due (" ~ settings.due_date | datetimeformat("%B %e, %Y") ~ "). Requests after this time may not be honored."],
 ["Will my data be safe by using this online application?", "Yes, we try our best to make sure that none of your data is lost. This is done by automatically saving your application while you are filling it out and hosting it on a secure platform. However, we do recommend that you save your responses somewhere in the off-chance that something goes wrong."],
-["Who can I contact if I have any more questions?", "You should contact the District Awards Committee Member that is responsible for your division. Contact Information can be found when you log in on the Overview tab, Additional Resources."]
+["Who can I contact if I have any more questions?", "You should contact the District Awards Committee Member that is responsible for your division. Contact Information can be found when you log in on the Overview tab, under Additional Resources."]
 ] %}
 
 {% block body %}
@@ -67,27 +67,33 @@
         </div>
     </div>
     <div class="row panel-group" id="questions">
-    {% for column in faq|slice(2) -%}
-        <div class="col-md-6">
-            {% set outerloop = loop %}
-            {%- for question in column -%}
-            <div class="panel panel-default" id="qref-{{ outerloop.index0 * (faq|length + 1) // 2 + loop.index }}">
-                <div class="panel-heading">
-                    <div class="panel-title question">
-                        <a data-toggle="collapse" href="#faqquestion-{{ outerloop.index0 * (faq|length + 1) // 2 + loop.index }}">
-                            {{ question[0] | safe }}
-                        </a>
+        <div class="col-md-8 col-md-offset-2">
+            <div class="row">
+            {% set num_columns = 3 %}
+            {% set items_per_column = ((faq|length) / num_columns) | round(0, 'ceil') | int %}
+            {% for column in faq|slice(num_columns) -%}
+                <div class="col-md-{{ 12 // num_columns }}">
+                    {% set outerloop = loop %}
+                    {%- for question in column -%}
+                    <div class="panel panel-default" id="qref-{{ outerloop.index0 * items_per_column + loop.index }}">
+                        <div class="panel-heading">
+                            <div class="panel-title question">
+                                <a data-toggle="collapse" href="#faqquestion-{{ outerloop.index0 * items_per_column + loop.index }}">
+                                    {{ question[0] | safe }}
+                                </a>
+                            </div>
+                        </div>
+                        <div id="faqquestion-{{ outerloop.index0 * items_per_column + loop.index }}" class="panel-collapse collapse COLLAPSE-PLACEHOLDER">
+                            <div class="panel-body">
+                                {{ question[1] | safe }}
+                            </div>
+                        </div>
                     </div>
+                    {%- endfor -%}
                 </div>
-                <div id="faqquestion-{{ outerloop.index0 * (faq|length + 1) // 2 + loop.index }}" class="panel-collapse collapse COLLAPSE-PLACEHOLDER">
-                    <div class="panel-body">
-                        {{ question[1] | safe }}
-                    </div>
-                </div>
+            {%- endfor %}
             </div>
-            {%- endfor -%}
         </div>
-    {%- endfor %}
     </div>
     <div class="row">
         <div id="search-results" class="col-md-8 col-md-offset-2 panel-group"></div>
@@ -128,7 +134,7 @@ function searchFAQ() {
         $('#questions').slideUp();
         var results = idx.search(query);
         if (results.length == 0) {
-            $('#search-results').html('<div class="text-center"><p class="lead"><span class="glyphicon glyphicon-thumbs-down"></span><br>No questions matched your search. Try clarifying or continue typing...<br>Otherwise, please contact us at <a href="mailto:recognition@nydkc.org">recognition@nydkc.org</a></p></div>');
+            $('#search-results').html('<div class="text-center"><p class="lead"><span class="glyphicon glyphicon-thumbs-down"></span><br>No questions matched your search. Try clarifying or continue typing...</p></div>');
         }
         else {
             var entries = getEntries(results);
