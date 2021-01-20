@@ -4,7 +4,7 @@
 
 {% from 'application/personal-statement.html' import questions with context %}
 
-<div class="personal-statement-prompt"><i><b>Topic:</b> {{ questions[application.personal_statement_choice|int - 1][1] }}</i></div>
+<div class="personal-statement-prompt"><i><b>Topic:</b> {{ (questions | selectattr("0", "equalto", application.personal_statement_choice) | first)[1]  }}</i></div>
 
 {% autoescape false %}
 <div class="personal-statement-essay">{{ application.personal_statement | forceescape | replace('\n', '<br>') }}</div>
