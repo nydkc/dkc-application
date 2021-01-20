@@ -78,7 +78,9 @@ def send_submission_confirmation_email(applicant, application):
         html_content=HtmlContent(email_html),
     )
     message.custom_arg = [
-        CustomArg(key="dkc_application_key", value=application.key.urlsafe().decode("utf-8")),
+        CustomArg(
+            key="dkc_application_key", value=application.key.urlsafe().decode("utf-8")
+        ),
         CustomArg(key="dkc_purpose", value="submission_confirmation"),
     ]
 
@@ -173,6 +175,7 @@ def check_submission_incomplete_status(applicant, application):
     )
 
     # Activities is incomplete if all fields are empty
+    # or if newsletter/website submission is checked and there are no files attached
     is_activities_incomplete = all(
         map(
             is_empty_or_none,
@@ -195,9 +198,17 @@ def check_submission_incomplete_status(applicant, application):
                 application.scoring_reason_four,
             ],
         )
+    ) or (
+        (
+            application.divisional_newsletter
+            or application.district_newsletter
+            or application.district_website
+        )
+        and is_empty_or_none(application.newsletter_materials)
     )
 
     # Other is incomplete if any fields are empty
+    # or if recommendation is checked and there are no files attached
     is_other_incomplete = any(
         map(
             is_empty_or_none,
@@ -206,6 +217,9 @@ def check_submission_incomplete_status(applicant, application):
                 application.outstanding_awards,
             ],
         )
+    ) or (
+        application.recommender_points != "No Recommendation"
+        and is_empty_or_none(application.other_materials)
     )
 
     # Verification is incomplete if we have fewer than 2 external parties,

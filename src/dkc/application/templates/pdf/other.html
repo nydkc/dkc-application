@@ -4,10 +4,10 @@
 
 <div class="section">
 <ol class="other">
-{% if application.recommender_points in ["1","2","3","4"] %}
-    <li>I would like to receive 5 points on Part {{ application.recommender_points }} for submitting a recommendation.</li>
-{% else %}
+{% if application.recommender_points == "No Recommendation" %}
     <li>I do not have a recommendation.</li>
+{% else %}
+    <li>I would like to receive 5 points on Part {{ application.recommender_points }} for submitting a recommendation.</li>
 {% endif %}
 
 {% if "Outstanding" in application.outstanding_awards|e %}
