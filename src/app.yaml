@@ -54,7 +54,3 @@ handlers:
 
 env_variables:
     TZ: 'EST'
-
-skip_files:
-- ^(.*/)?.*\.pyc
-- .*\.DS_Store

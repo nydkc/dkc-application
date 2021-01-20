@@ -1,0 +1,26 @@
+# OS Junk
+.DS_Store
+
+# Text Editor Backup Files
+*.swp
+
+# C Compiled Files
+a.out
+
+# Python Compiled Files
+*.pyc
+
+# Pip Install Files
+*.so
+*.egg-info/
+*.dist-info/
+
+# Python Virtualenv
+/venv/
+
+# Git files
+.git/
+.gitignore
+
+# IDE files
+.vscode/
