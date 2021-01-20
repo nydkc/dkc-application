@@ -87,7 +87,9 @@ def handle_post(applicant, application):
 
 
 def create_verification_auth_token(application):
-    token = AuthToken(parent=application.key, type="v")
+    # Make call to allocate_ids to get randomly generated IDs
+    key = AuthToken.allocate_ids(parent=application.key, size=1)[0]
+    token = AuthToken(key=key, type="v")
     token_key = token.put()
     return token_key
 
