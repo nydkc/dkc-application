@@ -104,10 +104,12 @@ $('#submit-application').submit(function(e) {
                     try {
                         message = JSON.parse(data)["message"];
                     } catch (_) {}
-                    sweetAlert("Submission failed", message, "error");
+                    // Add artificial delay so that confirmation swal can close first
+                    setTimeout(function() { sweetAlert("Submission failed!", message, "error"); }, 250);
                     break;
                 default:
-                    sweetAlert("Submission failed", "Please refresh the page or try again later.", "error");
+                    // Add artificial delay so that confirmation swal can close first
+                    setTimeout(function() { sweetAlert("Submission failed!", "Please refresh the page or try again later.", "error"); }, 250);
                     break;
                 }
              });
