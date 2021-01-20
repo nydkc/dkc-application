@@ -24,7 +24,6 @@ handlers:
 - url: /images
   static_dir: static/images
   expiration: 14d
-  application_readable: true
 - url: /css
   static_dir: static/css
   expiration: 7d
@@ -34,12 +33,9 @@ handlers:
 - url: /fonts
   static_dir: static/fonts
   expiration: 30d
-  application_readable: true
 # - url: /cron/.*
 #   script: manage.cron.application
 #   login: admin
-# - url: /sendgrid.*
-#   script: dkc.bounce.application
 # # Separate admin paths that don't require a login
 # - url: /admin
 #   script: manage.views.application
@@ -51,9 +47,6 @@ handlers:
 #   script: manage.views.application
 #   secure: always
 #   login: admin
-# - url: /.*
-#   script: dkc.views.application
-#   secure: always
 
 # error_handlers:
 # - error_code: over_quota
