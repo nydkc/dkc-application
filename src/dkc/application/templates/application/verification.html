@@ -1,4 +1,4 @@
-{% extends "application/application.html" %}
+{% extends "application/_application.html" %}
 {% set title = 'Verification' %}
 {% macro verification_panel(type, email_field, button_id, has_verification, has_verification_sent, verification_email) -%}
 <div class="verification panel panel-{% if has_verification %}success{% else %}default{% endif %}">
