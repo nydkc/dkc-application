@@ -1,19 +1,18 @@
 {% extends "application/_application.html" %}
 {% set title = 'Personal Statement' %}
 {% set personal_statement_word_limit = 600 %}
+{% set questions = [
+    ["prompt-key-club-impact", "How has Key Club impacted your life? Describe a pivotal moment in your Key Club experience as part of your answer."],
+    ["prompt-unique-organization", "What makes Key Club a unique organization? How has Key Club affected your home, school, or community?"],
+    ["prompt-why-join", "Why did you join Key Club? How has your perspective on Key Club changed since you joined?"],
+    ["prompt-describe-key-club", "How do you describe Key Club to a non-Key Club member?"],
+] %}
 {% block application %}
 <form id="application" role="form" action="{{ application_url }}" method="post">
     <div class="page-header">
         <h2>Part I: Personal Statement <span class="text-nowrap">(120 Points)</span></h2>
     </div>
     <p>Please type your personal statement below to answer one of the following prompts. The personal statement must be between {{ personal_statement_word_limit // 2 }} to {{ personal_statement_word_limit }} words. Be sure to specify which prompt you are answering.</p>
-
-    {% set questions = [
-        ["prompt-key-club-impact", "How has Key Club impacted your life? Describe a pivotal moment in your Key Club experience as part of your answer."],
-        ["prompt-unique-organization", "What makes Key Club a unique organization? How has Key Club affected your home, school, or community?"],
-        ["prompt-why-join", "Why did you join Key Club? How has your perspective on Key Club changed since you joined?"],
-        ["prompt-describe-key-club", "How do you describe Key Club to a non-Key Club member?"],
-    ] %}
 
     {% for question in questions %}
         {{ radio("personal-statement-choice", label=question[1], value=question[0], checked=(question[0] == application.personal_statement_choice)) }}

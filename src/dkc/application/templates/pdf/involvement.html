@@ -68,5 +68,8 @@
 
 <div class="section">
 <h6>Section 3: Positions Held within Key Club</h6>
-<div class="positions-essay">{{ application.positions|e|replace('\n', '<br>') }}</div>
+
+{% autoescape false %}
+<div class="positions-essay">{{ application.positions | forceescape | replace('\n', '<br>') }}</div>
+{% endautoescape %}
 </div>
