@@ -33,13 +33,6 @@ def handle_post(applicant, application):
         )
         return
 
-    if request.form.get("early-submission-checkbox"):
-        application.early_submission_points = request.form.get(
-            "early-submission-points"
-        )
-    else:
-        application.early_submission_points = "Any section"
-
     if request.form.get("recommender-checkbox"):
         application.recommender_points = request.form.get("recommender-points")
     else:

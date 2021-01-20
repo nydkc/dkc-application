@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import Iterable
 from google.cloud import ndb
 from .timezone import UTC, Eastern
-# from models import Settings
 
 
 def datetimeformat(value, format="%B %d, %Y - %I:%M %p %Z"):
@@ -28,12 +27,14 @@ def toFileInfo(gcs_obj_ref_keys):
     file_infos = []
     for key in gcs_obj_ref_keys:
         obj_ref = key.get()
-        file_infos.append({
-            "key": obj_ref.key.urlsafe().decode("utf-8"),
-            "filename": obj_ref.filename,
-            "content_type": obj_ref.content_type,
-            "size": byteConversion(obj_ref.bytes_size),
-        })
+        file_infos.append(
+            {
+                "key": obj_ref.key.urlsafe().decode("utf-8"),
+                "filename": obj_ref.filename,
+                "content_type": obj_ref.content_type,
+                "size": byteConversion(obj_ref.bytes_size),
+            }
+        )
     return file_infos
 
 
@@ -80,11 +81,3 @@ def getVars(classobject):
         for attr in dir(classobject)
         if not callable(attr) and not attr.startswith("_")
     ]
-
-
-# def getEarlyStatus(value=None):
-#     config = ndb.Key(Settings, 'config').get()
-#     try:
-#         return datetime.now() < config.early_due_date
-#     except:
-#         return True

@@ -29,18 +29,11 @@ with db.context():
 
     ### Configuration options that can be loaded WITHOUT a restart. ###
 
-    # Specific due dates for applications (early, regular)
-    _EARLY_DUE_DATE = (
-        "February 16, 2018 - 04:59 AM"  # UTC Time (Subtract 5 to get US/Eastern)
-    )
-    _DUE_DATE = "February 16, 2018 - 04:59 AM"  # UTC Time
+    # Specific due dates for applications
+    _DUE_DATE = "February 16, 2018 - 04:59 AM"  # UTC Time (Subtract 5 to get US/Eastern)
     try:
-        _EARLY_DUE_DATE = config.early_due_date
         _DUE_DATE = config.due_date
     except:
-        config.early_due_date = datetime.strptime(
-            _EARLY_DUE_DATE, "%B %d, %Y - %I:%M %p"
-        )
         config.due_date = datetime.strptime(_DUE_DATE, "%B %d, %Y - %I:%M %p")
 
     # Used for bulk email sending

@@ -1,4 +1,3 @@
-from datetime import timezone
 from google.cloud import ndb
 from common.models import Settings
 from dkc.auth.models import AuthToken
@@ -33,14 +32,6 @@ class Application(ndb.Model):
     start_time = ndb.DateTimeProperty(auto_now_add=True)
     updated_time = ndb.DateTimeProperty(auto_now=True)
     submit_time = ndb.DateTimeProperty()
-
-    @ndb.model.ComputedProperty
-    def is_early_submission(self):
-        if self.submit_time is not None:
-            settings = ndb.Key(Settings, 'config').get()
-            return self.submit_time.replace(tzinfo=timezone.utc) < settings.early_due_date
-        else:
-            return False
 
     # Profile
     grade = ndb.StringProperty()
@@ -103,7 +94,6 @@ class Application(ndb.Model):
     other_projects = ndb.StructuredProperty(GeneralProject, repeated=True)
 
     # Other
-    early_submission_points = ndb.StringProperty()
     recommender_points = ndb.StringProperty()
     outstanding_awards = ndb.StringProperty()
     scoring_reason_two = ndb.TextProperty()

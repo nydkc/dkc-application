@@ -4,18 +4,6 @@
 
 <div class="section">
 <ol class="other">
-{% if application.submit_time %}
-    <li>
-    {% if application.early_submission %}
-        I would like to receive 5 points on Part {{ application.early_submission_points }} for submitting early.
-    {% else %}
-        I did not submit this application early.
-    {% endif %}
-    </li>
-{% else %}
-    <li>I have not yet submitted this application.</li>
-{% endif %}
-
 {% if application.recommender_points in ["1","2","3","4"] %}
     <li>I would like to receive 5 points on Part {{ application.recommender_points }} for submitting a recommendation.</li>
 {% else %}
