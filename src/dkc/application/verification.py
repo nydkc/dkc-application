@@ -59,6 +59,9 @@ def handle_post(applicant, application):
         token_key = create_verification_auth_token(application)
         if task == "ltg" and not application.verification_ltg:
             application.verification_ltg_email = request.form.get("ltg-email")
+            # delete the previous LTG token
+            if application.verification_ltg_token:
+                application.verification_ltg_token.delete()
             application.verification_ltg_token = token_key
             application.verification_ltg_sent = True
             verifier_email = application.verification_ltg_email
@@ -67,6 +70,9 @@ def handle_post(applicant, application):
             application.verification_club_president_email = request.form.get(
                 "club-president-email"
             )
+            # delete the previous club president token
+            if application.verification_club_president_token:
+                application.verification_club_president_token.delete()
             application.verification_club_president_token = token_key
             application.verification_club_president_sent = True
             verifier_name = "Club President " + application.club_president.title()
@@ -75,6 +81,9 @@ def handle_post(applicant, application):
             application.verification_faculty_advisor_email = request.form.get(
                 "faculty-advisor-email"
             )
+            # delete the previous faculty advisor token
+            if application.verification_faculty_advisor_token:
+                application.verification_faculty_advisor_token.delete()
             application.verification_faculty_advisor_token = token_key
             application.verification_faculty_advisor_sent = True
             verifier_name = "Faculty Advisor " + application.faculty_advisor.title()
