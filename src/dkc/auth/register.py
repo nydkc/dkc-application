@@ -12,8 +12,9 @@ from wtforms.widgets import PasswordInput
 from common.models import Settings
 from dkc import util
 from dkc.application.models import Application
-from . import auth_bp
+from .login_manager import anonymous_only
 from .models import User, UniqueUserTracking
+from . import auth_bp
 
 
 class RegistrationForm(FlaskForm):
@@ -67,6 +68,7 @@ def create_user_application(email: str, password: str, first_name: str, last_nam
 
 
 @auth_bp.route("/register", methods=["GET", "POST"])
+@anonymous_only
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():

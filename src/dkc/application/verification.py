@@ -19,6 +19,7 @@ from . import application_bp
 
 
 @application_bp.route("/verification", methods=["GET", "POST"])
+@login_required
 def verification():
     settings = ndb.Key(Settings, "config").get()
     applicant = current_user
