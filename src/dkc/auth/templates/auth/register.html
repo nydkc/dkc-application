@@ -1,25 +1,25 @@
 {% extends "layout.html" %}
 {% set title = 'Register' %}
-{% block body %}
-
-{% macro with_errors(field, use_glyph=false) %}
-    {% if field.errors %}
+{% macro with_errors(field, use_glyph=false) -%}
+    {%- if field.errors %}
         <div class="has-error">
-    {% elif form.errors %}
+    {%- elif form.errors %}
         <div class="has-success">
-    {% else %}
+    {%- else %}
         <div>
-    {% endif %}
-            {% set css_class = 'form-control ' + kwargs.pop('class', '') %}
+    {%- endif %}
+            {%- set css_class = 'form-control ' + kwargs.pop('class', '') %}
             {{ field(class=css_class, **kwargs) }}
-            {% if use_glyph %}
+            {%- if use_glyph %}
                 <span class="glyphicon form-control-feedback"></span>
-            {% endif %}
+            {%- endif %}
             <span class="help-block text-danger" {% if not field.errors %}style="display:none;"{% endif %}>
-                {% for error in field.errors %}{{ error|e }}{% endfor %}
+                {%- for error in field.errors %}{{ error|e }}{%- endfor %}
             </span>
         </div>
-{% endmacro %}
+{%- endmacro %}
+
+{% block body %}
 
 <div class="page-header text-center">
     <h1>Create an account</h1>

@@ -1,92 +1,91 @@
-import time, logging
-from webapp2_extras import auth, sessions
-from google.appengine.api import mail
-from dkc import *
-from models import *
+import json
+import logging
+from flask import abort, render_template, request, url_for
+from flask_wtf import FlaskForm, Recaptcha, RecaptchaField
+from wtforms.fields.html5 import EmailField
+from wtforms.validators import Email
+from google.cloud import ndb
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import (
+    CustomArg,
+    From,
+    HtmlContent,
+    Mail,
+    Subject,
+    To,
+)
+from common.models import Settings
+from .login_manager import anonymous_only
+from .models import User, AuthToken
+from . import auth_bp
 
-class ForgotPasswordHandler(BaseHandler):
 
-    def get(self):
-        self._serve_page()
+class ForgetForm(FlaskForm):
+    email = EmailField("email", [Email("Please enter a valid email address.")])
+    recaptcha = RecaptchaField(
+        validators=[Recaptcha(message="reCAPTCHA must be solved.")]
+    )
 
-    def post(self):
-        username = self.request.get('email')
 
-        user = self.user_model.get_by_auth_id(username)
-        if not user:
-            logging.info('Could not find any user entry for username %s', username)
-            self._serve_page(not_found=True)
-            return
+@auth_bp.route("/forgot", methods=["GET", "POST"])
+@anonymous_only
+def forgot():
+    form = ForgetForm()
+    template_values = {
+        "form": form,
+    }
 
-        user_id = user.get_id()
-        token = self.user_model.create_signup_token(user_id)
+    if form.validate_on_submit():
+        email = form.email.data
+        user = User.find_by_email(email)
+        if user is None:
+            logging.warning("Could not find any user for email: %s", email)
+            form.email.errors.append("No account found with email '%s'.".format(email))
+        else:
+            token_key = create_password_reset_auth_token(user)
+            send_password_reset_email(user, token_key)
+            template_values["forgot_email_sent_to"] = email
 
-        verification_url = self.uri_for('verification', type='p', user_id=user_id, signup_token=token, _full=True)
-        logging.debug(verification_url)
+    return render_template("auth/forgot.html", **template_values)
 
-        mail.send_mail(sender="NYDKC Awards Committee <hello@dkc-app.appspotmail.com>",
-                       to=user.email,
-                       subject="Resetting your DKC Application Password",
-                       reply_to="recognition@nydkc.org",
-                       body="""
-You have requested to change the password for your DKC Application.
 
-If you did not authorize this, then please disregard this email. Otherwise, click the link below to reset your password.
+def create_password_reset_auth_token(user):
+    key = AuthToken.allocate_ids(parent=user.key, size=1)[0]
+    token = AuthToken(key=key, type="p")
+    token_key = token.put()
+    return token_key
 
-<a href="%s">%s</a>
 
-If you have any questions or concerns, feel free to reply to this email and we will try our best to address them!
+def send_password_reset_email(user, token_key):
+    password_reset_url = url_for(
+        ".reset_password",
+        token_key=token_key.urlsafe().decode("utf-8"),
+        _external=True,
+    )
+    logging.debug("Generated password reset url for %s", user.email)
 
-Yours in spirit and service,
-The New York District Awards Committee
-                       """ % (verification_url, verification_url),
-                       html="""
-<h2>You have requested to change the password for your DKC Application.</h2>
-<p>If you did not authorize this, then please disregard this email. Otherwise, click the link below to reset your password.</p>
-<p><a href="%s">%s</a></p>
-<p>If you have any questions or concerns, feel free to reply to this email and we will try our best to address them!</p>
-<p>Yours in spirit and service,<br>
-The New York District Awards Committee</p>
-                       """ % (verification_url, verification_url)
+    template_values = {
+        "user": user,
+        "password_reset_url": password_reset_url,
+    }
+    email_html = render_template("auth/forgot-email.html", **template_values)
+
+    settings = ndb.Key(Settings, "config").get()
+    sg = SendGridAPIClient(api_key=settings.sendgrid_api_key)
+    message = Mail(
+        from_email=From("recognition@nydkc.org", "NYDKC Awards Committee"),
+        to_emails=To(user.email),
+        subject=Subject("Resetting your DKC Application Password"),
+        html_content=HtmlContent(email_html),
+    )
+    message.custom_arg = [
+        CustomArg(key="dkc_purpose", value="password_reset"),
+    ]
+
+    response = sg.client.mail.send.post(request_body=message.get())
+    if response.status_code != 202:
+        json_response = json.loads(response.body)
+        logging.error(
+            "Error sending email to %s: %s", message.to, json_response["errors"]
         )
-        self._serve_page(email_sent=True)
-
-    def _serve_page(self, not_found=False, email_sent=False):
-        username = self.request.get('username')
-        template_values = {
-            'email': username,
-            'not_found': not_found,
-            'email_sent': email_sent
-        }
-        self.render_template('forgot.html', template_values)
-
-class SetPasswordHandler(BaseHandler):
-
-    def get(self):
-        self.redirect('/forgot')
-
-    @user_required
-    def post(self):
-        password = self.request.get('password')
-        old_token = self.request.get('t')
-
-        user = self.user
-        user.set_password(password)
-        user.put()
-
-        self.user_model.delete_signup_token(user.get_id(), old_token)
-        self.auth.unset_session()
-
-        template_values = {
-            'changed': True,
-            'failures': 0
-        }
-        self.render_template('login.html', template_values)
-
-# from verify.py
-# if verification_type == 'p':
-#     self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
-#     template_values = {
-#         'token': signup_token
-#     }
-#     self.render_template('reset_password.html', template_values)
+        return abort(503)

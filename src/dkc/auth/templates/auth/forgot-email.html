@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Resetting your DKC Application Password</title>
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body style="font-family:Helvetica,Trebuchet MS,Arial,Sans-Serif;font-size:14px;">
+        <table style="min-width:480px;width:100%;max-width:800px;border:none;margin:auto;">
+            <tr>
+                <td style="border-bottom:#00aeef 4px ridge;">
+                    <table style="width:auto;margin:auto;padding:6px 0;">
+                        <tr>
+                            <td>
+                                <img src="https://dkc-application.nydkc.org/images/key-club-logo.png" style="height:70px;max-height:70px;width:70px;max-width:70px;padding-right:20px;" alt="Key Club Logo">
+                            </td>
+                            <td style="vertical-align:middle;">
+                                <h3 style="font-size:20px;font-family:'Century Gothic',Helvetica,Trebuchet MS,Arial,Sans-Serif;">New York District of Key Club International</h3>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="margin-bottom:18px;">Hello {{ user.first_name }} {{ user.last_name }},</p>
+                    <p>You have requested to change the password for your DKC Application registered with email: {{ user.email }}.</p>
+                    <p>If you did not authorize this, then please disregard this email. Otherwise, click the link below to reset your password.</p>
+                    <p style="margin-top:20px;margin-bottom:20px;">
+                        <a href="{{ password_reset_url }}">{{ password_reset_url }}</a>
+                    </p>
+                    <p>If you have any questions or concerns, feel free to reply to this email and we will try our best to address them!</p>
+                    <p>
+                        Yours in spirit and service,
+                        <br>The New York District Awards Committee
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

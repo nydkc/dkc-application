@@ -29,8 +29,12 @@ class User(ndb.Model, UserMixin):
         return cls.query().filter(cls.auth_credential_id == user_id).get()
 
     @classmethod
+    def find_by_email(cls, email: str):
+        return cls.query().filter(cls.email == email).get()
+
+    @classmethod
     def get_authenticated_user(cls, email: str, password: str):
-        user = cls.query().filter(cls.email == email).get()
+        user = cls.find_by_email(email)
         if user is None:
             return None
         if user.verify_password(password):
