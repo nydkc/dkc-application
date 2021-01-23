@@ -22,7 +22,7 @@ def personal_statement():
         "application_url": "/application/personal-statement",
         "settings": settings,
     }
-    return render_template("application/personal-statement.html", **template_values)
+    return render_template("application/personal_statement.html", **template_values)
 
 
 def handle_post(applicant, application):

@@ -88,6 +88,9 @@ def handle_post(applicant, application):
             application.verification_faculty_advisor_sent = True
             verifier_name = "Faculty Advisor " + application.faculty_advisor.title()
             verifier_email = application.verification_faculty_advisor_email
+        else:
+            logging.warning("Incompatible verification task for %s: %s", applicant.email, task)
+            return abort(400, description="Invalid verification task")
         send_verification_email(
             applicant, application, token_key, verifier_name, verifier_email
         )
