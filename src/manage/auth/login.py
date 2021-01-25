@@ -3,15 +3,15 @@ import logging
 import os
 from flask import abort, flash, redirect, request, url_for
 from .authlib_oauth import g_oauth
-from .login_manager import get_admin_user, login_admin_user, is_project_admin
+from .login_manager import get_current_admin_user, login_admin_user, is_project_admin
 from .models import AdminUser, OAuth2Token
 from . import auth_bp
 
 
 @auth_bp.route("/login")
 def login():
-    if get_admin_user():
-        return redirect(url_for("manage.index.index"))
+    if get_current_admin_user():
+        return redirect(url_for("manage.admin.overview"))
     return g_oauth.google.authorize_redirect(url_for(".oauth2callback", _external=True))
 
 
@@ -37,7 +37,7 @@ def oauth2callback():
             ),
         )
         login_admin_user(admin_user)
-        return redirect(url_for("manage.index.index"))
+        return redirect(url_for("manage.admin.overview"))
     else:
         logging.warning("Denied access to non-admin user: %s", email)
         flash(

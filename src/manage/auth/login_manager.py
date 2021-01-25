@@ -1,8 +1,9 @@
 # Note that we don't use flask-login in manage/ for admin users to avoid any
 # overlap with that of the DKC application users
 
+import functools
 import logging
-from flask import abort, session
+from flask import abort, g, redirect, session, url_for
 from common.iam import get_project_iam_policy
 from .authlib_oauth import refresh_oauth_token
 from .models import AdminUser
@@ -10,12 +11,27 @@ from .models import AdminUser
 ADMIN_ROLES = ["roles/owner", "roles/editor", "roles/viewer", "roles/browser"]
 
 
+def admin_login_required(f):
+    @functools.wraps(f)
+    def decorated_function(*args, **kwargs):
+        if get_current_admin_user() is None:
+            return redirect(url_for("manage.index.index"))
+        else:
+            return f(*args, **kwargs)
+
+    return decorated_function
+
+
 def login_admin_user(admin_user: AdminUser):
     admin_user.put()
     session["admin_user"] = admin_user.get_auth_id()
 
 
-def get_admin_user():
+def get_current_admin_user():
+    # Use application context cached value for the admin user
+    if "admin_user" in g:
+        return g.admin_user
+    # Otherwise, retrieve the admin user specified in the session
     if "admin_user" not in session:
         return None
     user = AdminUser.get_by_auth_id(session["admin_user"])
@@ -31,6 +47,8 @@ def get_admin_user():
             user.key.delete()
             logout_admin_user()
             return abort(403)
+    g.admin_user = user
+    return g.admin_user
 
 
 def logout_admin_user():

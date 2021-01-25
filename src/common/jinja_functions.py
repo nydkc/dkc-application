@@ -96,3 +96,7 @@ ADDITIONAL_JINJA_FILTERS = {
     "highlight_search": search,
     "getvars": getVars,
 }
+
+ADDITIONAL_JINJA_GLOBALS = {
+    "zip": zip
+}

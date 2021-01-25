@@ -5,7 +5,7 @@ from google.cloud import ndb
 from common.constants import GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, RECAPTCHA_SECRET, RECAPTCHA_SITE_KEY, SECRET_KEY
 from common.datastore import g_ndb_wsgi_middleware
 from common.flask_error_handlers import register_error_handlers_to
-from common.jinja_functions import JINJA_OPTIONS, ADDITIONAL_JINJA_FILTERS
+from common.jinja_functions import JINJA_OPTIONS, ADDITIONAL_JINJA_FILTERS, ADDITIONAL_JINJA_GLOBALS
 from dkc.auth.login_manager import g_login_manager
 from dkc.views import register_blueprints_to as register_dkc_blueprints_to
 from manage.auth.authlib_oauth import g_oauth
@@ -21,6 +21,7 @@ app.config['GOOGLE_CLIENT_SECRET'] = GOOGLE_OAUTH_CLIENT_SECRET
 
 app.jinja_options = JINJA_OPTIONS
 app.jinja_env.filters.update(ADDITIONAL_JINJA_FILTERS)
+app.jinja_env.globals.update(ADDITIONAL_JINJA_GLOBALS)
 app.config['EXPLAIN_TEMPLATE_LOADING'] = True
 
 # Match the 32MB request limit of AppEngine
