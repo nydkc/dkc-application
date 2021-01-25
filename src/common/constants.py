@@ -27,6 +27,15 @@ with db.context():
         config.recaptcha_secret = RECAPTCHA_SECRET
         config.recaptcha_site_key = RECAPTCHA_SITE_KEY
 
+    GOOGLE_OAUTH_CLIENT_ID = "Get a client ID at https://console.developers.google.com/apis/credentials"
+    GOOGLE_OAUTH_CLIENT_SECRET = "Get a client secret at https://console.developers.google.com/apis/credentials"
+    try:
+        GOOGLE_OAUTH_CLIENT_ID = config.google_oauth_client_id
+        GOOGLE_OAUTH_CLIENT_SECRET = config.google_oauth_client_secret
+    except:
+        config.google_oauth_client_id = GOOGLE_OAUTH_CLIENT_ID
+        config.google_oauth_client_secret = GOOGLE_OAUTH_CLIENT_SECRET
+
     ### Configuration options that can be loaded WITHOUT a restart. ###
 
     # Specific due dates for applications

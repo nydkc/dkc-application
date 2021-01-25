@@ -5,12 +5,11 @@ from flask import abort, request
 from flask_login import current_user, login_required
 from werkzeug.datastructures import FileStorage
 from google.cloud import exceptions, ndb, storage
+from common.gcs import gcs
 from common.jinja_functions import toFileInfo, byteConversion
 from common.models import Settings
 from .models import GCSObjectReference
 from . import application_bp
-
-gcs = storage.Client()
 
 MAX_ADVOCACY_UPLOAD_SIZE_BYTES = 10 * 1024 * 1024
 MAX_ADVOCACY_ITEMS = 5

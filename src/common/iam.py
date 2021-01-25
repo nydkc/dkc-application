@@ -1,9 +1,9 @@
 import os
-from google.cloud import storage
+import googleapiclient.discovery
 
 if os.getenv("GAE_ENV", "").startswith("standard"):
     # Production in the standard environment
-    gcs = storage.Client()
+    cloudresourcemanager = googleapiclient.discovery.build("cloudresourcemanager", "v1")
 else:
     # Local execution.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
@@ -18,4 +18,11 @@ The preferred service account is the AppEngine service account:
                 os.environ.get("GOOGLE_CLOUD_PROJECT", "dkc-app")
             )
         )
-    gcs = storage.Client()
+    cloudresourcemanager = googleapiclient.discovery.build("cloudresourcemanager", "v1")
+
+
+def get_project_iam_policy():
+    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT", "dkc-app")
+    request = cloudresourcemanager.projects().getIamPolicy(resource=project_id)
+    resp = request.execute()
+    return resp

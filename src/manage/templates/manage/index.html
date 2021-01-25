@@ -1,7 +1,18 @@
-{% extends "layout-full.html" %}
+{% extends "admin-layout.html" %}
 {% block body %}
 <div class="home-wrapper">
     <div class="home text-center">
+
+{%- with messages = get_flashed_messages(category_filter=["error"]) %}
+    {%- if messages %}
+        <div class="alert alert-danger">
+            {%- for message in messages %}
+                {{ message }}
+            {%- endfor %}
+        </div>
+    {%- endif %}
+{%- endwith %}
+
         <div class="title">
             <h1>DKC App Admin</h1>
         </div>

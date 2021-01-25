@@ -2,7 +2,7 @@ import re
 from datetime import datetime
 from typing import Iterable
 from google.cloud import ndb
-from .timezone import UTC, Eastern
+from common.timezone import UTC, Eastern
 
 
 def datetimeformat(value, format="%B %d, %Y - %I:%M %p %Z"):
@@ -81,3 +81,18 @@ def getVars(classobject):
         for attr in dir(classobject)
         if not callable(attr) and not attr.startswith("_")
     ]
+
+
+JINJA_OPTIONS = {
+    "extensions": ["jinja2.ext.autoescape"],
+}
+
+ADDITIONAL_JINJA_FILTERS = {
+    "datetimeformat": datetimeformat,
+    "byteconvert": byteConversion,
+    "to_file_info": toFileInfo,
+    "split_string": splitString,
+    "split_regex": splitRegex,
+    "highlight_search": search,
+    "getvars": getVars,
+}
