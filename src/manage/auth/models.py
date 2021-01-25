@@ -1,11 +1,16 @@
+import time
 from google.cloud import ndb
 
 
 class OAuth2Token(ndb.Model):
     provider = ndb.StringProperty(default="google")
+    token_type = ndb.StringProperty()
     access_token = ndb.StringProperty()
     refresh_token = ndb.StringProperty()
-    expires_at = ndb.DateTimeProperty()
+    expires_at = ndb.IntegerProperty()
+
+    def requires_refresh(self) -> bool:
+        return self.expires_at < time.time()
 
 
 class AdminUser(ndb.Model):

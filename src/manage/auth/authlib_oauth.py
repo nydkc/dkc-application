@@ -6,7 +6,6 @@ if os.getenv("GAE_ENV", "").startswith("standard"):
     # Production in the standard environment
     g_oauth = OAuth()
 else:
-    os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "true"
     g_oauth = OAuth()
 
 g_oauth.register(
@@ -18,6 +17,21 @@ g_oauth.register(
         "access_type": "offline",
     },
     client_kwargs={
-        "scope": "email",
+        "scope": "profile email",
     },
 )
+
+
+def refresh_oauth_token(token):
+    if token.provider == "google":
+        oauth2_session = g_oauth.google._get_oauth_client()
+        new_token = oauth2_session.refresh_token(
+            g_oauth.google.access_token_url, refresh_token=token.refresh_token
+        )
+        assert token.refresh_token == new_token["refresh_token"]
+        token.access_token = new_token["access_token"]
+        token.expires_at = new_token["expires_at"]
+    else:
+        raise NotImplementedError(
+            "Cannot refresh token with provider: {}".format(token.provider)
+        )
