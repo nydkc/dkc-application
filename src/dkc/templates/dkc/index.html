@@ -35,10 +35,10 @@
 
         <img src="/images/key-club-logo.png">
 
-    {% if current_user.is_authenticated %}
+    {%- if current_user.is_authenticated %}
         <h4>Logged in as: {{ current_user.email }}</h4>
         <a class="btn btn-warning btn-block" href="/application">Access your application</a>
-    {% else %}
+    {%- else %}
         <div class="row">
             <div class="col-sm-6">
                 <a class="btn btn-success btn-block" href="/login">Login</a>
@@ -47,7 +47,7 @@
                 <a class="btn btn-info btn-block" href="/register">Create an account</a>
             </div>
         </div>
-    {% endif %}
+    {%- endif %}
         <a class="btn btn-primary btn-block" href="#faq">Frequently Asked Questions</a>
     </div>
 </div>

@@ -1,8 +1,11 @@
 import json
 import logging
 import os
-from flask import abort, flash, redirect, request, session, url_for
+from datetime import datetime, timedelta
+from flask import abort, flash, redirect, request, url_for
 from common.iam import get_project_iam_policy
+from .login_manager import get_admin_user, login_admin_user
+from .models import AdminUser, OAuth2Token
 from .authlib_oauth import g_oauth
 from . import auth_bp
 
@@ -11,6 +14,8 @@ ADMIN_ROLES = ["roles/owner", "roles/editor", "roles/viewer", "roles/browser"]
 
 @auth_bp.route("/login")
 def login():
+    if get_admin_user():
+        return redirect(url_for("manage.admin.test"))
     return g_oauth.google.authorize_redirect(url_for(".oauth2callback", _external=True))
 
 
@@ -22,8 +27,19 @@ def oauth2callback():
     email = profile["email"]
     if is_project_admin(email):
         logging.info("User logged in to admin route: %s", email)
-        session["admin_credentials"] = token
-        session["admin_profile"] = profile
+        # Everytime an admin user goes through the OAuth2 flow, we store their refresh tokens
+        admin_user = AdminUser(
+            email=profile["email"],
+            picture_url=profile["picture"],
+            oauth2_token=OAuth2Token(
+                provider="google",
+                access_token=token["access_token"],
+                refresh_token=token["refresh_token"],
+                expires_at=(datetime.now() + timedelta(seconds=token["expires_in"])),
+            ),
+        )
+        admin_user.put()
+        login_admin_user(admin_user)
         return redirect(url_for("manage.index.index"))
     else:
         logging.warning("Denied access to non-admin user: %s", email)

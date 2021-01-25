@@ -14,9 +14,10 @@ g_oauth.register(
     access_token_url="https://oauth2.googleapis.com/token",
     access_token_params=None,
     authorize_url="https://accounts.google.com/o/oauth2/auth",
-    authorize_params=None,
+    authorize_params={
+        "access_type": "offline",
+    },
     client_kwargs={
         "scope": "email",
-        "access_type": "offline",
     },
 )
