@@ -21,14 +21,14 @@
         </thead>
         <tbody>
             {%- for applicant, application in zip(all_applicants, all_applications) %}
-            <tr class="clickable-row {% if application.graded %}graded-row{% endif %}" href="/admin/show/{{ applicant.key.id() }}">
+            <tr class="clickable-row {% if application.graded %}graded-row{% endif %}" href="/admin/show/{{ applicant.email }}">
                 <td>{{ application.division|e }}</td>
                 <td>{{ applicant.first_name|e }}</td>
                 <td>{{ applicant.last_name|e }}</td>
                 <td class="hidden-sm">{{ applicant.email|e }}</td>
                 <td>
                     {%- if application.submit_time -%}
-                        {%- if application.submit_time < settings.due_date -%}
+                        {%- if application.submit_time < settings.due_date.replace(tzinfo=None) -%}
                             <span class="text-success"><span class="glyphicon glyphicon-ok"></span><span class="hidden for-sorting">0</span> On Time</span>
                         {%- else -%}
                             <span class="text-warning"><span class="glyphicon glyphicon-ok"></span><span class="hidden for-sorting">1</span> Late</span>

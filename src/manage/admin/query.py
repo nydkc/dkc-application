@@ -4,13 +4,13 @@ from dkc.application.models import Application
 # from manage import *
 # from dkc.models import *
 
-# def get_application_by_email(email):
-#     applicant = User.get_by_auth_id(email)
-#     if applicant:
-#         application = applicant.application.get()
-#         return applicant, application
-#     else:
-#         return None, None
+def find_applicant_and_application_by_email(email):
+    user = User.find_by_email(email)
+    if not user:
+        return None, None
+    applicant = user
+    application = applicant.application.get()
+    return applicant, application
 
 # def get_all_applicants():
 #     applicants = memcache.get('all_applicants')
@@ -35,13 +35,6 @@ from dkc.application.models import Application
 #     applications_keys = [a.application for a in applicants if a.application is not None]
 #     applications = ndb.get_multi(applications_keys)
 #     return applicants, applications
-
-# class OverviewApplication():
-#     def __init__(self, submit_time, early_submission, outstanding_awards, graded):
-#         self.submit_time = submit_time
-#         self.early_submission = early_submission
-#         self.outstanding_awards = outstanding_awards
-#         self.graded = graded
 
 def get_all_overview():
     applicants_query = User.query()

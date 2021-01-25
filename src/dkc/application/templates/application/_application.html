@@ -46,7 +46,6 @@ function submitApplication(e) {
         })
         .done(function(data) {
             $('#updated-text').addClass('text-success').removeClass('text-danger').text('Application updated!');
-            $('#submit').button('reset');
             formData = newData;
             if (e.data == 'click') {
                 sweetAlert("Application updated!", "All your information has successfully been saved.", "success");
@@ -54,10 +53,12 @@ function submitApplication(e) {
         })
         .fail(function(data) {
             $('#updated-text').addClass('text-danger').removeClass('text-success').text('Update failed... are you connected to the internet?');
-            $('#submit').button('reset');
             if (e.data == 'click') {
                 sweetAlert("Update failed!", "It appears that you are not connected to the internet.", "error");
             }
+        })
+        .always(function() {
+            $('#submit').button('reset');
         });
     }
     else {
