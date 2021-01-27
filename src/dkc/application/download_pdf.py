@@ -4,7 +4,7 @@ import logging
 from flask import abort, render_template, request, send_file
 from flask_login import current_user
 from google.cloud import ndb
-from dkc.util import generate_pdf
+from common.util import generate_pdf
 from dkc.auth.models import User, AuthToken
 from common.models import Settings
 from . import application_bp

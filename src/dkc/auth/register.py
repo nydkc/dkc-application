@@ -10,7 +10,6 @@ from wtforms.validators import Email, EqualTo, InputRequired, Length
 from wtforms.widgets import PasswordInput
 
 from common.models import Settings
-from dkc import util
 from dkc.application.models import Application
 from .login_manager import anonymous_only
 from .models import User, UniqueUserTracking

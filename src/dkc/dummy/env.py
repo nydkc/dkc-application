@@ -2,7 +2,7 @@ import html
 import io
 import os
 from flask import request, make_response, render_template, send_file
-from dkc.util import generate_pdf
+from common.util import generate_pdf
 from . import dummy_bp
 
 
