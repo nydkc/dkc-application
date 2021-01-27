@@ -1,0 +1,58 @@
+{% extends "admin/_admin.html" %}
+{% set title = 'Settings' %}
+
+{% macro input(name, label='', value='', type='text', disabled='', size='', placeholder='') -%}
+<div class="form-group">
+    {% if label != '' %}<label for="{{ name }}">{{ label }}</label>{% endif %}
+    <input type="{{ type }}" class="form-control {% if size %}{{ size }}{% endif %}" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" placeholder="{{ placeholder }}" {{ disabled }} autocomplete="off">
+</div>
+{%- endmacro %}
+{% block admin %}
+<div class="page-header">
+    <h2>Settings</h2>
+</div>
+
+<form role="form" method="post">
+    {{ input("due_date", "Due Date", value=(settings.due_date | datetimeformat), placeholder=(current_time | datetimeformat)) }}
+    <small>
+        You can upload the Awards Booklet to
+        <a href="https://console.cloud.google.com/storage/browser/{{ settings.gcs_bucket }}">https://console.cloud.google.com/storage/browser/{{ settings.gcs_bucket }}</a>
+        and paste the public link below.
+    </small>
+    {{ input("awards_booklet_url", "Awards Booklet URL", value=settings.awards_booklet_url, placeholder="https://.../...pdf") }}
+
+    <hr>
+
+    {{ input("secret_key", "Secret Key", value=settings.secret_key, placeholder="Enter a long secret key used for protecting resources", disabled="readonly") }}
+    <div class="row">
+        <div class="col-md-6">
+            {{ input("google_oauth_client_id", "Google OAuth Client ID", settings.google_oauth_client_id, disabled="readonly") }}
+        </div>
+        <div class="col-md-6">
+            {{ input("google_oauth_client_secret", "Google OAuth Client Secret", settings.google_oauth_client_secret, disabled="readonly") }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ input("recaptcha_site_key", "Recaptcha Site Key", settings.recaptcha_site_key, disabled="readonly") }}
+        </div>
+        <div class="col-md-6">
+            {{ input("recaptcha_secret", "Recaptcha Secret", settings.recaptcha_secret, disabled="readonly") }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ input("sendgrid_username", "Sendgrid Username", settings.sendgrid_username, disabled="readonly") }}
+        </div>
+        <div class="col-md-6">
+            {{ input("sendgrid_password", "Sendgrid Password", settings.sendgrid_password, type="password", disabled="readonly") }}
+        </div>
+        <div class="col-md-12">
+            {{ input("sendgrid_api_key", "Sendgrid API Key", settings.sendgrid_api_key, disabled="readonly") }}
+        </div>
+    </div>
+    {{ input("gcs_bucket", "GCS Bucket for uploaded material", settings.gcs_bucket, disabled="readonly") }}
+
+    <button type="submit" class="btn btn-default">Update</button>
+</form>
+{% endblock %}
