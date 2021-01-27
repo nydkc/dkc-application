@@ -15,6 +15,7 @@ g_oauth.register(
     authorize_url="https://accounts.google.com/o/oauth2/auth",
     authorize_params={
         "access_type": "offline",
+        "prompt": "consent",
     },
     client_kwargs={
         "scope": "profile email",
