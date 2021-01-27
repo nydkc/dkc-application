@@ -27,7 +27,7 @@ def login_admin_user(admin_user: AdminUser):
     session["admin_user"] = admin_user.get_auth_id()
 
 
-def get_current_admin_user():
+def get_current_admin_user() -> AdminUser:
     # Use application context cached value for the admin user
     if "admin_user" in g:
         return g.admin_user
