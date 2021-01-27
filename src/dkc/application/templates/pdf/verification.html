@@ -30,7 +30,13 @@
         <tr>
             <td>{% if application.verification_applicant %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
             <td>Applicant Verification</td>
-            <td>Verified on {{ application.verification_applicant_date | datetimeformat("%B %d, %Y at %I:%M %p %Z") }}</td>
+            <td>
+                {%- if application.verification_applicant -%}
+                    Verified on {{ application.verification_applicant_date | datetimeformat("%B %d, %Y at %I:%M %p %Z") }}
+                {%- else -%}
+                    No self verification recorded.
+                {%- endif -%}
+            </td>
         </tr>
     </tbody>
 </table>

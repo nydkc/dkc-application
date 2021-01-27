@@ -438,7 +438,7 @@
                 <td>Applicant Verification</td>
                 <td>
                     {%- if application.verification_applicant -%}
-                        Verified on {{ application.verification_applicant_date|datetimeformat }}
+                        Verified on {{ application.verification_applicant_date | datetimeformat("%B %d, %Y at %I:%M %p %Z") }}
                     {%- else -%}
                         No self verification recorded.
                     {%- endif -%}
