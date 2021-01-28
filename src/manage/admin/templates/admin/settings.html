@@ -21,6 +21,13 @@
     </small>
     {{ input("awards_booklet_url", "Awards Booklet URL", value=settings.awards_booklet_url, placeholder="https://.../...pdf") }}
 
+    <div>
+        <h5>Admin User Management</h5>
+        You can add/remove admin users at
+        <a href="https://console.cloud.google.com/iam-admin/iam?project=dkc-app">https://console.cloud.google.com/iam-admin/iam?project=dkc-app</a>
+        by adding them as a "Viewer".
+    </div>
+
     <hr>
 
     {{ input("secret_key", "Secret Key", value=settings.secret_key, placeholder="Enter a long secret key used for protecting resources", disabled="readonly") }}
