@@ -36,7 +36,7 @@
 <h6>Section 2: Attendance at Key Club Functions</h6>
 <table class="attendance-table">
     <tbody>
-        <tr>
+      {#  <tr>
             <td style="width:40pt;">{% if application.attendance_dtc %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
             <td>Divisional Training Conference/Personal Training</td>
         </tr>
@@ -59,6 +59,31 @@
         <tr>
             <td>{% if application.attendance_icon %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
             <td>International Convention</td>
+        </tr>  #}
+        
+        <tr>
+            <td style="width:40pt;">{% if application.attendance_dtc %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
+            <td>Virtual Engagement Webinar</td>
+        </tr>
+        <tr>
+            <td>{% if application.attendance_fall_rally %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
+            <td>Recruitment & Retention Webinar</td>
+        </tr>
+        <tr>
+            <td>{% if application.attendance_kamp_kiwanis %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
+            <td>Kamp Kiwanis</td>
+        </tr>
+        <tr>
+            <td>{% if application.attendance_key_leader %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
+            <td>Key Leader</td>
+        </tr>
+        <tr>
+            <td>{% if application.attendance_ltc %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
+            <td>Fall Virtual District Training Conference</td>
+        </tr>
+        <tr>
+            <td>{% if application.attendance_icon %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
+            <td>Key Club International Summer Leadership Summit</td>
         </tr>
     </tbody>
 </table>
