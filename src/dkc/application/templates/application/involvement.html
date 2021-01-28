@@ -29,6 +29,16 @@
     <p>If you attended any of the following conferences or programs, please indicate which programs by checking the boxes below. Only check off ones that you attended in the {{ settings.due_date | datetimeformat("%Y") | int - 1 }} - {{ settings.due_date | datetimeformat("%Y") }} service year.</p>
     <div class="row">
         <div class="col-sm-11 col-sm-offset-1">
+            {# This was the original value before 2021
+            
+            {{ checkbox("attendance-dtc", "(5 points) Divisional Training Conference/Personal Training", application.attendance_dtc) }}
+            {{ checkbox("attendance-fall-rally", "(5 points) Fall Rally", application.attendance_fall_rally) }}
+            {{ checkbox("attendance-kamp-kiwanis", "(5 points) Kamp Kiwanis", application.attendance_kamp_kiwanis) }}
+            {{ checkbox("attendance-key-leader", "(5 points) Key Leader", application.attendance_key_leader) }}
+            {{ checkbox("attendance-ltc", "(7 points) Leadership Training Conference", application.attendance_ltc) }}
+            {{ checkbox("attendance-icon", "(8 points) International Convention", application.attendance_icon) }}
+            #}
+            
             {{ checkbox("attendance-dtc", "(5 points) Divisional Training Conference/Personal Training", application.attendance_dtc) }}
             {{ checkbox("attendance-fall-rally", "(5 points) Fall Rally", application.attendance_fall_rally) }}
             {{ checkbox("attendance-kamp-kiwanis", "(5 points) Kamp Kiwanis", application.attendance_kamp_kiwanis) }}
