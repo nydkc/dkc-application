@@ -197,6 +197,7 @@
 <div class="table-responsive">
     <table class="table table-bordered">
         <tbody>
+            {#
             <tr>
                 <td class="col-xs-2 text-center">{% if application.attendance_dtc %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
                 <td>(5 points) Divisional Training Conference/Personal Training</td>
@@ -220,6 +221,31 @@
             <tr>
                 <td class="col-xs-2 text-center">{% if application.attendance_icon %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
                 <td>(8 points) International Convention</td>
+            </tr>
+            #}
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_dtc %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Virtual Engagement Webinar</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_fall_rally %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) REcruitment & Retention Webinar</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_kamp_kiwanis %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Kamp Kiwanis</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_key_leader %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Key Leader</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_ltc %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(7 points) Fall Virtual District Training Conference</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_icon %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(8 points) Key Club International Summmer Leadership Summit</td>
             </tr>
         </tbody>
     </table>
