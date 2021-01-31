@@ -92,10 +92,6 @@ mark, .mark {
     margin-bottom: 4px;
 }
 
-.dl-horizontal.projects {
-
-}
-
 .tooltip-trigger {
     padding-right: 45px;
 }
@@ -115,17 +111,10 @@ hr.separator {
 
 #notetaking {
     position: fixed;
-    right: 5px;
     width: 300px;
     margin-bottom: 0;
     opacity: .9;
     z-index: 100;
-}
-
-#notetaking.small {
-    left: 0 !important;
-    right: auto;
-    width: 100%;
 }
 
 #notetaking .panel-heading,
@@ -180,5 +169,15 @@ hr.separator {
     }
     .dl-horizontal.profile dd {
         margin-left: 45%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    #notetaking {
+        left: 0 !important;
+        top: unset !important;
+        bottom: 0 !important;
+        right: auto;
+        width: 100%;
     }
 }

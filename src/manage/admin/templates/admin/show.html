@@ -525,16 +525,17 @@ function setupGraded() {
 }
 
 $('#notetaking').css('top', ($(window).height() - $('#notetaking').height() - 5) + 'px');
+$('#notetaking').css('left', ($(window).width() - $('#notetaking').width() - 5) + 'px');
 function setupNotetaking() {
     if ($(window).width() >= 768) {
         $('.admin').removeAttr("style");
         $('#notetaking').removeClass("small");
-        $('#notetaking').mousedown(handle_mousedown);
+        $('#notetaking').mousedown(handle_mousedown_dragging);
     }
     else {
         $('.admin').css('padding-bottom', $('#notetaking').height() + 20);
-        $('#notetaking').unbind("mousedown");
         $('#notetaking').addClass("small");
+        $('#notetaking').unbind("mousedown");
     }
 }
 $('#notetaking .close').click(function () {
@@ -543,12 +544,11 @@ $('#notetaking .close').click(function () {
 });
 $('#notetaking-button').click(function() {
     $('#notetaking').fadeIn();
-    $(this).fadeOut();
+    $('#notetaking-button').fadeOut();
 });
 
 var notes = $('#notes').val();
 function saveNotes(e) {
-    console.log(e);
     $('#save-notes-button').button('loading');
     var newNotes = $('#notes').val();
     if (notes != newNotes) {
@@ -579,7 +579,7 @@ function saveNotes(e) {
     }
     return false;
 }
-$('#notetaking #save-notes-button').click('click', saveNotes);
+$('#save-notes-button').click('click', saveNotes);
 setInterval(function() {
     saveNotes('auto');
 }, 1*60*1000);

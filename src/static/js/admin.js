@@ -10,7 +10,7 @@ $(document).ready(function() {
 });
 
 /* Used for dragging an element without the use of JQuery UI */
-function handle_mousedown(e) {
+function handle_mousedown_dragging(e) {
     window.my_dragging = {};
     my_dragging.pageX0 = e.pageX;
     my_dragging.pageY0 = e.pageY;
