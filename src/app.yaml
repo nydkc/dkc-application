@@ -53,4 +53,4 @@ handlers:
 #   file: error_pages/over_quota.html
 
 env_variables:
-    TZ: 'EST'
+    TZ: 'UTC'
