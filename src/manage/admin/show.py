@@ -10,7 +10,7 @@ from . import admin_bp
 @admin_login_required
 def show(email):
     settings = ndb.Key(Settings, "config").get()
-    applicant, application = query.find_applicant_and_application_by_email(email)
+    applicant, application = query_helpers.find_applicant_and_application_by_email(email)
     template_values = {
         "email": email,
         "applicant_id": applicant.key.id(),
