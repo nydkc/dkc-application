@@ -41,6 +41,6 @@ def get_all_lists():
     all_applications = ndb.get_multi(application_keys)
     return all_applicants, all_applications
 
-# def run_gql(querystring):
-#     query = ndb.gql(querystring)
-#     return query.fetch()
+def run_gql(querystring):
+    gql_query = ndb.gql(querystring)
+    return gql_query.fetch()

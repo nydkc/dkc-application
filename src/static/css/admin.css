@@ -156,8 +156,7 @@ hr.separator {
 
 #query-results {
     margin-top: 20px;
-    height: 500px;
-    overflow: scroll;
+    min-height: 500px;
     border: 1px #ccc solid;
     padding: 10px;
     word-break: break-word;

@@ -2,7 +2,7 @@ from flask import render_template
 from google.cloud import ndb
 from common.models import Settings
 from manage.auth.login_manager import admin_login_required, get_current_admin_user
-from . import query
+from . import query_helpers
 from . import admin_bp
 
 
@@ -11,7 +11,7 @@ from . import admin_bp
 @admin_login_required
 def overview():
     settings = ndb.Key(Settings, "config").get()
-    all_applicants, all_applications = query.get_all_overview()
+    all_applicants, all_applications = query_helpers.get_all_overview()
     template_values = {
         "all_applicants": all_applicants,
         "all_applications": all_applications,
