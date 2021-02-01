@@ -27,18 +27,11 @@ def settings():
 
 
 def handle_post(settings):
-    due_date = request.form.get("due_date").strip()
-    try:
-        due_date = datetime.strptime(due_date, "%B %d, %Y - %I:%M %p %Z")
-        # Recognize as Eastern TZ Offset
-        due_date = due_date.replace(tzinfo=Eastern)
-        # Cloud Datastore only supports timezone-naive datetime objects
-        settings.due_date = due_date.astimezone(tz=UTC())
-    except Exception as e:
-        logging.error("Error (%s) on invalid due date: %s", e, request.form.get("due_date"))
-        settings.due_date = "Please pick a valid date (i.e. {})".format(
-            datetimeformat(datetime.now())
-        )
+    due_date = parse_html_datetime_local(request.form.get("due_date"))
+    # Recognize as Eastern TZ Offset
+    due_date = due_date.replace(tzinfo=Eastern)
+    # Cloud Datastore only supports timezone-naive datetime objects
+    settings.due_date = due_date.astimezone(tz=UTC())
 
     settings.awards_booklet_url = request.form.get("awards_booklet_url").strip()
 
@@ -55,3 +48,21 @@ def handle_post(settings):
     settings.gcs_bucket = request.form.get("gcs_bucket").strip()
 
     settings.put()
+
+
+def parse_html_datetime_local(value):
+    try:
+        # Attempt to parse with seconds first. However, the browser drops
+        # the seconds part when it is 00.
+        return datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
+    except ValueError as e:
+        logging.error("Datetime parsing error (%s) on invalid due date: %s", e, value)
+
+    try:
+        # Attempt to parse without seconds.
+        return datetime.strptime(value, "%Y-%m-%dT%H:%M")
+    except ValueError as e:
+        logging.error("Datetime parsing error (%s) on invalid due date: %s", e, value)
+
+    # Return minimum value if datetime could not be parsed.
+    return datetime.min

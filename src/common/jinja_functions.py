@@ -1,3 +1,4 @@
+import logging
 import re
 from datetime import datetime
 from typing import Iterable
@@ -9,9 +10,9 @@ def datetimeformat(value, format="%B %d, %Y - %I:%M %p %Z"):
     try:
         value = value.replace(tzinfo=UTC())
         value = value.astimezone(Eastern)
-        return value.strftime(format)
-    except:
-        return value
+    except Exception as e:
+        logging.error("Could not adjust datetime to US/Eastern: %s", e)
+    return value.strftime(format)
 
 
 def byteConversion(size):
