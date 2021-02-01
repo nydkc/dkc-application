@@ -213,7 +213,6 @@ def check_submission_incomplete_status(applicant, application):
         map(
             is_empty_or_none,
             [
-                application.recommender_points,
                 application.outstanding_awards,
             ],
         )
