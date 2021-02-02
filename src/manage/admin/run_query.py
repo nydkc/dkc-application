@@ -6,18 +6,14 @@ from manage.auth.login_manager import admin_login_required, get_current_admin_us
 from . import query_helpers
 from . import admin_bp
 
+
 @admin_bp.route("/run_query")
 @admin_login_required
 def run_query():
     settings = ndb.Key(Settings, "config").get()
 
-    querystring = request.args.get('q') or ''
-    if querystring:
-        results, error = handle_run_query(querystring)
-    else:
-        results, error = None, None
-
-    print(results, error)
+    querystring = request.args.get("q") or ""
+    results, error = handle_run_query(querystring)
 
     template_values = {
         "q": querystring,
@@ -29,13 +25,16 @@ def run_query():
     }
     return render_template("admin/run_query.html", **template_values)
 
+
 def handle_run_query(querystring):
+    if not querystring:
+        return None, None
+
     try:
         results = query_helpers.run_gql(querystring)
         error = None
     except Exception as e:
         logging.error("Failed to run query: %s", e)
-        logging.exception("huh?")
         results = []
         error = e
 

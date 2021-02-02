@@ -47,7 +47,7 @@ def splitRegex(value, seperator_pattern):
     return re.split(seperator_pattern, value)
 
 
-def search(value, search):
+def highlightSearch(value, search):
     if value == None:  # Hack to take care of Nonetype
         value = "None"
     value_lower = value.lower()
@@ -60,16 +60,13 @@ def search(value, search):
         i += 1
 
     if len(found_indexes) > 0:
-        s = 0
         start = 0
         result = ""
-        while s < len(found_indexes):
-            pos = found_indexes[s]
+        for pos in found_indexes:
             result += (
                 value[start:pos] + "<mark>" + value[pos : pos + len(search)] + "</mark>"
             )
             start = pos + len(search)
-            s += 1
         result += value[start:]
         return result
     else:
@@ -94,10 +91,10 @@ ADDITIONAL_JINJA_FILTERS = {
     "to_file_info": toFileInfo,
     "split_string": splitString,
     "split_regex": splitRegex,
-    "highlight_search": search,
+    "highlight_search": highlightSearch,
     "getvars": getVars,
 }
 
 ADDITIONAL_JINJA_GLOBALS = {
-    "zip": zip
+    "zip": zip,
 }

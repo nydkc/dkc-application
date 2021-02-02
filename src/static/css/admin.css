@@ -54,27 +54,27 @@ th.headerSortUp {
     color: #00aeef;
 }
 
-.search-results {
+#search-results {
     margin-top: 10px;
 }
 
-.search-results .result:hover {
+#search-results .result:hover {
     border-radius: 3px;
     background-color: #f8f8f8;
 }
 
-.search-results a {
+#search-results a {
     text-decoration: none;
 }
 
-.search-results .result h4 {
+#search-results .result h4 {
     margin: 0;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 15px;
 }
 
-.search-results .result .dl-horizontal {
+#search-results .result .dl-horizontal {
     margin: 0;
     padding-bottom: 10px;
 }
