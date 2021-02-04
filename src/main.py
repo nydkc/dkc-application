@@ -1,4 +1,4 @@
-import logging
+import os
 from flask import Flask, render_template
 from google.cloud import ndb
 
@@ -6,6 +6,7 @@ from common.constants import GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET,
 from common.datastore import g_ndb_wsgi_middleware
 from common.flask_error_handlers import register_error_handlers_to
 from common.jinja_functions import JINJA_OPTIONS, ADDITIONAL_JINJA_FILTERS, ADDITIONAL_JINJA_GLOBALS
+from common.talisman import g_flask_talisman_init_app
 from dkc.auth.login_manager import g_login_manager
 from dkc.views import register_blueprints_to as register_dkc_blueprints_to
 from manage.auth.authlib_oauth import g_oauth
@@ -22,12 +23,17 @@ app.config['GOOGLE_CLIENT_SECRET'] = GOOGLE_OAUTH_CLIENT_SECRET
 app.jinja_options = JINJA_OPTIONS
 app.jinja_env.filters.update(ADDITIONAL_JINJA_FILTERS)
 app.jinja_env.globals.update(ADDITIONAL_JINJA_GLOBALS)
-app.config['EXPLAIN_TEMPLATE_LOADING'] = True
 
 # Match the 32MB request limit of AppEngine
 # https://cloud.google.com/appengine/docs/standard/python3/how-requests-are-handled#quotas_and_limits
 app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024
 
+if not os.getenv("GAE_ENV", "").startswith("standard"):
+    # Local Execution.
+    app.debug = True
+    app.config['EXPLAIN_TEMPLATE_LOADING'] = False
+
+g_flask_talisman_init_app(app)
 app.wsgi_app = g_ndb_wsgi_middleware(app.wsgi_app)
 g_login_manager.init_app(app)
 g_oauth.init_app(app)
