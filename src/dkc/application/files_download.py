@@ -1,16 +1,14 @@
 import logging
 import datetime
 from flask import abort, redirect
-from flask_login import login_required
 from google.cloud import ndb, storage
-from common.gcs import gcs
+from common.gcs import gcs, generate_signed_url_for
 from common.timezone import Eastern
 from .models import GCSObjectReference
 from . import application_bp
 
 
 @application_bp.route("/download/f/<string:key>/<string:filename>")
-@login_required
 def download_file(key, filename):
     try:
         gcs_obj_ref = ndb.Key(urlsafe=key.encode("utf-8")).get()
@@ -24,10 +22,12 @@ def download_file(key, filename):
             type(gcs_obj_ref),
         )
         return abort(404)
+
     bucket = gcs.get_bucket(gcs_obj_ref.bucket_name)
     obj = storage.Blob(gcs_obj_ref.object_name, bucket)
     # User can download this object from GCS for 24 hours
-    signed_url = obj.generate_signed_url(
+    signed_url = generate_signed_url_for(
+        obj,
         expiration=datetime.datetime.now(tz=Eastern) + datetime.timedelta(hours=24),
         method="GET",
         version="v4",
