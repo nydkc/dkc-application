@@ -46,11 +46,12 @@
 #     ('/admin.*', MainPage)
 # ], debug=True)
 
-from manage.index import index_bp
-from manage.auth.views import auth_bp
+from manage.admin_main_page.views import main_page_bp
+from manage.admin_auth.views import auth_bp
 from manage.admin.views import admin_bp
 
+
 def register_blueprints_to(app):
-    app.register_blueprint(index_bp, url_prefix='/admin')
-    app.register_blueprint(auth_bp, url_prefix='/admin')
-    app.register_blueprint(admin_bp, url_prefix='/admin')
+    app.register_blueprint(main_page_bp, url_prefix="/admin")
+    app.register_blueprint(auth_bp, url_prefix="/admin")
+    app.register_blueprint(admin_bp, url_prefix="/admin")

@@ -9,7 +9,7 @@ from common.jinja_functions import JINJA_OPTIONS, ADDITIONAL_JINJA_FILTERS, ADDI
 from common.talisman import g_flask_talisman_init_app
 from dkc.auth.login_manager import g_login_manager
 from dkc.views import register_blueprints_to as register_dkc_blueprints_to
-from manage.auth.authlib_oauth import g_oauth
+from manage.admin_auth.authlib_oauth import g_oauth
 from manage.views import register_blueprints_to as register_admin_blueprints_to
 
 app = Flask(__name__, template_folder='templates', static_folder='static')

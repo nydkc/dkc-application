@@ -44,7 +44,7 @@ def oauth2callback():
             "{} is not authorized to view this page.".format(email),
             category="error",
         )
-        return redirect(url_for("manage.index.index"))
+        return redirect(url_for("manage.admin_main_page.index"))
 
 
 @auth_bp.route("/login/testing_is_project_admin")

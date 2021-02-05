@@ -6,4 +6,4 @@ from . import auth_bp
 @auth_bp.route("/logout")
 def logout():
     logout_admin_user()
-    return redirect(url_for("manage.index.index"))
+    return redirect(url_for("manage.admin_main_page.index"))

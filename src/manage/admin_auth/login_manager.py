@@ -15,7 +15,7 @@ def admin_login_required(f):
     @functools.wraps(f)
     def decorated_function(*args, **kwargs):
         if get_current_admin_user() is None:
-            return redirect(url_for("manage.index.index"))
+            return redirect(url_for("manage.admin_main_page.index"))
         else:
             return f(*args, **kwargs)
 

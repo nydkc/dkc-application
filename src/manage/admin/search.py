@@ -2,7 +2,7 @@ import time
 from flask import render_template, request
 from google.cloud import ndb
 from common.models import Settings
-from manage.auth.login_manager import admin_login_required, get_current_admin_user
+from manage.admin_auth.login_manager import admin_login_required, get_current_admin_user
 from . import query_helpers
 from . import admin_bp
 
