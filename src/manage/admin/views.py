@@ -5,3 +5,4 @@ from . import search
 from . import lists
 from . import settings
 from . import run_query
+from . import delete

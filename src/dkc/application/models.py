@@ -122,5 +122,4 @@ class Application(ndb.Model):
 
     # INTERNAL ADMIN USE ONLY
     notes = ndb.TextProperty(default="")
-    # TODO(dannyqiu): change graded to reviewed
     graded = ndb.BooleanProperty()

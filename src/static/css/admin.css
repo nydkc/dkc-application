@@ -154,6 +154,32 @@ hr.separator {
     padding: 20px;
 }
 
+#delete-applicant-form label {
+    margin: 0;
+    text-align: center;
+    width: 40px;
+}
+
+#delete-applicant-form td:first-child {
+    cursor: auto;
+}
+
+#delete-applicant-form {
+    margin-bottom: 50px;
+}
+
+#delete-bar .row {
+    padding-bottom: 0;
+}
+
+#delete-bar .navbar-left {
+    float: left;
+}
+
+#delete-bar .navbar-right {
+    float: right;
+}
+
 #query-results {
     margin-top: 20px;
     min-height: 500px;
