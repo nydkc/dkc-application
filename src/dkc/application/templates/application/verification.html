@@ -55,7 +55,7 @@
     </p>
     <p>
         Please enter the email for the respective person for verification, and we will send them a link to verify your application.
-        <strong>The verification link will be valid for 14 days.</strong> Sending a new link will invalidate any previous links.
+        <strong>The verification link will be valid for {{ auth_token_validity_days }} days.</strong> Sending a new link will invalidate any previous links.
     </p>
 
     {{ verification_panel('LTG', 'verification-ltg-email', 'verification-ltg-button', application.verification_ltg, application.verification_ltg_sent, application.verification_ltg_email) }}

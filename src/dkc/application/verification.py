@@ -13,6 +13,7 @@ from sendgrid.helpers.mail import (
     Subject,
     To,
 )
+from common.constants import AUTH_TOKEN_VALIDITY_DAYS
 from common.models import Settings
 from dkc.auth.models import AuthToken
 from . import application_bp
@@ -33,6 +34,7 @@ def verification():
         "application": application,
         "application_url": "/application/verification",
         "is_profile_invalid": profile_has_invalid_fields(applicant, application),
+        "auth_token_validity_days": AUTH_TOKEN_VALIDITY_DAYS,
         "settings": settings,
     }
     return render_template("application/verification.html", **template_values)

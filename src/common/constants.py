@@ -60,3 +60,10 @@ with db.context():
         config.gcs_bucket = _GCS_BUCKET
 
     config.put()
+
+
+### Other constants that are not stored in Datastore ###
+
+# The number of days that an Auth Token is valid for.
+# Uused for application verification and forgot password handling.
+AUTH_TOKEN_VALIDITY_DAYS = 14
