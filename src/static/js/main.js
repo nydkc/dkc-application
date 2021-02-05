@@ -1,8 +1,8 @@
 $(window).scroll(sidebarAffix);
 $(window).resize(sidebarAffix);
 function sidebarAffix() {
-    if ($(window).width() > 992) {
-        $('.navbar').affix({
+    if ($(window).width() >= 768) {
+        $('#navbar-sidebar.navbar').affix({
             offset: {
                 top: 0
             }
@@ -10,7 +10,7 @@ function sidebarAffix() {
     }
     else {
         $(window).off('.affix');
-        $('.navbar').removeData('bs.affix').removeClass('affix affix-top affix-bottom')
+        $('#navbar-sidebar.navbar').removeData('bs.affix').removeClass('affix affix-top affix-bottom')
     }
 }
 

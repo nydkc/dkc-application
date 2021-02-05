@@ -116,7 +116,7 @@ strong label {
     min-height: 50px;
 }
 
-.navbar-default {
+#navbar-sidebar.navbar-default {
     background-color: #fff;
     border: none;
 }
@@ -365,7 +365,7 @@ input#district-projects-charity {
 }
 
 @media screen and (max-width: 768px) {
-    .navbar-default {
+    #navbar-sidebar.navbar-default {
         border-bottom: 1px solid #003366;
     }
 }
@@ -384,6 +384,7 @@ input#district-projects-charity {
         width: 212.5px;
     }
 }
+
 @media screen and (min-width: 1200px) {
     .navbar.affix {
         width: 262.5px;
@@ -393,6 +394,7 @@ input#district-projects-charity {
         margin-top: 60px;
     }
 }
+
 .loader.loader-sm {
     font-size: 3.5px;
 }
