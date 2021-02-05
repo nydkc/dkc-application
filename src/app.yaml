@@ -33,20 +33,6 @@ handlers:
 - url: /fonts
   static_dir: static/fonts
   expiration: 30d
-# - url: /cron/.*
-#   script: manage.cron.application
-#   login: admin
-# # Separate admin paths that don't require a login
-# - url: /admin
-#   script: manage.views.application
-#   secure: always
-# - url: /admin/logout
-#   script: manage.views.application
-#   secure: always
-# - url: /admin.*
-#   script: manage.views.application
-#   secure: always
-#   login: admin
 
 # error_handlers:
 # - error_code: over_quota
