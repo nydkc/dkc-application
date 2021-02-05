@@ -46,7 +46,7 @@ def get_current_admin_user() -> AdminUser:
         else:
             user.key.delete()
             logout_admin_user()
-            return abort(403)
+            return None
     g.admin_user = user
     return g.admin_user
 

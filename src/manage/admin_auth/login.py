@@ -47,7 +47,7 @@ def oauth2callback():
         return redirect(url_for("manage.admin_main_page.index"))
 
 
-@auth_bp.route("/login/testing_is_project_admin")
+@auth_bp.route("/login/test_is_project_admin")
 def test_is_admin():
     # Only expose this route if we are testing locally
     if os.getenv("GAE_ENV", "").startswith("standard"):
