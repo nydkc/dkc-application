@@ -5,6 +5,7 @@ from google.cloud import ndb
 from manage.admin_auth.login_manager import admin_login_required, get_current_admin_user
 from common.models import Settings
 from dkc.auth.models import AuthToken, UniqueUserTracking, User
+from dkc.application.files_delete import delete_referenced_gcs_object
 from dkc.application.models import GCSObjectReference, Application
 from . import query_helpers
 from . import admin_bp
@@ -63,6 +64,8 @@ def delete_applicant_completely(applicant_key, application_key):
             keys_only=True
         )
     ]
+    for gcs_obj_ref in ndb.get_multi(gcs_obj_ref_keys):
+        delete_referenced_gcs_object(gcs_obj_ref)
     keys_to_delete = (
         [applicant_key, application_key, unique_user_tracking_key]
         + auth_token_keys

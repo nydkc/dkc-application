@@ -8,7 +8,6 @@ if os.getenv("GAE_ENV", "").startswith("standard"):
     # Production in the standard environment
     gcs = storage.Client()
     # Attempt an access to GCS to "initialize" the client credentials for use by the signer later.
-    gcs.lookup_bucket
     gcs.get_bucket(_GCS_BUCKET)
 else:
     # Local execution.

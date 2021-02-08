@@ -22,6 +22,15 @@ def remove_file_from_application(application_key, gcs_obj_ref_key):
     gcs_obj_ref_key.delete()
 
 
+def delete_referenced_gcs_object(gcs_obj_ref: GCSObjectReference):
+    bucket = gcs.get_bucket(gcs_obj_ref.bucket_name)
+    obj = storage.Blob(gcs_obj_ref.object_name, bucket)
+    try:
+        obj.delete()
+    except (exceptions.NotFound, api_exceptions.NotFound) as e:
+        logging.error("Could not find file in GCS to delete: %s", obj.name)
+
+
 @application_bp.route("/delete/f/<string:key>", methods=["POST"])
 @login_required
 def delete_file(key):
@@ -45,13 +54,7 @@ def delete_file(key):
         )
         abort(403)
 
-    bucket = gcs.get_bucket(gcs_obj_ref.bucket_name)
-    obj = storage.Blob(gcs_obj_ref.object_name, bucket)
-    try:
-        obj.delete()
-    except (exceptions.NotFound, api_exceptions.NotFound) as e:
-        logging.error("Could not find file in GCS to delete: %s", obj.name)
-
+    delete_referenced_gcs_object(gcs_obj_ref)
     remove_file_from_application(applicant.application, gcs_obj_ref.key)
 
     return make_response(("", 204))
