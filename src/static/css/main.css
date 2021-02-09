@@ -306,7 +306,8 @@ input#district-projects-charity {
 .home {
     margin: auto;
     margin-top: 12%;
-    width: 480px;
+    max-width: 480px;
+    width: 100%;
 }
 
 .home .title h1 {
@@ -355,10 +356,6 @@ input#district-projects-charity {
 }
 
 @media screen and (max-width: 500px) {
-    .home {
-        width: 100%;
-    }
-
     .application.submitted-application {
         margin-top: 95px;
     }
@@ -376,6 +373,12 @@ input#district-projects-charity {
 @media screen and (max-width: 1200px) {
     .nav > li > a {
         padding: 6px 15px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .navbar.affix {
+        width: 157.5px;
     }
 }
 
