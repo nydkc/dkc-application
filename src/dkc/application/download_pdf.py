@@ -1,10 +1,10 @@
 import io
-import os
 import logging
 from flask import abort, render_template, request, send_file
 from flask_login import current_user
 from google.cloud import ndb
 from common.models import Settings
+from common.static import get_static_dir
 from common.util import generate_pdf
 from dkc.auth.models import User, AuthToken
 from manage.admin_auth.login_manager import get_current_admin_user
@@ -79,10 +79,7 @@ def download_pdf(user_id, name):
         "settings": settings,
         "applicant": applicant,
         "application": application,
-        # TODO: use a more pythonic way of getting to the static dir (maybe using flask?)
-        "STATIC_DIR": os.path.normpath(
-            os.path.join(os.path.dirname(__file__), "../../static")
-        ),
+        "STATIC_DIR": get_static_dir(),
     }
     filename = "{}.pdf".format(name)
     return send_file(
@@ -104,7 +101,6 @@ def download_html(user_id, name, ext):
         "settings": settings,
         "applicant": applicant,
         "application": application,
-        # TODO: use a more pythonic way of getting to the static dir (maybe using flask?)
-        "STATIC_DIR": "",
+        "STATIC_DIR": "",  # empty to properly load assets in rendered HTML
     }
     return render_template("pdf/pdf.html", **template_values)
