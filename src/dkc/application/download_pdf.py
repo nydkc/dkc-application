@@ -10,16 +10,18 @@ from dkc.auth.models import User, AuthToken
 from manage.admin_auth.login_manager import get_current_admin_user
 from . import application_bp
 
+logger = logging.getLogger(__name__)
+
 
 def decode_auth_token(urlsafe_token_key: str) -> AuthToken:
     try:
         token_key = ndb.Key(urlsafe=urlsafe_token_key.encode("utf-8"))
         token = token_key.get()
     except:
-        logging.error("Could not decode AuthToken key %s", urlsafe_token_key)
+        logger.error("Could not decode AuthToken key %s", urlsafe_token_key)
         return abort(400, description="Invalid token")
     if not isinstance(token, AuthToken):
-        logging.error(
+        logger.error(
             "Attempted to access non-AuthToken key %s of type %s",
             token_key,
             type(token),
@@ -38,7 +40,7 @@ def check_access(applicant_key, urlsafe_token_key: str):
             return abort(403)
     elif get_current_admin_user() is not None:
         # Allow admin access to all applications
-        logging.info(
+        logger.info(
             "Admin %s is viewing application of %s",
             get_current_admin_user().email,
             applicant_key,
@@ -46,13 +48,11 @@ def check_access(applicant_key, urlsafe_token_key: str):
         return
     elif current_user is None or not current_user.is_authenticated:
         # Anonymous access is not allowed
-        logging.error(
-            "Anonymous user denied access to application of %s", applicant_key
-        )
+        logger.error("Anonymous user denied access to application of %s", applicant_key)
         return abort(401)
     elif current_user.key != applicant_key:
         # Cannot access another user's application
-        logging.error(
+        logger.error(
             "User %s denied access to application of %s",
             current_user.key,
             applicant_key,

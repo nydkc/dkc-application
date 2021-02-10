@@ -8,6 +8,8 @@ from common.iam import get_project_iam_policy
 from .authlib_oauth import refresh_oauth_token
 from .models import AdminUser
 
+logger = logging.getLogger(__name__)
+
 ADMIN_ROLES = ["roles/owner", "roles/editor", "roles/viewer", "roles/browser"]
 
 
@@ -61,7 +63,7 @@ def logout_admin_user():
 
 def is_project_admin(email):
     iam_policy = get_project_iam_policy()
-    logging.debug("Current project IAM policy: %s", iam_policy)
+    logger.debug("Current project IAM policy: %s", iam_policy)
     member = "user:{}".format(email)
     for binding in iam_policy["bindings"]:
         # Check if the given email is bound to any of the admin roles

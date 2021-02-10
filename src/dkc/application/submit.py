@@ -16,6 +16,8 @@ from sendgrid.helpers.mail import (
 from common.models import Settings
 from . import application_bp
 
+logger = logging.getLogger(__name__)
+
 
 @application_bp.route("/submit", methods=["GET", "POST"])
 @login_required
@@ -39,7 +41,7 @@ def submit():
 
 def handle_post(applicant, application):
     if application.submit_time:
-        logging.info(
+        logger.warning(
             "Attempt to submit by %s after submission",
             applicant.email,
         )
@@ -87,7 +89,7 @@ def send_submission_confirmation_email(applicant, application):
     response = sg.client.mail.send.post(request_body=message.get())
     if response.status_code != 202:
         json_response = json.loads(response.body)
-        logging.error(
+        logger.error(
             "Error sending email to %s: %s", message.to, json_response["errors"]
         )
         return abort(503)

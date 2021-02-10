@@ -1,6 +1,5 @@
 import logging
 import uuid
-
 from flask import redirect, render_template, request, url_for
 from flask_wtf import FlaskForm, Recaptcha, RecaptchaField
 from google.cloud import ndb
@@ -8,12 +7,13 @@ from wtforms import PasswordField, StringField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import Email, EqualTo, InputRequired, Length
 from wtforms.widgets import PasswordInput
-
 from common.models import Settings
 from dkc.application.models import Application
 from .login_manager import anonymous_only
 from .models import User, UniqueUserTracking
 from . import auth_bp
+
+logger = logging.getLogger(__name__)
 
 
 class RegistrationForm(FlaskForm):
@@ -77,7 +77,7 @@ def register():
         email = form.email.data
         try:
             new_user = create_user_application(email, password, first_name, last_name)
-            logging.info(
+            logger.info(
                 "Created new user '%s %s', with email: %s",
                 new_user.first_name,
                 new_user.last_name,
@@ -86,7 +86,7 @@ def register():
             return redirect(url_for(".login", new=1))
         except EmailAlreadyExistsError:
             # Add email already taken error and fall-through to template rendering
-            logging.warning(
+            logger.warning(
                 "Attempted to create an account with an existing email: %s", email
             )
             form.email.errors.append(

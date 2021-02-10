@@ -2,6 +2,9 @@ import logging
 from google.cloud import ndb
 
 
+logger = logging.getLogger(__name__)
+
+
 def bounced_message(email):
     return "FAILED TO SEND EMAIL TO: {}".format(email)
 
@@ -9,7 +12,7 @@ def bounced_message(email):
 def on_verification_bounce_event(email_event):
     assert email_event["dkc_purpose"] == "verification"
     if "dkc_application_key" not in email_event:
-        logging.error("No application key in bounced email: %s", email_event)
+        logger.error("No application key in bounced email: %s", email_event)
         return
 
     application = ndb.Key(
@@ -28,7 +31,7 @@ def on_verification_bounce_event(email_event):
         application.verification_faculty_advisor_sent = False
         application.verification_faculty_advisor_email = bounced_message(email_sent_to)
     else:
-        logging.warning(
+        logger.warning(
             "Could not match failed send event to %s under user %s",
             email_sent_to,
             applicant.email,
@@ -37,7 +40,7 @@ def on_verification_bounce_event(email_event):
 
     application.put()
 
-    logging.error(
+    logger.info(
         "Marked failure sending verification email to %s under user %s",
         email_sent_to,
         applicant.email,

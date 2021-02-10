@@ -11,6 +11,8 @@ from common.models import Settings
 from .models import GCSObjectReference
 from . import application_bp
 
+logger = logging.getLogger(__name__)
+
 MAX_ADVOCACY_UPLOAD_SIZE_BYTES = 10 * 1024 * 1024
 MAX_ADVOCACY_ITEMS = 5
 MAX_NEWSLETTER_UPLOAD_SIZE_BYTES = 10 * 1024 * 1024
@@ -38,7 +40,7 @@ def handle_activities_advocacy_post():
     application = applicant.application.get()
 
     if application.submit_time:
-        logging.info(
+        logger.warning(
             "Attempt to upload advocacy material by %s after submission",
             applicant.email,
         )
@@ -84,7 +86,7 @@ def handle_activities_newsletter_post():
     application = applicant.application.get()
 
     if application.submit_time:
-        logging.info(
+        logger.warning(
             "Attempt to upload newsletter material by %s after submission",
             applicant.email,
         )
@@ -130,7 +132,7 @@ def handle_activities_other_post():
     application = applicant.application.get()
 
     if application.submit_time:
-        logging.info(
+        logger.warning(
             "Attempt to upload other material by %s after submission",
             applicant.email,
         )
@@ -176,7 +178,7 @@ def handle_upload_file(applicant, application, max_size_bytes):
     upload_file.seek(0, os.SEEK_END)
     upload_file_size = upload_file.tell()
     upload_file.seek(0)
-    logging.info(
+    logger.info(
         "Uploading file '%s' from %s of size %s",
         upload_file.filename,
         applicant.email,
@@ -208,7 +210,7 @@ def handle_upload_file(applicant, application, max_size_bytes):
             content_type=upload_file.content_type,
         )
     except exceptions.GoogleCloudError as e:
-        logging.error(
+        logger.error(
             "Encountered an error while uploading file from %s to GCS: %s",
             applicant.email,
             obj.name,

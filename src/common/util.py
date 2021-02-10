@@ -4,6 +4,8 @@ import logging
 import urllib.request
 import xhtml2pdf.pisa as pisa
 
+logger = logging.getLogger(__name__)
+
 
 def verify_captcha(recaptcha_secret, grecaptcha):
     grecaptcha_verification_data = {"secret": recaptcha_secret, "response": grecaptcha}
@@ -16,7 +18,7 @@ def verify_captcha(recaptcha_secret, grecaptcha):
         )
         recaptcha_success = recaptcha_response["success"]
     except Exception as e:
-        logging.warning("Could not verify recaptcha: %s", e)
+        logger.warning("Could not verify recaptcha: %s", e)
         recaptcha_success = False
     return recaptcha_success
 

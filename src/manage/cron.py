@@ -7,6 +7,8 @@ from dkc.auth.models import AuthToken
 
 cron_bp = Blueprint("manage.cron", __name__)
 
+logger = logging.getLogger(__name__)
+
 APPENGINE_CRON_HEADER = "X-Appengine-Cron"
 
 
@@ -20,5 +22,5 @@ def auth_token_cleanup():
     )
     auth_token_keys = [t.key for t in expired_tokens_query.fetch()]
     ndb.delete_multi(auth_token_keys)
-    logging.info("Cleaned up %d auth tokens", len(auth_token_keys))
+    logger.info("Cleaned up %d auth tokens", len(auth_token_keys))
     return "ok"

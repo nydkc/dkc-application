@@ -18,6 +18,8 @@ from common.models import Settings
 from dkc.auth.models import AuthToken
 from . import application_bp
 
+logger = logging.getLogger(__name__)
+
 
 @application_bp.route("/verification", methods=["GET", "POST"])
 @login_required
@@ -42,14 +44,14 @@ def verification():
 
 def handle_post(applicant, application):
     if application.submit_time:
-        logging.info(
+        logger.warning(
             "Attempt to modify verification by %s after submission",
             applicant.email,
         )
         return
 
     if profile_has_invalid_fields(applicant, application):
-        logging.warning(
+        logger.warning(
             "Cannot send emails for %s without completed profile", applicant.email
         )
         return abort(400, description="Profile must be completed first.")
@@ -92,7 +94,9 @@ def handle_post(applicant, application):
             verifier_name = "Faculty Advisor " + application.faculty_advisor.title()
             verifier_email = application.verification_faculty_advisor_email
         else:
-            logging.warning("Incompatible verification task for %s: %s", applicant.email, task)
+            logger.warning(
+                "Invalid verification task for %s: %s", applicant.email, task
+            )
             return abort(400, description="Invalid verification task")
         send_verification_email(
             applicant, application, token_key, verifier_name, verifier_email
@@ -118,7 +122,7 @@ def send_verification_email(
         token_key=token_key.urlsafe().decode("utf-8"),
         _external=True,
     )
-    logging.debug(
+    logger.debug(
         "Generated verification url for %s to verify application of %s",
         recipient_email,
         applicant.email,
@@ -148,14 +152,16 @@ def send_verification_email(
         html_content=HtmlContent(email_html),
     )
     message.custom_arg = [
-        CustomArg(key="dkc_application_key", value=application.key.urlsafe().decode("utf-8")),
+        CustomArg(
+            key="dkc_application_key", value=application.key.urlsafe().decode("utf-8")
+        ),
         CustomArg(key="dkc_purpose", value="verification"),
     ]
 
     response = sg.client.mail.send.post(request_body=message.get())
     if response.status_code != 202:
         json_response = json.loads(response.body)
-        logging.error(
+        logger.error(
             "Error sending email to %s: %s", message.to, json_response["errors"]
         )
         return abort(503)

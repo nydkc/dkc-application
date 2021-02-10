@@ -6,6 +6,8 @@ from manage.admin_auth.login_manager import admin_login_required, get_current_ad
 from . import query_helpers
 from . import admin_bp
 
+logger = logging.getLogger(__name__)
+
 
 @admin_bp.route("/run_query")
 @admin_login_required
@@ -34,7 +36,7 @@ def handle_run_query(querystring):
         results = query_helpers.run_gql(querystring)
         error = None
     except Exception as e:
-        logging.error("Failed to run query: %s", e)
+        logger.error("Failed to run query: %s", e)
         results = []
         error = e
 

@@ -6,6 +6,8 @@ from common.models import Settings
 from .models import DistrictProject, Divisional, GeneralProject, InternationalProject
 from . import application_bp
 
+logger = logging.getLogger(__name__)
+
 
 @application_bp.route("/projects", methods=["GET", "POST"])
 @login_required
@@ -28,7 +30,7 @@ def projects():
 
 def handle_post(applicant, application):
     if application.submit_time:
-        logging.info(
+        logger.warning(
             "Attempt to modify projects by %s after submission",
             applicant.email,
         )

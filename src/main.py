@@ -1,16 +1,18 @@
 import os
 from flask import Flask, render_template
 from google.cloud import ndb
-
 from common.constants import GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, RECAPTCHA_SECRET, RECAPTCHA_SITE_KEY, SECRET_KEY
 from common.datastore import g_ndb_wsgi_middleware
 from common.flask_error_handlers import register_error_handlers_to
 from common.jinja_functions import JINJA_OPTIONS, ADDITIONAL_JINJA_FILTERS, ADDITIONAL_JINJA_GLOBALS
+from common.logging import configure_logging
 from common.talisman import g_flask_talisman_init_app
 from dkc.auth.login_manager import g_login_manager
 from dkc.views import register_blueprints_to as register_dkc_blueprints_to
 from manage.admin_auth.authlib_oauth import g_oauth
 from manage.views import register_blueprints_to as register_admin_blueprints_to
+
+configure_logging()
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 

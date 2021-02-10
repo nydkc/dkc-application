@@ -7,6 +7,8 @@ from .login_manager import get_current_admin_user, login_admin_user, is_project_
 from .models import AdminUser, OAuth2Token
 from . import auth_bp
 
+logger = logging.getLogger(__name__)
+
 
 @auth_bp.route("/login")
 def login():
@@ -23,7 +25,7 @@ def oauth2callback():
     ).json()
     email = profile["email"]
     if is_project_admin(email):
-        logging.info("User logged in to admin route: %s", email)
+        logger.info("User logged in to admin route: %s", email)
         # Everytime an admin user goes through the OAuth2 flow, we store their refresh tokens
         admin_user = AdminUser(
             email=profile["email"],
@@ -39,7 +41,7 @@ def oauth2callback():
         login_admin_user(admin_user)
         return redirect(url_for("manage.admin.overview"))
     else:
-        logging.warning("Denied access to non-admin user: %s", email)
+        logger.warning("Denied access to non-admin user: %s", email)
         flash(
             "{} is not authorized to view this page.".format(email),
             category="error",

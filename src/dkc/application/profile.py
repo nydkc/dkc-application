@@ -5,6 +5,8 @@ from google.cloud import ndb
 from common.models import Settings
 from . import application_bp
 
+logger = logging.getLogger(__name__)
+
 
 @application_bp.route("/profile", methods=["GET", "POST"])
 @login_required
@@ -27,7 +29,7 @@ def profile():
 
 def handle_post(applicant, application):
     if application.submit_time:
-        logging.info(
+        logger.warning(
             "Attempt to modify profile by %s after submission", applicant.email
         )
         return

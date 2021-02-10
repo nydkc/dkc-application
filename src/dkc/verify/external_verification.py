@@ -5,20 +5,22 @@ from google.cloud import ndb
 from dkc.auth.models import AuthToken
 from . import verify_bp
 
+logger = logging.getLogger(__name__)
+
 
 class VerificationForm(FlaskForm):
     pass
 
 
 @verify_bp.route("/v/<string:token_key>")
-def external_verification(token_key):
+def external_verification(token_key: str):
     try:
         token = ndb.Key(urlsafe=token_key.encode("utf-8")).get()
     except:
-        logging.error("Could not decode key %s", token_key)
+        logger.error("Could not decode key %s", token_key)
         return render_template("verification/error.html"), 400
     if not isinstance(token, AuthToken):
-        logging.error(
+        logger.error(
             "Attempted to access non-AuthToken key %s of type %s",
             token_key,
             type(token),
@@ -55,19 +57,19 @@ def external_verification(token_key):
 
 
 @verify_bp.route("/v/<string:token_key>/agree", methods=["POST"])
-def external_verification_agree(token_key):
+def external_verification_agree(token_key: str):
     try:
         token = ndb.Key(urlsafe=token_key.encode("utf-8")).get()
     except:
-        logging.error("Could not decode key %s", token_key)
+        logger.error("Could not decode key %s", token_key)
         return render_template("verification/error.html"), 400
     if not isinstance(token, AuthToken):
-        logging.error(
+        logger.error(
             "Attempted to access non-AuthToken key %s of type %s",
             token_key,
             type(token),
         )
-        return render_template("verification/error.html"), 400
+        return render_template("verification/error.html"), 403
 
     form = VerificationForm()
     if not form.validate():

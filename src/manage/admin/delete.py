@@ -10,6 +10,8 @@ from dkc.application.models import GCSObjectReference, Application
 from . import query_helpers
 from . import admin_bp
 
+logger = logging.getLogger(__name__)
+
 
 @admin_bp.route("/danger_delete_applicants", methods=["GET", "POST"])
 @admin_login_required
@@ -31,17 +33,17 @@ def delete_applicant():
 
 def handle_post():
     emails_to_delete = request.form.getlist("email")
-    logging.warning("Deleting... %s", emails_to_delete)
+    logger.info("Deleting... %s", emails_to_delete)
 
     for email in emails_to_delete:
         applicant, application = query_helpers.find_applicant_and_application_by_email(
             email
         )
         if not applicant:
-            logging.warning("Could not find applicant with email: %s", email)
+            logger.warning("Could not find applicant with email: %s", email)
             continue
         if not application:
-            logging.warning(
+            logger.warning(
                 "Could not find application for applicant with email: %s", email
             )
             continue
@@ -72,3 +74,4 @@ def delete_applicant_completely(applicant_key, application_key):
         + gcs_obj_ref_keys
     )
     ndb.delete_multi(keys_to_delete)
+    logger.info("Deleted applicant: %s", applicant.email)

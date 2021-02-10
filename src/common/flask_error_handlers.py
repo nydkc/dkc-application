@@ -1,5 +1,4 @@
 from flask import jsonify
-import logging
 
 def bad_request(e):
     return jsonify({

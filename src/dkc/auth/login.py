@@ -6,10 +6,11 @@ from flask_wtf import FlaskForm, Recaptcha, RecaptchaField
 from wtforms import PasswordField, HiddenField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import InputRequired
-
 from . import auth_bp
 from .login_manager import anonymous_only
 from .models import User
+
+logger = logging.getLogger(__name__)
 
 
 class LoginForm(FlaskForm):
@@ -56,7 +57,7 @@ def login():
             login_user(user, remember=True)
             return redirect(url_for("application.overview"))
         else:
-            logging.warning("Login failed for email: %s", email)
+            logger.warning("Login failed for email: %s", email)
             # Add login failure message and fall-through to template rendering
             form.custom_errors.errors.append(
                 "Email and password combination does not correspond to a valid user."

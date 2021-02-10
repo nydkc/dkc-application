@@ -19,6 +19,8 @@ from .login_manager import anonymous_only
 from .models import User, AuthToken
 from . import auth_bp
 
+logger = logging.getLogger(__name__)
+
 
 class ForgetForm(FlaskForm):
     email = EmailField("email", [Email("Please enter a valid email address.")])
@@ -39,7 +41,7 @@ def forgot():
         email = form.email.data
         user = User.find_by_email(email)
         if user is None:
-            logging.warning("Could not find any user for email: %s", email)
+            logger.warning("Could not find any user for email: %s", email)
             form.email.errors.append("No account found with email '%s'.".format(email))
         else:
             token_key = create_password_reset_auth_token(user)
@@ -62,7 +64,7 @@ def send_password_reset_email(user, token_key):
         token_key=token_key.urlsafe().decode("utf-8"),
         _external=True,
     )
-    logging.debug("Generated password reset url for %s", user.email)
+    logger.debug("Generated password reset url for %s", user.email)
 
     template_values = {
         "user": user,
@@ -85,7 +87,7 @@ def send_password_reset_email(user, token_key):
     response = sg.client.mail.send.post(request_body=message.get())
     if response.status_code != 202:
         json_response = json.loads(response.body)
-        logging.error(
+        logger.error(
             "Error sending email to %s: %s", message.to, json_response["errors"]
         )
         return abort(503)

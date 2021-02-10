@@ -11,6 +11,8 @@ from .login_manager import anonymous_only
 from .models import User, AuthToken
 from . import auth_bp
 
+logger = logging.getLogger(__name__)
+
 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField(
@@ -30,10 +32,10 @@ def reset_password(token_key):
     try:
         token = ndb.Key(urlsafe=token_key.encode("utf-8")).get()
     except:
-        logging.error("Could not decode key %s", token_key)
+        logger.error("Could not decode key %s", token_key)
         return abort(400, description="Invalid token")
     if not isinstance(token, AuthToken):
-        logging.error(
+        logger.error(
             "Attempted to access non-AuthToken key %s of type %s",
             token_key,
             type(token),

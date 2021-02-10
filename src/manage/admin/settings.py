@@ -8,6 +8,8 @@ from common.timezone import UTC, Eastern
 from manage.admin_auth.login_manager import admin_login_required, get_current_admin_user
 from . import admin_bp
 
+logger = logging.getLogger(__name__)
+
 
 @admin_bp.route("/settings", methods=["GET", "POST"])
 @admin_login_required
@@ -38,7 +40,9 @@ def handle_post(settings):
     settings.secret_key = request.form.get("secret_key")
 
     settings.google_oauth_client_id = request.form.get("google_oauth_client_id").strip()
-    settings.google_oauth_client_secret = request.form.get("google_oauth_client_secret").strip()
+    settings.google_oauth_client_secret = request.form.get(
+        "google_oauth_client_secret"
+    ).strip()
 
     settings.recaptcha_site_key = request.form.get("recaptcha_site_key").strip()
     settings.recaptcha_secret = request.form.get("recaptcha_secret").strip()
@@ -56,13 +60,13 @@ def parse_html_datetime_local(value):
         # the seconds part when it is 00.
         return datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
     except ValueError as e:
-        logging.error("Datetime parsing error (%s) on invalid due date: %s", e, value)
+        logger.error("Datetime parsing error (%s) on invalid due date: %s", e, value)
 
     try:
         # Attempt to parse without seconds.
         return datetime.strptime(value, "%Y-%m-%dT%H:%M")
     except ValueError as e:
-        logging.error("Datetime parsing error (%s) on invalid due date: %s", e, value)
+        logger.error("Datetime parsing error (%s) on invalid due date: %s", e, value)
 
     # Return minimum value if datetime could not be parsed.
     return datetime.min

@@ -5,13 +5,15 @@ from typing import Iterable
 from google.cloud import ndb
 from common.timezone import UTC, Eastern
 
+logger = logging.getLogger(__name__)
+
 
 def datetimeformat(value, format="%B %d, %Y - %I:%M %p %Z"):
     try:
         value = value.replace(tzinfo=UTC())
         value = value.astimezone(Eastern)
     except Exception as e:
-        logging.error("Could not adjust datetime to US/Eastern: %s", e)
+        logger.error("Could not adjust datetime to US/Eastern: %s", e)
     return value.strftime(format)
 
 
