@@ -45,7 +45,7 @@ def handle_post(applicant, application):
             "Attempt to submit by %s after submission",
             applicant.email,
         )
-        return
+        return abort(409)
 
     incomplete_status = check_submission_incomplete_status(applicant, application)
     if True in incomplete_status.values():

@@ -1,5 +1,5 @@
 import logging
-from flask import render_template, request
+from flask import abort, render_template, request
 from flask_login import current_user, login_required
 from google.cloud import ndb
 from common.models import Settings
@@ -33,7 +33,7 @@ def handle_post(applicant, application):
             "Attempt to modify involvement by %s after submission",
             applicant.email,
         )
-        return
+        return abort(409)
 
     application.key_club_week_mon = request.form.get("key-club-week-monday")
     application.key_club_week_tue = request.form.get("key-club-week-tuesday")

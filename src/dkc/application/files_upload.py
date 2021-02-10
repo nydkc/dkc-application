@@ -45,7 +45,7 @@ def handle_activities_advocacy_post():
             applicant.email,
         )
         return abort(
-            400,
+            409,
             description="Cannot upload materials for an already submitted application.",
         )
     if len(application.advocacy_materials) >= MAX_ADVOCACY_ITEMS:
@@ -91,7 +91,7 @@ def handle_activities_newsletter_post():
             applicant.email,
         )
         return abort(
-            400,
+            409,
             description="Cannot upload materials for an already submitted application.",
         )
     if len(application.newsletter_materials) >= MAX_NEWSLETTER_ITEMS:
@@ -137,7 +137,7 @@ def handle_activities_other_post():
             applicant.email,
         )
         return abort(
-            400,
+            409,
             description="Cannot upload materials for an already submitted application.",
         )
     if len(application.other_materials) >= MAX_OTHER_ITEMS:

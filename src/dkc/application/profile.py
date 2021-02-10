@@ -1,5 +1,5 @@
 import logging
-from flask import render_template, request
+from flask import abort, render_template, request
 from flask_login import current_user, login_required
 from google.cloud import ndb
 from common.models import Settings
@@ -32,7 +32,7 @@ def handle_post(applicant, application):
         logger.warning(
             "Attempt to modify profile by %s after submission", applicant.email
         )
-        return
+        return abort(409)
 
     applicant.first_name = request.form.get("first-name")
     applicant.last_name = request.form.get("last-name")

@@ -48,7 +48,7 @@ def handle_post(applicant, application):
             "Attempt to modify verification by %s after submission",
             applicant.email,
         )
-        return
+        return abort(409)
 
     if profile_has_invalid_fields(applicant, application):
         logger.warning(

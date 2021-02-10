@@ -1,15 +1,16 @@
 from flask import jsonify
 
-def bad_request(e):
-    return jsonify({
-        "message": e.description,
-    }), 400
 
-def payload_too_large(e):
-    return jsonify({
-        "message": e.description,
-    }), 413
+def client_error_handler(code):
+    def handler(e):
+        resp = {
+            "message": e.description,
+        }
+        return jsonify(resp), code
+
+    return handler
+
 
 def register_error_handlers_to(app):
-    app.register_error_handler(400, bad_request)
-    app.register_error_handler(413, payload_too_large)
+    for code in (400, 409, 413):
+        app.register_error_handler(code, client_error_handler(code))

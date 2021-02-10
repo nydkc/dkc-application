@@ -1,7 +1,7 @@
 import html
 import io
 import os
-from flask import request, make_response, render_template, send_file
+from flask import abort, request, render_template, send_file
 from common.util import generate_pdf
 from . import dummy_bp
 
@@ -24,6 +24,10 @@ def env():
         )
     else:
         return response_html
+
+@dummy_bp.route("/error")
+def error():
+    return abort(400, description="dummy error")
 
 
 # @dummy_bp.route('/verification_email')

@@ -2,6 +2,7 @@ import logging
 from flask import abort, request, render_template, url_for
 from flask_wtf import FlaskForm
 from google.cloud import ndb
+from common.flask_error_handlers import client_error_handler
 from dkc.auth.models import AuthToken
 from . import verify_bp
 
@@ -12,21 +13,37 @@ class VerificationForm(FlaskForm):
     pass
 
 
-@verify_bp.route("/v/<string:token_key>")
-def external_verification(token_key: str):
+class VerificationAuthTokenError(Exception):
+    def __init__(self, code):
+        self.code = code
+
+
+@verify_bp.app_errorhandler(VerificationAuthTokenError)
+def verification_error_handler(e):
+    return render_template("verification/error.html"), e.code
+
+
+def decode_auth_token(urlsafe_token_key: str) -> AuthToken:
     try:
-        token = ndb.Key(urlsafe=token_key.encode("utf-8")).get()
+        token_key = ndb.Key(urlsafe=urlsafe_token_key.encode("utf-8"))
+        token = token_key.get()
     except:
-        logger.error("Could not decode key %s", token_key)
-        return render_template("verification/error.html"), 400
+        logger.error("Could not decode AuthToken key %s", urlsafe_token_key)
+        raise VerificationAuthTokenError(400)
     if not isinstance(token, AuthToken):
         logger.error(
             "Attempted to access non-AuthToken key %s of type %s",
             token_key,
             type(token),
         )
-        return render_template("verification/error.html"), 403
+        raise VerificationAuthTokenError(403)
+    else:
+        return token
 
+
+@verify_bp.route("/v/<string:token_key>")
+def external_verification(token_key: str):
+    token = decode_auth_token(token_key)
     form = VerificationForm()
 
     application = token.key.parent().get()
@@ -58,22 +75,10 @@ def external_verification(token_key: str):
 
 @verify_bp.route("/v/<string:token_key>/agree", methods=["POST"])
 def external_verification_agree(token_key: str):
-    try:
-        token = ndb.Key(urlsafe=token_key.encode("utf-8")).get()
-    except:
-        logger.error("Could not decode key %s", token_key)
-        return render_template("verification/error.html"), 400
-    if not isinstance(token, AuthToken):
-        logger.error(
-            "Attempted to access non-AuthToken key %s of type %s",
-            token_key,
-            type(token),
-        )
-        return render_template("verification/error.html"), 403
-
+    token = decode_auth_token(token_key)
     form = VerificationForm()
     if not form.validate():
-        return render_template("verification/error.html"), 403
+        raise VerificationAuthTokenError(403)
 
     # Check that the token corresponds to the application without performing any
     # modifications. Modifications are performed in a transaction.
