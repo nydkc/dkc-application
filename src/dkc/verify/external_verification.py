@@ -23,7 +23,7 @@ def verification_error_handler(e):
     return render_template("verification/error.html"), e.code
 
 
-def decode_auth_token(urlsafe_token_key: str) -> AuthToken:
+def decode_auth_token_with_type(urlsafe_token_key: str, auth_type: str) -> AuthToken:
     try:
         token_key = ndb.Key(urlsafe=urlsafe_token_key.encode("utf-8"))
         token = token_key.get()
@@ -36,14 +36,18 @@ def decode_auth_token(urlsafe_token_key: str) -> AuthToken:
             token_key,
             type(token),
         )
-        raise VerificationAuthTokenError(403)
+        raise VerificationAuthTokenError(400)
+    elif token.type != auth_type:
+        # Token type must match, otherwise this is a misused token
+        logger.error("Attemped to misuse AuthToken with type: %s", token.type)
+        return abort(403)
     else:
         return token
 
 
 @verify_bp.route("/v/<string:token_key>")
 def external_verification(token_key: str):
-    token = decode_auth_token(token_key)
+    token = decode_auth_token_with_type(token_key, "v")
     form = VerificationForm()
 
     application = token.key.parent().get()
@@ -75,7 +79,7 @@ def external_verification(token_key: str):
 
 @verify_bp.route("/v/<string:token_key>/agree", methods=["POST"])
 def external_verification_agree(token_key: str):
-    token = decode_auth_token(token_key)
+    token = decode_auth_token_with_type(token_key, "v")
     form = VerificationForm()
     if not form.validate():
         raise VerificationAuthTokenError(403)

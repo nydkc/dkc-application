@@ -26,13 +26,12 @@ class ResetPasswordForm(FlaskForm):
     )
 
 
-@auth_bp.route("/reset-password/p/<string:token_key>", methods=["GET", "POST"])
-@anonymous_only
-def reset_password(token_key):
+def decode_auth_token_with_type(urlsafe_token_key: str, auth_type: str) -> AuthToken:
     try:
-        token = ndb.Key(urlsafe=token_key.encode("utf-8")).get()
+        token_key = ndb.Key(urlsafe=urlsafe_token_key.encode("utf-8"))
+        token = token_key.get()
     except:
-        logger.error("Could not decode key %s", token_key)
+        logger.error("Could not decode AuthToken key %s", urlsafe_token_key)
         return abort(400, description="Invalid token")
     if not isinstance(token, AuthToken):
         logger.error(
@@ -41,10 +40,21 @@ def reset_password(token_key):
             type(token),
         )
         return abort(400, description="Invalid token")
+    elif token.type != auth_type:
+        # Token type must match, otherwise this is a misused token
+        logger.error("Attemped to misuse AuthToken with type: %s", token.type)
+        return abort(403)
+    else:
+        return token
 
-    form = ResetPasswordForm()
+
+@auth_bp.route("/reset-password/p/<string:token_key>", methods=["GET", "POST"])
+@anonymous_only
+def reset_password(token_key):
+    token = decode_auth_token_with_type(token_key, "p")
     user = token.key.parent().get()
 
+    form = ResetPasswordForm()
     if form.validate_on_submit():
         update_password(user.key, token.key, form.password.data)
         return redirect(url_for(".login", changed="1"))

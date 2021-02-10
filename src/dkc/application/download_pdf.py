@@ -13,7 +13,7 @@ from . import application_bp
 logger = logging.getLogger(__name__)
 
 
-def decode_auth_token(urlsafe_token_key: str) -> AuthToken:
+def decode_auth_token_with_type(urlsafe_token_key: str, auth_type: str) -> AuthToken:
     try:
         token_key = ndb.Key(urlsafe=urlsafe_token_key.encode("utf-8"))
         token = token_key.get()
@@ -26,6 +26,10 @@ def decode_auth_token(urlsafe_token_key: str) -> AuthToken:
             token_key,
             type(token),
         )
+        return abort(400, description="Invalid token")
+    elif token.type != auth_type:
+        # Token type must match, otherwise this is a misused token
+        logger.error("Attemped to misuse AuthToken with type: %s", token.type)
         return abort(403)
     else:
         return token
@@ -34,7 +38,8 @@ def decode_auth_token(urlsafe_token_key: str) -> AuthToken:
 def check_access(applicant_key, urlsafe_token_key: str):
     """Checks that the token key or current user can view the application."""
     if urlsafe_token_key:
-        token = decode_auth_token(urlsafe_token_key)
+        # Allow external verificatioo access with valid token
+        token = decode_auth_token_with_type(urlsafe_token_key, "v")
         # Check that token matches that of the application to download
         if applicant_key != token.key.parent().parent():
             return abort(403)
