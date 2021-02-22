@@ -320,8 +320,9 @@ input#district-projects-charity {
 }
 
 .home img {
-    width: 150px;
-    margin: 10px 0 20px;
+    width: 180px;
+    margin-top: 20px;
+    margin-bottom: 30px;
 }
 
 .home .btn-block {
