@@ -1,3 +1,4 @@
+import logging
 import os
 from flask import Flask, render_template
 from google.cloud import ndb
@@ -35,8 +36,9 @@ if not os.getenv("GAE_ENV", "").startswith("standard"):
     app.debug = True
     app.config['EXPLAIN_TEMPLATE_LOADING'] = False
 
-g_flask_talisman_init_app(app)
 app.wsgi_app = g_ndb_wsgi_middleware(app.wsgi_app)
+
+g_flask_talisman_init_app(app)
 g_login_manager.init_app(app)
 g_oauth.init_app(app)
 
@@ -44,7 +46,7 @@ register_error_handlers_to(app)
 register_dkc_blueprints_to(app)
 register_admin_blueprints_to(app)
 
-print(app.url_map)
+logging.info("Initialized Flask App: app.url_map=\n%s", app.url_map)
 
 if __name__ == '__main__':
     app.run(host='localhost', port=8080, debug=True)
