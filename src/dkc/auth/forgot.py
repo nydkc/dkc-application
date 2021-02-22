@@ -48,6 +48,11 @@ def forgot():
             send_password_reset_email(user, token_key)
             template_values["forgot_email_sent_to"] = email
 
+    settings = ndb.Key(Settings, "config").get()
+    template_values.update({
+        "settings": settings,
+    })
+
     return render_template("auth/forgot.html", **template_values)
 
 

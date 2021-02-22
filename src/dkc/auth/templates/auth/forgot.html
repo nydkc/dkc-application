@@ -33,6 +33,13 @@
     <strong>An email has been sent to: {{ forgot_email_sent_to }}</strong>
     <br>Please check the email for instructions on how to reset your password. Be sure to check your spam inbox as well.
 </div>
+{% else %}
+<div class="alert alert-info">
+    It is possible to reset your password for DKC applications from the
+    <strong>{{ (settings.due_date | datetimeformat("%Y") | int - 1) ~ "-" ~ (settings.due_date | datetimeformat("%Y")) }}</strong>
+    service year.
+    <br>Applicants from previous years will need to <a href="/register">create a new account</a>.
+</div>
 {% endif %}
 
 <form id="forgot-password" class="form-horizontal col-md-6 col-md-offset-3" role="form" action="/forgot" method="post">
