@@ -36,10 +36,37 @@ def get_all_overview():
 
 
 def get_all_search():
-    applicants_query = User.query().order(User.email)
-    all_applicants = [a for a in applicants_query.fetch()]
-    application_keys = [a.application for a in all_applicants]
-    all_applications = ndb.get_multi(application_keys)
+    def _get_unsorted():
+        # Use the same projection query as overview to avoid creating another composite index.
+        applicants_query = User.query(
+            projection=[User.email, User.first_name, User.last_name, User.application]
+        )
+        applications_query = Application.query(
+            projection=[
+                Application.grade,
+                Application.address,
+                Application.city,
+                Application.zip_code,
+                Application.phone_number,
+                Application.division,
+                Application.ltg,
+                Application.school,
+                Application.school_address,
+                Application.school_city,
+                Application.school_zip_code,
+                Application.club_president,
+                Application.club_president_phone_number,
+                Application.faculty_advisor,
+                Application.faculty_advisor_phone_number,
+            ]
+        )
+        return applicants_query.fetch(), applications_query.fetch()
+
+    all_applicants, all_applications = _get_unsorted()
+    # Create a lookup to match applicants to the respective application.
+    # This is a workaround, since a read-only transaction only allows for ancestor queries.
+    lookup = {a.key: a for a in all_applications}
+    all_applications = [lookup.get(a.application) for a in all_applicants]
     return all_applicants, all_applications
 
 
@@ -53,7 +80,7 @@ def get_all_with_emails_submit_time():
         return applicants_query.fetch(), applications_query.fetch()
 
     all_applicants, all_applications = _get_unsorted()
-    # Create a lookup to match applicants to the respective application
+    # Create a lookup to match applicants to the respective application.
     # This is a workaround, since a read-only transaction only allows for ancestor queries.
     lookup = {a.key: a for a in all_applications}
     all_applications = [lookup.get(a.application) for a in all_applicants]

@@ -42,6 +42,14 @@ def handle_search(querystring):
 
 
 def applicant_matches(applicant, application, querystring):
+    """
+    Checks whether the given `querystring` is contained in the profile fields
+    in `applicant` and `application`.
+
+    The caller must ensure that if `applicant` and `application` are entities
+    returned from a projection query, that the projection contains the profile
+    fields that are searched.
+    """
     search_fields = [
         applicant.first_name,
         applicant.last_name,
