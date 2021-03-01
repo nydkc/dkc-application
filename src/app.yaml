@@ -33,9 +33,9 @@ handlers:
   static_dir: static/fonts
   expiration: 30d
 
-# error_handlers:
-# - error_code: over_quota
-#   file: error_pages/over_quota.html
+error_handlers:
+- error_code: over_quota
+  file: error_pages/over_quota.html
 
 env_variables:
     TZ: 'UTC'
