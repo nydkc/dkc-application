@@ -28,13 +28,3 @@ def env():
 @dummy_bp.route("/error")
 def error():
     return abort(400, description="dummy error")
-
-
-# @dummy_bp.route('/verification_email')
-# def verification_email():
-#     applicant = self.user
-#     template_values = {
-#         'verifier': "Amazing Position Test User",
-#         'applicant': applicant,
-#         'verification_url': "/"
-#     }
