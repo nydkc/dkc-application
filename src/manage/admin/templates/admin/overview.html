@@ -60,7 +60,10 @@ function clickableRows() {
 }
 $(document).ready(function() {
     clickableRows();
-    $("#overview-applicants").tablesorter({ sortList: [[4, 0], [0, 0]]});
+    $("#overview-applicants").tablesorter({
+        sortList: [[4, 0], [0, 0]],
+        stringTo: "bottom",
+    });
 });
 </script>
 {% endblock %}

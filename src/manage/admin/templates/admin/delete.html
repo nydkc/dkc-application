@@ -24,8 +24,8 @@
         <tbody>
             {%- for applicant, application in zip(all_applicants, all_applications) %}
             <tr class="clickable-row {% if application.graded %}graded-row{% endif %}" href="/admin/show/{{ applicant.email }}">
-                <td class="text-center">
-                    <label class="text-center">
+                <td>
+                    <label>
                         <input type="checkbox" name="email" value="{{ applicant.email }}">
                     </label>
                 </td>
@@ -127,6 +127,7 @@ $(document).ready(function() {
         headers: {
             0 : { sorter: false },
         },
+        stringTo: "bottom",
     });
 });
 </script>
