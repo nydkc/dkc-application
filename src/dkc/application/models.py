@@ -2,24 +2,32 @@ from google.cloud import ndb
 from common.models import Settings
 from dkc.auth.models import AuthToken
 
+# NOTE: Fields with StringProperty are indexed and can be filtered/directly
+# queried using projections. Fields with TextProperty are not indexed.
+
+
 class InternationalProject(ndb.Model):
     section = ndb.TextProperty()
-    event = ndb.StringProperty()
+    event = ndb.TextProperty()
     description = ndb.TextProperty()
+
 
 class DistrictProject(ndb.Model):
-    event = ndb.StringProperty()
-    charity = ndb.StringProperty()
+    event = ndb.TextProperty()
+    charity = ndb.TextProperty()
     description = ndb.TextProperty()
+
 
 class Divisional(ndb.Model):
-    date = ndb.StringProperty()
-    location = ndb.StringProperty()
+    date = ndb.TextProperty()
+    location = ndb.TextProperty()
+
 
 class GeneralProject(ndb.Model):
-    event = ndb.StringProperty()
-    location = ndb.StringProperty()
+    event = ndb.TextProperty()
+    location = ndb.TextProperty()
     description = ndb.TextProperty()
+
 
 class GCSObjectReference(ndb.Model):
     bucket_name = ndb.StringProperty()
@@ -27,6 +35,7 @@ class GCSObjectReference(ndb.Model):
     filename = ndb.StringProperty()
     content_type = ndb.StringProperty()
     bytes_size = ndb.IntegerProperty()
+
 
 class Application(ndb.Model):
     start_time = ndb.DateTimeProperty(auto_now_add=True)
@@ -78,11 +87,11 @@ class Application(ndb.Model):
     kiwanis_one_day = ndb.StructuredProperty(GeneralProject)
     k_family_projects = ndb.StructuredProperty(GeneralProject, repeated=True)
     interclub_projects = ndb.StructuredProperty(GeneralProject, repeated=True)
-    advocacy_cause = ndb.StringProperty()
+    advocacy_cause = ndb.TextProperty()
     advocacy_description = ndb.TextProperty()
     advocacy_materials = ndb.KeyProperty(GCSObjectReference, repeated=True)
-    committee = ndb.StringProperty()
-    committee_type = ndb.StringProperty()
+    committee = ndb.TextProperty()
+    committee_type = ndb.TextProperty()
     committee_description = ndb.TextProperty()
     divisional_newsletter = ndb.BooleanProperty()
     divisional_newsletter_info = ndb.TextProperty()
@@ -94,8 +103,8 @@ class Application(ndb.Model):
     other_projects = ndb.StructuredProperty(GeneralProject, repeated=True)
 
     # Other
-    recommender_points = ndb.StringProperty()
-    outstanding_awards = ndb.StringProperty()
+    recommender_points = ndb.TextProperty()
+    outstanding_awards = ndb.StringProperty()  # indexed, for Admin overview
     scoring_reason_two = ndb.TextProperty()
     scoring_reason_three = ndb.TextProperty()
     scoring_reason_four = ndb.TextProperty()
