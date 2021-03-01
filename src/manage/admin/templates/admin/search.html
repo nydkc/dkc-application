@@ -24,7 +24,7 @@
 
 {%- if q %}
 <div id="search-results">
-    <div class="text-right">There are {{ applicants|length }} matches. ({{ "{:.3f}".format(time_elapsed) }} seconds) </div>
+    <div class="text-right">There are {{ query_results | length }} matches. ({{ "{:.3f}".format(time_elapsed) }} seconds) </div>
 
     {%- for applicant, application in query_results %}
     <div class="result">
