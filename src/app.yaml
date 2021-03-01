@@ -1,12 +1,15 @@
 runtime: python37
-# inbound_services:
-# - warmup
+inbound_services:
+- warmup
 
 entrypoint: >
   gunicorn -b :$PORT main:app
 
+instance_class: F1
+
 automatic_scaling:
-  max_instances: 1
+  min_instances: 0
+  max_instances: 2
 
 handlers:
 - url: /favicon\.ico
