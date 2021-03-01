@@ -9,6 +9,9 @@ cron_bp = Blueprint("manage.cron", __name__)
 
 logger = logging.getLogger(__name__)
 
+# A special header that is attached to App Engine cron requests. This header is
+# set internally and cannot be set by clients.
+# See https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#validating_cron_requests
 APPENGINE_CRON_HEADER = "X-Appengine-Cron"
 
 
