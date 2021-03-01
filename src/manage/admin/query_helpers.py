@@ -28,7 +28,7 @@ def get_all_overview():
         return applicants_query.fetch(), applications_query.fetch()
 
     all_applicants, all_applications = _get_unsorted()
-    # Create a lookup to match applicants to the respective application
+    # Create a lookup to match applicants to the respective application.
     # This is a workaround, since a read-only transaction only allows for ancestor queries.
     lookup = {a.key: a for a in all_applications}
     all_applications = [lookup.get(a.application) for a in all_applicants]
@@ -45,7 +45,10 @@ def get_all_search():
 
 def get_all_with_emails_submit_time():
     def _get_unsorted():
-        applicants_query = User.query(projection=[User.email, User.application])
+        # Use the same projection query as overview to avoid creating another composite index.
+        applicants_query = User.query(
+            projection=[User.email, User.first_name, User.last_name, User.application]
+        )
         applications_query = Application.query(projection=[Application.submit_time])
         return applicants_query.fetch(), applications_query.fetch()
 
