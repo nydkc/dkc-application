@@ -9,7 +9,7 @@ from . import admin_bp
 @admin_login_required
 def lists():
     settings = ndb.Key(Settings, "config").get()
-    all_applicants, all_applications = query_helpers.get_all_overview()
+    all_applicants, all_applications = query_helpers.get_all_with_emails_submit_time()
     template_values = {
         "all_applicants": all_applicants,
         "all_applications": all_applications,

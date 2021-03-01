@@ -5,24 +5,23 @@
     <h2>Lists</h2>
 </div>
 
+{% set submitted = zip(all_applicants, all_applications) | rejectattr("1.submit_time", "equalto", None) | list %}
+{% set not_submitted = zip(all_applicants, all_applications) | selectattr("1.submit_time", "equalto", None) | list %}
+
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="panel panel-warning" id="emails-not-submitted-panel">
         <div class="panel-heading">
             <div class="panel-title">
                 <a data-toggle="collapse" href="#emails-not-submitted">
-                    Applicants who have <strong>NOT</strong> yet submitted
+                    Applicants who have <strong>NOT</strong> yet submitted ({{ not_submitted | length }})
                 </a>
             </div>
         </div>
         <div id="emails-not-submitted" class="panel-collapse collapse">
             <div class="panel-body">
                 <div class="row">
-                {%- for applicant, application in zip(all_applicants, all_applications) %}
-                    {%- if not application.submit_time %}
-                        <div class="col-md-4 col-xs-6">
-                            {{ applicant.email }}
-                        </div>
-                    {%- endif %}
+                {%- for applicant, application in not_submitted %}
+                    <div class="col-md-4 col-xs-6">{{ applicant.email }}&nbsp;</div>
                 {%- endfor %}
                 </div>
             </div>
@@ -35,19 +34,15 @@
         <div class="panel-heading">
             <div class="panel-title">
                 <a data-toggle="collapse" href="#emails-submitted">
-                    Applicants who <strong>HAVE</strong> submitted
+                    Applicants who <strong>HAVE</strong> submitted ({{ submitted | length }})
                 </a>
             </div>
         </div>
         <div id="emails-submitted" class="panel-collapse collapse">
             <div class="panel-body">
                 <div class="row">
-                {%- for applicant, application in zip(all_applicants, all_applications) %}
-                    {%- if application.submit_time %}
-                        <div class="col-md-4 col-xs-6">
-                            {{ applicant.email }}
-                        </div>
-                    {%- endif %}
+                {%- for applicant, application in submitted %}
+                    <div class="col-md-4 col-xs-6">{{ applicant.email }}&nbsp;</div>
                 {%- endfor %}
                 </div>
             </div>
