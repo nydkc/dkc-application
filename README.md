@@ -51,6 +51,8 @@ Built using Flask and hosted on Google App Engine: [http://dkc-app.nydkc.org](ht
 $ gcloud app deploy app.yaml --project dkc-app
 ```
 
+**NOTE:** Google Cloud Build is integrated with this repository, which deploys the latest code that is pushed.
+
 ## Local Development
 
 Python 3+ is required to run the DKC Application. The recommended development setup is to use Python's [Virtual Environment (venv)](https://docs.python.org/3/library/venv.html) to install dependencies from [pip](https://pypi.org/project/pip/).
