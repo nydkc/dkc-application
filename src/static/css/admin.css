@@ -193,6 +193,12 @@ hr.separator {
     word-break: break-word;
 }
 
+.settings-danger-zone {
+    margin-top: 40px;
+    padding: 10px 20px 20px;
+    border: 1px solid #a94442;
+}
+
 @media screen and (min-width: 768px) {
     .dl-horizontal.profile dt {
         width: 42%;
