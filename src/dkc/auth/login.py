@@ -28,16 +28,19 @@ def should_recaptcha(form):
         num_attempts = int(attempts_cookie)
     except (TypeError, ValueError):
         num_attempts = 1
-    # Only increment the number of attempts upon form submission
-    if form.is_submitted():
-        num_attempts += 1
 
     @after_this_request
     def update_attempts_cookie(resp):
         if current_user.is_authenticated:
             resp.delete_cookie("attempts")
         else:
-            resp.set_cookie("attempts", str(num_attempts), max_age=3600, httponly=True)
+            # Only increment the number of attempts upon form submission
+            resp.set_cookie(
+                "attempts",
+                str(num_attempts + int(form.is_submitted())),
+                max_age=3600,
+                httponly=True,
+            )
         return resp
 
     return num_attempts > 5
