@@ -1,0 +1,311 @@
+{% extends "application/_application.html" %}
+{% set title = 'Activities' %}
+{% from "application/file_handling.html" import file_info_table %}
+{% macro kiwanis_one_day_input(project) -%}
+<div class="row project">
+    <div class="form-horizontal col-xs-12">
+        <div class="col-md-6">
+            {{ input_horizontal("kiwanis-one-day-event", "Event:", project.event, size=2) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_horizontal("kiwanis-one-day-location", "Location:", project.location, size=3) }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description of the event:</strong>
+            {{ textarea_horizontal("kiwanis-one-day-description", value=project.description, size=0) }}
+        </div>
+    </div>
+    <div class="project-delete">
+        <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
+    </div>
+</div>
+{%- endmacro %}
+{% macro k_family_project_input(project) -%}
+<div class="row project">
+    <div class="form-horizontal col-xs-12">
+        <div class="col-md-6">
+            {{ input_horizontal("k-family-projects-event", "Event:", project.event, size=2) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_horizontal("k-family-projects-location", "Location:", project.location, size=3) }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description of the event:</strong>
+            {{ textarea_horizontal("k-family-projects-description", value=project.description, size=0) }}
+        </div>
+    </div>
+    <div class="project-delete">
+        <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
+    </div>
+</div>
+{%- endmacro %}
+{% macro interclub_project_input(project) -%}
+<div class="row project">
+    <div class="form-horizontal col-xs-12">
+        <div class="col-md-6">
+            {{ input_horizontal("interclub-projects-event", "Event:", project.event, size=2) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_horizontal("interclub-projects-location", "Location:", project.location, size=3) }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description of the event:</strong>
+            {{ textarea_horizontal("interclub-projects-description", value=project.description, size=0) }}
+        </div>
+    </div>
+    <div class="project-delete">
+        <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
+    </div>
+</div>
+{%- endmacro %}
+{% macro other_project_input(project) -%}
+<div class="row project">
+    <div class="form-horizontal col-xs-12">
+        <div class="col-md-6">
+            {{ input_horizontal("other-projects-event", "Event:", project.event, size=2) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_horizontal("other-projects-location", "Location:", project.location, size=3) }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description of the event:</strong>
+            {{ textarea_horizontal("other-projects-description", value=project.description, size=0) }}
+        </div>
+    </div>
+    <div class="project-delete">
+        <span class="glyphicon glyphicon-trash" onclick="deleteProject(this)"></span>
+    </div>
+</div>
+{%- endmacro %}
+
+{% block application %}
+<form id="application" role="form" action="{{ application_url }}" method="post">
+    <div class="page-header">
+        <h2>Part IV: Projects, Advocacy &amp; Newsletters <span class="text-nowrap">(60 Points)</span></h2>
+    </div>
+    <p class="text-center">This part will show what projects or activities you have participated in.
+        <br>Required Points: 20 Points
+        <br>Recommended Points: 40 Points
+    </p>
+
+    <h4>Section 1: K-Family Projects</h4>
+    <p>If you have participated in any event or project with another member of the Kiwanis Family, describe the project in this segment. Members of the K-Family include: Kiwanis, Circle K, Builders Club, K-Kids and AKTION Club. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
+
+    <strong>Kiwanis One Day Event (5 Points Max, 1 Points per Event)</strong>
+    <p>Kiwanis One Day is typically held on the 4th Saturday of October. If you have participated in a Kiwanis One Day event or project, please fill out this section.</p>
+    <div class="kiwanis-one-day">
+        {%- if application.kiwanis_one_day %}
+        {{ kiwanis_one_day_input(application.kiwanis_one_day) }}
+        {%- endif %}
+    </div>
+    <button class="btn btn-inverse btn-block" id="kiwanis-one-day-button"><span class="glyphicon glyphicon-plus"></span> Add an event...</button>
+
+    <div style="margin-top: 10px;"><strong>K-Family Service Projects (16 Points Max, 4 Points per Event)</strong></div>
+    <p>Describe any projects or events you have participated in with another branch of the Kiwanis Family.</p>
+    <div class="k-family-projects">
+        {%- for project in application.k_family_projects %}
+        {{ k_family_project_input(project) }}
+        {%- endfor %}
+    </div>
+    <button class="btn btn-inverse btn-block" id="k-family-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
+
+    <hr>
+
+    <h4>Section 2: Interclub Event (Max 16 Points, 4 Points per Event)</h4>
+    <p>If you have participated in any event or project with other clubs, fill out this section. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
+    <div class="interclub-projects">
+        {%- for project in application.interclub_projects %}
+        {{ interclub_project_input(project) }}
+        {%- endfor %}
+    </div>
+    <button class="btn btn-inverse btn-block" id="interclub-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
+
+    <hr>
+
+    <h4>Section 3: Advocacy (Max 3 Points, 3 Points per Project)</h4>
+    <p>In this section, describe any advocacy project that you may have started or participated in. Include a description of the cause you are advocating for, why it is important to you, and what steps you have taken to promote it. Please include any materials, such as petitions, letters and fliers to your application.</p>
+    <div class="row">
+        <div class="form-horizontal col-xs-12">
+            <div class="col-md-12">
+                {{ input_horizontal("advocacy-cause", "Cause:", application.advocacy_cause, size=1) }}
+            </div>
+            <div class="col-md-12">
+                <strong>Description of the cause:</strong>
+                {{ textarea_horizontal("advocacy-description", value=application.advocacy_description, size=0) }}
+            </div>
+        </div>
+    </div>
+
+    <h5>Advocacy Materials <small>(Max. 5)</small></h5>
+    <div class="table-responsive">
+        {{ file_info_table("advocacy-upload", (application.advocacy_materials | to_file_info)) }}
+    </div>
+    <div class="text-center">
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                data-target="#upload-modal"
+                data-upload-material="Advocacy Materials"
+                data-upload-url="/application/upload/activities/advocacy"
+                data-upload-file-info-table-target="advocacy-upload"
+                data-upload-max-file-size="{{ 10 * 1024 * 1024 }}">
+            <span class="glyphicon glyphicon-upload"></span> Open Upload Window...
+        </button>
+    </div>
+
+    <hr>
+
+    <h4>Section 4: Committee Involvement (Max 3 Points, 3 Points per Committee)</h4>
+    <p>If you were part of a Key Club committee, whether it is a club committee, divisional committee, district committee, or international committee, please fill out this section. Indicate the name of the committee and the type of the committee (club, divisional, district, international). Briefly describe what you have done in the committee.</p>
+    <div class="row">
+        <div class="form-horizontal col-xs-12">
+            <div class="col-md-8">
+                {{ input_horizontal("committee", "Committee:", application.committee, size=2) }}
+            </div>
+            <div class="col-md-4">
+                {{ select_horizontal("committee-type", "Type:", application.committee_type, [" ", "Club", "Divisional", "District", "International"], size=2) }}
+            </div>
+            <div class="col-md-12">
+                <strong>Description of the committee:</strong>
+                {{ textarea_horizontal("committee-description", value=application.committee_description, size=0) }}
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h4>Section 5: Newsletter Article Submission (Max 5 Points)</h4>
+    <p>Submit a service spotlight to either the divisional newsletter, district newsletter, or district website. Use any combination to receive up to 5 points in this section. Attach all articles with your submission by uploading them below. Each article can only qualify once. Be sure to specify the date the newsletter was published and the link to the article if possible. Please include the number of articles submitted for each newsletter.</p>
+    <div class="row form-horizontal newsletters">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="row">
+                <div class="col-xs-6 col-md-7 col-lg-6">
+                    {{ checkbox("divisional-newsletter", "(1 Point) Divisional Newsletter", application.divisional_newsletter) }}
+                </div>
+                <div class="col-xs-6 col-md-5 col-lg-6">
+                    {{ input_horizontal_small("divisional-newsletter-info", value=application.divisional_newsletter_info, size=0) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-7 col-lg-6">
+                    {{ checkbox("district-newsletter", "(2 Points) District Newsletter (The Empire Key)", application.district_newsletter) }}
+                </div>
+                <div class="col-xs-6 col-md-5 col-lg-6">
+                    {{ input_horizontal_small("district-newsletter-info", value=application.district_newsletter_info, size=0) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-7 col-lg-6">
+                    {{ checkbox("district-website", "(2 Points) District Website", application.district_website) }}
+                </div>
+                <div class="col-xs-6 col-md-5 col-lg-6">
+                    {{ input_horizontal_small("district-website-info", value=application.district_website_info, size=0) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <h5>Newsletter Materials <small>(Max. 5)</small></h5>
+    <div class="table-responsive">
+        {{ file_info_table("newsletter-upload", (application.newsletter_materials | to_file_info)) }}
+    </div>
+    <div class="text-center">
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                data-target="#upload-modal"
+                data-upload-material="Newsletter Materials"
+                data-upload-url="/application/upload/activities/newsletter"
+                data-upload-file-info-table-target="newsletter-upload"
+                data-upload-max-file-size="{{ 10 * 1024 * 1024 }}">
+            <span class="glyphicon glyphicon-upload"></span> Open Upload Window...
+        </button>
+    </div>
+
+    <hr>
+
+    <h4>Section 6: Other Project/Fundraisers (Max 12 Points, 2 Points per Project/Fundraiser)</h4>
+    <p>Please list and describe any service project that you have participated in. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
+    <div class="other-projects">
+        {%- for project in application.other_projects %}
+        {{ other_project_input(project) }}
+        {%- endfor %}
+    </div>
+    <button class="btn btn-inverse btn-block" id="other-projects-button"><span class="glyphicon glyphicon-plus"></span> Add more events...</button>
+
+    <hr>
+
+    <div id="updated-text" class="text-center" style="display:none"></div>
+    <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success btn-block">Update</button>
+</form>
+
+{% endblock %}
+{% block application_scripts %}
+{% include "application/file_handling.html" %}
+<script>
+function checkboxEnableTextInput() {
+    $('input[type=checkbox]').each(function() {
+        var checkbox = $(this);
+        var closestTextInput = checkbox.parent().parent().parent().parent().find('input[type=text]');
+        var toggleTextInput = function() {
+            if (checkbox.is(':checked')) {
+                closestTextInput.removeAttr('disabled');
+            }
+            else {
+                closestTextInput.attr('disabled', 'disabled');
+            }
+        }
+        toggleTextInput();
+        checkbox.change(toggleTextInput);
+    });
+}
+$(document).ready(checkboxEnableTextInput);
+</script>
+<script>
+function deleteProject(trash) {
+    project = $(trash).parent().parent();
+    project.slideUp(400, function() {
+        $(this).remove();
+        buttonAppearanceCheck();
+    });
+}
+function buttonAppearanceCheck() {
+    if ($('.kiwanis-one-day .project').length >= 1) {
+        $('#kiwanis-one-day-button').hide();
+    } else {
+        $('#kiwanis-one-day-button').fadeIn();
+    }
+    if ($('.k-family-projects .project').length >= 4) {
+        $('#k-family-projects-button').hide();
+    } else {
+        $('#k-family-projects-button').fadeIn();
+    }
+    if ($('.interclub-projects .project').length >= 4) {
+        $('#interclub-projects-button').hide();
+    } else {
+        $('#interclub-projects-button').fadeIn();
+    }
+    if ($('.other-projects .project').length >= 6) {
+        $('#other-projects-button').hide();
+    } else {
+        $('#other-projects-button').fadeIn();
+    }
+}
+$(document).ready(buttonAppearanceCheck);
+$('#kiwanis-one-day-button').click(function() {
+    $('{{ kiwanis_one_day_input({}) | replace("\n", "") }}').hide().appendTo('.kiwanis-one-day').slideDown();
+    buttonAppearanceCheck();
+    return false;
+});
+$('#k-family-projects-button').click(function() {
+    $('{{ k_family_project_input({}) | replace("\n", "") }}').hide().appendTo('.k-family-projects').slideDown();
+    buttonAppearanceCheck();
+    return false;
+});
+$('#interclub-projects-button').click(function() {
+    $('{{ interclub_project_input({}) | replace("\n", "") }}').hide().appendTo('.interclub-projects').slideDown();
+    buttonAppearanceCheck();
+    return false;
+});
+$('#other-projects-button').click(function() {
+    $('{{ other_project_input({}) | replace("\n", "") }}').hide().appendTo('.other-projects').slideDown();
+    buttonAppearanceCheck();
+    return false;
+});
+</script>
+{% endblock %}

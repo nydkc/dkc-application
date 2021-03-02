@@ -1,0 +1,19 @@
+<div class="page-header">
+    <h3>Other</h3>
+</div>
+
+<div class="section">
+<ol class="other">
+{% if application.recommender_points == None or application.recommender_points == "No Recommendation" %}
+    <li>I do not have a recommendation.</li>
+{% else %}
+    <li>I would like to receive 5 points on Part {{ application.recommender_points }} for submitting a recommendation.</li>
+{% endif %}
+
+{% if "Outstanding" in application.outstanding_awards|e %}
+    <li>I am submitting an application for the {{ application.outstanding_awards|e }}. This DKC Application is part of the requirements for the {{ application.outstanding_awards }} award.</li>
+{% else %}
+    <li>I am only submitting my application for the DKC Award.</li>
+{% endif %}
+</ol>
+</div>

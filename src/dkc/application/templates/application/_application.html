@@ -1,0 +1,190 @@
+{% extends "layout.html" %}
+{% block body %}
+{%- if application.submit_time %}
+<div class="submitted-overlay alert alert-warning">
+    <p class="lead">
+        You submitted your application on {{ application.submit_time | datetimeformat('%B %d, %Y at %I:%M %p %Z') }}.
+        While you may still view your application, you may <strong>not</strong> change anything.
+    </p>
+</div>
+{%- endif %}
+<div class="row application{% if application.submit_time %} submitted-application{% endif %}">
+    <aside class="col-sm-3">
+{% include "application/sidebar.html" %}
+    </aside>
+    <div class="col-sm-9 application-content">
+{% block application %}{% endblock %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/js/textareaCounter.js"></script>
+{% block application_scripts %}{% endblock %}
+<script>
+{%- if application.submit_time %}
+$(document).ready(function() {
+    $('.application-content textarea').each(function() { $(this).attr('disabled', 'disabled'); });
+    $('.application-content input').each(function() { $(this).attr('disabled', 'disabled'); });
+    $('.application-content select').each(function() { $(this).attr('disabled', 'disabled'); });
+    $('.application-content button').each(function() { $(this).attr('disabled', 'disabled'); });
+});
+{%- endif %}
+var formData;
+$(document).ready(function() {
+    formData = $('#application').serialize();
+    $('#application').submit('click', submitApplication);
+});
+function submitApplication(e) {
+    $('#submit').button('loading');
+    newData = $('#application').serialize();
+    if (formData != newData) {
+        $.ajax({
+            type: 'POST',
+            url: '{{ application_url }}',
+            data: newData
+        })
+        .done(function(data) {
+            $('#updated-text').addClass('text-success').removeClass('text-danger').text('Application updated!');
+            formData = newData;
+            if (e.data == 'click') {
+                sweetAlert("Application updated!", "All your information has successfully been saved.", "success");
+            }
+        })
+        .fail(function(data) {
+            $('#updated-text').addClass('text-danger').removeClass('text-success').text('Update failed... are you connected to the internet?');
+            if (e.data == 'click') {
+                sweetAlert("Update failed!", "It appears that you are not connected to the internet.", "error");
+            }
+        })
+        .always(function() {
+            $('#submit').button('reset');
+        });
+    }
+    else {
+        $('#updated-text').addClass('text-success').removeClass('text-danger').text('Application updated!');
+        setTimeout(function() { $('#submit').button('reset'); }, 300);
+    }
+    $('#updated-text').fadeIn(200);
+    setTimeout(function() { $('#updated-text').fadeOut(700); }, 1000);
+    return false;
+}
+setInterval(function() {
+    submitApplication('auto');
+}, 1*60*1000);
+
+function selectInputOtherFieldExpand() {
+    $('select').each(function() {
+        var selectInput = $(this);
+        var selectInputName = selectInput.attr('name');
+        var toggleOtherInputField = function() {
+            if (selectInput.val() == "Other") {
+                selectInput.siblings('input').removeClass("hidden").attr('name', selectInputName);
+                selectInput.removeAttr('name').css('width', '27%');
+            }
+            else {
+                selectInput.parent().find('input').addClass("hidden").removeAttr('name');
+                selectInput.attr('name', selectInputName).css('width', '100%');
+            }
+        }
+        toggleOtherInputField();
+        selectInput.change(toggleOtherInputField);
+    });
+}
+</script>
+{% endblock %}
+
+{% macro input(name, label='', value='', type='text', disabled='', size='') -%}
+<div class="form-group">
+    {% if label != '' %}<label for="{{ name }}">{{ label }}</label>{% endif %}
+    <input type="{{ type }}" class="form-control {% if size %}{{ size }}{% endif %}" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }} autocomplete="off">
+</div>
+{%- endmacro %}
+
+{% macro textarea(name, label='', value='', disabled='', rows='4') -%}
+<div class="form-group">
+    {% if label != '' %}<label for="{{ name }}">{{ label }}</label>{% endif %}
+    <textarea class="form-control" id="{{ name }}" name="{{ name }}" rows="{{ rows }}" {{ disabled }}>{% if value|e != 'None' %}{{ value|e }}{% endif %}</textarea>
+</div>
+{%- endmacro %}
+
+{% macro select(name, label='', selected='', choices=[], disabled='') -%}
+<div class="form-group">
+    <label for="{{ name }}" class="control-label">{{ label }}</label>
+    <select class="form-control" id="{{ name }}" name="{{ name }}" {{ disabled }}>
+    {% for choice in choices %}
+        <option value="{{ choice }}"{% if choice == selected %} selected{% endif %}>{{ choice }}</option>
+    {% endfor %}
+    </select>
+</div>
+{%- endmacro %}
+
+{% macro input_horizontal(name, label='', value='', type='text', disabled='', size=4, extra_attrs=[]) -%}
+<div class="form-group">
+    <label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>
+    <div class="col-md-{{ 12 - size }}">
+        <input type="{{ type }}" class="form-control" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }} {% for attr in extra_attrs %} {{ attr | safe }}{% endfor %} autocomplete="off">
+    </div>
+</div>
+{%- endmacro %}
+
+{% macro input_horizontal_small(name, label='', value='', type='text', disabled='', size=4) -%}
+<div class="form-group-sm">
+    {% if label != '' %}<label for="{{ name }}" class="col-xs-{{ size }} control-label">{{ label }}</label>{% endif %}
+    <div class="col-xs-{{ 12 - size }}">
+        <input type="{{ type }}" class="form-control" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }} autocomplete="off">
+    </div>
+</div>
+{%- endmacro %}
+
+{% macro textarea_horizontal(name, label='', value='', disabled='', rows='4', size=4) -%}
+<div class="form-group">
+    {% if label != '' %}<label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>{% endif %}
+    <div class="col-md-{{ 12 - size }}">
+        <textarea class="form-control" id="{{ name }}" name="{{ name }}" rows="{{ rows }}" {{ disabled }}>{% if value|e != 'None' %}{{ value|e }}{% endif %}</textarea>
+    </div>
+</div>
+{%- endmacro %}
+
+{% macro select_horizontal(name, label='', selected='', choices=[], disabled='', size=4) -%}
+<div class="form-group">
+    {% if label != '' %}<label for="{{ name }}" class="col-md-{{ size }} control-label">{{ label }}</label>{% endif %}
+    <div class="col-md-{{ 12 - size }}">
+        <select class="form-control" id="{{ name }}" name="{{ name }}" {{ disabled }}>
+        {%- for choice in choices %}
+            {%- if choice == '' %}
+                {%- if selected is none or selected == '' %}
+                    <option disabled selected value=''></option>
+                {%- endif %}
+            {%- elif choice != "Other" %}
+            <option value="{{ choice }}"{% if choice == selected %} selected{% endif %}>{{ choice }}</option>
+            {%- endif %}
+        {%- endfor %}
+        {%- if "Other" in choices %}
+            <option value="Other"{% if selected not in choices %} selected{% endif %}>Other</option>
+        </select>
+        <input type="text" class="form-control{% if selected in choices %} hidden{% endif %}" id="{{ name }}" name="{{ name }}" value="{{ selected|e }}">
+        {%- else %}
+        </select>
+        {%- endif %}
+    </div>
+</div>
+{%- endmacro %}
+
+{% macro checkbox(name, label='', checked=False, disabled='') -%}
+<div class="checkbox {{ disabled }}">
+    <label>
+        <input type="checkbox" name="{{ name }}"{% if checked %} checked{% endif %} {{ disabled }}>
+        {{ label }}
+    </label>
+</div>
+{%- endmacro %}
+
+{% macro radio(name, label='', value='', checked=False, disabled='') -%}
+<div class="radio {{ disabled }}">
+    <label>
+        <input type="radio" name="{{ name }}" value="{{ value }}"{% if checked %} checked{% endif %} {{ disabled }}>
+        {{ label }}
+    </label>
+</div>
+{%- endmacro %}

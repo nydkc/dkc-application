@@ -1,0 +1,145 @@
+{% extends "application/_application.html" %}
+{% set title = 'Verification' %}
+{% macro verification_panel(type, email_field, button_id, has_verification, has_verification_sent, verification_email) -%}
+<div class="verification panel panel-{% if has_verification %}success{% else %}default{% endif %}">
+    <div class="panel-heading panel-title">{{ type }} Verification</div>
+    <div class="panel-body row">
+        {%- if not has_verification and has_verification_sent %}
+        <p class="col-md-12 text-warning">
+            An email to verify your application has already been sent to your {{ type }}. Please do not send it again or else the previous verification email will become invalid.
+        </p>
+        {%- endif %}
+        <div class="col-xs-1 text-right">
+        {%- if has_verification %}
+            <span class="glyphicon glyphicon-ok text-success"></span>
+        {%- else %}
+            <span class="glyphicon glyphicon-remove text-danger"></span>
+        {%- endif %}
+        </div>
+        <div class="col-xs-8 col-sm-9 form-horizontal">
+        {%- if has_verification %}
+            <h4>{{ verification_email }}</h4>
+        </div>
+        {%- else %}
+            {{ input_horizontal_small(email_field, type + ' Email:', verification_email, type='email', size=4) }}
+        </div>
+        <div class="col-xs-3 col-sm-2">
+            <button id="{{ button_id }}" class="btn btn-default btn-sm send-button">
+                <div class="description">Send</div>
+                <div class="loader loader-sm"></div>
+            </button>
+        </div>
+        {%- endif %}
+    </div>
+</div>
+{%- endmacro %}
+
+{% block application %}
+<div id="application" role="form">
+    <div class="page-header">
+        <h2>Verification</h2>
+    </div>
+
+    {%- if is_profile_invalid %}
+    <div style="position:absolute;top:0;left:0;bottom:0;right:0;opacity:.9;background:#fff;z-index:9999;">
+        <div style="position:absolute;top:50%;margin-top:-100px;left:50%;margin-left:-180px;width:360px;opacity:1;" class="text-center text-danger">
+            <h2>Access Denied!</h2>
+            <p class="lead">You must complete your <a href="/application/profile">profile</a> first.</p>
+        </div>
+    </div>
+    {%- endif %}
+
+    <p class="lead">
+        You are required to have verification from at least 2 of the 3 external parties listed below, as well as your own verification.
+        <strong>Verification is needed before you can submit your application.</strong>
+    </p>
+    <p>
+        Please enter the email for the respective person for verification, and we will send them a link to verify your application.
+        <strong>The verification link will be valid for {{ auth_token_validity_days }} days.</strong> Sending a new link will invalidate any previous links.
+    </p>
+
+    {{ verification_panel('LTG', 'verification-ltg-email', 'verification-ltg-button', application.verification_ltg, application.verification_ltg_sent, application.verification_ltg_email) }}
+    {{ verification_panel('Club President', 'verification-club-president-email', 'verification-club-president-button', application.verification_club_president, application.verification_club_president_sent, application.verification_club_president_email) }}
+    {{ verification_panel('Faculty Advisor', 'verification-faculty-advisor-email', 'verification-faculty-advisor-button', application.verification_faculty_advisor, application.verification_faculty_advisor_sent, application.verification_faculty_advisor_email) }}
+
+    <div class="verification panel panel-{% if application.verification_applicant %}success{% else %}default{% endif %}">
+        <div class="panel-heading panel-title">Applicant Agreement</div>
+        <div class="panel-body row">
+            <div class="col-xs-1 text-right">
+            {%- if application.verification_applicant %}
+                <span class="glyphicon glyphicon-ok text-success"></span>
+            {%- else %}
+                <span class="glyphicon glyphicon-remove text-danger"></span>
+            {%- endif %}
+            </div>
+            <div class="col-xs-11 form-horizontal">
+                <p>I hereby affirm that all of the information included in this application and in any documents attached is true and accurate to the best of my ability. If there should be any false or misleading information, this application is subject to being disqualified and appropriate disciplinary action will be taken.</p>
+            {%- if application.verification_applicant %}
+                <h4>You agreed to this statement on {{ application.verification_applicant_date | datetimeformat("%B %d, %Y at %I:%M %p %Z") }}</h4>
+            {%- else %}
+                <button id="verification-applicant-button" class="btn btn-default btn-sm btn-block">I Agree</button>
+            {%- endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{% block application_scripts %}
+<script>
+function checkEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+function sendEmail(button, task, email_field, email, type) {
+    button.addClass('disabled').addClass('loading');
+    var data = {
+            'task': task,
+    };
+    data[email_field] = email;
+    $.post('/application/verification', data)
+     .done(function() {
+         sweetAlert('Verificant email sent', 'Our system has sent a verification email to your ' + type + ' at "' + email + '".', 'success');
+         button.addClass('btn-success').text("Sent!");
+     })
+     .fail(function(xhr) {
+         sweetAlert('Sending verification email failed!', 'Our system had trouble sending a verification email to your ' + type + '. Please try again later.', 'error');
+         button.removeClass('disabled');
+     })
+     .always(function() {
+         button.removeClass('loading');
+     });
+}
+$('#verification-ltg-button').click(function() {
+    var email = $('#verification-ltg-email').val();
+    if (!checkEmail(email)) {
+        sweetAlert('Invalid LTG Email!', 'The email address you specified does not exist.', 'error');
+        return false;
+    }
+    sendEmail($(this), 'ltg', 'ltg-email', email, 'LTG');
+});
+$('#verification-club-president-button').click(function() {
+    var email = $('#verification-club-president-email').val()
+    if (!checkEmail(email)) {
+        sweetAlert('Invalid Club President Email!', 'The email address you specified does not exist.', 'error');
+        return false;
+    }
+    sendEmail($(this), 'club-president', 'club-president-email', email, 'club president');
+});
+$('#verification-faculty-advisor-button').click(function() {
+    var email = $('#verification-faculty-advisor-email').val()
+    if (!checkEmail(email)) {
+        sweetAlert('Invalid Faculty Advisor Email!', 'The email address you specified does not exist.', 'error');
+        return false;
+    }
+    sendEmail($(this), 'faculty-advisor', 'faculty-advisor-email', email, 'faculty advisor');
+});
+$('#verification-applicant-button').click(function() {
+    $.post('/application/verification',
+        {
+            'task': 'applicant',
+        });
+    $(this).addClass('btn-success').addClass('disabled').text("Agreed!");
+});
+</script>
+{% endblock %}

@@ -1,0 +1,32 @@
+<div class="page-header">
+    <h3>Scoring</h3>
+</div>
+
+<p>If the applicant does not meet the required number of points in any part of this application, he/she can explain why here.</p>
+
+{% if application.scoring_reason_two and application.scoring_reason_two != '' %}
+<div class="section other">
+<h6>Part 2: International, District, & Divisional Projects (Explanation)</h6>
+{% autoescape false %}
+<p>{{ application.scoring_reason_two | forceescape | replace('\n', '<br>') }}</div>
+{% endautoescape %}
+</div>
+{% endif %}
+
+{% if application.scoring_reason_three and application.scoring_reason_three != '' %}
+<div class="section other">
+<h6>Part 3: Involvement in Key Club Functions (Explanation)</h6>
+{% autoescape false %}
+<p>{{ application.scoring_reason_three | forceescape | replace('\n', '<br>') }}</div>
+{% endautoescape %}
+</div>
+{% endif %}
+
+{% if application.scoring_reason_four and application.scoring_reason_four != '' %}
+<div class="section other">
+<h6>Part 4: Projects, Advocacy, & Newsletters (Explanation)</h6>
+{% autoescape false %}
+<p>{{ application.scoring_reason_four | forceescape | replace('\n', '<br>') }}</div>
+{% endautoescape %}
+</div>
+{% endif %}

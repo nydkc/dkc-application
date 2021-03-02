@@ -1,0 +1,213 @@
+.home {
+    margin-top: 14%;
+}
+
+.graded-row td {
+    background-color: #dff0d8 !important;
+}
+
+th.tablesorter-header {
+    cursor: pointer;
+    font-weight: bold;
+    background-image: url('data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==');
+    background-position: center right;
+    background-repeat: no-repeat;
+    padding-right: 20px !important;
+}
+
+th.tablesorter-headerAsc {
+    color: #fff;
+    background-color: #00aeef;
+    background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7');
+}
+
+th.tablesorter-headerDesc {
+    color: #fff;
+    background-color: #00aeef;
+    background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+}
+
+th.tablesorter-header.sorter-false {
+    background-image: none;
+}
+
+.nav-pills li.active a, .nav-pills li.active a:hover, .nav-pills li.active a:focus {
+    background-color: #00aeef;
+    color: #fff;
+}
+
+.page-header {
+    margin-top: 20px;
+}
+
+.download-link a {
+    float: right;
+    margin-top: 2px;
+    padding: 7px;
+    text-decoration: none;
+    font-size: 70%;
+    background-color: #00aeef;
+    color: #fff;
+    -webkit-transition: all .1s ease-in-out;
+    -o-transition: all .1s ease-in-out;
+    transition: all .1s ease-in-out
+}
+
+.download-link a:hover {
+    background-color: #fff;
+    color: #00aeef;
+}
+
+#search-results {
+    margin-top: 10px;
+}
+
+#search-results .result:hover {
+    border-radius: 3px;
+    background-color: #f8f8f8;
+}
+
+#search-results a {
+    text-decoration: none;
+}
+
+#search-results .result h4 {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+}
+
+#search-results .result .dl-horizontal {
+    margin: 0;
+    padding-bottom: 10px;
+}
+
+mark, .mark {
+    padding: .3em .05em;
+}
+
+.clickable-row td {
+    cursor: pointer;
+}
+
+.dl-horizontal.profile dd {
+    margin-left: 20px;
+    margin-bottom: 4px;
+}
+
+.tooltip-trigger {
+    padding-right: 45px;
+}
+
+.divisional + .divisional {
+    margin-top: 3px;
+}
+
+.table {
+    margin-bottom: 10px;
+}
+
+hr.separator {
+    margin-top: 80px;
+    border-top: 4px double #ccc;
+}
+
+#notetaking {
+    position: fixed;
+    width: 300px;
+    margin-bottom: 0;
+    opacity: .9;
+    z-index: 100;
+}
+
+#notetaking .panel-heading,
+#notetaking .panel-heading:focus {
+    cursor: move;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline-style:none;
+}
+
+#notetaking .close {
+    padding-top: 9px;
+    padding-right: 15px;
+}
+
+#notetaking-button {
+    cursor: pointer;
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 15px;
+    background-color: #FFDC00;
+    line-height: 0;
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
+}
+
+#graded-status label {
+    margin-left: 20px;
+    width: 100%;
+    padding: 20px;
+}
+
+#delete-applicant-form {
+    margin-bottom: 50px;
+}
+
+#delete-applicant-form label {
+    margin: 0;
+}
+
+#delete-applicant-form label input {
+    margin: 0px 10px;
+}
+
+#delete-applicant-form td:first-child {
+    cursor: auto;
+}
+#delete-bar .row {
+    padding-bottom: 0;
+}
+
+#delete-bar .navbar-left {
+    float: left;
+}
+
+#delete-bar .navbar-right {
+    float: right;
+}
+
+#query-results {
+    margin-top: 20px;
+    min-height: 500px;
+    border: 1px #ccc solid;
+    padding: 10px;
+    word-break: break-word;
+}
+
+@media screen and (min-width: 768px) {
+    .dl-horizontal.profile dt {
+        width: 42%;
+    }
+    .dl-horizontal.profile dd {
+        margin-left: 45%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    #notetaking {
+        left: 0 !important;
+        top: unset !important;
+        bottom: 0 !important;
+        right: auto;
+        width: 100%;
+    }
+}

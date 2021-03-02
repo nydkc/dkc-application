@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        {%- block layout_title_html %}
+        {%- if title %}
+            <title>DKC Application | {{ title }}</title>
+        {%- else %}
+            <title>Distinguished Key Clubber Application</title>
+        {%- endif %}
+        {%- endblock layout_title_html %}
+        <meta name="description" content="The Distinguished Key Clubber Award is awarded to our most dedicated members, who have gone above and beyond the call of duty, shown leadership throughout the service year, and promoted the core values of Key Club International.">
+        <meta name="viewport" content="width=device-width">
+        {%- block layout_css_html %}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous" onerror="this.onerror=null;this.href='/css/bootstrap.min.css';">
+        <link rel="stylesheet" type="text/css" href="/css/sweetalert.css">
+        <link rel="stylesheet" type="text/css" href="/css/main.css">
+        {%- endblock layout_css_html %}
+    </head>
+    <body>
+        <div class="
+            {%- if is_full_layout -%}
+                container-fluid
+            {%- else -%}
+                container
+            {%- endif -%}
+            ">
+            <noscript>
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h3>Uh-oh!</h3>
+                    <strong>
+                        It looks like you have javascript disabled in your browser. For this application to work correctly, we recommend that you enable javascript or switch to a supported browser.
+                        <br>Learn more here: <a href="http://browsehappy.com">http://browsehappy.com</a>
+                    </strong>
+                </div>
+            </noscript>
+        {%- block body %}{% endblock body %}
+        </div>
+        {%- block layout_scripts_html %}
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script><script src="/js/bootstrap.min.js"><\/script>')</script>
+        <script src="/js/sweetalert.min.js"></script>
+        <script src="/js/main.js"></script>
+        {%- endblock layout_scripts_html %}
+        {%- block scripts %}{% endblock scripts %}
+        <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-50516213-3', 'auto');ga('require', 'displayfeatures');ga('send', 'pageview');</script>
+    </body>
+</html>

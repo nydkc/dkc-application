@@ -1,0 +1,30 @@
+indexes:
+  - kind: User
+    properties:
+      - name: application
+      - name: email
+      - name: first_name
+      - name: last_name
+  - kind: Application
+    properties:
+      - name: submit_time
+      - name: division
+      - name: outstanding_awards
+      - name: graded
+  - kind: Application
+    properties:
+      - name: grade
+      - name: address
+      - name: city
+      - name: zip_code
+      - name: phone_number
+      - name: division
+      - name: ltg
+      - name: school
+      - name: school_address
+      - name: school_city
+      - name: school_zip_code
+      - name: club_president
+      - name: club_president_phone_number
+      - name: faculty_advisor
+      - name: faculty_advisor_phone_number

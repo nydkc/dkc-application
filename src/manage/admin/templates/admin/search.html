@@ -1,0 +1,61 @@
+{% extends "admin/_admin.html" %}
+{% set title = 'Search' %}
+{% block admin %}
+<div class="page-header">
+    <h2>Search</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-inline" id="query-form" method="GET">
+            <div class="row">
+                <div class="form-group col-md-10 col-xs-9">
+                    <input type="text" class="form-control" name="q" value="{{ q | e }}" style="width: 100%;" autocomplete="off">
+                </div>
+                <div class="form-group col-md-2 col-xs-3">
+                    <button type="submit" class="btn btn-info btn-block">
+                        <span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{%- if q %}
+<div id="search-results">
+    <div class="text-right">There are {{ query_results | length }} matches. ({{ "{:.3f}".format(time_elapsed) }} seconds) </div>
+
+    {%- for applicant, application in query_results %}
+    <div class="result">
+        <a href="/admin/show/{{ applicant.email }}">
+            <h4>{{ applicant.first_name }} {{ applicant.last_name }}</h4>
+            <dl class="dl-horizontal">
+                {%- set applicant_profile = [
+                    ('Email', applicant.email),
+                    ('Grade', application.grade),
+                    ('Address', [application.address, application.city, application.zip_code] | join(", ") ),
+                    ('Phone Number', application.phone_number),
+                    ('Division', application.division),
+                    ('Lieutenant Governor', application.ltg),
+                    ('School', application.school),
+                    ('School Address', [application.school_address, application.school_city, application.school_zip_code] | join(", ") ),
+                    ('Club President', [application.club_president, application.club_president_phone_number] | join(", ") ),
+                    ('Faculty Advisor', [application.faculty_advisor, application.faculty_advisor_phone_number] | join(", ") )
+                ] %}
+                {%- for info in applicant_profile %}
+                    {%- if (q | lower) in (info[1] | lower) %}
+                        {%- autoescape false %}
+                            <dt>{{ info[0] }}</dt><dd>{{ info[1] | forceescape | replace("", "") | highlight_search(q) }}</dd>
+                        {%- endautoescape %}
+                    {%- endif %}
+                {%- endfor %}
+            </dl>
+        </a>
+    </div>
+    <hr>
+    {%- endfor %}
+</div>
+{%- endif %}
+
+{% endblock %}

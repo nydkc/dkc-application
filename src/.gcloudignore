@@ -18,6 +18,9 @@ a.out
 # Python Virtualenv
 /venv/
 
-# GAE Files
-bulkloader*
-backup*
+# Git files
+.git/
+.gitignore
+
+# IDE files
+.vscode/

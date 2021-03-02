@@ -1,0 +1,54 @@
+<div class="page-header">
+    <h3>Part 2: International, District &amp; Divisional Projects</h3>
+</div>
+
+<div class="section">
+<h6>Sections 1, 2, 3: International Projects ({{ application.international_projects|length}} listed below)</h6>
+{% for project in application.international_projects %}
+<div class="project">
+    <strong>Section</strong>: {{ project.section }}<br>
+    <strong>Event</strong>: {{ project.event }}<br>
+    <strong>Description:</strong> {{ project.description }}
+</div>
+{% endfor %}
+</div>
+
+<div class="separator">&nbsp;</div>
+
+<div class="section">
+<h6>Section 4: District Projects ({{ application.district_projects|length }} listed below)</h6>
+{% for project in application.district_projects %}
+<div class="project">
+    <strong>Event</strong>: {{ project.event }}<br>
+    <strong>Charity</strong>: {{ project.charity }}<br>
+    <strong>Description</strong>: {{ project.description }}
+</div>
+{% endfor %}
+</div>
+
+<div class="separator">&nbsp;</div>
+
+<div class="section">
+<h6>Section 5: Divisional Involvement</h6>
+<i>Attendance at Divisional Meetings ({{ application.divisionals|length }} listed below)</i>
+<table class="divisional">
+    <tbody>
+        {% for divisional in application.divisionals %}
+        <tr>
+            <td><strong>Date</strong>: {{ divisional.date }}</td>
+            <td><strong>Location</strong>: {{ divisional.location }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+<i>Attendance at a Divisional Project/Event ({{ application.division_projects|length }} listed below)</i>
+{% for project in application.division_projects %}
+<div class="project">
+    <strong>Event</strong>: {{ project.event }}<br>
+    <strong>Location</strong>: {{ project.location }}<br>
+    <strong>Description</strong>: {{ project.description }}
+    </div>
+</div>
+{% endfor %}
+</div>

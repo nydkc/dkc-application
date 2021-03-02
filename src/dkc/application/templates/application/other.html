@@ -1,0 +1,91 @@
+{% extends "application/_application.html" %}
+{% set title = 'Other' %}
+{% set scoring_reason_word_limit = 200 %}
+{% from "application/file_handling.html" import file_info_table %}
+{% block application %}
+<form id="application" role="form" action="{{ application_url }}" method="post">
+    <div class="page-header">
+        <h2>Other &amp; Scoring</h2>
+    </div>
+    <ol>
+        <li>
+            <p>A recommendation may be submitted by a club member, officer or faculty advisor for an extra 5 points. This recommendation should be no more than 150 words nominating you for the award. The recommendation must be signed by the writer. You can upload the recommendation at the bottom of this page.</p>
+            <div class="form-horizontal row">
+                <div class="col-lg-5 col-md-6 col-md-offset-1">
+                    <strong>{{ checkbox("recommender-checkbox", "Yes, I would like to apply these points to part:", application.recommender_points and application.recommender_points != 'No Recommendation') }}</strong>
+                </div>
+
+                <div class="col-lg-3 col-md-4">
+                    {{ select_horizontal("recommender-points", "", application.recommender_points, ["No Recommendation", "1","2","3","4"], size=0) }}
+                </div>
+            </div>
+        </li>
+        <li>
+            <p>Are you applying for any of the Outstanding Officer/Member awards?</p>
+            <div class="form-horizontal row">
+                <div class="col-lg-7 col-md-offset-1 col-md-8">
+                    {{ select_horizontal("outstanding-awards", "I am applying for ", application.outstanding_awards, ["", "n/a", "Outstanding Key Club Member","Outstanding Club President","Outstanding Club Vice-President","Outstanding Club Secretary","Outstanding Club Treasurer","Outstanding Club Bulletin Editor","Outstanding Club Webmaster"], size=4) }}
+                </div>
+            </div>
+        </li>
+    </ol>
+
+    <hr>
+
+    <h5>If you did not reach the minimum requirement for a section, please indicate why here.</h5>
+    {{ textarea("scoring-reason-two", "Part II: International, District, & Divisional Projects", application.scoring_reason_two) }}
+    {{ textarea("scoring-reason-three", "Part III: Involvement in Key Club Functions", application.scoring_reason_three) }}
+    {{ textarea("scoring-reason-four", "Part IV: Projects, Advocacy, & Newsletters", application.scoring_reason_four) }}
+
+    <hr>
+
+    <h5>Other Materials <small>(Max. 3)</small></h5>
+    <p>If you have any other materials that you would like to submit with your application, you may upload them here. A few examples are:</p>
+    <ul>
+        <li>Recommendation of no more than 150 words nominating you for the award</li>
+    </ul>
+    <div class="table-responsive">
+        {{ file_info_table("other-upload", (application.other_materials | to_file_info)) }}
+    </div>
+    <div class="text-center">
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                data-target="#upload-modal"
+                data-upload-material="Other Materials"
+                data-upload-url="/application/upload/other"
+                data-upload-file-info-table-target="other-upload"
+                data-upload-max-file-size="{{ 25 * 1024 * 1024 }}">
+            <span class="glyphicon glyphicon-upload"></span> Open Upload Window...
+        </button>
+    </div>
+
+    <hr>
+
+    <div id="updated-text" class="text-center" style="display:none"></div>
+    <button type="submit" id="submit" data-loading-text="Updating..." class="btn btn-success btn-block">Update</button>
+</form>
+{% endblock %}
+{% block application_scripts %}
+{% include "application/file_handling.html" %}
+<script>
+function checkboxEnableSelect() {
+    $('input[type=checkbox]').each(function() {
+        var checkbox = $(this);
+        var closestSelectInput = checkbox.parent().parent().parent().parent().parent().find('select');
+        var toggleSelectInput = function() {
+            if (checkbox.is(':checked')) {
+                closestSelectInput.removeAttr('disabled');
+            }
+            else {
+                closestSelectInput.attr('disabled', 'disabled');
+            }
+        }
+        toggleSelectInput();
+        checkbox.change(toggleSelectInput);
+    });
+}
+$(document).ready(checkboxEnableSelect);
+$('#scoring-reason-two').textareaCounter({limit: {{ scoring_reason_word_limit }} });
+$('#scoring-reason-three').textareaCounter({limit: {{ scoring_reason_word_limit }} });
+$('#scoring-reason-four').textareaCounter({limit: {{ scoring_reason_word_limit }} });
+</script>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% from 'application/overview.html' import awards_cochairs, divisional_contacts with context %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Distinguished Key Clubber Application Verification for {{ applicant.first_name }} {{ applicant.last_name }}</title>
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body style="font-family:Helvetica,Trebuchet MS,Arial,Sans-Serif;font-size:14px;">
+        <table style="min-width:480px;width:100%;max-width:800px;border:none;margin:auto;">
+            <tr>
+                <td style="border-bottom:#00aeef 4px ridge;">
+                    <table style="width:auto;margin:auto;padding:6px 0;">
+                        <tr>
+                            <td>
+                                <img src="https://dkc-app.nydkc.org/images/key-club-logo.png" style="height:70px;max-height:70px;width:70px;max-width:70px;padding-right:20px;" alt="Key Club Logo">
+                            </td>
+                            <td style="vertical-align:middle;">
+                                <h3 style="font-size:20px;font-family:'Century Gothic',Helvetica,Trebuchet MS,Arial,Sans-Serif;">New York District of Key Club International</h3>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="margin-bottom:18px;">Hello {{ verifier_name }},</p>
+                    <p>{{ applicant.first_name }} {{ applicant.last_name }}, from {{ application.school }} Key Club (Division {{ application.division }}) has requested your verification for their Distinguished Key Clubber Application. <b>The Distinguished Key Clubber Award is a noncompetitive award that recognizes outstanding performance by Key Club members.</b></p>
+                    <p>Please click the link below to verify their application. Please read over the entire page, including the applicant's PDF file, before verifying. If any information provided is incorrect or misleading, the applicant may be penalized and disqualified.</p>
+                    <div style="text-align:center;margin:40px 0;">
+                        <a href="{{ verification_url }}" style="text-decoration:none;padding:10px 40px;text-align:center;font-size:18px;white-space:nowrap;vertical-align:middle;border:1px solid transparent;border-radius:4px;background-color:#036;color:#fff;">&raquo; Verify &laquo;</a>
+                    </div>
+                    <p>If you have any questions regarding the applicant, please contact the applicant at their email address: <a href="mailto:{{ applicant.email }}">{{ applicant.email }}</a></p>
+                    <p>Any other questions should be addressed to the respective divisional Awards Representative listed below.</p>
+                    <ul>
+                        {%- for contact in divisional_contacts %}
+                        <li style="margin-bottom:6px;">
+                            <u>Awards Representative for {{ contact[0] }}</u>
+                            <br>{{ contact[1] }}
+                            <br><a href="mailto:{{ contact[2] }}">{{ contact[2] }}</a>
+                        </li>
+                        {%- endfor %}
+                    </ul>
+                    <hr>
+                </td>
+            </tr>
+            <tr>
+                <td style="color:#777;text-decoration:none;">
+                    <p style="margin-bottom:6px;">Yours in Care and Service,</p>
+                    <p style="margin:0;">
+                        {%- for cochair in awards_cochairs -%}
+                            {%- if loop.index0 != 0 -%}
+                                &nbsp;&amp;&nbsp;
+                            {%- endif -%}
+                            {{ cochair }}
+                        {%- endfor %}
+                        <br>{{ (settings.due_date | datetimeformat("%Y") | int - 1) ~ "-" ~ (settings.due_date | datetimeformat("%Y")) }} District Affairs Committee Co-Chairs
+                        <br>New York District of Key Club International
+                        <br><a href="https://nydkc.org">https://nydkc.org</a> | <a href="https://dkc-app.nydkc.org">https://dkc-app.nydkc.org</a>
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

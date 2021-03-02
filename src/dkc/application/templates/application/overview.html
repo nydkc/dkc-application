@@ -1,0 +1,188 @@
+{% extends "application/_application.html" %}
+{% set title = 'Overview' %}
+{% set awards_cochairs = [
+    "Division 14 Lt. Governor Chloe Baker",
+    "Division 23 Lt. Governor Charlotte Allen",
+] %}
+{% set divisional_contacts = [
+    ("Divisions 1-7", "LTG Chloe Baker", "division14@nydkc.org"),
+    ("Divisions 8-12", "LTG Charlotte Allen", "division23@nydkc.org"),
+    ("Divisions 13-27", "LTG Freya Zhu", "division11@nydkc.org"),
+] %}
+{% block application %}
+<div id="application" role="form">
+    <div class="page-header">
+        <h2>Overview</h2>
+    </div>
+
+    <div class="alert alert-info">
+    {% if not submitted %}
+        <p>Please note that any changes that you make will be <strong>saved</strong> online.</p>
+    {% endif %}
+        <p class="lead">
+            You can download your application as a
+            <a href="/application/download/pdf/{{ user_id }}-{{ applicant.first_name }}_{{ applicant.last_name }}.pdf" target="_blank">PDF <span class="glyphicon glyphicon-save"></span></a>.
+        </p>
+    </div>
+
+    <div class="panel-group" id="overview-sections">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#overview-sections" href="#introduction">
+                        <span class="glyphicon glyphicon-heart-empty"></span> Introduction
+                    </a>
+                </h4>
+            </div>
+            <div id="introduction" class="panel-collapse collapse {% if (applicant.creation_time | datetimeformat) == (applicant.updated_time | datetimeformat) %} in{% endif %}">
+                <div class="panel-body">
+                    <blockquote class="letter">
+                        <p>Hello New York District Key Club,</p>
+                        <p>Each year during our Leadership Training Conference, we present the Distinguished Key Clubber Award to our most dedicated members, who have gone above and beyond the call of duty, shown leadership throughout the service year, and promoted the core values of Key Club International. Members who have served their homes, schools and communities to the best of their abilities and consistently worked throughout the service year are eligible to receive this award. All members who would like to receive this  award must fill out and complete to its entirety this application. Anyone who is unable to fulfill all of the requirements and are in a club with special circumstances should state why in the Other & Scoring page prior to submitting the application.</p>
+                        <p>If any information provided in this application is inaccurate, dishonest, unverified, or warranted void, your application may be disqualified. Thank you for your service to your home, school and community.</p>
+                        <p>We wish you the best of luck in your application and look forward to your submission.</p>
+                        <div class="text-right">
+                            <p>Yours in Care and in Service,</p>
+
+                            {% for cochair in awards_cochairs %}
+                            <p>{{ cochair }}
+                                <br>District Affairs Committee Co-Chair
+                            </p>
+                            {% endfor %}
+                        </div>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#overview-sections" href="#instruction-rules">
+                        <span class="glyphicon glyphicon-question-sign"></span> Instructions & Rules
+                    </a>
+                </h4>
+            </div>
+            <div id="instruction-rules" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <ol>
+                        <li>The application is separated into four parts, and each part is designed to focus on different aspects of Key Club. Complete all parts of this application to qualify for the award.
+                            <ul class="list-unstyled">
+                                <li>Part 1: Personal Statement</li>
+                                <li>Part 2: Mandatory Projects</li>
+                                <li>Part 3: Involvement</li>
+                                <li>Part 4: Projects, Advocacy &amp; Newsletter</li>
+                            </ul>
+                        </li>
+                        <li>All applications must be submitted by the deadline: {{ settings.due_date | datetimeformat("%B %d, %Y at %I:%M %p %Z") }}.</li>
+                        <li>If you are having technical difficulties, you must contact our committee at (<a href="mailto:awards@nydkc.org">awards@nydkc.org</a>) by 8:00 PM EST on the night the application is due. If you have technical difficulties that are not reported by 8:00 PM EST, it will not be honored.<strong> The earlier you notify us of any technical issues the higher the likelihood of us addressing them before the deadline.</strong></li>
+                        <li>By submitting this application, the applicant agrees that all information included is accurate and that the information provided is <strong>their own work</strong>. Please describe events in your own words. Any form of <strong>plagiarism</strong> will <strong>DISQUALIFY</strong> the application. Any form of <strong>dishonesty</strong> will <strong>DISQUALIFY</strong> the application.</li>
+                        <li>All applications are subject to be disqualified as deemed fit by the District Administrator.</li>
+                    </ol>
+
+                    <p>Notes:</p>
+                    <ul>
+                        <li>For all events, please include <i>the number of service hours, the cause or charity that was served, the date and location of the event, and a short description</i>.</li>
+                        <li>Read the directions for each section <i>CAREFULLY</i>. If you do not provide all information, you will not be given credit.</li>
+                    </ul>
+                    <div class="text-center">
+                        <h5><u><strong>Divisional Contacts</strong></u></h5>
+
+                        {%- for contact in divisional_contacts %}
+                        <p>Awards Representative for {{ contact[0] }}
+                            <br>{{ contact[1] }}
+                            <br><a href="mailto:{{ contact[2] }}">{{ contact[2] }}</a>
+                        </p>
+                        {%- endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#overview-sections" href="#example-submissions">
+                        <span class="glyphicon glyphicon-edit"></span> Example Submissions
+                    </a>
+                </h4>
+            </div>
+            <div id="example-submissions" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <h4>Section 1: K-Family Project</h4>
+                    <p>If you have participated in any event or project with another member of the Kiwanis Family, describe the project in this segment. Members of the K-Family include: Kiwanis, Circle K, Builders Club, K-Kids and AKTION Club. Include the number of service hours, the cause or charity that was helped, the date and location of the event, and a short description.</p>
+                    <strong>Kiwanis One Day Event (5 Points Max, 1 Points per Event)</strong>
+                    <p>Kiwanis One Day is typically held on the fourth Saturday of October. If you have participated in a Kiwanis One Day event or project, please fill out this section.</p>
+
+                    {% set examples = [
+                        ("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on October 27, 2014 with Kiwanis International.", 1, "This submission shows minimal effort in describing the event. This also does not include the number of service hours or the charity that was helped."),
+                        ("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on October 27, 2014 with Kiwanis International. I volunteered for 6 hours with Nickelodeon.", 2, "This submission has all of the requirements indicated in the field."),
+                        ("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on October 27, 2014 with Kiwanis International. The Worldwide Day of Play event was a large project that consisted of several games. I volunteered for 6 hours with Nickelodeon.", 3, "This submission has all of the requirements indicated in the field and describes the event."),
+                        ("Worldwide Day of Play", "Brooklyn, NY", "The Worldwide Day of Play event was held on October 27, 2014 with Kiwanis International. The Worldwide Day of Play event was a large project that consisted of several games. I volunteered for 6 hours with Nickelodeon by setting up a playground for children, playing fun and active games, and cleaning up after the event was finished.", 4, "This submission has all of the requirements indicated in the field and shows a more in depth description on what was done."),
+                    ] %}
+
+                    {% for example in examples %}
+                    <hr>
+                    <div class="form-horizontal clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-projects-event" class="col-md-2 control-label">Event:</label>
+                                <div class="col-md-10">
+                                    <p class="form-control-static">{{ example[0] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-projects-location" class="col-md-3 control-label">Location:</label>
+                                <div class="col-md-9">
+                                    <p class="form-control-static">{{ example[1] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <strong>Description of the event:</strong>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <p>{{ example[2] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="bg-info">
+                    <table><tbody>
+                        <tr>
+                            <td class="text-nowrap text-right">Points Received:</td><td>{{ example[3] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-nowrap text-right">Explanation:</td><td>{{ example[4] }}</td>
+                        </tr>
+                    </tbody></table>
+                    </h5>
+                    {% endfor %}
+
+               </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#resources">
+                        <span class="glyphicon glyphicon-list-alt"></span> Additional Resources
+                    </a>
+                </h4>
+            </div>
+            <div id="resources" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p class="lead"><a href="{{ settings.awards_booklet_url}}" target="_blank">Awards Booklet <span class="glyphicon glyphicon-link"></span></a></p>
+                    <p class="lead">Answers to frequently asked questions can be found <a href="/#faq">here</a>.</p>
+                    <p class="lead">If you have any other questions, please email us at <a href="mailto:awards@nydkc.org">awards@nydkc.org</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

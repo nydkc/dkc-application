@@ -1,0 +1,16 @@
+{% extends "verification/_verification.html" %}
+{% set title = 'LTG Verification' %}
+{% block verifier_information %}
+<div class="form-group">
+    <label class="col-xs-6 control-label">Lieutenant Governor</label>
+    <div class="col-xs-6">
+        <p class="form-control-static">{{ application.ltg|e }}</p>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-xs-6 control-label">Lieutenant Governor Email</label>
+    <div class="col-xs-6">
+        <p class="form-control-static">{{ application.verification_ltg_email|e }}</p>
+    </div>
+</div>
+{% endblock %}

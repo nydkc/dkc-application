@@ -1,0 +1,13 @@
+{% extends "admin/_admin.html" %}
+{% set title = email ~ ' Not Found' %}
+{% block admin %}
+
+<div class="page-header">
+    <h2>404 Applicant Not Found</h2>
+</div>
+
+<p>The applicant with email <strong>{{ email }}</strong> does not exist!</p>
+
+<img class="img-responsive" src="/images/404-beaver.jpg" />
+
+{% endblock %}

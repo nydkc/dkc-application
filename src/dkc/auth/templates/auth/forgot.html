@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+{% set title = 'Forgot Password?' %}
+{% macro with_errors(field, use_glyph=false) -%}
+    {%- if field.errors %}
+        <div class="has-error">
+    {%- elif form.errors %}
+        <div class="has-success">
+    {%- else %}
+        <div>
+    {%- endif %}
+            {%- set css_class = 'form-control ' + kwargs.pop('class', '') %}
+            {{ field(class=css_class, **kwargs) }}
+            {%- if use_glyph %}
+                <span class="glyphicon form-control-feedback"></span>
+            {%- endif %}
+            <span class="help-block text-danger" {% if not field.errors %}style="display:none;"{% endif %}>
+                {%- for error in field.errors %}{{ error|e }}{%- endfor %}
+            </span>
+        </div>
+{%- endmacro %}
+{% block body %}
+
+<div class="page-header text-center">
+    <h1>Forgot your Password?</h1>
+</div>
+
+{% if form.errors %}
+<div class="alert alert-danger">
+    There were problems with retrieving the account. Please address any errors in the fields below.
+</div>
+{% elif forgot_email_sent_to %}
+<div class="alert alert-success">
+    <strong>An email has been sent to: {{ forgot_email_sent_to }}</strong>
+    <br>Please check the email for instructions on how to reset your password. Be sure to check your spam inbox as well.
+</div>
+{% else %}
+<div class="alert alert-info">
+    It is possible to reset your password for DKC applications from the
+    <strong>{{ (settings.due_date | datetimeformat("%Y") | int - 1) ~ "-" ~ (settings.due_date | datetimeformat("%Y")) }}</strong>
+    service year.
+    <br>Applicants from previous years will need to <a href="/register">create a new account</a>.
+</div>
+{% endif %}
+
+<form id="forgot-password" class="form-horizontal col-md-6 col-md-offset-3" role="form" action="/forgot" method="post">
+    {{ form.csrf_token }}
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="email">Email</label>
+        <div class="col-md-10">
+            {{ with_errors(form.email, placeholder="email@example.com") }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10 col-md-offset-2">
+            {{ with_errors(form.recaptcha) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2 col-md-offset-2">
+            <button type="submit" class="btn btn-default">Request Password Reset</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+{% block scripts %}
+<script>
+function addValidationForField(elem, isSuccess) {
+    if (isSuccess) {
+        elem.parent().addClass('has-success').removeClass('has-error');
+        elem.siblings('.glyphicon').addClass('glyphicon-ok').removeClass('glyphicon-remove');
+        elem.siblings('.help-block').hide();
+    }
+    else {
+        elem.parent().addClass('has-error').removeClass('has-success');
+        elem.siblings('.glyphicon').addClass('glyphicon-remove').removeClass('glyphicon-ok');
+    }
+}
+function showHelpBlockForField(elem, isSuccess, message) {
+    if (isSuccess) {
+        elem.parent().addClass('has-success').removeClass('has-error');
+        elem.siblings('.help-block').hide();
+    }
+    else {
+        elem.parent().addClass('has-error').removeClass('has-success');
+        elem.siblings('.help-block').text(message).show();
+    }
+}
+
+var email = $('#email');
+var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+function checkEmail() {
+    return re.test(email.val());
+}
+email.keyup(() => addValidationForField(email, checkEmail()));
+email.blur(() => showHelpBlockForField(email, checkEmail(), "Please enter a valid email address."));
+
+var captcha = $('.g-recaptcha');
+function checkCaptcha() {
+    return grecaptcha.getResponse() != "";
+}
+
+function validateForm() {
+    email.keyup();
+    email.blur();
+    addValidationForField(captcha, checkCaptcha());
+    showHelpBlockForField(captcha, checkCaptcha(), "reCAPTCHA must be solved.");
+
+    return checkEmail() && checkCaptcha();
+}
+$('#forgot-password').submit(validateForm);
+</script>
+{% endblock %}

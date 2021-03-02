@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block layout_title_html %}
+<title>DKC App Admin{% if title %} | {{ title }}{% endif %}</title>
+{% endblock layout_title_html %}
+
+{% block layout_css_html %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="/css/admin.css">
+{% endblock layout_css_html %}
+
+{% block layout_scripts_html %}
+{{ super() }}
+<script src="/js/admin.js"></script>
+{% endblock layout_scripts_html %}
