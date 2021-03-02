@@ -13,7 +13,11 @@
 </div>
 
 <form role="form" method="post">
-    {{ input("due_date", "Due Date (in US/Eastern timezone)", type="datetime-local", value=(settings.due_date | datetimeformat("%Y-%m-%dT%H:%M:%S")), extra_attrs=["placeholder=\"" ~ (current_time | datetimeformat("%Y-%m-%dT%H:%M:%S")) ~ "\"", "step=1"]) }}
+    {{ input("due_date",
+             "Due Date (in US/Eastern timezone)",
+             type="datetime-local",
+             value=(settings.due_date | datetimeformat("%Y-%m-%dT%H:%M:%S")),
+             extra_attrs=["placeholder=\"" ~ (current_time | datetimeformat("%Y-%m-%dT%H:%M:%S")) ~ "\"", "step=1"]) }}
 
     <div class="form-group">
         <label for="awards_booklet_url">
@@ -36,7 +40,7 @@
         <p>
             <small class="help-block">
                 You can add/remove admin users at
-                <a href="https://console.cloud.google.com/iam-admin/iam?project=dkc-app">https://console.cloud.google.com/iam-admin/iam?project=dkc-app</a>
+                <a href="https://console.cloud.google.com/iam-admin/iam?project={{ gcp_project_id }}">https://console.cloud.google.com/iam-admin/iam?project={{ gcp_project_id }}</a>
                 by giving the "Viewer" role to their email.
             </small>
         </p>

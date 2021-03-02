@@ -1,5 +1,6 @@
 import os
 import googleapiclient.discovery
+from common.gcp import GCP_PROJECT_ID
 
 if os.getenv("GAE_ENV", "").startswith("standard"):
     # Production in the standard environment
@@ -15,14 +16,13 @@ https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creatin
 The preferred service account is the AppEngine service account:
     {}@appspot.gserviceaccount.com
 ===== ENVIORNMENT ERROR =====""".format(
-                os.environ.get("GOOGLE_CLOUD_PROJECT", "dkc-app")
+                GCP_PROJECT_ID
             )
         )
     cloudresourcemanager = googleapiclient.discovery.build("cloudresourcemanager", "v1")
 
 
 def get_project_iam_policy():
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT", "dkc-app")
-    request = cloudresourcemanager.projects().getIamPolicy(resource=project_id)
+    request = cloudresourcemanager.projects().getIamPolicy(resource=GCP_PROJECT_ID)
     resp = request.execute()
     return resp

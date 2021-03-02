@@ -2,7 +2,8 @@ import os
 import google.auth
 from google.auth import compute_engine
 from google.cloud import storage
-from .constants import _GCS_BUCKET
+from common.constants import _GCS_BUCKET
+from common.gcp import GCP_PROJECT_ID
 
 if os.getenv("GAE_ENV", "").startswith("standard"):
     # Production in the standard environment
@@ -20,7 +21,7 @@ https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creatin
 The preferred service account is the AppEngine service account:
     {}@appspot.gserviceaccount.com
 ===== ENVIORNMENT ERROR =====""".format(
-                os.environ.get("GOOGLE_CLOUD_PROJECT", "dkc-app")
+                GCP_PROJECT_ID
             )
         )
     gcs = storage.Client()

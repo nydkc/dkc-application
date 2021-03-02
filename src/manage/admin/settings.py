@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 from flask import render_template, request
 from google.cloud import ndb
+from common.gcp import GCP_PROJECT_ID
 from common.jinja_functions import datetimeformat
 from common.models import Settings
 from common.timezone import UTC, Eastern
@@ -22,6 +23,7 @@ def settings():
     template_values = {
         "current_time": datetime.now(),
         "settings": settings,
+        "gcp_project_id": GCP_PROJECT_ID,
         "admin_url": "/admin/settings",
         "current_admin_user": get_current_admin_user(),
     }
