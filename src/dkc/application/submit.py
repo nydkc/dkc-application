@@ -49,7 +49,8 @@ def handle_post(applicant, application):
 
     incomplete_status = check_submission_incomplete_status(applicant, application)
     if True in incomplete_status.values():
-        return abort(400, description="You application is not complete!")
+        logger.info("Attempted incomplete submission by %s: %s", applicant.email, incomplete_status) 
+        return abort(400, description="Your application is not complete!")
 
     application.submit_time = datetime.now()
     send_submission_confirmation_email(applicant, application)
