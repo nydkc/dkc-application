@@ -64,12 +64,15 @@ def external_verification(token_key: str):
         "form": form,
     }
     if application.verification_ltg_token == token.key:
+        template_values["is_already_verified"] = application.verification_ltg
         return render_template("verification/verification-ltg.html", **template_values)
     elif application.verification_club_president_token == token.key:
+        template_values["is_already_verified"] = application.verification_club_president
         return render_template(
             "verification/verification-club-president.html", **template_values
         )
     elif application.verification_faculty_advisor_token == token.key:
+        template_values["is_already_verified"] = application.verification_faculty_advisor
         return render_template(
             "verification/verification-faculty-advisor.html", **template_values
         )
@@ -114,4 +117,6 @@ def add_verification_from_token(application_key, token_key):
     else:
         return
     application.put()
-    token_key.delete()
+    # We choose not to delete the token since it seems that verifiers want to
+    # view the application even after approval.
+    # token_key.delete()
