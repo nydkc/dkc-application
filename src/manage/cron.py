@@ -25,7 +25,7 @@ def auth_token_cleanup():
     expired_tokens_query = AuthToken.query().filter(
         AuthToken.created < datetime.now() - timedelta(days=AUTH_TOKEN_VALIDITY_DAYS)
     )
-    auth_token_keys = [t.key for t in expired_tokens_query.fetch()]
+    auth_token_keys = [tkey for tkey in expired_tokens_query.fetch(keys_only=True)]
     ndb.delete_multi(auth_token_keys)
     logger.info("Cleaned up %d auth tokens", len(auth_token_keys))
     return "ok"
@@ -39,7 +39,9 @@ def admin_user_token_cleanup():
     expired_admin_user_tokens_query = AdminUser.query().filter(
         AdminUser.oauth2_token.expires_at < int(time.time())
     )
-    admin_user_token_keys = [t.key for t in expired_admin_user_tokens_query.fetch()]
+    admin_user_token_keys = [
+        tkey for tkey in expired_admin_user_tokens_query.fetch(keys_only=True)
+    ]
     ndb.delete_multi(admin_user_token_keys)
     logger.info("Cleaned up %d admin user tokens", len(admin_user_token_keys))
     return "ok"
