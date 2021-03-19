@@ -41,11 +41,13 @@ def get_current_admin_user() -> AdminUser:
         return None
     # Ensure that the admin user is still valid by refreshing OAuth2 token
     if user.oauth2_token.requires_refresh():
+        logger.debug("Refreshing OAuth2 token for %s", user.email)
         refresh_oauth_token(user.oauth2_token)
         # Ensure that the admin user still has permissions on GCP project
         if is_project_admin(user.email):
             user.put()
         else:
+            logger.warning("Logging out non-admin user: %s", user.email)
             user.key.delete()
             logout_admin_user()
             return None

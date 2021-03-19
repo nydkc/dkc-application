@@ -1,5 +1,6 @@
 import os
 from authlib.integrations.flask_client import OAuth
+from .models import OAuth2Token
 
 
 if os.getenv("GAE_ENV", "").startswith("standard"):
@@ -23,7 +24,7 @@ g_oauth.register(
 )
 
 
-def refresh_oauth_token(token):
+def refresh_oauth_token(token: OAuth2Token):
     if token.provider == "google":
         oauth2_session = g_oauth.google._get_oauth_client()
         new_token = oauth2_session.refresh_token(

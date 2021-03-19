@@ -2,3 +2,6 @@ cron:
 - description: Clean up old user auth tokens
   url: /cron/auth_token_cleanup
   schedule: every day 00:00
+- description: Clean up old admin user tokens
+  url: /cron/admin_user_token_cleanup
+  schedule: every day 00:00

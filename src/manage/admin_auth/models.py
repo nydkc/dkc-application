@@ -22,9 +22,9 @@ class AdminUser(ndb.Model):
     def find_by_email(cls, email: str):
         return cls.query().filter(cls.email == email).get()
 
-    def get_auth_id(self):
+    def get_auth_id(self) -> int:
         return self.key.id()
 
     @staticmethod
-    def get_by_auth_id(id):
+    def get_by_auth_id(id: int):
         return AdminUser.get_by_id(id)
