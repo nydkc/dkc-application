@@ -1,6 +1,6 @@
 {% extends "application/_application.html" %}
 {% set title = 'Involvement' %}
-{% set key_club_week_days = "from November 2, 2020 to November 6, 2020" %}
+{% set key_club_week_days = "from November 1, 2021 to November 5, 2021" %}
 {% set positions_word_limit = 250 %}
 {% block application %}
 <form id="application" role="form" action="{{ application_url }}" method="post">
@@ -39,12 +39,12 @@
             {{ checkbox("attendance-icon", "(8 points) International Convention", application.attendance_icon) }}
             #}
             
-            {{ checkbox("attendance-dtc", "(5 points) Virtual Engagement Webinar", application.attendance_dtc) }}
-            {{ checkbox("attendance-fall-rally", "(5 points) Recruitment & Retention Webinar", application.attendance_fall_rally) }}
+            {{ checkbox("attendance-fall-rally", "(5 points) District Fall Conference", application.attendance_fall_rally) }}
+            {{ checkbox("attendance-dtc", "(5 points) Key Club International Global Engagement Rally", application.attendance_dtc) }}
             {{ checkbox("attendance-kamp-kiwanis", "(5 points) Kamp Kiwanis", application.attendance_kamp_kiwanis) }}
             {{ checkbox("attendance-key-leader", "(5 points) Key Leader", application.attendance_key_leader) }}
-            {{ checkbox("attendance-ltc", "(7 points) Fall Virtual District Training Conference", application.attendance_ltc) }}
-            {{ checkbox("attendance-icon", "(8 points) Key Club International Summer Leadership Summit", application.attendance_icon) }}
+            {{ checkbox("attendance-ltc", "(7 points) 2021 Leadership Training Conference", application.attendance_ltc) }}
+            {{ checkbox("attendance-icon", "(8 points) 2021 Key Club International Summer Leadership Conference", application.attendance_icon) }}
         </div>
     </div>
 
