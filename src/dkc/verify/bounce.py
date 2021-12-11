@@ -20,17 +20,22 @@ def on_verification_bounce_event(email_event):
     ).get()
     applicant = application.key.parent().get()
     email_sent_to = email_event["email"]
+    has_matching_email_sent_to = False
 
     if email_sent_to == application.verification_ltg_email:
         application.verification_ltg_sent = False
         application.verification_ltg_email = bounced_message(email_sent_to)
+        has_matching_email_sent_to = True
     if email_sent_to == application.verification_club_president_email:
         application.verification_club_president_sent = False
         application.verification_club_president_email = bounced_message(email_sent_to)
+        has_matching_email_sent_to = True
     if email_sent_to == application.verification_faculty_advisor_email:
         application.verification_faculty_advisor_sent = False
         application.verification_faculty_advisor_email = bounced_message(email_sent_to)
-    else:
+        has_matching_email_sent_to = True
+
+    if not has_matching_email_sent_to:
         logger.warning(
             "Could not match failed send event to %s under user %s",
             email_sent_to,
