@@ -1,27 +1,90 @@
 {% extends "layout-full.html" %}
 
 {% set faq = [
-["When is the application deadline for applying?", "The application due date is " ~ settings.due_date | datetimeformat("%B %e, %Y") ~ ". You may submit your application up until " ~ settings.due_date | datetimeformat("%I:%M %p %Z") ~ " on this date."],
-["Who may apply for the award?", "Any dues-paying Key Club member in good standing may apply for the award."],
-["Why do you need my personal information?", "All applicants must submit this information so that you may be easily accessible and that records may be kept for the future in case any issues arise."],
-["Who reviews the application?", "The District Affairs Committee. The award will be based off of the point system."],
-["How are the applications judged?", "Part I will be weighted the most (40%) and the other three parts will be weighed equally. If you complete all parts fully, you will generally receive the award. All other applications are judged holistically. Generally, you will need to complete at least 70% (210 Points) of all the criteria to receive the award."],
-["I can't qualify for the DKC Award because I am unable to fulfill all the criteria in the four parts. What should I do?", "If it is due to an issue or circumstance with your home club or division which is out of your control, please contact the Awards Committee Member that will be reviewing your application."],
-["If I participated in a project or event prior April 1, " ~ (settings.due_date | datetimeformat("%Y") | int - 1) ~ ", may I still use it in this application?", "No, only events, projects, or meetings during the " ~ (settings.due_date | datetimeformat("%Y") | int - 1) ~ " - " ~ (settings.due_date | datetimeformat("%Y")) ~ " <strong> service year </strong> may be counted towards this application."],
-["Will the Personal Statement be rated on quality?", "Yes, it is important to submit a personal statement of the highest quality. Although there is not a limit on the number of members that may receive the awards, the essay will allow the awards committee to understand you. The personal statement is weighed more than the other three parts (40%)."],
-["Will descriptions be rated on quality?", "Yes, it is important to submit everything with a full description of the event. Since this year's DKC award is judged holistically, you may lose points for incomplete descriptions."],
-["Will the statement in Part 3, Section 3, Positions Held within Key Club, be rated based on quality?", "Yes, you may receive anywhere from 0 to 10 points based on the quality of work that was submitted."],
-["What is sufficient proof for Advocacy?", "You must include a description of the steps you have taken to advocate your project and include at least one additional document, such as a flier, poster, letter or petition."],
-["Who can write my recommendation?", "Any Key Club member in good standing, Key Club Officer, Faculty Advisor or Kiwanis Advisor may write your recommendation."],
-["Under Part 2, Section 4, do all five projects have to be distinct?", "No, you could have participated in five projects that benefited the same charities and still qualify for the award."],
-["If I participated in a Kiwanis One Day Event that was not on the date specified by Kiwanis International, can I still receive points?", "Yes."],
-["What does \"Local Causes\" mean? Can they be any organization that I volunteered for?", "Local causes refer to any organization that is not listed under another category. Key Club International strongly believes that clubs should decide what projects each one undertakes so we have decided to include the general category."],
-["Does Trick-or-Treat for UNICEF count as an event for Major Emphasis Service Partners?", "Trick-or-Treat for UNICEF should be listed as a Major Emphasis Service Partners project."],
-["Can I submit articles to the Empire Key or Divisional Newsletters last minute?", "No."],
-["My files fail to upload! What should I do?", "Please make sure that you are running the latest version of your browser or upgrade to a <a href=\"http://browsehappy.com\">supported browser.</a>"],
-["If I have any technical problems, who should I contact?", "Please send an email to the District Affairs Committee (email is on the Overview tab after logging in, under Additional Resources) by <strong>8:00 PM EST</strong> on the night the application is due (" ~ settings.due_date | datetimeformat("%B %e, %Y") ~ "). Requests after this time may not be honored."],
-["Will my data be safe by using this online application?", "Yes, we try our best to make sure that none of your data is lost. This is done by automatically saving your application while you are filling it out and hosting it on a secure platform. However, we do recommend that you save your responses somewhere in the off-chance that something goes wrong."],
-["Who can I contact if I have any more questions?", "You should contact the District Affairs Committee Member that is responsible for your division. Contact Information can be found when you log in on the Overview tab, under Additional Resources."]
+    {
+        "question": "When is the application deadline for applying?",
+        "answer": "The application due date is " ~ settings.due_date | datetimeformat("%B %e, %Y") ~ ". You may submit your application up until " ~ settings.due_date | datetimeformat("%I:%M %p %Z") ~ " on this date.",
+    },
+    {
+        "question": "Who may apply for the award?",
+        "answer": "Any dues-paying Key Club member in good standing may apply for the award.",
+    },
+    {
+        "question": "Why do you need my personal information?",
+        "answer": "All applicants must submit this information so that you may be easily accessible and that records may be kept for the future in case any issues arise.",
+    },
+    {
+        "question": "Who reviews the application?",
+        "answer": "The District Affairs Committee. The award will be based off of the point system.",
+    },
+    {
+        "question": "How are the applications judged?",
+        "answer": "Part I will be weighted the most (40%) and the other three parts will be weighed equally. If you complete all parts fully, you will generally receive the award. All other applications are judged holistically. Generally, you will need to complete at least 70% (210 Points) of all the criteria to receive the award.",
+    },
+    {
+        "question": "I can't qualify for the DKC Award because I am unable to fulfill all the criteria in the four parts. What should I do?",
+        "answer": "If it is due to an issue or circumstance with your home club or division which is out of your control, please contact the Awards Committee Member that will be reviewing your application.",
+    },
+    {
+        "question": "If I participated in a project or event prior April 1, " ~ (settings.due_date | datetimeformat("%Y") | int - 1) ~ ", may I still use it in this application?",
+        "answer": "No, only events, projects, or meetings during the " ~ (settings.due_date | datetimeformat("%Y") | int - 1) ~ " - " ~ (settings.due_date | datetimeformat("%Y")) ~ " <strong> service year </strong> may be counted towards this application.",
+    },
+    {
+        "question": "Will the Personal Statement be rated on quality?",
+        "answer": "Yes, it is important to submit a personal statement of the highest quality. Although there is not a limit on the number of members that may receive the awards, the essay will allow the awards committee to understand you. The personal statement is weighed more than the other three parts (40%).",
+    },
+    {
+        "question": "Will descriptions be rated on quality?",
+        "answer": "Yes, it is important to submit everything with a full description of the event. Since this year's DKC award is judged holistically, you may lose points for incomplete descriptions.",
+    },
+    {
+        "question": "Will the statement in Part 3, Section 3, Positions Held within Key Club, be rated based on quality?",
+        "answer": "Yes, you may receive anywhere from 0 to 10 points based on the quality of work that was submitted.",
+    },
+    {
+        "question": "What is sufficient proof for Advocacy?",
+        "answer": "You must include a description of the steps you have taken to advocate your project and include at least one additional document, such as a flier, poster, letter or petition.",
+    },
+    {
+        "question": "Who can write my recommendation?",
+        "answer": "Any Key Club member in good standing, Key Club Officer, Faculty Advisor or Kiwanis Advisor may write your recommendation.",
+    },
+    {
+        "question": "Under Part 2, Section 4, do all five projects have to be distinct?",
+        "answer": "No, you could have participated in five projects that benefited the same charities and still qualify for the award.",
+    },
+    {
+        "question": "If I participated in a Kiwanis One Day Event that was not on the date specified by Kiwanis International, can I still receive points?",
+        "answer": "Yes.",
+    },
+    {
+        "question": "What does \"Local Causes\" mean? Can they be any organization that I volunteered for?",
+        "answer": "Local causes refer to any organization that is not listed under another category. Key Club International strongly believes that clubs should decide what projects each one undertakes, so we have decided to include the general category.",
+    },
+    {
+        "question": "Does Trick-or-Treat for UNICEF count as an event for Major Emphasis Service Partners?",
+        "answer": "Trick-or-Treat for UNICEF should be listed as a Major Emphasis Service Partners project.",
+    },
+    {
+        "question": "Can I submit articles to the Empire Key or Divisional Newsletters last minute?",
+        "answer": "No.",
+    },
+    {
+        "question": "My files fail to upload! What should I do?",
+        "answer": "Please make sure that you are running the latest version of your browser or upgrade to a <a href=\"http://browsehappy.com\">supported browser.</a>",
+    },
+    {
+        "question": "If I have any technical problems, who should I contact?",
+        "answer": "Please send an email to the District Affairs Committee (email is on the Overview tab after logging in, under Additional Resources) by <strong>8:00 PM EST</strong> on the night the application is due (" ~ settings.due_date | datetimeformat("%B %e, %Y") ~ "). Requests after this time may not be honored.",
+    },
+    {
+        "question": "Will my data be safe by using this online application?",
+        "answer": "Yes, we try our best to make sure that none of your data is lost. This is done by automatically saving your application while you are filling it out and hosting it on a secure platform. However, we do recommend that you save your responses somewhere in the off-chance that something goes wrong.",
+    },
+    {
+        "question": "Who can I contact if I have any more questions?",
+        "answer": "You should contact the District Affairs Committee Member that is responsible for your division. Contact Information can be found when you log in on the Overview tab, under Additional Resources.",
+    },
 ] %}
 
 {% block body %}
@@ -71,21 +134,21 @@
             <div class="row">
             {% set num_columns = 3 %}
             {% set items_per_column = ((faq|length) / num_columns) | round(0, 'ceil') | int %}
-            {% for column in faq|slice(num_columns) -%}
+            {% for column in faq | slice(num_columns) -%}
                 <div class="col-md-{{ 12 // num_columns }}">
                     {% set outerloop = loop %}
-                    {%- for question in column -%}
+                    {%- for entry in column -%}
                     <div class="panel panel-default" id="qref-{{ outerloop.index0 * items_per_column + loop.index }}">
                         <div class="panel-heading">
                             <div class="panel-title question">
                                 <a data-toggle="collapse" href="#faqquestion-{{ outerloop.index0 * items_per_column + loop.index }}">
-                                    {{ question[0] | safe }}
+                                    {{ entry.question | safe }}
                                 </a>
                             </div>
                         </div>
                         <div id="faqquestion-{{ outerloop.index0 * items_per_column + loop.index }}" class="panel-collapse collapse COLLAPSE-PLACEHOLDER">
                             <div class="panel-body">
-                                {{ question[1] | safe }}
+                                {{ entry.answer | safe }}
                             </div>
                         </div>
                     </div>
@@ -109,15 +172,13 @@ var idx = lunr(function() {
     this.field('question', {multiplier: 10}),
     this.field('answer')
 });
-for (var i=0; i<raw.length; ++i) {
-    var entry = raw[i];
-    var qa = {
+raw.forEach((entry, i) => {
+    idx.add({
         id: i+1,
-        question: entry[0],
-        answer: entry[1]
-    }
-    idx.add(qa);
-}
+        question: entry.question,
+        answer: entry.answer,
+    });
+});
 var getEntries = function(results) {
     return results.map(function(result, index) {
         var entry = '<div class="panel panel-default">' + $('#qref-' + result.ref).html() + '</div>';

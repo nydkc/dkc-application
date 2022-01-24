@@ -1,6 +1,7 @@
 {% extends "admin_dashboard/_admin.html" %}
 {% set title = applicant.first_name|e ~ ' ' ~ applicant.last_name|e %}
 {% from "application/file_handling.html" import file_info_table %}
+{% from 'application/personal_statement.html' import personal_statement_questions with context %}
 {% from 'application/involvement.html' import key_club_programs with context %}
 {% macro check_or_x(val) -%}
     {%- if val %}
@@ -68,11 +69,10 @@
     <h3 id="personal-statement">Personal Statement <span class="text-nowrap">(120 Points)</span></h3>
 </div>
 
-{% from 'application/personal_statement.html' import questions with context %}
 <p>
     <strong>Topic:</strong>
     {%- if application.personal_statement_choice %}
-        {{ (questions | selectattr("0", "equalto", application.personal_statement_choice) | first)[1] }}
+        {{ (personal_statement_questions | selectattr("tag", "equalto", application.personal_statement_choice) | first)["prompt"] }}
     {%- else %}
         [None selected]
     {%- endif %}

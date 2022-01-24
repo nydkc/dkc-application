@@ -1,14 +1,14 @@
+{% from 'application/personal_statement.html' import personal_statement_questions with context %}
+
 <div class="page-header">
     <h3>Part 1: Personal Statement</h3>
 </div>
-
-{% from 'application/personal_statement.html' import questions with context %}
 
 <div class="personal-statement-prompt">
     <i>
         <b>Topic:</b>
         {% if application.personal_statement_choice %}
-            {{ (questions | selectattr("0", "equalto", application.personal_statement_choice) | first)[1] }}
+            {{ (personal_statement_questions | selectattr("tag", "equalto", application.personal_statement_choice) | first)["prompt"] }}
         {% else %}
             [None selected]
         {% endif %}
