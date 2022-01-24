@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from google.cloud import ndb
 from common.flask_error_handlers import client_error_handler
 from dkc.auth.models import AuthToken
-from . import verify_bp
+from . import application_verification_bp
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ class VerificationAuthTokenError(Exception):
         self.code = code
 
 
-@verify_bp.app_errorhandler(VerificationAuthTokenError)
+@application_verification_bp.app_errorhandler(VerificationAuthTokenError)
 def verification_error_handler(e):
     return render_template("verification/error.html"), e.code
 
@@ -45,7 +45,7 @@ def decode_auth_token_with_type(urlsafe_token_key: str, auth_type: str) -> AuthT
         return token
 
 
-@verify_bp.route("/v/<string:token_key>")
+@application_verification_bp.route("/v/<string:token_key>")
 def external_verification(token_key: str):
     token = decode_auth_token_with_type(token_key, "v")
     form = VerificationForm()
@@ -80,7 +80,7 @@ def external_verification(token_key: str):
         return render_template("verification/error.html")
 
 
-@verify_bp.route("/v/<string:token_key>/agree", methods=["POST"])
+@application_verification_bp.route("/v/<string:token_key>/agree", methods=["POST"])
 def external_verification_agree(token_key: str):
     token = decode_auth_token_with_type(token_key, "v")
     form = VerificationForm()

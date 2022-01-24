@@ -118,7 +118,7 @@ def send_verification_email(
 ):
     settings = ndb.Key(Settings, "config").get()
     verification_url = url_for(
-        "verify.external_verification",
+        "application_verification.external_verification",
         token_key=token_key.urlsafe().decode("utf-8"),
         _external=True,
     )

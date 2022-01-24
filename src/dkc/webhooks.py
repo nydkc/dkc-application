@@ -1,7 +1,7 @@
 import json
 import logging
 from flask import Blueprint, request
-from dkc.verify.bounce import on_verification_bounce_event
+from dkc.application_verification.bounce import on_verification_bounce_event
 
 webhooks_bp = Blueprint("webhooks", __name__)
 
