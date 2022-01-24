@@ -72,7 +72,7 @@ def check_access(applicant_key, urlsafe_token_key: str):
 
 
 @application_bp.route("/download/pdf/<int:user_id>-<string:name>.pdf")
-def download_pdf(user_id, name):
+def download_pdf(user_id: int, name: str):
     applicant_key = ndb.Key(User, user_id)
     urlsafe_token_key = request.args.get("t")
     check_access(applicant_key, urlsafe_token_key)
@@ -94,7 +94,7 @@ def download_pdf(user_id, name):
 
 
 @application_bp.route("/download/html/<int:user_id>-<string:name>.<string:ext>")
-def download_html(user_id, name, ext):
+def download_html(user_id: int, name: str, ext: str):
     applicant_key = ndb.Key(User, user_id)
     urlsafe_token_key = request.args.get("t")
     check_access(applicant_key, urlsafe_token_key)

@@ -23,15 +23,12 @@ def verify_captcha(recaptcha_secret, grecaptcha):
     return recaptcha_success
 
 
-def generate_pdf(html_data):
-    html_data = html_data.encode("utf8")
-    html_data = io.BytesIO(html_data)
-
+def generate_pdf(html_data: str):
     output = io.BytesIO()
     pisa.log.setLevel("WARNING")  # suppress debug log output
     pdf = pisa.CreatePDF(
         html_data,
-        output,
+        dest=output,
         encoding="utf-8",
     )
 
