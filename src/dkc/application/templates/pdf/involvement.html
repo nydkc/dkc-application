@@ -1,3 +1,11 @@
+{% from 'application/involvement.html' import key_club_programs with context %}
+{% macro x_or_empty(val) -%}
+    {%- if val %}
+        <span class="text-success">[ x ]</span>
+    {%- else %}
+        <span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
+    {% endif %}
+{%- endmacro %}
 <div class="page-header">
     <h3>Part 3: Involvement in Key Club Functions</h3>
 </div>
@@ -36,57 +44,12 @@
 <h6>Section 2: Attendance at Key Club Functions</h6>
 <table class="attendance-table">
     <tbody>
-      {#  This was the original value before 2021 
-        <tr>
-            <td style="width:40pt;">{% if application.attendance_dtc %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>Divisional Training Conference/Personal Training</td>
-        </tr>
-        <tr>
-            <td>{% if application.attendance_fall_rally %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>Fall Rally</td>
-        </tr>
-        <tr>
-            <td>{% if application.attendance_kamp_kiwanis %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>Kamp Kiwanis</td>
-        </tr>
-        <tr>
-            <td>{% if application.attendance_key_leader %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>Key Leader</td>
-        </tr>
-        <tr>
-            <td>{% if application.attendance_ltc %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>Leadership Training Conference</td>
-        </tr>
-        <tr>
-            <td>{% if application.attendance_icon %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>International Convention</td>
-        </tr>
-        #}
-        
-        <tr>
-            <td style="width:40pt;">{% if application.attendance_dtc %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>District Fall Conference</td>
-        </tr>
-        <tr>
-            <td>{% if application.attendance_fall_rally %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>Key Club International Global Engagement Rally</td>
-        </tr>
-        <tr>
-            <td>{% if application.attendance_kamp_kiwanis %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>Kamp Kiwanis</td>
-        </tr>
-        <tr>
-            <td>{% if application.attendance_key_leader %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>Key Leader</td>
-        </tr>
-        <tr>
-            <td>{% if application.attendance_ltc %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>2021 Leadership Training Conference</td>
-        </tr>
-        <tr>
-            <td>{% if application.attendance_icon %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>2021 Key Club International Summer Leadership Conference</td>
-        </tr>
+        {%- for program in key_club_programs %}
+            <tr>
+                <td style="width:40pt;">{{ x_or_empty(program.value_dont_change) }}</td>
+                <td>{{ program.name }}</td>
+            </tr>
+        {%- endfor %}
     </tbody>
 </table>
 </div>

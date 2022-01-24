@@ -1,6 +1,50 @@
 {% extends "application/_application.html" %}
 {% set title = 'Involvement' %}
-{% set key_club_week_days = "from November 1, 2021 to November 5, 2021" %}
+{% set key_club_week_start = "November 1, 2021" %}
+{% set key_club_week_end = "November 5, 2021" %}
+{#
+    === NOTE ===
+    In the below Key Club programs, feel free to change the "name" and "points" fields.
+    Do **not** change the "tag_dont_change" and "value_dont_change" fields, since those are used to store the values in the backend.
+#}
+{% set key_club_programs = [
+    {
+        "name": "District Fall Conference",
+        "points": 5,
+        "tag_dont_change": "attendance-fall-rally",
+        "value_dont_change": application.attendance_fall_rally,
+    },
+    {
+        "name": "Key Club International Global Engagement Rally",
+        "points": 5,
+        "tag_dont_change": "attendance-dtc",
+        "value_dont_change": application.attendance_dtc,
+    },
+    {
+        "name": "Kamp Kiwanis",
+        "points": 5,
+        "tag_dont_change": "attendance-kamp-kiwanis",
+        "value_dont_change": application.attendance_kamp_kiwanis,
+    },
+    {
+        "name": "Key Leader",
+        "points": 5,
+        "tag_dont_change": "attendance-key-leader",
+        "value_dont_change": application.attendance_key_leader,
+    },
+    {
+        "name": "2021 Leadership Training Conference",
+        "points": 7,
+        "tag_dont_change": "attendance-ltc",
+        "value_dont_change": application.attendance_ltc,
+    },
+    {
+        "name": "2021 Key Club International Summer Leadership Conference",
+        "points": 8,
+        "tag_dont_change": "attendance-icon",
+        "value_dont_change": application.attendance_icon,
+    },
+] %}
 {% set positions_word_limit = 250 %}
 {% block application %}
 <form id="application" role="form" action="{{ application_url }}" method="post">
@@ -13,7 +57,7 @@
     </p>
 
     <h4>Section 1: Key Club Week Participation (Max 15 Points, 3 Points per Day)</h4>
-    <p>Key Club Week was celebrated {{ key_club_week_days }}. Below, please indicate what you have done during Key Club Week. If your club celebrated Key Club week at a different time, events are still counted towards this section.</p>
+    <p>Key Club Week was celebrated from {{ key_club_week_start }} to {{ key_club_week_end }}. Below, please indicate what you have done during Key Club Week. If your club celebrated Key Club week at a different time, events are still counted towards this section.</p>
 
     <div class="form-horizontal">
         {{ input_horizontal("key-club-week-monday", "Monday", application.key_club_week_mon, size=2) }}
@@ -29,22 +73,9 @@
     <p>If you attended any of the following conferences or programs, please indicate which programs by checking the boxes below. Only check off ones that you attended in the {{ settings.due_date | datetimeformat("%Y") | int - 1 }} - {{ settings.due_date | datetimeformat("%Y") }} service year.</p>
     <div class="row">
         <div class="col-sm-11 col-sm-offset-1">
-            {# This was the original value before 2021
-            
-            {{ checkbox("attendance-dtc", "(5 points) Divisional Training Conference/Personal Training", application.attendance_dtc) }}
-            {{ checkbox("attendance-fall-rally", "(5 points) Fall Rally", application.attendance_fall_rally) }}
-            {{ checkbox("attendance-kamp-kiwanis", "(5 points) Kamp Kiwanis", application.attendance_kamp_kiwanis) }}
-            {{ checkbox("attendance-key-leader", "(5 points) Key Leader", application.attendance_key_leader) }}
-            {{ checkbox("attendance-ltc", "(7 points) Leadership Training Conference", application.attendance_ltc) }}
-            {{ checkbox("attendance-icon", "(8 points) International Convention", application.attendance_icon) }}
-            #}
-            
-            {{ checkbox("attendance-fall-rally", "(5 points) District Fall Conference", application.attendance_fall_rally) }}
-            {{ checkbox("attendance-dtc", "(5 points) Key Club International Global Engagement Rally", application.attendance_dtc) }}
-            {{ checkbox("attendance-kamp-kiwanis", "(5 points) Kamp Kiwanis", application.attendance_kamp_kiwanis) }}
-            {{ checkbox("attendance-key-leader", "(5 points) Key Leader", application.attendance_key_leader) }}
-            {{ checkbox("attendance-ltc", "(7 points) 2021 Leadership Training Conference", application.attendance_ltc) }}
-            {{ checkbox("attendance-icon", "(8 points) 2021 Key Club International Summer Leadership Conference", application.attendance_icon) }}
+            {%- for program in key_club_programs %}
+                {{ checkbox(program.tag_dont_change, "(%d points) %s" % (program.points, program.name), program.value_dont_change) }}
+            {%- endfor %}
         </div>
     </div>
 

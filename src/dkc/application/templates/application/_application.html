@@ -10,10 +10,10 @@
 {%- endif %}
 <div class="row application{% if application.submit_time %} submitted-application{% endif %}">
     <aside class="col-sm-3">
-{% include "application/sidebar.html" %}
+    {%- include "application/sidebar.html" %}
     </aside>
     <div class="col-sm-9 application-content">
-{% block application %}{% endblock %}
+    {%- block application %}{% endblock %}
     </div>
 </div>
 {% endblock %}

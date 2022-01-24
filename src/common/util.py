@@ -9,6 +9,5 @@ def generate_pdf(html_data: str):
         dest=output,
         encoding="utf-8",
     )
-
     pdf_data = pdf.dest.getvalue()
     return pdf_data

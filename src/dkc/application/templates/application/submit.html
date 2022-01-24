@@ -2,9 +2,9 @@
 {% set title = 'Submit' %}
 {% macro check_or_x(val) -%}
     {%- if val %}
-        <span class="text-danger glyphicon glyphicon-remove"></span>
-    {%- else %}
         <span class="text-success glyphicon glyphicon-ok"></span>
+    {%- else %}
+        <span class="text-danger glyphicon glyphicon-remove"></span>
     {% endif %}
 {%- endmacro %}
 {% block application %}
@@ -21,31 +21,31 @@
             <table class="table table-striped table-bordered">
                 <tbody>
                     <tr>
-                        <td>{{ check_or_x(is_profile_incomplete) }}</td>
+                        <td>{{ check_or_x(not is_profile_incomplete) }}</td>
                         <td>Profile</td>
                     </tr>
                     <tr>
-                        <td>{{ check_or_x(is_personal_statement_incomplete) }}</td>
+                        <td>{{ check_or_x(not is_personal_statement_incomplete) }}</td>
                         <td>Pt. 1: Personal Statement</td>
                     </tr>
                     <tr>
-                        <td>{{ check_or_x(is_projects_incomplete) }}</td>
+                        <td>{{ check_or_x(not is_projects_incomplete) }}</td>
                         <td>Pt. 2: International, District &amp; Divisional Projects</td>
                     </tr>
                     <tr>
-                        <td>{{ check_or_x(is_involvement_incomplete) }}</td>
+                        <td>{{ check_or_x(not is_involvement_incomplete) }}</td>
                         <td>Pt. 3: Involvement in Key Club Functions</td>
                     </tr>
                     <tr>
-                        <td>{{ check_or_x(is_activities_incomplete) }}</td>
+                        <td>{{ check_or_x(not is_activities_incomplete) }}</td>
                         <td>Pt. 4: Projects, Advocacy &amp; Newsletters</td>
                     </tr>
                     <tr>
-                        <td>{{ check_or_x(is_other_incomplete) }}</td>
+                        <td>{{ check_or_x(not is_other_incomplete) }}</td>
                         <td>Other &amp; Scoring</td>
                     </tr>
                     <tr>
-                        <td>{{ check_or_x(is_verification_incomplete) }}</td>
+                        <td>{{ check_or_x(not is_verification_incomplete) }}</td>
                         <td>Verification</td>
                     </tr>
                 </tbody>
