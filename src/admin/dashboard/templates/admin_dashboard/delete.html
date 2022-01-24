@@ -1,0 +1,134 @@
+{% extends "admin_dashboard/_admin.html" %}
+{% set title = 'DANGER ZONE: Delete Applicants' %}
+{% block admin %}
+<div class="page-header">
+    <h2><span class="text-danger">DANGER ZONE:</span> Delete Applicants</h2>
+</div>
+
+<p class="lead">There are <strong>{{ all_applicants|length }}</strong> applicants.</p>
+
+<form id="delete-applicant-form" role="form" action="{{ admin_url }}" method="post">
+<div class="table-responsive">
+    <table class="table table-condensed table-hover table-striped" id="overview-applicants">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Division</th>
+                <th class="text-nowrap">First Name</th>
+                <th class="text-nowrap">Last Name</th>
+                <th class="hidden-sm">Email</th>
+                <th>Submitted?</th>
+                <th>Awards</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%- for applicant, application in zip(all_applicants, all_applications) %}
+            <tr class="clickable-row {% if application.graded %}graded-row{% endif %}" href="/admin/show/{{ applicant.email }}">
+                <td>
+                    <label>
+                        <input type="checkbox" name="email" value="{{ applicant.email }}">
+                    </label>
+                </td>
+                <td>{{ application.division|e }}</td>
+                <td>{{ applicant.first_name|e }}</td>
+                <td>{{ applicant.last_name|e }}</td>
+                <td class="hidden-sm">{{ applicant.email|e }}</td>
+                <td>
+                    {%- if application.submit_time -%}
+                        {%- if application.submit_time < settings.due_date.replace(tzinfo=None) -%}
+                            <span class="text-success"><span class="glyphicon glyphicon-ok"></span><span class="hidden for-sorting">0</span> On Time</span>
+                        {%- else -%}
+                            <span class="text-warning"><span class="glyphicon glyphicon-ok"></span><span class="hidden for-sorting">1</span> Late</span>
+                        {%- endif -%}
+                    {%- else -%}
+                        <span class="text-danger"><span class="glyphicon glyphicon-remove"></span><span class="hidden for-sorting">2</span></span>
+                    {%- endif -%}
+                </td>
+                <td>
+                    {%- if 'Outstanding' in application.outstanding_awards|e -%}
+                        <span class="glyphicon glyphicon-star"></span><span class="hidden for-sorting">0</span>
+                    {%- else -%}
+                        <span class="hidden for-sorting">1</span>
+                    {%- endif -%}
+                </td>
+            </td>
+            {%- endfor %}
+        </tbody>
+    </table>
+</div>
+<nav id="delete-bar" class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-sm-offset-3">
+                <p id="delete-bar-info" class="navbar-text navbar-left"></p>
+                <button type="submit" class="btn btn-danger navbar-btn navbar-right"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+            </div>
+        </div>
+    </div>
+</nav>
+</form>
+{% endblock %}
+{% block admin_scripts %}
+<script src="/js/tablesorter.min.js"></script>
+<script>
+function clickableRows() {
+    $(".clickable-row td:not(:first-child)").click(function() {
+        window.open($(this).parent().attr('href'), '_blank');
+    });
+}
+function countChecked() {
+    return $('input[type="checkbox"]:checked').length;
+}
+function updateCheckedInfo() {
+    $("#delete-bar-info").text("Selected " + countChecked() + " applicants to delete.");
+}
+function registerCheckboxesChanged() {
+    $('input[type="checkbox"]').change(function() {
+        updateCheckedInfo();
+    });
+}
+$('#delete-applicant-form').submit(function(e) {
+    e.preventDefault();
+    var formData = $('#delete-applicant-form').serialize()
+    sweetAlert({
+        title: "Delete " + countChecked() + " applicants?",
+        text: "Once deleted, the applicant's applications will be gone forever!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d9534f",
+        confirmButtonText: "Yes, Delete!",
+    },
+    function() {
+        $('#delete-bar button').button('loading');
+        $.ajax({
+            type: 'POST',
+            url: '{{ application_url }}',
+            data: formData,
+        })
+         .done(function() {
+             window.location.reload();
+         })
+         .fail(function(xhr) {
+            // Add artificial delay so that confirmation swal can close first
+            setTimeout(function() { sweetAlert("Delete failed!", "Please try again later.", "error"); }, 250);
+         })
+         .always(function() {
+            $('#delete-bar button').button('reset');
+         });
+    });
+    return false;
+});
+$(document).ready(function() {
+    clickableRows();
+    updateCheckedInfo();
+    registerCheckboxesChanged();
+    $("#overview-applicants").tablesorter({
+        sortList: [[5, 0], [1, 0]],
+        headers: {
+            0 : { sorter: false },
+        },
+        stringTo: "bottom",
+    });
+});
+</script>
+{% endblock %}

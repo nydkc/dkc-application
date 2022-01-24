@@ -5,7 +5,7 @@ from flask_login import current_user
 from google.cloud import ndb, storage
 from common.gcs import gcs, generate_signed_url_for
 from common.timezone import Eastern
-from manage.admin_auth.login_manager import get_current_admin_user
+from admin.auth.login_manager import get_current_admin_user
 from .models import GCSObjectReference
 from . import application_bp
 

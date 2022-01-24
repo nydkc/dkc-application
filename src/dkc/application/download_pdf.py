@@ -7,7 +7,7 @@ from common.models import Settings
 from common.static import get_static_dir
 from common.util import generate_pdf
 from dkc.auth.models import User, AuthToken
-from manage.admin_auth.login_manager import get_current_admin_user
+from admin.auth.login_manager import get_current_admin_user
 from . import application_bp
 
 logger = logging.getLogger(__name__)

@@ -1,0 +1,69 @@
+{% extends "admin_dashboard/_admin.html" %}
+{% set title = 'Overview' %}
+{% block admin %}
+<div class="page-header">
+    <h2>Overview</h2>
+</div>
+
+<p class="lead">There are <strong>{{ all_applicants|length }}</strong> applicants.</p>
+
+<div class="table-responsive">
+    <table class="table table-condensed table-hover table-striped" id="overview-applicants">
+        <thead>
+            <tr>
+                <th>Division</th>
+                <th class="text-nowrap">First Name</th>
+                <th class="text-nowrap">Last Name</th>
+                <th class="hidden-sm">Email</th>
+                <th>Submitted?</th>
+                <th>Awards</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%- for applicant, application in zip(all_applicants, all_applications) %}
+            <tr class="clickable-row {% if application.graded %}graded-row{% endif %}" href="/admin/show/{{ applicant.email }}">
+                <td>{{ application.division|e }}</td>
+                <td>{{ applicant.first_name|e }}</td>
+                <td>{{ applicant.last_name|e }}</td>
+                <td class="hidden-sm">{{ applicant.email|e }}</td>
+                <td>
+                    {%- if application.submit_time -%}
+                        {%- if application.submit_time < settings.due_date.replace(tzinfo=None) -%}
+                            <span class="text-success"><span class="glyphicon glyphicon-ok"></span><span class="hidden for-sorting">0</span> On Time</span>
+                        {%- else -%}
+                            <span class="text-warning"><span class="glyphicon glyphicon-ok"></span><span class="hidden for-sorting">1</span> Late</span>
+                        {%- endif -%}
+                    {%- else -%}
+                        <span class="text-danger"><span class="glyphicon glyphicon-remove"></span><span class="hidden for-sorting">2</span></span>
+                    {%- endif -%}
+                </td>
+                <td>
+                    {%- if 'Outstanding' in application.outstanding_awards|e -%}
+                        <span class="glyphicon glyphicon-star"></span><span class="hidden for-sorting">0</span>
+                    {%- else -%}
+                        <span class="hidden for-sorting">1</span>
+                    {%- endif -%}
+                </td>
+            </td>
+            {%- endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block admin_scripts %}
+<script src="/js/tablesorter.min.js"></script>
+<script>
+function clickableRows() {
+    $(".clickable-row").click(function() {
+        window.open($(this).attr('href'), '_blank');
+    });
+}
+$(document).ready(function() {
+    clickableRows();
+    $("#overview-applicants").tablesorter({
+        sortList: [[4, 0], [0, 0]],
+        stringTo: "bottom",
+    });
+});
+</script>
+{% endblock %}

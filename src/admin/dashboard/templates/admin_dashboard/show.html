@@ -1,0 +1,594 @@
+{% extends "admin_dashboard/_admin.html" %}
+{% set title = applicant.first_name|e ~ ' ' ~ applicant.last_name|e %}
+{% from "application/file_handling.html" import file_info_table %}
+{% block admin %}
+<div id="notetaking" class="panel panel-default">
+    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <div class="panel-heading">Awards Committee Notes (Click to drag)</div>
+    <textarea class="panel-body form-control" name="notes" id="notes" rows="6">{{ application.notes|e }}</textarea>
+    <button class="btn btn-info btn-block btn-small" id="save-notes-button" data-loading-text="Saving...">Save notes</button>
+</div>
+<div id="notetaking-button"><span class="glyphicon glyphicon-pencil"></span></div>
+
+<div class="page-header">
+    <h2>{{ applicant.first_name|e }} {{ applicant.last_name|e }}
+        <small class="download-link hidden-xs"><a href="/application/download/pdf/{{ applicant_id }}-{{ applicant.first_name|e }}_{{ applicant.last_name|e }}.pdf"><span class="glyphicon glyphicon-print"></span> Download PDF</a></small>
+    </h2>
+</div>
+
+{%- if application.submit_time %}
+    {%- if application.submit_time < settings.due_date.replace(tzinfo=None) %}
+        <div class="alert alert-info">Submitted on {{ application.submit_time | datetimeformat('%B %d, %Y at %I:%M:%S.%f %p %Z') }}</div>
+    {%- else %}
+        <div class="alert alert-warning">LATE SUBMISSION! Submitted on {{ application.submit_time | datetimeformat('%B %d, %Y at %I:%M:%S.%f %p %Z') }}</div>
+    {%- endif %}
+{%- else %}
+    <div class="alert alert-danger">Not yet submitted... this application may still be modified by the applicant.</div>
+{%- endif %}
+
+{%- if 'Outstanding' in application.outstanding_awards|e %}
+<div class="alert alert-info">This applicant is applying for the {{ application.outstanding_awards }} award!</div>
+{%- endif %}
+
+<div class="page-header">
+    <h3 id="profile">Profile</h3>
+</div>
+<dl class="dl-horizontal profile">
+    <dt>First Name</dt><dd>{{ applicant.first_name|e }}</dd>
+    <dt>Last Name</dt><dd>{{ applicant.last_name|e }}</dd>
+    <dt>Email</dt><dd>{{ applicant.email|e }}</dd>
+    <dt>Grade</dt><dd>{{ application.grade}}</dd>
+    <dt>Address</dt><dd>{{ application.address|e }}</dd>
+    <dt>City</dt><dd>{{ application.city|e }}</dd>
+    <dt>Zip Code</dt><dd>{{ application.zip_code|e }}</dd>
+    <dt>Phone Number</dt><dd>{{ application.phone_number|e }}</dd>
+    <dt>Division</dt><dd>{{ application.division|e }}</dd>
+    <dt>Lieutenant Governor</dt><dd>{{ application.ltg|e }}</dd>
+    <dt>School</dt><dd>{{ application.school|e }}</dd>
+    <dt>School Address</dt><dd>{{ application.school_address|e }}</dd>
+    <dt>School City</dt><dd>{{ application.school_city|e }}</dd>
+    <dt>School Zip Code</dt><dd>{{ application.school_zip_code|e }}</dd>
+    <dt>Club President</dt><dd>{{ application.club_president|e }}</dd>
+    <dt>Club President Phone Number</dt><dd>{{ application.club_president_phone_number|e }}</dd>
+    <dt>Faculty Advisor</dt><dd>{{ application.faculty_advisor|e }}</dd>
+    <dt>Faculty Advisor Phone Number</dt><dd>{{ application.faculty_advisor_phone_number|e }}</dd>
+</dl>
+
+<hr class="separator">
+
+<div class="page-header">
+    <h3 id="personal-statement">Personal Statement <span class="text-nowrap">(120 Points)</span></h3>
+</div>
+
+{% from 'application/personal_statement.html' import questions with context %}
+<p>
+    <strong>Topic:</strong>
+    {%- if application.personal_statement_choice %}
+        {{ (questions | selectattr("0", "equalto", application.personal_statement_choice) | first)[1] }}
+    {%- else %}
+        [None selected]
+    {%- endif %}
+</p>
+{% autoescape false %}
+<div class="personal-statement-essay">{{ application.personal_statement | forceescape | replace('\n', '<br>') }}</div>
+{% endautoescape %}
+
+<hr class="separator">
+
+<div class="page-header">
+    <h3 id="projects">International, District &amp; Divisional Projects <span class="text-nowrap">(60 Points)</span></h3>
+</div>
+<h4>Sections 1, 2, 3: International Projects (Max 24 Points, 4 Points per Event)</h4>
+<div class="international-projects">
+{%- for project in application.international_projects %}
+    <div class="row project">
+        <div class="col-sm-12">
+            <strong>Section</strong>: {{ project.section|e }}<br>
+            <strong>Event</strong>: {{ project.event|e }}
+        </div>
+        <div class="col-sm-12">
+            <strong>Description:</strong> {{ project.description|e }}
+        </div>
+    </div>
+{%- endfor %}
+</div>
+
+<div class="clearfix">
+    <hr class="col-xs-6 col-xs-offset-3">
+</div>
+
+<h4>Section 4: District Projects & Local Causes (Max 20 Points, 4 Points per Event)</h4>
+<div class="district-projects">
+{%- for project in application.district_projects %}
+<div class="row project">
+    <div class="col-md-12">
+        <strong>Event</strong>: {{ project.event|e }}<br>
+        <strong>Charity</strong>: {{ project.charity|e }}
+    </div>
+    <div class="col-md-12">
+        <strong>Description</strong>: {{ project.description|e }}
+    </div>
+</div>
+{%- endfor %}
+</div>
+
+<div class="clearfix">
+    <hr class="col-xs-6 col-xs-offset-3">
+</div>
+
+<h4>Section 5: Divisional Involvement</h4>
+<u>Attendance at Divisional Meetings (Max 8 Points, 4 Points per Event)</u>
+<div class="divisional-meetings">
+{%- for divisional in application.divisionals %}
+    <div class="row divisional">
+        <div class="col-sm-4">
+            <strong>Date</strong>: {{ divisional.date|e }}
+        </div>
+        <div class="col-sm-8">
+            <strong>Location</strong>: {{ divisional.location|e }}
+        </div>
+    </div>
+{%- endfor %}
+</div>
+<div style="height: 20px;"></div>
+<u>Attendance at a Divisional Project/Event (Max 8 Points, 4 Points per Event)</u>
+<div class="division-projects">
+{%- for project in application.division_projects %}
+    <div class="row project">
+        <div class="col-md-6">
+            <strong>Event</strong>: {{ project.event|e }}
+        </div>
+        <div class="col-md-6">
+            <strong>Location</strong>: {{ project.location|e }}
+        </div>
+        <div class="col-md-12">
+            {{ project.description|e }}
+        </div>
+    </div>
+{%- endfor %}
+</div>
+
+<div class="clearfix">
+    <hr class="col-xs-6 col-xs-offset-3">
+</div>
+
+<h4>Scoring Reasons for Part II (from the Other section):</h4>
+<p>{{ application.scoring_reason_two|e }}</p>
+
+<hr class="separator">
+
+<div class="page-header">
+    <h3 id="involvement">Involvement in Key Club Functions <span class="text-nowrap">(60 Points)</span></h3>
+</div>
+
+<h4>Section 1: Key Club Week Participation (Max 15 Points, 3 Points per Day)</h4>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-xs-2">Monday</td>
+                <td>{{ application.key_club_week_mon|e }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2">Tuesday</td>
+                <td>{{ application.key_club_week_tue|e }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2">Wednesday</td>
+                <td>{{ application.key_club_week_wed|e }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2">Thursday</td>
+                <td>{{ application.key_club_week_thu|e }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2">Friday</td>
+                <td>{{ application.key_club_week_fri|e }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="clearfix">
+    <hr class="col-xs-6 col-xs-offset-3">
+</div>
+
+<h4>Section 2: Attendance at Key Club Functions</h4>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tbody>
+            {#
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_dtc %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Divisional Training Conference/Personal Training</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_fall_rally %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Fall Rally</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_kamp_kiwanis %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Kamp Kiwanis</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_key_leader %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Key Leader</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_ltc %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(7 points) Leadership Training Conference</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_icon %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(8 points) International Convention</td>
+            </tr>
+            #}
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_dtc %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Virtual Engagement Webinar</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_fall_rally %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Recruitment & Retention Webinar</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_kamp_kiwanis %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Kamp Kiwanis</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_key_leader %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(5 points) Key Leader</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_ltc %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(7 points) Fall Virtual District Training Conference</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.attendance_icon %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(8 points) Key Club International Summmer Leadership Summit</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="clearfix">
+    <hr class="col-xs-6 col-xs-offset-3">
+</div>
+
+<h4>Section 3: Positions Held within Key Club (10 Points)</h4>
+{% autoescape false %}
+<div class="positions-essay">{{ application.positions | forceescape | replace('\n', '<br>') }}</div>
+{% endautoescape %}
+
+<div class="clearfix">
+    <hr class="col-xs-6 col-xs-offset-3">
+</div>
+
+<h4>Scoring Reasons for Part III (from the Other section):</h4>
+<p>{{ application.scoring_reason_three }}</p>
+
+<hr class="separator">
+
+<div class="page-header">
+    <h3 id="activities">Projects, Advocacy &amp; Newsletters <span class="text-nowrap">(60 Points)</span></h3>
+</div>
+
+<h4>Section 1: K-Family Project</h4>
+<u>Kiwanis One Day Event (5 Points Max, 5 Points per Event)</u>
+<div class="kiwanis-one-day">
+    <div class="row project">
+        <div class="col-md-12">
+            <strong>Event</strong>: {{ application.kiwanis_one_day.event|e }}<br>
+            <strong>Location</strong>: {{ application.kiwanis_one_day.location|e }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description</strong>: {{ application.kiwanis_one_day.description|e }}
+        </div>
+    </div>
+</div>
+<div style="height: 20px;"></div>
+<u>K-Family Service Projects (16 Points Max, 4 Points per Event)</u>
+<div class="k-family-projects">
+{%- for project in application.k_family_projects %}
+    <div class="row project">
+        <div class="col-md-12">
+            <strong>Event</strong>: {{ project.event|e }}<br>
+            <strong>Location</strong>: {{ project.location|e }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description</strong>: {{ project.description|e }}
+        </div>
+    </div>
+{%- endfor %}
+</div>
+
+<div class="clearfix">
+    <hr class="col-xs-6 col-xs-offset-3">
+</div>
+
+<h4>Section 2: Interclub Events (Max 16 Points, 4 Points per Event)</h4>
+<div class="interclub-projects">
+{%- for project in application.interclub_projects %}
+    <div class="row project">
+        <div class="col-md-12">
+            <strong>Event</strong>: {{ project.event|e }}<br>
+            <strong>Location</strong>: {{ project.location|e }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description</strong>: {{ project.description|e }}
+        </div>
+    </div>
+{%- endfor %}
+</div>
+
+<div class="clearfix">
+    <hr class="col-xs-6 col-xs-offset-3">
+</div>
+
+<h4>Section 3: Advocacy (Max 3 Points, 3 Points per Project)</h4>
+<div class="row">
+    <div class="col-md-12">
+        <strong>Cause</strong>: {{ application.advocacy_cause|e }}
+    </div>
+    <div class="col-md-12">
+        <strong>Description</strong>: {{ application.advocacy_description|e }}
+    </div>
+</div>
+
+<h5>Advocacy Materials <small>({{ application.advocacy_materials|length }} uploaded)</small></h5>
+{{ file_info_table("advocacy-materials-view", (application.advocacy_materials | to_file_info), include_delete=False) }}
+
+<div class="clearfix">
+    <hr class="col-xs-6 col-xs-offset-3">
+</div>
+
+<h4>Section 4: Committee Involvement (Max 3 Points, 3 Points per Committee)</h4>
+<div class="row">
+    <div class="col-sm-8">
+        <strong>Committee</strong>: {{ application.committee|e }}
+    </div>
+    <div class="col-sm-4">
+        <strong>Type</strong>: {{ application.committee_type|e }}
+    </div>
+    <div class="col-sm-12">
+        <strong>Description</strong>: {{ application.committee_description|e }}
+    </div>
+</div>
+
+<div class="clearfix">
+    <hr class="col-xs-6 col-xs-offset-3">
+</div>
+
+<h4>Section 5: Newsletter Article Submission (Max 5 Points)</h4>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Source</th>
+                <th>Information/Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.divisional_newsletter %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(1 Point) Divisional Newsletter</td>
+                <td>{{ application.divisional_newsletter_info|e }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.district_newsletter %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(2 Points) District Newsletter (The Empire Key)</td>
+                <td>{{ application.district_newsletter_info|e }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.district_website %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>(2 Points) District Website</td>
+                <td>{{ application.district_website_info|e }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<h5>Newsletter Materials <small>({{ application.newsletter_materials|length }} uploaded)</small></h5>
+{{ file_info_table("newsletter-materials-view", (application.newsletter_materials | to_file_info), include_delete=False) }}
+
+<div class="clearfix">
+    <hr class="col-xs-6 col-xs-offset-3">
+</div>
+
+<h4>Section 6: Other Projects/Fundraisers (Max 12 Points, 2 Points per Project/Fundraiser)</h4>
+<div class="other-projects">
+{%- for project in application.other_projects %}
+    <div class="row project">
+        <div class="col-md-12">
+            <strong>Event</strong>: {{ project.event|e }}<br>
+            <strong>Location</strong>: {{ project.location|e }}
+        </div>
+        <div class="col-md-12">
+            <strong>Description</strong>: {{ project.description|e }}
+        </div>
+    </div>
+{%- endfor %}
+</div>
+
+<div class="clearfix">
+    <hr class="col-xs-6 col-xs-offset-3">
+</div>
+
+<h4>Scoring Reasons for Part IV (from the Other section):</h4>
+<p>{{ application.scoring_reason_four|e }}</p>
+
+<hr class="separator">
+
+<div class="page-header">
+    <h3 id="other">Other &amp; Scoring</h3>
+</div>
+
+<p class="lead"><strong>If there is a recommendation, apply to section: {{ application.recommender_points|e }}.</strong></p>
+<h5>Other Materials <small>({{ application.other_materials|length }} uploaded)</small></h5>
+{{ file_info_table("other-materials-view", (application.other_materials | to_file_info), include_delete=False) }}
+
+<hr class="separator">
+
+<div class="page-header">
+    <h3 id="verification">Verification</h3>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Source of Verification</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.verification_ltg %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>LTG Verification</td>
+                <td>{{ application.verification_ltg_email|e }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.verification_club_president %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>Club President Verification</td>
+                <td>{{ application.verification_club_president_email|e }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.verification_faculty_advisor %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>Faculty Advisor Verfication</td>
+                <td>{{ application.verification_faculty_advisor_email|e }}</td>
+            </tr>
+            <tr>
+                <td class="col-xs-2 text-center">{% if application.verification_applicant %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td>Applicant Verification</td>
+                <td>
+                    {%- if application.verification_applicant -%}
+                        Verified on {{ application.verification_applicant_date | datetimeformat("%B %d, %Y at %I:%M %p %Z") }}
+                    {%- else -%}
+                        No self verification recorded.
+                    {%- endif -%}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<hr class="separator" style="margin-top: 40px;">
+
+<p class="lead">
+    {% if application.submit_time %}
+        Submitted on {{ application.submit_time | datetimeformat("%B %d, %Y at %I:%M %p %Z") }}
+    {% else %}
+        This application has not been submitted.
+    {% endif %}
+</p>
+
+<div id="graded-status" class="checkbox {% if application.graded %}bg-success{% else %}bg-danger{% endif %}">
+    <label>
+        <input type="checkbox" {% if application.graded %}checked{% endif %}>
+        Graded?
+    </label>
+</div>
+
+{% endblock %}
+{% block admin_scripts %}
+<script>
+function clickableRows() {
+    $(".clickable-row").click(function() {
+        window.open($(this).attr('href'), '_blank');
+    });
+}
+
+function setupGraded() {
+    $('#graded-status input[type="checkbox"]').change(function() {
+        var checkboxStatus = $(this).is(":checked") ? "on" : "off";
+        $.ajax({
+            type: 'POST',
+            url: window.location,
+            data: {
+                'graded': checkboxStatus,
+            }
+        })
+        .done(function() {
+            if (checkboxStatus == "on") {
+                $('#graded-status').addClass('bg-success').removeClass('bg-danger');
+            }
+            else {
+                $('#graded-status').removeClass('bg-success').addClass('bg-danger');
+            }
+        })
+        .fail(function() {
+            sweet("Sorry!", "The graded status could not be updated with the server!");
+        });
+    });
+}
+
+$('#notetaking').css('top', ($(window).height() - $('#notetaking').height() - 5) + 'px');
+$('#notetaking').css('left', ($(window).width() - $('#notetaking').width() - 5) + 'px');
+function setupNotetaking() {
+    if ($(window).width() >= 768) {
+        $('.admin').removeAttr("style");
+        $('#notetaking').removeClass("small");
+        $('#notetaking').mousedown(handle_mousedown_dragging);
+    }
+    else {
+        $('.admin').css('padding-bottom', $('#notetaking').height() + 20);
+        $('#notetaking').addClass("small");
+        $('#notetaking').unbind("mousedown");
+    }
+}
+$('#notetaking .close').click(function () {
+    $('#notetaking').fadeOut();
+    $('#notetaking-button').fadeIn();
+});
+$('#notetaking-button').click(function() {
+    $('#notetaking').fadeIn();
+    $('#notetaking-button').fadeOut();
+});
+
+var notes = $('#notes').val();
+function saveNotes(e) {
+    $('#save-notes-button').button('loading');
+    var newNotes = $('#notes').val();
+    if (notes != newNotes) {
+        $.ajax({
+            type: "POST",
+            url: window.location,
+            data: {
+                "notes": $('#notes').val(),
+            }
+        })
+        .done(function() {
+            notes = newNotes;
+            if (e.data == 'click') {
+                sweetAlert("Notes saved!", "", "success");
+            }
+        })
+        .fail(function() {
+            if (e.data == 'click') {
+                sweetAlert("Save failed!", "Are you connected to the internet?", "error");
+            }
+        })
+        .always(function() {
+            $('#save-notes-button').button('reset');
+        });
+    }
+    else {
+        setTimeout(function() { $('#save-notes-button').button('reset'); }, 300);
+    }
+    return false;
+}
+$('#save-notes-button').click('click', saveNotes);
+setInterval(function() {
+    saveNotes('auto');
+}, 1*60*1000);
+
+$(document).ready(function() {
+    clickableRows();
+    setupNotetaking();
+    setupGraded();
+});
+$(window).resize(setupNotetaking);
+</script>
+{% endblock %}
