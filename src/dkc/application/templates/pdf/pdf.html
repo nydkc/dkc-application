@@ -63,6 +63,19 @@ small {
     border-bottom: 1pt solid #ccc;
 }
 
+table th {
+    text-align: left;
+}
+
+p {
+    margin: 0;
+    -pdf-keep-with-next: true;
+}
+
+.separator {
+    -pdf-keep-with-next: false;
+}
+
 .text-success {
     color: #3c763d;
 }
@@ -75,7 +88,7 @@ small {
     size: letter portrait;
     @frame content_frame {
         left: 60pt; width: 492pt; top: 200pt; height: 372pt;
-        /*-pdf-frame-border: 1;    /* for debugging the layout */
+        /*-pdf-frame-border: 1;*/    /* for debugging the layout */
     }
 }
 
@@ -94,11 +107,9 @@ small {
     }
 }
 
-p { margin: 0; -pdf-keep-with-next: true; }
-p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
-
 .header, .footer {
     color: #777;
+    font-size: 11pt;
 }
 
 .cover h1 {
@@ -109,9 +120,6 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
 }
 .cover .title-bottom {
     margin-top: 40pt;
-}
-.header, .footer {
-    font-size: 11pt;
 }
 
 .profile-table td {
@@ -130,12 +138,6 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     font-size: 11pt;
 }
 
-.together {
-    -pdf-keep-with-next: true;
-}
-.separator {
-    -pdf-keep-with-next: false;
-}
 .section h6 {
     margin-top: 0;
     margin-bottom: 4pt;
@@ -152,12 +154,6 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     padding-top: 2pt;
     padding-bottom: 2pt;
 }
-.key-club-week-table .day {
-    width: 150pt;
-}
-.key-club-week-table .description {
-    width: 100%;
-}
 .key-club-week-table {
     margin-bottom: 8pt;
 }
@@ -165,20 +161,17 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     padding-left: 4.6pt;
     margin-bottom: 8pt;
 }
+.positions-essay {
+    font-size: 11pt;
+}
 
 .newsletter-submission-table {
     padding-left: 4.6pt;
     margin-bottom: 8pt;
 }
-.newsletter-submission-table th {
-    text-align: left;
-}
 
 .verification-table {
     padding-left: 4.6pt;
-}
-.verification-table th {
-    text-align: left;
 }
 .verification-table th, .verification-table td {
     padding-top: 3pt;
@@ -188,12 +181,12 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
 .other {
     margin-top: 10pt;
 }
-.other h6 {
+.scoring h6 {
     margin-top: 10pt;
     padding-bottom: 0pt;
     margin-bottom: 0pt;
 }
-.other p {
+.scoring p {
     padding-top: 0pt;
     margin-top: 0pt;
 }
@@ -216,10 +209,14 @@ p.separator { -pdf-keep-with-next: false; font-size: 6pt; }
     </div>
 
     <!-- Content for Static Frame 'header_frame' -->
-    <div id="header_content" class="header text-center">{{ applicant.first_name }} {{ applicant.last_name }} &nbsp;&nbsp;|&nbsp;&nbsp; {{ settings.due_date | datetimeformat("%Y") | int - 1 }}-{{ settings.due_date | datetimeformat("%Y") }} Distinguished Key Clubber Application</div>
+    <div id="header_content" class="header text-center">
+        {{ applicant.first_name }} {{ applicant.last_name }} &nbsp;&nbsp;|&nbsp;&nbsp; {{ settings.due_date | datetimeformat("%Y") | int - 1 }}-{{ settings.due_date | datetimeformat("%Y") }} Distinguished Key Clubber Application
+    </div>
 
     <!-- Content for Static Frame 'footer_frame' -->
-    <div id="footer_content" class="footer text-center">© New York District of Key Club International &nbsp;&nbsp;|&nbsp;&nbsp; Page <pdf:pagenumber> of <pdf:pagecount> </div>
+    <div id="footer_content" class="footer text-center">
+        © New York District of Key Club International &nbsp;&nbsp;|&nbsp;&nbsp; Page <pdf:pagenumber> of <pdf:pagecount>
+    </div>
 
     <pdf:nexttemplate name="page_template" />
 

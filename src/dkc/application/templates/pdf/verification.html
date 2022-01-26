@@ -1,3 +1,11 @@
+{% macro x_or_empty(val) -%}
+    {%- if val %}
+        <span class="text-success">[ x ]</span>
+    {%- else %}
+        <span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
+    {% endif %}
+{%- endmacro %}
+
 <div class="page-header">
     <h3>Verification</h3>
 </div>
@@ -6,31 +14,31 @@
 <table class="verification-table">
     <thead>
         <tr>
-            <th style="width:40px;"></th>
-            <th style="width:260px;">Source of Verification</th>
-            <th>Email</th>
+            <th style="width:30pt;"></th>
+            <th style="width:180pt;">Source of Verification</th>
+            <th style="width:270pt;">Email</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>{% if application.verification_ltg %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>LTG Verification</td>
-            <td>{{ application.verification_ltg_email }}</td>
+            <td style="width:30pt;">{{ x_or_empty(application.verification_ltg) }}</td>
+            <td style="width:180pt;">LTG Verification</td>
+            <td style="width:270pt;">{{ application.verification_ltg_email }}</td>
         </tr>
         <tr>
-            <td>{% if application.verification_club_president %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>Club President Verification</td>
-            <td>{{ application.verification_club_president_email }}</td>
+            <td style="width:30pt;">{{ x_or_empty(application.verification_club_president) }}</td>
+            <td style="width:180pt;">Club President Verification</td>
+            <td style="width:270pt;">{{ application.verification_club_president_email }}</td>
         </tr>
         <tr>
-            <td>{% if application.verification_faculty_advisor %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>Faculty Advisor Verfication</td>
-            <td>{{ application.verification_faculty_advisor_email }}</td>
+            <td style="width:30pt;">{{ x_or_empty(application.verification_faculty_advisor) }}</td>
+            <td style="width:180pt;">Faculty Advisor Verfication</td>
+            <td style="width:270pt;">{{ application.verification_faculty_advisor_email }}</td>
         </tr>
         <tr>
-            <td>{% if application.verification_applicant %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>Applicant Verification</td>
-            <td>
+            <td style="width:30pt;">{{ x_or_empty(application.verification_applicant) }}</td>
+            <td style="width:180pt;">Applicant Verification</td>
+            <td style="width:270pt;">
                 {%- if application.verification_applicant -%}
                     Verified on {{ application.verification_applicant_date | datetimeformat("%B %d, %Y at %I:%M %p %Z") }}
                 {%- else -%}

@@ -1,3 +1,11 @@
+{% macro x_or_empty(val) -%}
+    {%- if val %}
+        <span class="text-success">[ x ]</span>
+    {%- else %}
+        <span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
+    {% endif %}
+{%- endmacro %}
+
 <div class="page-header">
     <h3>Part 4: Projects, Advocacy &amp; Newsletters</h3>
 </div>
@@ -66,26 +74,26 @@
 <table class="newsletter-submission-table">
     <thead>
         <tr>
-            <th style="width:40px;"></th>
-            <th style="width:280px;">Source</th>
-            <th>Information/Description</th>
+            <th style="width:30pt;"></th>
+            <th style="width:200pt;">Source</th>
+            <th style="width:250pt;">Information/Description</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>{% if application.divisional_newsletter %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>Divisional Newsletter</td>
-            <td>{% if application.divisional_newsletter_info %}{{ application.divisional_newsletter_info }}{% endif %}</td>
+            <td style="width:30pt;">{{ x_or_empty(application.divisional_newsletter) }}</td>
+            <td style="width:200pt;">Divisional Newsletter</td>
+            <td style="width:250pt;">{% if application.divisional_newsletter_info %}{{ application.divisional_newsletter_info }}{% endif %}</td>
         </tr>
         <tr>
-            <td>{% if application.district_newsletter %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>District Newsletter (The Empire Key)</td>
-            <td>{% if application.district_newsletter_info %}{{ application.district_newsletter_info }}{% endif %}</td>
+            <td style="width:30pt;">{{ x_or_empty(application.district_newsletter) }}</td>
+            <td style="width:200pt;">District Newsletter (The Empire Key)</td>
+            <td style="width:250pt;">{% if application.district_newsletter_info %}{{ application.district_newsletter_info }}{% endif %}</td>
         </tr>
         <tr>
-            <td>{% if application.district_website %}<span class="text-success">[ x ]</span>{% else %}<span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>{% endif %}</td>
-            <td>District Website</td>
-            <td>{% if application.district_website_info %}{{ application.district_website_info }}{% endif %}</td>
+            <td style="width:30pt;">{{ x_or_empty(application.district_website) }}</td>
+            <td style="width:200pt;">District Website</td>
+            <td style="width:250pt;">{% if application.district_website_info %}{{ application.district_website_info }}{% endif %}</td>
         </tr>
     </tbody>
 </table>

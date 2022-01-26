@@ -16,24 +16,24 @@
 <table class="key-club-week-table">
     <tbody>
         <tr>
-            <td class="day">Monday</td>
-            <td class="description">{{ application.key_club_week_mon }}</td>
+            <td style="width:120pt;">Monday</td>
+            <td style="width:360pt;">{{ application.key_club_week_mon }}</td>
         </tr>
         <tr>
-            <td class="day">Tuesday</td>
-            <td class="description">{{ application.key_club_week_tue }}</td>
+            <td style="width:120pt;">Tuesday</td>
+            <td style="width:360pt;">{{ application.key_club_week_tue }}</td>
         </tr>
         <tr>
-            <td class="day">Wednesday</td>
-            <td class="description">{{ application.key_club_week_wed }}</td>
+            <td style="width:120pt;">Wednesday</td>
+            <td style="width:360pt;">{{ application.key_club_week_wed }}</td>
         </tr>
         <tr>
-            <td class="day">Thursday</td>
-            <td class="description">{{ application.key_club_week_thu }}</td>
+            <td style="width:120pt;">Thursday</td>
+            <td style="width:360pt;">{{ application.key_club_week_thu }}</td>
         </tr>
         <tr>
-            <td class="day">Friday</td>
-            <td class="description">{{ application.key_club_week_fri }}</td>
+            <td style="width:120pt;">Friday</td>
+            <td style="width:360pt;">{{ application.key_club_week_fri }}</td>
         </tr>
     </tbody>
 </table>
@@ -47,8 +47,8 @@
     <tbody>
         {%- for program in key_club_programs %}
             <tr>
-                <td style="width:40pt;">{{ x_or_empty(program.value_dont_change) }}</td>
-                <td>{{ program.name }}</td>
+                <td style="width:30pt;">{{ x_or_empty(program.value_dont_change) }}</td>
+                <td style="width:450pt;">{{ program.name }}</td>
             </tr>
         {%- endfor %}
     </tbody>

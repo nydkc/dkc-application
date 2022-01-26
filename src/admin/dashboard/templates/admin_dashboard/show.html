@@ -335,19 +335,19 @@
         </thead>
         <tbody>
             <tr>
-                <td class="col-xs-2 text-center">{% if application.divisional_newsletter %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td class="col-xs-2 text-center">{{ check_or_x(application.divisional_newsletter) }}</td>
                 <td>(1 Point) Divisional Newsletter</td>
-                <td>{{ application.divisional_newsletter_info|e }}</td>
+                <td>{% if application.divisional_newsletter_info %}{{ application.divisional_newsletter_info|e }}{% endif %}</td>
             </tr>
             <tr>
-                <td class="col-xs-2 text-center">{% if application.district_newsletter %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td class="col-xs-2 text-center">{{ check_or_x(application.district_newsletter) }}</td>
                 <td>(2 Points) District Newsletter (The Empire Key)</td>
-                <td>{{ application.district_newsletter_info|e }}</td>
+                <td>{% if application.district_newsletter_info %}{{ application.district_newsletter_info|e }}{% endif %}</td>
             </tr>
             <tr>
-                <td class="col-xs-2 text-center">{% if application.district_website %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td class="col-xs-2 text-center">{{ check_or_x(application.district_website) }}</td>
                 <td>(2 Points) District Website</td>
-                <td>{{ application.district_website_info|e }}</td>
+                <td>{% if application.district_website_info %}{{ application.district_website_info|e }}{% endif %}</td>
             </tr>
         </tbody>
     </table>
@@ -409,22 +409,22 @@
         </thead>
         <tbody>
             <tr>
-                <td class="col-xs-2 text-center">{% if application.verification_ltg %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td class="col-xs-2 text-center">{{ check_or_x(application.verification_ltg) }}</td>
                 <td>LTG Verification</td>
                 <td>{{ application.verification_ltg_email|e }}</td>
             </tr>
             <tr>
-                <td class="col-xs-2 text-center">{% if application.verification_club_president %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td class="col-xs-2 text-center">{{ check_or_x(application.verification_club_president) }}</td>
                 <td>Club President Verification</td>
                 <td>{{ application.verification_club_president_email|e }}</td>
             </tr>
             <tr>
-                <td class="col-xs-2 text-center">{% if application.verification_faculty_advisor %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td class="col-xs-2 text-center">{{ check_or_x(application.verification_faculty_advisor) }}</td>
                 <td>Faculty Advisor Verfication</td>
                 <td>{{ application.verification_faculty_advisor_email|e }}</td>
             </tr>
             <tr>
-                <td class="col-xs-2 text-center">{% if application.verification_applicant %}<span class="text-success glyphicon glyphicon-ok"></span>{% else %}<span class="text-danger glyphicon glyphicon-remove"></span>{% endif %}</td>
+                <td class="col-xs-2 text-center">{{ check_or_x(application.verification_applicant) }}</td>
                 <td>Applicant Verification</td>
                 <td>
                     {%- if application.verification_applicant -%}
