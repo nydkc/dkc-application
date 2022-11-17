@@ -1,6 +1,5 @@
 import logging
 from flask import request, render_template
-from datetime import datetime
 from google.cloud import ndb
 from admin.auth.login_manager import admin_login_required, get_current_admin_user
 from common.models import Settings
@@ -36,24 +35,17 @@ def handle_post():
     logger.info("Deleting... %s", emails_to_delete)
 
     for email in emails_to_delete:
-        applicant, application = query_helpers.find_applicant_and_application_by_email(
-            email
-        )
+        applicant = query_helpers.find_applicant_by_email(email)
         if not applicant:
             logger.warning("Could not find applicant with email: %s", email)
             continue
-        if not application:
-            logger.warning(
-                "Could not find application for applicant with email: %s", email
-            )
-            continue
-        delete_applicant_completely(applicant.key, application.key)
+        delete_applicant_completely(applicant.key)
 
 
 @ndb.transactional()
-def delete_applicant_completely(applicant_key, application_key):
+def delete_applicant_completely(applicant_key):
     applicant = applicant_key.get()
-    application = application_key.get()
+    application_key = applicant.application
     unique_user_tracking_key = ndb.Key(
         UniqueUserTracking, applicant._get_unique_attributes_id()
     )

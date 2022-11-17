@@ -1,13 +1,18 @@
+from typing import Tuple
+
 from google.cloud import ndb
 from dkc.auth.models import User
 from dkc.application.models import Application
 
 
-def find_applicant_and_application_by_email(email):
-    user = User.find_by_email(email)
-    if not user:
+def find_applicant_by_email(email: str) -> User:
+    return User.find_by_email(email)
+
+
+def find_applicant_and_application_by_email(email: str) -> Tuple[User, Application]:
+    applicant = find_applicant_by_email(email)
+    if not applicant:
         return None, None
-    applicant = user
     application = applicant.application.get()
     return applicant, application
 

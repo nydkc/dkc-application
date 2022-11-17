@@ -3,7 +3,7 @@ inbound_services:
 - warmup
 
 entrypoint: >
-  gunicorn -b :$PORT main:app
+  gunicorn -b :$PORT main:app --timeout 60
 
 instance_class: F1
 

@@ -12,7 +12,7 @@
     <table class="table table-condensed table-hover table-striped" id="overview-applicants">
         <thead>
             <tr>
-                <th></th>
+                <th><label><input type="checkbox" id="select-all-checkbox"></label></th>
                 <th>Division</th>
                 <th class="text-nowrap">First Name</th>
                 <th class="text-nowrap">Last Name</th>
@@ -77,13 +77,19 @@ function clickableRows() {
     });
 }
 function countChecked() {
-    return $('input[type="checkbox"]:checked').length;
+    return $('input[type="checkbox"][name="email"]:checked').length;
 }
 function updateCheckedInfo() {
     $("#delete-bar-info").text("Selected " + countChecked() + " applicants to delete.");
 }
 function registerCheckboxesChanged() {
-    $('input[type="checkbox"]').change(function() {
+    $('input[type="checkbox"][name="email"]').change(function() {
+        updateCheckedInfo();
+    });
+}
+function registerSelectAllCheckboxChanged() {
+    $('#select-all-checkbox').change(function() {
+        $('input[type="checkbox"][name="email"]').prop('checked', this.checked);
         updateCheckedInfo();
     });
 }
@@ -119,9 +125,6 @@ $('#delete-applicant-form').submit(function(e) {
     return false;
 });
 $(document).ready(function() {
-    clickableRows();
-    updateCheckedInfo();
-    registerCheckboxesChanged();
     $("#overview-applicants").tablesorter({
         sortList: [[5, 0], [1, 0]],
         headers: {
@@ -129,6 +132,10 @@ $(document).ready(function() {
         },
         stringTo: "bottom",
     });
+    clickableRows();
+    updateCheckedInfo();
+    registerCheckboxesChanged();
+    registerSelectAllCheckboxChanged();
 });
 </script>
 {% endblock %}
