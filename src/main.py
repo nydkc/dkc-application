@@ -1,7 +1,6 @@
 import logging
 import os
-from flask import Flask, render_template
-from google.cloud import ndb
+from flask import Flask
 from common.constants import GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, RECAPTCHA_SECRET, RECAPTCHA_SITE_KEY, SECRET_KEY
 from common.datastore import g_ndb_wsgi_middleware
 from common.flask_error_handlers import register_error_handlers_to

@@ -7,7 +7,7 @@ from common.constants import AUTH_TOKEN_VALIDITY_DAYS
 from dkc.auth.models import AuthToken
 from admin.auth.models import AdminUser
 
-cron_bp = Blueprint("admin.cron", __name__)
+cron_bp = Blueprint("admin_cron", __name__)
 
 logger = logging.getLogger(__name__)
 

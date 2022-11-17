@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 @auth_bp.route("/login")
 def login():
     if get_current_admin_user():
-        return redirect(url_for("admin.dashboard.overview"))
+        return redirect(url_for("admin_dashboard.overview"))
     return g_oauth.google.authorize_redirect(url_for(".oauth2callback", _external=True))
 
 
@@ -38,14 +38,14 @@ def oauth2callback():
             ),
         )
         login_admin_user(admin_user)
-        return redirect(url_for("admin.dashboard.overview"))
+        return redirect(url_for("admin_dashboard.overview"))
     else:
         logger.warning("Denied access to non-admin user: %s", email)
         flash(
             "{} is not authorized to view this page.".format(email),
             category="error",
         )
-        return redirect(url_for("admin.main_page.index"))
+        return redirect(url_for("admin_main_page.index"))
 
 
 @auth_bp.route("/login/test_is_project_admin")

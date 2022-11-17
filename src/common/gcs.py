@@ -14,15 +14,13 @@ else:
     # Local execution.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
         raise EnvironmentError(
-            """===== ENVIRONMENT ERROR =====
+            f"""===== ENVIRONMENT ERROR =====
 Please set GOOGLE_APPLICATION_CREDENTIALS to the path of your service account credential file.
 This is usually a JSON file with a key to a service account, following instructions from
 https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creating_service_account_keys.
 The preferred service account is the AppEngine service account:
-    {}@appspot.gserviceaccount.com
-===== ENVIORNMENT ERROR =====""".format(
-                GCP_PROJECT_ID
-            )
+    {GCP_PROJECT_ID}@appspot.gserviceaccount.com
+===== ENVIORNMENT ERROR ====="""
         )
     gcs = storage.Client()
 

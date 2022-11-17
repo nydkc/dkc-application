@@ -19,7 +19,7 @@ def admin_login_required(f):
     @functools.wraps(f)
     def decorated_function(*args, **kwargs):
         if get_current_admin_user() is None:
-            return redirect(url_for("admin.main_page.index"))
+            return redirect(url_for("admin_main_page.index"))
         else:
             return f(*args, **kwargs)
 
@@ -65,12 +65,12 @@ def logout_admin_user():
     del session["admin_user"]
 
 
-def is_project_admin(email):
+def is_project_admin(email: str):
     iam_policy = get_project_iam_policy()
     logger.debug("Current project IAM policy: %s", iam_policy)
-    member = "user:{}".format(email)
-    for binding in iam_policy["bindings"]:
+    member = f"user:{email}"
+    for binding in iam_policy.bindings:
         # Check if the given email is bound to any of the admin roles
-        if binding["role"] in ADMIN_ROLES and member in binding["members"]:
+        if binding.role in ADMIN_ROLES and member in binding.members:
             return True
     return False

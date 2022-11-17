@@ -3,10 +3,10 @@ import logging
 import uuid
 from flask import abort, redirect, render_template, request, url_for
 from flask_wtf import FlaskForm
+from google.cloud import ndb
 from wtforms import PasswordField
 from wtforms.validators import EqualTo, Length
 from wtforms.widgets import PasswordInput
-from google.cloud import ndb
 from .login_manager import anonymous_only
 from .models import User, AuthToken
 from . import auth_bp

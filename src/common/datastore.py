@@ -9,7 +9,7 @@ if os.getenv("GAE_ENV", "").startswith("standard"):
 else:
     # Local execution.
     os.environ["DATASTORE_DATASET"] = GCP_PROJECT_ID
-    os.environ["DATASTORE_PROJECT_ID"] = "{}-fake-project-id".format(GCP_PROJECT_ID)
+    os.environ["DATASTORE_PROJECT_ID"] = "{GCP_RPOJECT_ID}-fake-project-id"
     os.environ["DATASTORE_EMULATOR_HOST"] = "localhost:8500"
     os.environ["DATASTORE_EMULATOR_HOST_PATH"] = "localhost:8500/datastore"
     os.environ["DATASTORE_HOST"] = "http://localhost:8500"

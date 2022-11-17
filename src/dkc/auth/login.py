@@ -4,7 +4,7 @@ from flask import after_this_request, redirect, render_template, request, url_fo
 from flask_login import current_user, login_user
 from flask_wtf import FlaskForm, Recaptcha, RecaptchaField
 from wtforms import PasswordField, HiddenField
-from wtforms.fields.html5 import EmailField
+from wtforms.fields import EmailField
 from wtforms.validators import InputRequired
 from . import auth_bp
 from .login_manager import anonymous_only

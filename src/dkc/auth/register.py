@@ -4,10 +4,9 @@ from flask import redirect, render_template, request, url_for
 from flask_wtf import FlaskForm, Recaptcha, RecaptchaField
 from google.cloud import ndb
 from wtforms import PasswordField, StringField
-from wtforms.fields.html5 import EmailField
+from wtforms.fields import EmailField
 from wtforms.validators import Email, EqualTo, InputRequired, Length
 from wtforms.widgets import PasswordInput
-from common.models import Settings
 from dkc.application.models import Application
 from .login_manager import anonymous_only
 from .models import User, UniqueUserTracking

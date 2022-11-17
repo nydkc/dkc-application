@@ -84,7 +84,7 @@ def getVars(classobject):
 
 
 JINJA_OPTIONS = {
-    "extensions": ["jinja2.ext.autoescape"],
+    "extensions": [],
 }
 
 ADDITIONAL_JINJA_FILTERS = {

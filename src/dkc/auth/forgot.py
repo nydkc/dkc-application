@@ -2,7 +2,7 @@ import json
 import logging
 from flask import abort, render_template, request, url_for
 from flask_wtf import FlaskForm, Recaptcha, RecaptchaField
-from wtforms.fields.html5 import EmailField
+from wtforms.fields import EmailField
 from wtforms.validators import Email
 from google.cloud import ndb
 from sendgrid import SendGridAPIClient
