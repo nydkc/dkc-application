@@ -1,12 +1,13 @@
 {% extends "application/_application.html" %}
 {% set title = 'Overview' %}
 {% set awards_cochairs = [
-    "Division 4N Lt. Governor Shifa Ali",
+    "District Secretary Laura Fan",
+    "District Executive Assistant Jena Kim",
 ] %}
 {% set divisional_contacts = [
-    ("Divisions 1-12", "LTG Bridget Will", "division17@nydkc.org"),
-    ("Divisions 13-20", "EA Gabriella Slootsky", "gabriellaslootsky.ea@nydkc.org"),
-    ("Divisions 21-27", "EA Aaron Yu", "aaronyu.ea@nydkc.org"),
+    ("Divisions 1-12", "LTG Kyle Earle", "division24@nydkc.org"),
+    ("Divisions 13-20", "District Secretary Laura Fan", "secretary@nydkc.org"),
+    ("Divisions 21-27", "EA Jena Kim", "jenakim.ea@nydkc.org"),
 ] %}
 {% block application %}
 <div id="application" role="form">
@@ -45,7 +46,7 @@
 
                             {% for cochair in awards_cochairs %}
                             <p>{{ cochair }}
-                                <br>District Affairs Committee Co-Chair
+                                <br>District Awards Committee Co-Chairs
                             </p>
                             {% endfor %}
                         </div>
