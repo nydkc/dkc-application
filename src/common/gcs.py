@@ -2,14 +2,13 @@ import os
 import google.auth
 from google.auth import compute_engine
 from google.cloud import storage
-from common.constants import _GCS_BUCKET
 from common.gcp import GCP_PROJECT_ID
 
 if os.getenv("GAE_ENV", "").startswith("standard"):
     # Production in the standard environment
     gcs = storage.Client()
     # Attempt an access to GCS to "initialize" the client credentials for use by the signer later.
-    gcs.get_bucket(_GCS_BUCKET)
+    gcs.list_buckets()
 else:
     # Local execution.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):

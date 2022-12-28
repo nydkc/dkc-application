@@ -3,7 +3,6 @@ from datetime import datetime
 from flask import render_template, request
 from google.cloud import ndb
 from common.gcp import GCP_PROJECT_ID
-from common.jinja_functions import datetimeformat
 from common.models import Settings
 from common.timezone import UTC, Eastern
 from admin.auth.login_manager import admin_login_required, get_current_admin_user
@@ -30,12 +29,10 @@ def settings():
     return render_template("admin_dashboard/settings.html", **template_values)
 
 
-def handle_post(settings):
+def handle_post(settings: Settings):
     due_date = parse_html_datetime_local(request.form.get("due_date"))
-    # Recognize as Eastern TZ Offset
-    due_date = due_date.replace(tzinfo=Eastern)
-    # Cloud Datastore only supports timezone-naive datetime objects
-    settings.due_date = due_date.astimezone(tz=UTC())
+    # Cloud Datastore only supports timezone-naive datetime objects.
+    settings.due_date = due_date.astimezone(tz=UTC()).replace(tzinfo=None)
 
     settings.awards_booklet_url = request.form.get("awards_booklet_url").strip()
 
@@ -56,19 +53,24 @@ def handle_post(settings):
     settings.put()
 
 
-def parse_html_datetime_local(value):
+def parse_html_datetime_local(value: str) -> datetime:
+    parsed_datetime = datetime.min
     try:
-        # Attempt to parse with seconds first. However, the browser drops
-        # the seconds part when it is 00.
-        return datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
-    except ValueError as e:
-        logger.error("Datetime parsing error (%s) on invalid due date: %s", e, value)
+        # First, attempt to parse with seconds.
+        parsed_datetime = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
+    except ValueError as with_seconds_e:
+        try:
+            # If the browser drops the seconds, parse without seconds.
+            # Note that some browsers drop the seconds part when it is 00.
+            parsed_datetime = datetime.strptime(value, "%Y-%m-%dT%H:%M")
+        except ValueError as without_seconds_e:
+            logger.warning(
+                "Datetime parsing errors on due date '%s'.\n[with seconds]: %s\n[without seconds]: %s",
+                value,
+                with_seconds_e,
+                without_seconds_e,
+            )
 
-    try:
-        # Attempt to parse without seconds.
-        return datetime.strptime(value, "%Y-%m-%dT%H:%M")
-    except ValueError as e:
-        logger.error("Datetime parsing error (%s) on invalid due date: %s", e, value)
-
-    # Return minimum value if datetime could not be parsed.
-    return datetime.min
+    # Recognize as Eastern TZ Offset
+    parsed_datetime = parsed_datetime.replace(tzinfo=Eastern)
+    return parsed_datetime
