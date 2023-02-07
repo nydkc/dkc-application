@@ -5,40 +5,32 @@ from google.cloud import ndb
 logger = logging.getLogger(__name__)
 
 
-def bounced_message(email):
+def bounced_message(email: str):
     return "FAILED TO SEND EMAIL TO: {}".format(email)
 
 
-def on_verification_bounce_event(email_event):
-    assert email_event["dkc_purpose"] == "verification"
-    if "dkc_application_key" not in email_event:
-        logger.error("No application key in bounced email: %s", email_event)
-        return
-
-    application = ndb.Key(
-        urlsafe=email_event["dkc_application_key"].encode("utf-8")
-    ).get()
+def on_verification_bounce_event(recipient: str, dkc_application_key: str):
+    application = ndb.Key(urlsafe=dkc_application_key).get()
     applicant = application.key.parent().get()
-    email_sent_to = email_event["email"]
-    has_matching_email_sent_to = False
+    has_matching_recipient = False
 
-    if email_sent_to == application.verification_ltg_email:
+    if recipient == application.verification_ltg_email:
         application.verification_ltg_sent = False
-        application.verification_ltg_email = bounced_message(email_sent_to)
-        has_matching_email_sent_to = True
-    if email_sent_to == application.verification_club_president_email:
+        application.verification_ltg_email = bounced_message(recipient)
+        has_matching_recipient = True
+    if recipient == application.verification_club_president_email:
         application.verification_club_president_sent = False
-        application.verification_club_president_email = bounced_message(email_sent_to)
-        has_matching_email_sent_to = True
-    if email_sent_to == application.verification_faculty_advisor_email:
+        application.verification_club_president_email = bounced_message(recipient)
+        has_matching_recipient = True
+    if recipient == application.verification_faculty_advisor_email:
         application.verification_faculty_advisor_sent = False
-        application.verification_faculty_advisor_email = bounced_message(email_sent_to)
-        has_matching_email_sent_to = True
+        application.verification_faculty_advisor_email = bounced_message(recipient)
+        has_matching_recipient = True
 
-    if not has_matching_email_sent_to:
+    if not has_matching_recipient:
         logger.warning(
-            "Could not match failed send event to %s under user %s",
-            email_sent_to,
+            "Could not match failed send event to recipient %s under user %s",
+            recipient,
             applicant.email,
         )
         return
@@ -46,7 +38,7 @@ def on_verification_bounce_event(email_event):
     application.put()
 
     logger.info(
-        "Marked failure sending verification email to %s under user %s",
-        email_sent_to,
+        "Marked failure sending verification email to recipient %s under user %s",
+        recipient,
         applicant.email,
     )

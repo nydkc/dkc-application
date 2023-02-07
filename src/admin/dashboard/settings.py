@@ -47,6 +47,7 @@ def handle_post(settings: Settings):
     settings.recaptcha_secret = request.form.get("recaptcha_secret").strip()
 
     settings.sendgrid_api_key = request.form.get("sendgrid_api_key").strip()
+    settings.mailersend_api_key = request.form.get("mailersend_api_key").strip()
 
     settings.gcs_bucket = request.form.get("gcs_bucket").strip()
 

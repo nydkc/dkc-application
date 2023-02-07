@@ -4,7 +4,15 @@ from datetime import datetime, timedelta
 from flask import abort, Blueprint, request
 from google.cloud import ndb
 from common.constants import AUTH_TOKEN_VALIDITY_DAYS
-from common.email_provider import SendGrid, Email, Subject, HtmlContent, CustomArgs
+from common.email_provider import (
+    MailerSend,
+    MailerSendMessageId,
+    SendGrid,
+    Email,
+    Subject,
+    HtmlContent,
+    CustomArgs,
+)
 from common.models import Settings
 from dkc.auth.models import AuthToken
 from admin.auth.models import AdminUser
@@ -72,6 +80,50 @@ def sendgrid_heartbeat():
         ),
     )
     if response.http_code != 202:
-        logger.error("Error sending heartbeat email")
+        logger.error("Error sending heartbeat email: %s", response.errors)
+        return abort(503)
+    return "ok"
+
+
+@cron_bp.route("/cron/mailersend_message_id_cleanup")
+def mailersend_message_id_cleanup():
+    if not request.headers.get(APPENGINE_CRON_HEADER, default=False):
+        return abort(403)
+
+    # Mappings do not need to be stored for long, since it is used almost
+    # immediately by bounced email webhook
+    expired_message_id_query = MailerSendMessageId.query().filter(
+        MailerSendMessageId.timestamp < datetime.now() - timedelta(days=1)
+    )
+    message_id_keys = [key for key in expired_message_id_query.fetch(keys_only=True)]
+    ndb.delete_multi(message_id_keys)
+    logger.info("Cleaned up %d message id mappings", len(message_id_keys))
+    return "ok"
+
+
+@cron_bp.route("/cron/mailersend_heartbeat")
+def mailersend_heartbeat():
+    if not request.headers.get(APPENGINE_CRON_HEADER, default=False):
+        return abort(403)
+
+    settings = ndb.Key(Settings, "config").get()
+    ms = MailerSend(api_key=settings.mailersend_api_key)
+    response = ms.send_email(
+        from_email=Email(email="dkc-app@nydkc.org", name="NYDKC DKC Application"),
+        to_email=Email(email="dkc-app@nydkc.org"),
+        subject=Subject(line="DKC Application is still alive!"),
+        html_content=HtmlContent(
+            content="Hello! This email keeps the MailerSend account active."
+        ),
+        custom_args=CustomArgs(
+            metadata=(
+                {
+                    "dkc_purpose": "heartbeat",
+                }
+            )
+        ),
+    )
+    if response.http_code != 202:
+        logger.error("Error sending heartbeat email: %s", response.errors)
         return abort(503)
     return "ok"

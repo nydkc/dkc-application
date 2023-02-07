@@ -5,7 +5,7 @@ from wtforms.fields import EmailField
 from wtforms.validators import Email as EmailValidator
 from google.cloud import ndb
 from common.models import Settings
-from common.email_provider import SendGrid, Email, Subject, HtmlContent, CustomArgs
+from common.email_provider import MailerSend, Email, Subject, HtmlContent, CustomArgs
 from .login_manager import anonymous_only
 from .models import User, AuthToken
 from . import auth_bp
@@ -71,8 +71,8 @@ def send_password_reset_email(user, token_key):
     email_html = render_template("auth/forgot-email.html", **template_values)
 
     settings = ndb.Key(Settings, "config").get()
-    sg = SendGrid(api_key=settings.sendgrid_api_key)
-    response = sg.send_email(
+    ms = MailerSend(api_key=settings.mailersend_api_key)
+    response = ms.send_email(
         from_email=Email(email="recognition@nydkc.org", name="NYDKC Awards Committee"),
         to_email=Email(email=user.email),
         subject=Subject(line="Resetting your DKC Application Password"),

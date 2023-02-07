@@ -65,7 +65,8 @@
             {{ input("recaptcha_secret", "Recaptcha Secret", settings.recaptcha_secret, disabled="readonly") }}
         </div>
     </div>
-    {{ input("sendgrid_api_key", "Sendgrid API Key", settings.sendgrid_api_key, disabled="readonly") }}
+    {{ input("sendgrid_api_key", "SendGrid API Key", settings.sendgrid_api_key, disabled="readonly") }}
+    {{ input("mailersend_api_key", "MailerSend API Key", settings.mailersend_api_key, disabled="readonly") }}
     {{ input("gcs_bucket", "GCS Bucket for uploaded material", settings.gcs_bucket, disabled="readonly") }}
 
     <button type="submit" class="btn btn-default">Update</button>

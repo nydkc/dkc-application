@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import abort, render_template, request
 from flask_login import current_user, login_required
 from google.cloud import ndb
-from common.email_provider import SendGrid, Email, Subject, HtmlContent, CustomArgs
+from common.email_provider import MailerSend, Email, Subject, HtmlContent, CustomArgs
 from common.models import Settings
 from . import application_bp
 
@@ -64,8 +64,8 @@ def send_submission_confirmation_email(applicant, application):
     )
 
     settings = ndb.Key(Settings, "config").get()
-    sg = SendGrid(api_key=settings.sendgrid_api_key)
-    response = sg.send_email(
+    ms = MailerSend(api_key=settings.mailersend_api_key)
+    response = ms.send_email(
         from_email=Email(email="recognition@nydkc.org", name="NYDKC Awards Committee"),
         to_email=Email(applicant.email),
         subject=Subject(

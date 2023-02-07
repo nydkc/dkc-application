@@ -29,6 +29,9 @@ class Settings(ndb.Model):
     sendgrid_api_key = ndb.StringProperty(
         default="Get an API key at https://app.sendgrid.com/settings/api_keys"
     )
+    mailersend_api_key = ndb.StringProperty(
+        default="Get an API key at https://app.mailersend.com/api-tokens"
+    )
 
     # For storing any uploaded files
     gcs_bucket = ndb.StringProperty(default=f"{GCP_PROJECT_ID}.appspot.com")
