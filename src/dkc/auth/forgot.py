@@ -1,20 +1,11 @@
-import json
 import logging
-from flask import abort, render_template, request, url_for
+from flask import abort, render_template, url_for
 from flask_wtf import FlaskForm, Recaptcha, RecaptchaField
 from wtforms.fields import EmailField
-from wtforms.validators import Email
+from wtforms.validators import Email as EmailValidator
 from google.cloud import ndb
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import (
-    CustomArg,
-    From,
-    HtmlContent,
-    Mail,
-    Subject,
-    To,
-)
 from common.models import Settings
+from common.email_provider import SendGrid, Email, Subject, HtmlContent, CustomArgs
 from .login_manager import anonymous_only
 from .models import User, AuthToken
 from . import auth_bp
@@ -23,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class ForgetForm(FlaskForm):
-    email = EmailField("email", [Email("Please enter a valid email address.")])
+    email = EmailField("email", [EmailValidator("Please enter a valid email address.")])
     recaptcha = RecaptchaField(
         validators=[Recaptcha(message="reCAPTCHA must be solved.")]
     )
@@ -49,9 +40,11 @@ def forgot():
             template_values["forgot_email_sent_to"] = email
 
     settings = ndb.Key(Settings, "config").get()
-    template_values.update({
-        "settings": settings,
-    })
+    template_values.update(
+        {
+            "settings": settings,
+        }
+    )
 
     return render_template("auth/forgot.html", **template_values)
 
@@ -78,21 +71,21 @@ def send_password_reset_email(user, token_key):
     email_html = render_template("auth/forgot-email.html", **template_values)
 
     settings = ndb.Key(Settings, "config").get()
-    sg = SendGridAPIClient(api_key=settings.sendgrid_api_key)
-    message = Mail(
-        from_email=From("recognition@nydkc.org", "NYDKC Awards Committee"),
-        to_emails=To(user.email),
-        subject=Subject("Resetting your DKC Application Password"),
-        html_content=HtmlContent(email_html),
+    sg = SendGrid(api_key=settings.sendgrid_api_key)
+    response = sg.send_email(
+        from_email=Email(email="recognition@nydkc.org", name="NYDKC Awards Committee"),
+        to_email=Email(email=user.email),
+        subject=Subject(line="Resetting your DKC Application Password"),
+        html_content=HtmlContent(content=email_html),
+        custom_args=CustomArgs(
+            metadata=(
+                {
+                    "dkc_purpose": "password_reset",
+                }
+            )
+        ),
     )
-    message.custom_arg = [
-        CustomArg(key="dkc_purpose", value="password_reset"),
-    ]
 
-    response = sg.client.mail.send.post(request_body=message.get())
-    if response.status_code != 202:
-        json_response = json.loads(response.body)
-        logger.error(
-            "Error sending email to %s: %s", message.to, json_response["errors"]
-        )
+    if response.http_code != 202:
+        logger.error("Error sending email to %s: %s", user.email, response.errors)
         return abort(503)

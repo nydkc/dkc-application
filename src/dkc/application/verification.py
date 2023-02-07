@@ -1,19 +1,10 @@
-import json
 import logging
 from datetime import datetime
 from flask import abort, render_template, request, url_for
 from flask_login import current_user, login_required
 from google.cloud import ndb
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import (
-    CustomArg,
-    From,
-    HtmlContent,
-    Mail,
-    Subject,
-    To,
-)
 from common.constants import AUTH_TOKEN_VALIDITY_DAYS
+from common.email_provider import SendGrid, Email, Subject, HtmlContent, CustomArgs
 from common.models import Settings
 from dkc.auth.models import AuthToken
 from . import application_bp
@@ -140,30 +131,27 @@ def send_verification_email(
     )
 
     settings = ndb.Key(Settings, "config").get()
-    sg = SendGridAPIClient(api_key=settings.sendgrid_api_key)
-    message = Mail(
-        from_email=From("recognition@nydkc.org", "NYDKC Awards Committee"),
-        to_emails=To(recipient_email),
+    sg = SendGrid(api_key=settings.sendgrid_api_key)
+    response = sg.send_email(
+        from_email=Email(email="recognition@nydkc.org", name="NYDKC Awards Committee"),
+        to_email=Email(email=recipient_email),
         subject=Subject(
-            "Please verify Distinguished Key Clubber Application for {} {}".format(
-                applicant.first_name, applicant.last_name
+            line=(
+                f"Please verify Distinguished Key Clubber Application for {applicant.first_name} {applicant.last_name}"
             )
         ),
-        html_content=HtmlContent(email_html),
-    )
-    message.custom_arg = [
-        CustomArg(
-            key="dkc_application_key", value=application.key.urlsafe().decode("utf-8")
+        html_content=HtmlContent(content=email_html),
+        custom_args=CustomArgs(
+            metadata=(
+                {
+                    "dkc_application_key": application.key.urlsafe().decode("utf-8"),
+                    "dkc_purpose": "verification",
+                }
+            )
         ),
-        CustomArg(key="dkc_purpose", value="verification"),
-    ]
-
-    response = sg.client.mail.send.post(request_body=message.get())
-    if response.status_code != 202:
-        json_response = json.loads(response.body)
-        logger.error(
-            "Error sending email to %s: %s", message.to, json_response["errors"]
-        )
+    )
+    if response.http_code != 202:
+        logger.error("Error sending email to %s: %s", recipient_email, response.errors)
         return abort(503)
 
 

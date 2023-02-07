@@ -15,18 +15,18 @@ def sendgrid_event():
         if email_event["event"] == "bounce" or email_event["event"] == "dropped":
             handle_bounced_event(email_event)
         else:
-            logger.error("Received unrecognized Sendgrid event: %s", email_event)
+            logger.error("Received unrecognized SendGrid event: %s", email_event)
     return "ok"
 
 
 def handle_bounced_event(email_event):
     if "dkc_purpose" not in email_event:
-        logger.error("Received Sengrid event with no purpose: %s", email_event)
+        logger.error("Received SendGrid event with no purpose: %s", email_event)
         return
 
     if email_event["dkc_purpose"] == "verification":
         on_verification_bounce_event(email_event)
     else:
         logger.error(
-            "Received Sendgrid event with unrecognized purpose: %s", email_event
+            "Received SendGrid event with unrecognized purpose: %s", email_event
         )

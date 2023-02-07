@@ -1,18 +1,9 @@
-import json
 import logging
 from datetime import datetime
-from flask import abort, redirect, render_template, request, url_for
+from flask import abort, render_template, request
 from flask_login import current_user, login_required
 from google.cloud import ndb
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import (
-    CustomArg,
-    From,
-    HtmlContent,
-    Mail,
-    Subject,
-    To,
-)
+from common.email_provider import SendGrid, Email, Subject, HtmlContent, CustomArgs
 from common.models import Settings
 from . import application_bp
 
@@ -49,7 +40,11 @@ def handle_post(applicant, application):
 
     incomplete_status = check_submission_incomplete_status(applicant, application)
     if True in incomplete_status.values():
-        logger.info("Attempted incomplete submission by %s: %s", applicant.email, incomplete_status) 
+        logger.info(
+            "Attempted incomplete submission by %s: %s",
+            applicant.email,
+            incomplete_status,
+        )
         return abort(400, description="Your application is not complete!")
 
     application.submit_time = datetime.now()
@@ -69,30 +64,28 @@ def send_submission_confirmation_email(applicant, application):
     )
 
     settings = ndb.Key(Settings, "config").get()
-    sg = SendGridAPIClient(api_key=settings.sendgrid_api_key)
-    message = Mail(
-        from_email=From("recognition@nydkc.org", "NYDKC Awards Committee"),
-        to_emails=To(applicant.email),
+    sg = SendGrid(api_key=settings.sendgrid_api_key)
+    response = sg.send_email(
+        from_email=Email(email="recognition@nydkc.org", name="NYDKC Awards Committee"),
+        to_email=Email(applicant.email),
         subject=Subject(
-            "DKC Application Submission Confirmation for {} {}".format(
-                applicant.first_name, applicant.last_name
+            line=(
+                f"DKC Application Submission Confirmation for {applicant.first_name} {applicant.last_name}"
             )
         ),
-        html_content=HtmlContent(email_html),
-    )
-    message.custom_arg = [
-        CustomArg(
-            key="dkc_application_key", value=application.key.urlsafe().decode("utf-8")
+        html_content=HtmlContent(content=email_html),
+        custom_args=CustomArgs(
+            metadata=(
+                {
+                    "dkc_application_key": application.key.urlsafe().decode("utf-8"),
+                    "dkc_purpose": "submission_confirmation",
+                }
+            )
         ),
-        CustomArg(key="dkc_purpose", value="submission_confirmation"),
-    ]
+    )
 
-    response = sg.client.mail.send.post(request_body=message.get())
-    if response.status_code != 202:
-        json_response = json.loads(response.body)
-        logger.error(
-            "Error sending email to %s: %s", message.to, json_response["errors"]
-        )
+    if response.http_code != 202:
+        logger.error("Error sending email to %s: %s", applicant.email, response.errors)
         return abort(503)
 
 
