@@ -41,7 +41,7 @@ Built using Flask and hosted on Google App Engine: [http://dkc-app.nydkc.org](ht
     - Google Cloud Logging
     - Google Cloud Build
     - OAuth2
-- [Sendgrid](https://github.com/sendgrid/sendgrid-python)
+- ~[SendGrid](https://github.com/sendgrid/sendgrid-python)~ [MailerSend](https://github.com/mailersend/mailersend-python)
 - [Recaptcha](https://www.google.com/recaptcha)
 - [requirements.txt](src/requirements.txt)
 
