@@ -66,11 +66,13 @@ def logout_admin_user():
 
 
 def is_project_admin(email: str):
+    if not email:
+        return False
     iam_policy = get_project_iam_policy()
     logger.debug("Current project IAM policy: %s", iam_policy)
-    member = f"user:{email}"
+    member = f"user:{email.lower()}"
     for binding in iam_policy.bindings:
         # Check if the given email is bound to any of the admin roles
-        if binding.role in ADMIN_ROLES and member in binding.members:
+        if binding.role in ADMIN_ROLES and member in map(str.lower, binding.members):
             return True
     return False
