@@ -18,7 +18,7 @@ if [ -z "$google_application_credentials" ]; then
     echo
     echo "Error: Missing parameter: --google_application_credentials"
     echo "       You can set this to the JSON key file from the instructions at"
-    echo "       https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creating_service_account_keys"
+    echo "       https://cloud.google.com/iam/docs/keys-create-delete#creating"
     exit 1
 fi
 

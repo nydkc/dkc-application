@@ -64,7 +64,7 @@ $ source venv/bin/activate
 (venv) $ pip install -r src/requirements.txt
 ```
 
-The Google Cloud SDK will also need to be installed, following instructions at https://cloud.google.com/sdk/docs/quickstart. Once installed, follow the instructions to [create Google Application Credentials for a service account](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creating_service_account_keys), which will be needed for the next step.
+The Google Cloud SDK will also need to be installed, following instructions at https://cloud.google.com/sdk/docs/quickstart. Once installed, follow the instructions to [create Google Application Credentials for a service account](https://cloud.google.com/iam/docs/keys-create-delete#creating), which will be needed for the next step.
 
 With the Python `venv` and Google Cloud SDK setups complete, it is now possible to run locally:
 
