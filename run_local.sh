@@ -25,6 +25,7 @@ fi
 
 if ! pgrep -f "com.google.cloud.datastore.emulator.CloudDatastore" > /dev/null; then
     gcloud beta emulators datastore start --host-port=localhost:8500 &
+    echo "Waiting for datastore to start..." && sleep 5
 fi
 
 $(gcloud beta emulators datastore env-init)
