@@ -1,0 +1,188 @@
+@font-face {
+    font-family: "Century Gothic";
+    src: url("{{ STATIC_DIR }}/fonts/century-gothic.ttf");
+}
+@font-face {
+    font-family: "Myriad Pro";
+    src: url("{{ STATIC_DIR }}/fonts/myriad-pro.ttf");
+}
+@font-face {
+    font-family: "Myriad Pro";
+    src: url("{{ STATIC_DIR }}/fonts/myriad-pro-bold.ttf");
+    font-weight: bold;
+}
+@font-face {
+    font-family: "Myriad Pro";
+    src: url("{{ STATIC_DIR }}/fonts/myriad-pro-it.ttf");
+    font-style: italic;
+}
+@font-face {
+    font-family: "Myriad Pro";
+    src: url("{{ STATIC_DIR }}/fonts/myriad-pro-boldit.ttf");
+    font-weight: bold;
+    font-style: italic;
+}
+
+body {
+    font-family: "Myriad Pro", Arial;
+    font-size: 12pt;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Century Gothic", Arial;
+}
+
+/* The .body hack is to make this section work */
+.body h1 { font-size: 28pt; }
+.body h2 { font-size: 24pt; }
+.body h3 { font-size: 20pt; }
+.body h4 { font-size: 18pt; }
+.body h5 { font-size: 16pt; }
+.body h6 { font-size: 14pt; }
+
+small {
+    font-size: 70%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page-header {
+    color: #00aeef;
+    border-bottom: 1pt solid #ccc;
+}
+
+table th {
+    text-align: left;
+}
+
+p {
+    margin: 0;
+    -pdf-keep-with-next: true;
+}
+
+.separator {
+    -pdf-keep-with-next: false;
+}
+
+.text-success {
+    color: #3c763d;
+}
+.text-danger {
+    color: #a94442;
+}
+
+/* Letter size is 612pt x 792pt */
+@page {
+    size: letter portrait;
+    @frame content_frame {
+        left: 60pt; width: 492pt; top: 200pt; height: 372pt;
+        /*-pdf-frame-border: 1;*/    /* for debugging the layout */
+    }
+}
+
+@page page_template {
+    size: letter portrait;
+    @frame header_frame {           /* Static Frame */
+        -pdf-frame-content: header_content;
+        left: 60pt; width: 492pt; top: 30pt; height: 20pt;
+    }
+    @frame content_frame {          /* Content Frame */
+        left: 60pt; width: 492pt; top: 60pt; height: 672pt;
+    }
+    @frame footer_frame {           /* Another static Frame */
+        -pdf-frame-content: footer_content;
+        left: 60pt; width: 492pt; top: 742pt; height: 20pt;
+    }
+}
+
+.header, .footer {
+    color: #777;
+    font-size: 11pt;
+}
+
+.cover h1 {
+    line-height: 1.5;
+}
+.cover .title-top {
+    margin-bottom: 20pt;
+}
+.cover .title-bottom {
+    margin-top: 40pt;
+}
+
+.profile-table td {
+    padding-left: 4.6pt;
+    padding-top: 7pt;
+    padding-bottom: 3pt;
+}
+.profile-table tr {
+    border-bottom: 1pt solid #eee;
+}
+
+.personal-statement-prompt {
+    margin-bottom: 6pt;
+}
+.personal-statement-essay {
+    font-size: 11pt;
+}
+
+.section h6 {
+    margin-top: 0;
+    margin-bottom: 4pt;
+    padding-bottom: 0;
+    color: #003366;
+    text-decoration: underline;
+}
+.project {
+    margin-bottom: 10pt;
+}
+
+.key-club-week-table td {
+    padding-left: 4.6pt;
+    padding-top: 2pt;
+    padding-bottom: 2pt;
+}
+.key-club-week-table {
+    margin-bottom: 8pt;
+}
+.attendance-table {
+    padding-left: 4.6pt;
+    margin-bottom: 8pt;
+}
+.positions-essay {
+    font-size: 11pt;
+}
+
+.newsletter-submission-table {
+    padding-left: 4.6pt;
+    margin-bottom: 8pt;
+}
+
+.verification-table {
+    padding-left: 4.6pt;
+}
+.verification-table th, .verification-table td {
+    padding-top: 3pt;
+    padding-bottom: 3pt;
+}
+
+.other {
+    margin-top: 10pt;
+}
+.scoring h6 {
+    margin-top: 10pt;
+    padding-bottom: 0pt;
+    margin-bottom: 0pt;
+}
+.scoring p {
+    padding-top: 0pt;
+    margin-top: 0pt;
+}

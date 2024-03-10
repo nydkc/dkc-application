@@ -1,11 +1,14 @@
 {% from 'application/involvement.html' import key_club_programs with context %}
-{% macro x_or_empty(val) -%}
-    {%- if val %}
+{%- macro x_or_empty(val) %}
+    {%- if val -%}
         <span class="text-success">[ x ]</span>
-    {%- else %}
+    {%- else -%}
         <span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
-    {% endif %}
+    {%- endif %}
 {%- endmacro %}
+{%- macro with_default_na(val) -%}
+    {{ val or "N/A" }}
+{%- endmacro -%}
 
 <div class="page-header">
     <h3>Part 3: Involvement in Key Club Functions</h3>
@@ -17,23 +20,23 @@
     <tbody>
         <tr>
             <td style="width:120pt;">Monday</td>
-            <td style="width:360pt;">{{ application.key_club_week_mon }}</td>
+            <td style="width:360pt;">{{ with_default_na(application.key_club_week_mon) }}</td>
         </tr>
         <tr>
             <td style="width:120pt;">Tuesday</td>
-            <td style="width:360pt;">{{ application.key_club_week_tue }}</td>
+            <td style="width:360pt;">{{ with_default_na(application.key_club_week_tue) }}</td>
         </tr>
         <tr>
             <td style="width:120pt;">Wednesday</td>
-            <td style="width:360pt;">{{ application.key_club_week_wed }}</td>
+            <td style="width:360pt;">{{ with_default_na(application.key_club_week_wed) }}</td>
         </tr>
         <tr>
             <td style="width:120pt;">Thursday</td>
-            <td style="width:360pt;">{{ application.key_club_week_thu }}</td>
+            <td style="width:360pt;">{{ with_default_na(application.key_club_week_thu) }}</td>
         </tr>
         <tr>
             <td style="width:120pt;">Friday</td>
-            <td style="width:360pt;">{{ application.key_club_week_fri }}</td>
+            <td style="width:360pt;">{{ with_default_na(application.key_club_week_fri) }}</td>
         </tr>
     </tbody>
 </table>
@@ -61,6 +64,8 @@
 <h6>Section 3: Positions Held within Key Club</h6>
 
 {% autoescape false %}
-<div class="positions-essay">{{ application.positions | forceescape | replace('\n', '<br>') }}</div>
+<div class="positions-essay">
+    {{ with_default_na(application.positions) | forceescape | replace('\n', '<br>') }}
+</div>
 {% endautoescape %}
 </div>

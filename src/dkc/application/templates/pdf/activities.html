@@ -1,9 +1,9 @@
-{% macro x_or_empty(val) -%}
-    {%- if val %}
+{%- macro x_or_empty(val) %}
+    {%- if val -%}
         <span class="text-success">[ x ]</span>
-    {%- else %}
+    {%- else -%}
         <span class="text-danger">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
-    {% endif %}
+    {%- endif %}
 {%- endmacro %}
 
 <div class="page-header">
