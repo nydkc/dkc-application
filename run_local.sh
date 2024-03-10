@@ -30,8 +30,10 @@ fi
 
 $(gcloud beta emulators datastore env-init)
 
+export GOOGLE_CLOUD_PROJECT=dkc-app
+export APPLICATION_ID=dev~$GOOGLE_CLOUD_PROJECT
 dev_appserver.py \
-    --application=dkc-app \
+    --application=$GOOGLE_CLOUD_PROJECT \
     --support_datastore_emulator true \
     --enable_host_checking false \
     --skip_sdk_update_check true \
