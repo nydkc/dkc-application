@@ -73,3 +73,5 @@ With the Python `venv` and Google Cloud SDK setups complete, it is now possible 
 ```
 
 The `run_local.sh` script will start a Google Cloud Datastore Emulator as well as the Google App Engine `dev_appserver` to run the DKC Application. It will automatically reload the code when changes are made.
+
+For initial setup, navigate to http://localhost:8000/datastore?kind=Settings. Once configured, navigate to http://localhost:8080 to view the DKC Application.
