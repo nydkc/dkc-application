@@ -1,10 +1,10 @@
 {% extends "admin_dashboard/_admin.html" %}
 {% set title = 'Settings' %}
 
-{% macro input(name, label='', value='', type='text', disabled='', size='', extra_attrs=[]) -%}
+{% macro input(name, label='', value='', type='text', disabled='', extra_attrs=[]) -%}
 <div class="form-group">
     {% if label != '' %}<label for="{{ name }}">{{ label }}</label>{% endif %}
-    <input type="{{ type }}" class="form-control {% if size %}{{ size }}{% endif %}" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }} {% for attr in extra_attrs %} {{ attr | safe }}{% endfor %} autocomplete="off">
+    <input type="{{ type }}" class="form-control" id="{{ name }}" name="{{ name }}" value="{% if value|e != 'None' %}{{ value|e }}{% endif %}" {{ disabled }} {% for attr in extra_attrs %} {{ attr | safe }}{% endfor %} autocomplete="off">
 </div>
 {%- endmacro %}
 {% block admin %}
@@ -14,7 +14,7 @@
 
 <form role="form" method="post">
     {{ input("due_date",
-             "Due Date (in US/Eastern timezone)",
+             label="Due Date (in US/Eastern timezone)",
              type="datetime-local",
              value=(settings.due_date | datetimeformat("%Y-%m-%dT%H:%M:%S")),
              extra_attrs=["placeholder=\"" ~ (current_time | datetimeformat("%Y-%m-%dT%H:%M:%S")) ~ "\"", "step=1"]) }}
@@ -27,13 +27,17 @@
             <small class="help-block">
                 You can upload the Awards Booklet to
                 <a href="https://console.cloud.google.com/storage/browser/{{ settings.gcs_bucket }}">https://console.cloud.google.com/storage/browser/{{ settings.gcs_bucket }}</a>
-                and paste the public link below.
+                and paste the "Public URL" below.
             </small>
         </p>
         {{ input("awards_booklet_url",
-                value=settings.awards_booklet_url,
-                extra_attrs=["placeholder=\"https://.../...pdf\""]) }}
+                 value=settings.awards_booklet_url,
+                 extra_attrs=["placeholder=\"https://storage.googleapis.com/.../example.pdf\""]) }}
     </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+
+    <hr>
 
     <div>
         <strong>Admin User Management</strong>
@@ -68,8 +72,6 @@
     {{ input("sendgrid_api_key", "SendGrid API Key", settings.sendgrid_api_key, disabled="readonly") }}
     {{ input("mailersend_api_key", "MailerSend API Key", settings.mailersend_api_key, disabled="readonly") }}
     {{ input("gcs_bucket", "GCS Bucket for uploaded material", settings.gcs_bucket, disabled="readonly") }}
-
-    <button type="submit" class="btn btn-default">Update</button>
 </form>
 
 <div class="settings-danger-zone">
