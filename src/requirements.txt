@@ -11,7 +11,7 @@ google-cloud-ndb==2.3.0
 google-cloud-resource-manager==1.12.3
 google-cloud-storage==2.15.0
 grpcio==1.62.1
-gunicorn==22.0.0
+gunicorn==23.0.0
 passlib==1.7.4
 pytz==2024.1
 mailersend==0.5.6
