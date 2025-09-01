@@ -26,9 +26,6 @@ class Settings(ndb.Model):
     )
 
     # For sending emails
-    sendgrid_api_key = ndb.StringProperty(
-        default="Get an API key at https://app.sendgrid.com/settings/api_keys"
-    )
     mailersend_api_key = ndb.StringProperty(
         default="Get an API key at https://app.mailersend.com/api-tokens"
     )

@@ -4,9 +4,6 @@ import dataclasses
 import requests
 from google.cloud import ndb
 from mailersend import emails as _MSEmails
-from python_http_client.client import Response as _SGResponse
-from sendgrid import SendGridAPIClient as _SendGridAPIClient
-from sendgrid.helpers import mail as _SGMail
 
 
 @dataclasses.dataclass
@@ -49,41 +46,6 @@ class EmailProvider(abc.ABC):
         custom_args: CustomArgs,
     ) -> Response:
         pass
-
-
-class SendGrid(EmailProvider):
-    def __init__(self, api_key: str):
-        self.provider = "SendGrid"
-        self._client = _SendGridAPIClient(api_key=api_key)
-
-    def send_email(
-        self,
-        from_email: Email,
-        to_email: Email,
-        subject: Subject,
-        html_content: HtmlContent,
-        custom_args: CustomArgs,
-    ) -> Response:
-        message = _SGMail.Mail(
-            from_email=_SGMail.From(email=from_email.email, name=from_email.name),
-            to_emails=_SGMail.To(email=to_email.email, name=to_email.name),
-            subject=_SGMail.Subject(subject.line),
-            html_content=html_content.content,
-        )
-        message.custom_arg = [
-            _SGMail.CustomArg(key=k, value=v) for k, v in custom_args.metadata.items()
-        ]
-        resp = self._client.send(message)
-        return self._convert_response(resp)
-
-    def _convert_response(self, response: _SGResponse) -> Response:
-        errors = None
-        # Errors are only provided in non-202 response codes
-        # https://docs.sendgrid.com/api-reference/mail-send/mail-send#responses
-        if response.status_code != 202:
-            body = response.to_dict()
-            errors = body.get("errors", body)
-        return Response(http_code=response.status_code, errors=errors)
 
 
 class MailerSendMessageId(ndb.Model):

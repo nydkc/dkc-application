@@ -7,7 +7,6 @@ from common.constants import AUTH_TOKEN_VALIDITY_DAYS
 from common.email_provider import (
     MailerSend,
     MailerSendMessageId,
-    SendGrid,
     Email,
     Subject,
     HtmlContent,
@@ -54,34 +53,6 @@ def admin_user_token_cleanup():
     ]
     ndb.delete_multi(admin_user_token_keys)
     logger.info("Cleaned up %d admin user tokens", len(admin_user_token_keys))
-    return "ok"
-
-
-@cron_bp.route("/cron/sendgrid_heartbeat")
-def sendgrid_heartbeat():
-    if not request.headers.get(APPENGINE_CRON_HEADER, default=False):
-        return abort(403)
-
-    settings = ndb.Key(Settings, "config").get()
-    sg = SendGrid(api_key=settings.sendgrid_api_key)
-    response = sg.send_email(
-        from_email=Email(email="dkc-app@nydkc.org", name="NYDKC DKC Application"),
-        to_email=Email(email="dkc-app@nydkc.org"),
-        subject=Subject(line="DKC Application is still alive!"),
-        html_content=HtmlContent(
-            content="Hello! This email keeps the SendGrid account active."
-        ),
-        custom_args=CustomArgs(
-            metadata=(
-                {
-                    "dkc_purpose": "heartbeat",
-                }
-            )
-        ),
-    )
-    if response.http_code != 202:
-        logger.error("Error sending heartbeat email: %s", response.errors)
-        return abort(503)
     return "ok"
 
 

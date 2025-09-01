@@ -15,6 +15,5 @@ gunicorn==23.0.0
 passlib==1.7.4
 pytz==2024.1
 mailersend==0.5.6
-sendgrid==6.11.0
 xhtml2pdf==0.2.15
 wtforms[email]==3.1.2

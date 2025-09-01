@@ -5,9 +5,6 @@ cron:
 - description: Clean up old admin user tokens
   url: /cron/admin_user_token_cleanup
   schedule: every day 00:00
-- description: Send an email via SendGrid to avoid account inactivity suspension
-  url: /cron/sendgrid_heartbeat
-  schedule: 1 of month 00:00
 - description: Clean up old MailerSend message id mappings
   url: /cron/mailersend_message_id_cleanup
   schedule: every day 00:00
