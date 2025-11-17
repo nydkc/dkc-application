@@ -92,7 +92,7 @@ class EmailProviderMessageMapping(ndb.Model):
     def find_by_message_id(cls, provider_name: str, message_id: str):
         return (
             cls.query()
-            .filter(cls.provider == provider_name and cls.message_id == message_id)
+            .filter(cls.provider_name == provider_name and cls.message_id == message_id)
             .get()
         )
 
