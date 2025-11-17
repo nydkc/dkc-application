@@ -1,8 +1,8 @@
 {% extends "application/_application.html" %}
 {% set title = 'Verification' %}
-{% macro verification_panel(type, email_field, button_id, has_verification, has_verification_sent, verification_email) -%}
+{% macro verification_panel(type, email_field_id, button_id, has_verification, has_verification_sent, verification_name, verification_email) -%}
 <div class="verification panel panel-{% if has_verification %}success{% else %}default{% endif %}">
-    <div class="panel-heading panel-title">{{ type }} Verification</div>
+    <div class="panel-heading panel-title">{{ type }} Verification - {{ verification_name }}</div>
     <div class="panel-body row">
         {%- if not has_verification and has_verification_sent %}
         <p class="col-md-12 text-warning">
@@ -21,7 +21,7 @@
             <h4>{{ verification_email }}</h4>
         </div>
         {%- else %}
-            {{ input_horizontal_small(email_field, type + ' Email:', verification_email, type='email', size=4) }}
+            {{ input_horizontal_small(email_field_id, type + ' Email:', verification_email, type='email', size=4) }}
         </div>
         <div class="col-xs-3 col-sm-2">
             <button id="{{ button_id }}" class="btn btn-default btn-sm send-button">
@@ -58,9 +58,30 @@
         <strong>The verification link will be valid for {{ auth_token_validity_days }} days.</strong> Sending a new link will invalidate any previous links.
     </p>
 
-    {{ verification_panel('LTG', 'verification-ltg-email', 'verification-ltg-button', application.verification_ltg, application.verification_ltg_sent, application.verification_ltg_email) }}
-    {{ verification_panel('Club President', 'verification-club-president-email', 'verification-club-president-button', application.verification_club_president, application.verification_club_president_sent, application.verification_club_president_email) }}
-    {{ verification_panel('Faculty Advisor', 'verification-faculty-advisor-email', 'verification-faculty-advisor-button', application.verification_faculty_advisor, application.verification_faculty_advisor_sent, application.verification_faculty_advisor_email) }}
+    {{ verification_panel(
+        type='LTG',
+        email_field_id='verification-ltg-email',
+        button_id='verification-ltg-button',
+        has_verification=application.verification_ltg,
+        has_verification_sent=application.verification_ltg_sent,
+        verification_name='Division ' + application.division,
+        verification_email=application.verification_ltg_email) }}
+    {{ verification_panel(
+        type='Club President',
+        email_field_id='verification-club-president-email',
+        button_id='verification-club-president-button',
+        has_verification=application.verification_club_president,
+        has_verification_sent=application.verification_club_president_sent,
+        verification_name=application.club_president,
+        verification_email=application.verification_club_president_email) }}
+    {{ verification_panel(
+        type='Faculty Advisor',
+        email_field_id='verification-faculty-advisor-email',
+        button_id='verification-faculty-advisor-button',
+        has_verification=application.verification_faculty_advisor,
+        has_verification_sent=application.verification_faculty_advisor_sent,
+        verification_name=application.faculty_advisor,
+        verification_email=application.verification_faculty_advisor_email) }}
 
     <div class="verification panel panel-{% if application.verification_applicant %}success{% else %}default{% endif %}">
         <div class="panel-heading panel-title">Applicant Agreement</div>
@@ -113,7 +134,7 @@ function sendEmail(button, task, email_field, email, type) {
 $('#verification-ltg-button').click(function() {
     var email = $('#verification-ltg-email').val();
     if (!checkEmail(email)) {
-        sweetAlert('Invalid LTG Email!', 'The email address you specified does not exist.', 'error');
+        sweetAlert('Invalid LTG Email!', 'The email address you specified is not valid.', 'error');
         return false;
     }
     sendEmail($(this), 'ltg', 'ltg-email', email, 'LTG');
@@ -121,7 +142,7 @@ $('#verification-ltg-button').click(function() {
 $('#verification-club-president-button').click(function() {
     var email = $('#verification-club-president-email').val()
     if (!checkEmail(email)) {
-        sweetAlert('Invalid Club President Email!', 'The email address you specified does not exist.', 'error');
+        sweetAlert('Invalid Club President Email!', 'The email address you specified is not valid.', 'error');
         return false;
     }
     sendEmail($(this), 'club-president', 'club-president-email', email, 'club president');
@@ -129,7 +150,7 @@ $('#verification-club-president-button').click(function() {
 $('#verification-faculty-advisor-button').click(function() {
     var email = $('#verification-faculty-advisor-email').val()
     if (!checkEmail(email)) {
-        sweetAlert('Invalid Faculty Advisor Email!', 'The email address you specified does not exist.', 'error');
+        sweetAlert('Invalid Faculty Advisor Email!', 'The email address you specified is not valid.', 'error');
         return false;
     }
     sendEmail($(this), 'faculty-advisor', 'faculty-advisor-email', email, 'faculty advisor');
