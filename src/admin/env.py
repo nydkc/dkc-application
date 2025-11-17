@@ -1,12 +1,16 @@
 import html
 import io
 import os
-from flask import abort, request, render_template, send_file
+from flask import request, send_file, Blueprint
 from common.util import generate_pdf
-from . import dummy_bp
+from admin.auth.login_manager import admin_login_required
 
 
-@dummy_bp.route("/env")
+env_bp = Blueprint("admin_env", __name__)
+
+
+@env_bp.route("/env")
+@admin_login_required
 def env():
     table = []
     table.append("<table><tbody>")
@@ -24,7 +28,3 @@ def env():
         )
     else:
         return response_html
-
-@dummy_bp.route("/error")
-def error():
-    return abort(400, description="dummy error")

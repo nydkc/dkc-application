@@ -8,10 +8,6 @@ from common.email_provider import (
     MailerSend,
     Maileroo,
     EmailProviderMessageMapping,
-    Email,
-    Subject,
-    HtmlContent,
-    CustomArgs,
 )
 from common.models import Settings
 from dkc.auth.models import AuthToken
