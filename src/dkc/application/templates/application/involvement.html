@@ -1,7 +1,7 @@
 {% extends "application/_application.html" %}
 {% set title = 'Involvement' %}
-{% set key_club_week_start = "November 4, 2024" %}
-{% set key_club_week_end = "November 8, 2024" %}
+{% set key_club_week_start = "November 3, 2025" %}
+{% set key_club_week_end = "November 7, 2025" %}
 {#
     === NOTE ===
     In the below Key Club programs, feel free to change the "name" and "points" fields.
@@ -33,13 +33,13 @@
         "value_dont_change": application.attendance_key_leader,
     },
     {
-        "name": "2024 Leadership Training Conference",
+        "name": "2025 Leadership Training Conference",
         "points": 7,
         "tag_dont_change": "attendance-ltc",
         "value_dont_change": application.attendance_ltc,
     },
     {
-        "name": "2024 Key Club International Convention",
+        "name": "2025 Key Club International Convention",
         "points": 8,
         "tag_dont_change": "attendance-icon",
         "value_dont_change": application.attendance_icon,
@@ -96,3 +96,4 @@
 $('#positions').textareaCounter({limit: {{ positions_word_limit }} });
 </script>
 {% endblock %}
+

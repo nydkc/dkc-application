@@ -1,4 +1,4 @@
-runtime: python311
+runtime: python313
 inbound_services:
 - warmup
 

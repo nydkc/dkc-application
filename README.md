@@ -42,6 +42,7 @@ Built using Flask and hosted on Google App Engine: [http://dkc-app.nydkc.org](ht
     - Google Cloud Build
     - OAuth2
 - [MailerSend](https://github.com/mailersend/mailersend-python)
+- [Maileroo](https://maileroo.com)
 - [Recaptcha](https://www.google.com/recaptcha)
 - [requirements.txt](src/requirements.txt)
 

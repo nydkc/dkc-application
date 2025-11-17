@@ -32,9 +32,10 @@ $(gcloud beta emulators datastore env-init)
 
 export GOOGLE_CLOUD_PROJECT=dkc-app
 export APPLICATION_ID=dev~$GOOGLE_CLOUD_PROJECT
+# --support_datastore_emulator is currently broken because of https://issuetracker.google.com/issues/331809443
 dev_appserver.py \
     --application=$GOOGLE_CLOUD_PROJECT \
-    --support_datastore_emulator true \
+    --support_datastore_emulator false \
     --enable_host_checking false \
     --skip_sdk_update_check true \
     --env_var GOOGLE_APPLICATION_CREDENTIALS="$google_application_credentials" \

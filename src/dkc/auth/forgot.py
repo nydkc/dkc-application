@@ -5,7 +5,13 @@ from wtforms.fields import EmailField
 from wtforms.validators import Email as EmailValidator
 from google.cloud import ndb
 from common.models import Settings
-from common.email_provider import MailerSend, Email, Subject, HtmlContent, CustomArgs
+from common.email_provider import (
+    get_email_provider,
+    Email,
+    Subject,
+    HtmlContent,
+    CustomArgs,
+)
 from .login_manager import anonymous_only
 from .models import User, AuthToken
 from . import auth_bp
@@ -71,8 +77,8 @@ def send_password_reset_email(user, token_key):
     email_html = render_template("auth/forgot-email.html", **template_values)
 
     settings = ndb.Key(Settings, "config").get()
-    ms = MailerSend(api_key=settings.mailersend_api_key)
-    response = ms.send_email(
+    email_provider = get_email_provider(settings)
+    response = email_provider.send_email(
         from_email=Email(email="recognition@nydkc.org", name="NYDKC Awards Committee"),
         to_email=Email(email=user.email),
         subject=Subject(line="Resetting your DKC Application Password"),
@@ -86,6 +92,6 @@ def send_password_reset_email(user, token_key):
         ),
     )
 
-    if response.http_code != 202:
+    if not response.success:
         logger.error("Error sending email to %s: %s", user.email, response.errors)
         return abort(503)
