@@ -29,6 +29,9 @@ class Settings(ndb.Model):
     mailersend_api_key = ndb.StringProperty(
         default="Get an API key at https://app.mailersend.com/api-tokens"
     )
+    maileroo_api_key = ndb.StringProperty(
+        default="Get an API key at https://app.maileroo.com/applications"
+    )
 
     # For storing any uploaded files
     gcs_bucket = ndb.StringProperty(default=f"{GCP_PROJECT_ID}.appspot.com")
