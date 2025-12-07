@@ -23,7 +23,7 @@ The preferred service account is the AppEngine service account:
 
 def get_project_iam_policy():
     request = iam_policy_pb2.GetIamPolicyRequest(
-        resource=f'projects/{GCP_PROJECT_ID}',
+        resource=f"projects/{GCP_PROJECT_ID}",
     )
     resp = cloudresourcemanager.get_iam_policy(request=request)
     return resp

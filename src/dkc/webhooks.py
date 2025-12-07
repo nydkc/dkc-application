@@ -38,8 +38,8 @@ def handle_mailersend_bounced_event(email_event: Dict[str, Any]):
         )
         return
     on_verification_bounce_event(
-        recipient=email_metadata["recipient"]["email"],
-        dkc_application_key=message_id_mapping.dkc_application_key,
+        email_metadata["recipient"]["email"],
+        message_id_mapping.dkc_application_key,
     )
 
 
@@ -68,6 +68,6 @@ def handle_maileroo_bounced_event(email_event: Dict[str, Any]):
         logger.error("Did not find mapping for Maileroo message ID: %s", reference_id)
         return
     on_verification_bounce_event(
-        recipient=recipient_email,
-        dkc_application_key=message_id_mapping.dkc_application_key,
+        recipient_email,
+        message_id_mapping.dkc_application_key,
     )

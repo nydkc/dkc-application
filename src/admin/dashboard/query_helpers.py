@@ -11,7 +11,7 @@ def find_applicant_by_email(email: str) -> User:
 
 def find_applicant_and_application_by_email(email: str) -> Tuple[User, Application]:
     applicant = find_applicant_by_email(email)
-    if not applicant:
+    if not applicant or not applicant.application:
         return None, None
     application = applicant.application.get()
     return applicant, application

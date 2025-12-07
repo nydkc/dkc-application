@@ -10,18 +10,29 @@ from . import dashboard_bp
 @admin_login_required
 def show(email):
     settings = ndb.Key(Settings, "config").get()
-    applicant, application = query_helpers.find_applicant_and_application_by_email(email)
+    applicant, application = query_helpers.find_applicant_and_application_by_email(
+        email
+    )
+
+    # Handle 404 before accessing attributes
+    if applicant is None or application is None:
+        template_values = {
+            "email": email,
+            "settings": settings,
+            "current_admin_user": get_current_admin_user(),
+            "admin_url": f"/admin/show/{email}",
+        }
+        return render_template("admin_dashboard/show-404.html", **template_values), 404
+
     template_values = {
         "email": email,
         "applicant_id": applicant.key.id(),
         "applicant": applicant,
         "application": application,
-        "admin_url": "/admin/show/{}".format(email),
+        "admin_url": f"/admin/show/{email}",
         "settings": settings,
         "current_admin_user": get_current_admin_user(),
     }
-    if applicant is None or application is None:
-        return render_template("admin_dashboard/show-404.html", **template_values), 404
 
     if request.method == "POST":
         return handle_post(applicant, application)

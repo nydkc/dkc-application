@@ -1,2 +1,7 @@
 black
+legacy-cgi
 pip-review
+pytest
+pytest-flask
+pytest-mock
+pytest-cov

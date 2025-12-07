@@ -72,7 +72,9 @@ def external_verification(token_key: str):
             "verification/verification-club-president.html", **template_values
         )
     elif application.verification_faculty_advisor_token == token.key:
-        template_values["is_already_verified"] = application.verification_faculty_advisor
+        template_values["is_already_verified"] = (
+            application.verification_faculty_advisor
+        )
         return render_template(
             "verification/verification-faculty-advisor.html", **template_values
         )

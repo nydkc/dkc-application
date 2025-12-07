@@ -9,6 +9,7 @@ a.out
 
 # Python Compiled Files
 *.pyc
+.coverage
 
 # Pip Install Files
 *.so
