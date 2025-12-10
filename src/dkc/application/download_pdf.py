@@ -79,7 +79,7 @@ def download_pdf(user_id: int, name: str):
 
     applicant = applicant_key.get()
     application = applicant.application.get()
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     template_values = {
         "settings": settings,
         "applicant": applicant,
@@ -102,7 +102,7 @@ def download_html(user_id: int, name: str, ext: str):
 
     applicant = applicant_key.get()
     application = applicant.application.get()
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     template_values = {
         "settings": settings,
         "applicant": applicant,

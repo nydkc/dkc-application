@@ -10,7 +10,7 @@ from . import dashboard_bp
 @dashboard_bp.route("/search")
 @admin_login_required
 def search():
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
 
     start_time = time.time()
     querystring = request.args.get("q") or ""

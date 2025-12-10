@@ -9,7 +9,7 @@ from . import dashboard_bp
 @dashboard_bp.route("/lists")
 @admin_login_required
 def lists():
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     all_applicants, all_applications = query_helpers.get_all_with_emails_submit_time()
     template_values = {
         "all_applicants": all_applicants,

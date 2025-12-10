@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 @application_bp.route("/activities", methods=["GET", "POST"])
 @login_required
 def activites():
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     applicant = current_user
     application = applicant.application.get()
 

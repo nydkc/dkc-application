@@ -6,7 +6,7 @@ from . import main_page_bp
 
 @main_page_bp.route("/")
 def index():
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     template_values = {
         "settings": settings,
     }

@@ -10,6 +10,8 @@ from google.cloud import ndb
 
 
 def test_upload_file(client, login, mock_user, ndb_context, settings):
+    settings.gcs_bucket = "test-bucket"
+    settings.put()
 
     with patch("dkc.application.files_upload.gcs") as mock_gcs, patch(
         "dkc.application.files_upload.storage"

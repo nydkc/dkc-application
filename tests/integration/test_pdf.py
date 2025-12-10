@@ -7,8 +7,7 @@ from datetime import datetime
 from google.cloud import ndb
 
 
-def test_download_pdf(client, login, mock_user, ndb_context, settings):
-
+def test_download_pdf(client, login, mock_user, ndb_context):
     real_user = User(id=123, email="test@example.com")
     real_user.put()
 

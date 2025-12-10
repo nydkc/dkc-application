@@ -1,9 +1,14 @@
+from __future__ import annotations
 from datetime import datetime
 from google.cloud import ndb
 from common.gcp import GCP_PROJECT_ID
 
 
 class Settings(ndb.Model):
+    """
+    Singleton model for configuration settings. Stored in GCP Datastore with key "config".
+    """
+
     # For Flask security
     secret_key = ndb.StringProperty(
         default="Generate a secret key using /tools/generate_secret_key.py"
@@ -39,3 +44,16 @@ class Settings(ndb.Model):
     # DKC Application-specific settings
     due_date = ndb.DateTimeProperty(default=datetime.strptime("2015", "%Y"))
     awards_booklet_url = ndb.StringProperty()
+
+    @classmethod
+    def get_config(cls) -> Settings:
+        """
+        Lazily fetch and cache the Settings configuration from datastore.
+        This is called on first access rather than at module import time,
+        allowing tests to run without requiring the datastore emulator to be pre-started.
+        """
+        config: Settings = ndb.Key(cls, "config").get()
+        if not config:
+            config = cls(id="config")
+            config.put()
+        return config

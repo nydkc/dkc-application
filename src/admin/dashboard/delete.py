@@ -18,7 +18,7 @@ def delete_applicant():
     if request.method == "POST":
         handle_post()
 
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     all_applicants, all_applications = query_helpers.get_all_overview()
     template_values = {
         "all_applicants": all_applicants,

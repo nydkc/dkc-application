@@ -45,7 +45,7 @@ def forgot():
             send_password_reset_email(user, token_key)
             template_values["forgot_email_sent_to"] = email
 
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     template_values.update(
         {
             "settings": settings,
@@ -76,7 +76,7 @@ def send_password_reset_email(user, token_key):
     }
     email_html = render_template("auth/forgot-email.html", **template_values)
 
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     email_provider = get_email_provider(settings)
     response = email_provider.send_email(
         from_email=Email(email="recognition@nydkc.org", name="NYDKC Awards Committee"),

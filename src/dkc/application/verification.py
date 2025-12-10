@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 @application_bp.route("/verification", methods=["GET", "POST"])
 @login_required
 def verification():
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     applicant = current_user
     application = applicant.application.get()
 
@@ -113,7 +113,7 @@ def create_verification_auth_token(application):
 def send_verification_email(
     applicant, application, token_key, recipient_name, recipient_email
 ):
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     verification_url = url_for(
         "application_verification.external_verification",
         token_key=token_key.urlsafe().decode("utf-8"),
@@ -136,7 +136,7 @@ def send_verification_email(
         "application/verification-email.html", **template_values
     )
 
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     email_provider = get_email_provider(settings)
     response = email_provider.send_email(
         from_email=Email(email="recognition@nydkc.org", name="NYDKC Awards Committee"),

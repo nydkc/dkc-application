@@ -9,7 +9,7 @@ from . import application_bp
 @application_bp.route("/overview")
 @login_required
 def overview():
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     applicant = current_user
     application = current_user.application.get()
     user_id = current_user.key.id()

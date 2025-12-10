@@ -26,9 +26,6 @@ def admin_logged_in(client, admin_user):
     with client.session_transaction() as sess:
         sess["admin_user"] = admin_user.key.id()
 
-    if not ndb.Key(Settings, "config").get():
-        Settings(key=ndb.Key(Settings, "config"), due_date=datetime.now()).put()
-
     with patch("admin.auth.login_manager.is_project_admin", return_value=True):
         yield client
 
@@ -134,10 +131,8 @@ def test_admin_application_detail_404(admin_logged_in):
 
 
 def test_admin_settings_update(admin_logged_in, ndb_context):
-    Settings(key=ndb.Key(Settings, "config"), due_date=datetime.now()).put()
-
     data = {
-        "due_date": "2025-12-31T23:59:59",
+        "due_date": "1999-12-31T23:59:59",
         "awards_booklet_url": "http://example.com",
         "secret_key": "secret",
         "google_oauth_client_id": "id",
@@ -151,8 +146,8 @@ def test_admin_settings_update(admin_logged_in, ndb_context):
     response = admin_logged_in.post("/admin/settings", data=data, follow_redirects=True)
     assert response.status_code == 200
 
-    settings = ndb.Key(Settings, "config").get()
-    assert settings.due_date.year == 2026
+    settings = Settings.get_config()
+    assert settings.due_date.year == 1999
 
 
 def test_admin_application_delete(admin_logged_in, ndb_context):

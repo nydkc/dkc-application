@@ -1,14 +1,8 @@
 import logging
 import os
 from flask import Flask
-from common.constants import (
-    GOOGLE_OAUTH_CLIENT_ID,
-    GOOGLE_OAUTH_CLIENT_SECRET,
-    RECAPTCHA_SECRET,
-    RECAPTCHA_SITE_KEY,
-    SECRET_KEY,
-)
-from common.datastore import g_ndb_wsgi_middleware
+from common.models import Settings
+from common.datastore import db, g_ndb_wsgi_middleware
 from common.flask_error_handlers import register_error_handlers_to
 from common.jinja_functions import (
     JINJA_OPTIONS,
@@ -25,12 +19,6 @@ from admin.views import register_blueprints_to as register_admin_blueprints_to
 configure_logging()
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
-
-app.secret_key = SECRET_KEY
-app.config["RECAPTCHA_PUBLIC_KEY"] = RECAPTCHA_SITE_KEY
-app.config["RECAPTCHA_PRIVATE_KEY"] = RECAPTCHA_SECRET
-app.config["GOOGLE_CLIENT_ID"] = GOOGLE_OAUTH_CLIENT_ID
-app.config["GOOGLE_CLIENT_SECRET"] = GOOGLE_OAUTH_CLIENT_SECRET
 
 app.jinja_options = JINJA_OPTIONS
 app.jinja_env.filters.update(ADDITIONAL_JINJA_FILTERS)
@@ -58,4 +46,12 @@ register_admin_blueprints_to(app)
 logging.info("Initialized Flask App: app.url_map=\n%s", app.url_map)
 
 if __name__ == "__main__":
+    with db.context():
+        settings = Settings.get_config()
+        app.secret_key = settings.secret_key
+        app.config["RECAPTCHA_PUBLIC_KEY"] = settings.recaptcha_site_key
+        app.config["RECAPTCHA_PRIVATE_KEY"] = settings.recaptcha_secret
+        app.config["GOOGLE_CLIENT_ID"] = settings.google_oauth_client_id
+        app.config["GOOGLE_CLIENT_SECRET"] = settings.google_oauth_client_secret
+
     app.run(host="localhost", port=8080, debug=True)
