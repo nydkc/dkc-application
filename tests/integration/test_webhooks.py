@@ -2,8 +2,9 @@ import pytest
 import json
 import uuid
 from unittest.mock import patch, MagicMock
-from dkc.application.models import Application
 from dkc.auth.models import User
+from dkc.application.models import Application
+from dkc.application_verification.bounce import on_verification_bounce_event
 from common.email_provider import EmailProviderMessageMapping
 
 
@@ -33,8 +34,6 @@ def test_mailersend_webhook_bounce(client, ndb_context):
             }
         },
     }
-
-    from dkc.application_verification.bounce import on_verification_bounce_event
 
     on_verification_bounce_event("ltg@example.com", app_key.urlsafe().decode("utf-8"))
 
@@ -67,8 +66,6 @@ def test_maileroo_webhook_bounce(client, ndb_context):
         "message_reference_id": "mr_msg_id",
         "event_data": {"to": "pres@example.com"},
     }
-
-    from dkc.application_verification.bounce import on_verification_bounce_event
 
     on_verification_bounce_event("pres@example.com", app_key.urlsafe().decode("utf-8"))
 

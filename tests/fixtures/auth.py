@@ -4,6 +4,12 @@ from unittest.mock import MagicMock, patch
 
 @pytest.fixture
 def mock_user():
+    """
+    Provides a mock authenticated user with a mock application.
+
+    The mock user has all required authentication properties and a fully
+    configured mock application with common fields pre-filled.
+    """
     user = MagicMock()
     user.is_authenticated = True
     user.is_active = True
@@ -55,7 +61,7 @@ def auth_patches(mock_user):
 
 @pytest.fixture
 def login(client, auth_patches):
-    """Logs in the mock user."""
+    """Logs in the mock user and returns the authenticated client."""
     client.post(
         "/login",
         data={"email": "test@example.com", "password": "password"},
