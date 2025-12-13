@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from io import BytesIO
+from dkc.application.models import GCSObjectReference
 from dkc.application.models import Application
 from dkc.application.files_upload import MAX_ADVOCACY_UPLOAD_SIZE_BYTES
 from common.models import Settings
@@ -59,8 +60,6 @@ def test_upload_file_too_large(client, login, mock_user):
 
 
 def test_delete_file(client, login, mock_user, ndb_context):
-    from dkc.application.models import GCSObjectReference
-
     app_key = ndb.Key(Application, "test_app")
     mock_user.application = app_key
 

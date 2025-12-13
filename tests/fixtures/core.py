@@ -1,21 +1,26 @@
+import contextlib
 import pytest
-import os
-import sys
+from google.cloud import ndb
 from common.datastore import db
 from main import app as flask_app
-import bcrypt
-
-# Patch bcrypt for passlib compatibility
-if not hasattr(bcrypt, "__about__"):
-    bcrypt.__about__ = type("about", (object,), {"__version__": bcrypt.__version__})
 
 
 @pytest.fixture
 def app():
+    """
+    Provides a configured Flask app for testing.
+
+    Configures the app with test settings and patches ndb.Client.context
+    to be reentrant, preventing "Context is already created" errors.
+    """
     flask_app.config.update(
         {
             "TESTING": True,
             "SECRET_KEY": "test_secret_key",
+            "RECAPTCHA_PUBLIC_KEY": "test_recaptcha_public_key",
+            "RECAPTCHA_PRIVATE_KEY": "test_recaptcha_private_key",
+            "GOOGLE_CLIENT_ID": "test_google_client_id",
+            "GOOGLE_CLIENT_SECRET": "test_google_client_secret",
             "WTF_CSRF_ENABLED": False,
         }
     )
@@ -23,10 +28,6 @@ def app():
     # Mock ndb.Client.context to be reentrant.
     # This prevents "Context is already created" errors when the middleware tries to
     # create a context inside the one already provided by the `ndb_context` fixture.
-
-    from google.cloud import ndb
-    import contextlib
-
     original_context_method = ndb.Client.context
 
     def reentrant_context(self, *args, **kwargs):
@@ -45,11 +46,17 @@ def app():
 
 @pytest.fixture
 def client(app):
+    """Provides a Flask test client for making HTTP requests."""
     return app.test_client()
 
 
 @pytest.fixture(autouse=True)
 def ndb_context():
-    # Use the same client as the app to avoid context conflicts
+    """
+    Establishes NDB datastore context for all tests.
+
+    This fixture runs automatically for every test (autouse=True),
+    ensuring the datastore context is available.
+    """
     with db.context():
         yield

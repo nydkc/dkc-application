@@ -8,8 +8,10 @@ from admin.auth.models import AdminUser, OAuth2Token
 from dkc.application.models import Application
 from dkc.auth.models import User
 from common.models import Settings
+from common.timezone import Eastern, UTC
 from admin.auth.authlib_oauth import g_oauth
 from admin.dashboard import query_helpers
+from tests.helpers import wait_for_datastore_consistency
 
 
 @pytest.fixture
@@ -79,18 +81,15 @@ def test_admin_application_search(admin_logged_in, ndb_context):
     user.application = app_key
     user.put()
 
-    # Wait for consistency
-    found = False
-    for _ in range(20):
+    # Wait for datastore consistency
+    def check_consistency():
         applicants, applications = query_helpers.get_all_search()
         for a, app_obj in zip(applicants, applications):
             if a.email == email and app_obj:
-                found = True
-                break
-        if found:
-            break
-        time.sleep(0.5)
-    assert found, "Consistency wait timed out"
+                return True
+        return False
+
+    wait_for_datastore_consistency(check_consistency)
 
     response = admin_logged_in.get("/admin/search?q=John")
     assert response.status_code == 200
@@ -107,15 +106,12 @@ def test_admin_application_detail(admin_logged_in, ndb_context):
     user.application = app_key
     user.put()
 
-    # Wait for consistency
-    found = False
-    for _ in range(20):
+    # Wait for datastore consistency
+    def check_consistency():
         u, a = query_helpers.find_applicant_and_application_by_email(email)
-        if u and a:
-            found = True
-            break
-        time.sleep(0.5)
-    assert found, "Consistency wait timed out"
+        return u is not None and a is not None
+
+    wait_for_datastore_consistency(check_consistency)
 
     url = f"/admin/show/{user.email}"
     response = admin_logged_in.get(url)
@@ -147,8 +143,13 @@ def test_admin_settings_update(admin_logged_in, ndb_context):
     assert response.status_code == 200
 
     settings = Settings.get_config()
-    assert settings.due_date.year == 1999
-
+    # Ensure that datetime is stored in UTC
+    assert settings.due_date.replace(tzinfo=UTC()).astimezone(tz=Eastern).year == 1999
+    assert settings.due_date.replace(tzinfo=UTC()).astimezone(tz=Eastern).month == 12
+    assert settings.due_date.replace(tzinfo=UTC()).astimezone(tz=Eastern).day == 31
+    assert settings.due_date.replace(tzinfo=UTC()).astimezone(tz=Eastern).hour == 23
+    assert settings.due_date.replace(tzinfo=UTC()).astimezone(tz=Eastern).minute == 59
+    assert settings.due_date.replace(tzinfo=UTC()).astimezone(tz=Eastern).second == 59
 
 def test_admin_application_delete(admin_logged_in, ndb_context):
     email = f"applicant_{uuid.uuid4().hex}@example.com"
@@ -160,15 +161,12 @@ def test_admin_application_delete(admin_logged_in, ndb_context):
     user.application = app_key
     user.put()
 
-    # Wait for consistency
-    found = False
-    for _ in range(20):
+    # Wait for datastore consistency
+    def check_consistency():
         u = query_helpers.find_applicant_by_email(email)
-        if u and u.application:
-            found = True
-            break
-        time.sleep(0.5)
-    assert found, "Consistency wait timed out"
+        return u is not None and u.application is not None
+
+    wait_for_datastore_consistency(check_consistency)
 
     url = "/admin/danger_delete_applicants"
     data = {"email": [user.email]}
