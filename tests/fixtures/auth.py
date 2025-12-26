@@ -20,7 +20,7 @@ def mock_user():
     user.last_name = "User"
 
     mock_app = MagicMock()
-    mock_app.key.urlsafe.return_value = b"safe_key"
+    mock_app.key.urlsafe.return_value = b"ndb_application_key_urlsafe"
     mock_app.submit_time = None
 
     # Common fields
@@ -28,17 +28,17 @@ def mock_user():
     mock_app.address = "123 St"
     mock_app.city = "City"
     mock_app.zip_code = "12345"
-    mock_app.phone_number = "555-1234"
+    mock_app.phone_number = "123-555-1234"
     mock_app.division = "1"
     mock_app.ltg = "LTG"
     mock_app.school = "School"
     mock_app.school_address = "School St"
     mock_app.school_city = "City"
     mock_app.school_zip_code = "12345"
-    mock_app.club_president = "Prez"
-    mock_app.club_president_phone_number = "555-1234"
+    mock_app.club_president = "President"
+    mock_app.club_president_phone_number = "123-555-1234"
     mock_app.faculty_advisor = "Advisor"
-    mock_app.faculty_advisor_phone_number = "555-1234"
+    mock_app.faculty_advisor_phone_number = "123-555-1234"
 
     # Verification fields (default to False/None)
     mock_app.verification_ltg = False
