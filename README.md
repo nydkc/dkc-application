@@ -17,7 +17,7 @@ Built using Flask and hosted on Google App Engine: [http://dkc-app.nydkc.org](ht
     - Verification (through email to trusted parties)
     - File uploads to GCS, in relevant sections for Advocacy, Newsletter and Other materials
     - Download application as PDF
-- Account management
+- Account Management
     - User login and registration
     - Forgot password / Password reset
     - Access control and isolation of user applications
@@ -73,6 +73,8 @@ With the Python Virtualenv and Google Cloud SDK setups complete, it is now possi
 (venv) $ ./run_local.sh --google_application_credentials=<service_account_json_key_file>
 ```
 
-The `run_local.sh` script will start a Google Cloud Datastore Emulator as well as the Google App Engine `dev_appserver` to run the DKC Application. It will automatically reload the code when changes are made.
+The `run_local.sh` script will start a Google Cloud Datastore Emulator as well as the Google App Engine `dev_appserver.py` to run the DKC Application. It will automatically reload the code when changes are made.
 
-For initial setup, navigate to http://localhost:8000/datastore?kind=Settings. Once configured, navigate to http://localhost:8080 to view the DKC Application.
+1. Use [dsadmin](https://github.com/remko/dsadmin) for initial setup of Settings. If using the `run_local.sh` script, this will have automatically been started for you at http://localhost:8501/kinds/Settings.
+    - ~~(pre 2024) For initial setup, navigate to http://localhost:8000/datastore?kind=Settings.~~
+2. Once configured, navigate to http://localhost:8080 to view the DKC Application.

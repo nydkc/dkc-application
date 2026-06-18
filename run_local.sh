@@ -1,5 +1,8 @@
 #!/bin/sh
 
+export GOOGLE_CLOUD_PROJECT=dkc-app
+export APPLICATION_ID=dev~$GOOGLE_CLOUD_PROJECT
+
 for i in "$@"; do
 case $i in
     --google_application_credentials=*)
@@ -25,13 +28,20 @@ fi
 
 if ! pgrep -f "com.google.cloud.datastore.emulator.CloudDatastore" > /dev/null; then
     gcloud beta emulators datastore start --host-port=localhost:8500 &
-    echo "Waiting for datastore to start..." && sleep 5
+    echo "TIP: Use https://github.com/remko/dsadmin to view/modify entities in Datastore emulator"
+    echo "Waiting for datastore to start..."
+    sleep 5
 fi
 
 $(gcloud beta emulators datastore env-init)
 
-export GOOGLE_CLOUD_PROJECT=dkc-app
-export APPLICATION_ID=dev~$GOOGLE_CLOUD_PROJECT
+# If dsadmin is installed in the PATH, start it (https://github.com/remko/dsadmin)
+if command -v dsadmin > /dev/null && ! pgrep "dsadmin" > /dev/null; then
+    echo "Found dsadmin in PATH. Starting dsadmin..."
+    dsadmin -port 8501 -datastore-emulator-host localhost:8500 &
+    sleep 1
+fi
+
 # --support_datastore_emulator is currently broken because of https://issuetracker.google.com/issues/331809443
 dev_appserver.py \
     --application=$GOOGLE_CLOUD_PROJECT \
