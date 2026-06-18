@@ -1,2 +1,3 @@
 black
+legacy-cgi
 pip-review
