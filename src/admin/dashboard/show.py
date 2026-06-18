@@ -9,7 +9,7 @@ from . import dashboard_bp
 @dashboard_bp.route("/show/<string:email>", methods=["GET", "POST"])
 @admin_login_required
 def show(email):
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     applicant, application = query_helpers.find_applicant_and_application_by_email(
         email
     )

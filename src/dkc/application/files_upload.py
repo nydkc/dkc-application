@@ -184,7 +184,7 @@ def handle_upload_file(applicant, application, max_size_bytes):
             description=f"File '{upload_file.filename}' is too large. Its size of {byteConversion(upload_file_size)} is over the limit of {byteConversion(max_size_bytes)}",
         )
 
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     bucket = gcs.get_bucket(settings.gcs_bucket)
     key = GCSObjectReference.allocate_ids(parent=application.key, size=1)[0]
     obj_name = "uploads/{}/{}/{}".format(

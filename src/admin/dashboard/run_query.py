@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 @dashboard_bp.route("/run_query")
 @admin_login_required
 def run_query():
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
 
     querystring = request.args.get("q") or ""
     results, error = handle_run_query(querystring)

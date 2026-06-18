@@ -9,7 +9,7 @@ from . import dashboard_bp
 @dashboard_bp.route("/overview")
 @admin_login_required
 def overview():
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     all_applicants, all_applications = query_helpers.get_all_overview()
     template_values = {
         "all_applicants": all_applicants,

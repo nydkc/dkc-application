@@ -59,7 +59,7 @@ def handle_post(applicant, application):
 
 
 def send_submission_confirmation_email(applicant, application):
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     template_values = {
         "applicant": applicant,
         "application": application,
@@ -69,7 +69,7 @@ def send_submission_confirmation_email(applicant, application):
         "application/submit-confirmation-email.html", **template_values
     )
 
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     email_provider = get_email_provider(settings)
     response = email_provider.send_email(
         from_email=Email(email="recognition@nydkc.org", name="NYDKC Awards Committee"),

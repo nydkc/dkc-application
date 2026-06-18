@@ -64,7 +64,7 @@ def email_message_id_cleanup():
 
 @cron_bp.route("/cron/mailersend_heartbeat")
 def mailersend_heartbeat():
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     ms = MailerSend(api_key=settings.mailersend_api_key)
     response = ms.send_heartbeat_email()
     if not response.success:
@@ -75,7 +75,7 @@ def mailersend_heartbeat():
 
 @cron_bp.route("/cron/maileroo_heartbeat")
 def maileroo_heartbeat():
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     mr = Maileroo(api_key=settings.maileroo_api_key)
     response = mr.send_heartbeat_email()
     if not response.success:

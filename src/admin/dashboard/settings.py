@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 @dashboard_bp.route("/settings", methods=["GET", "POST"])
 @admin_login_required
 def settings():
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
 
     if request.method == "POST":
         handle_post(settings)

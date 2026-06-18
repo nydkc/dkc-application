@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 @application_bp.route("/personal-statement", methods=["GET", "POST"])
 @login_required
 def personal_statement():
-    settings = ndb.Key(Settings, "config").get()
+    settings = Settings.get_config()
     applicant = current_user
     application = applicant.application.get()
 
