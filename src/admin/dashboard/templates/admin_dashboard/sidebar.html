@@ -29,7 +29,7 @@
             <li{% if admin_url == '/admin/settings' %} class="active"{% endif %}>
                 <a href="/admin/settings">Settings</a>
             </li>
-            {%- if admin_url.startswith('/admin/show') %}
+            {%- if admin_url.startswith('/admin/show') and applicant %}
             <h5 class="text-center">Application of <span class="text-nowrap">{{ applicant.first_name }} {{ applicant.last_name }}</span></h5>
             <div class="application-sections">
                 <ul class="nav">

@@ -42,7 +42,7 @@ def handle_post():
         delete_applicant_completely(applicant.key)
 
 
-@ndb.transactional()
+@ndb.transactional(xg=True)
 def delete_applicant_completely(applicant_key):
     applicant = applicant_key.get()
     application_key = applicant.application
@@ -52,18 +52,22 @@ def delete_applicant_completely(applicant_key):
     auth_token_keys = [
         tkey for tkey in AuthToken.query(ancestor=applicant_key).fetch(keys_only=True)
     ]
-    gcs_obj_ref_keys = [
-        rkey
-        for rkey in GCSObjectReference.query(ancestor=application_key).fetch(
-            keys_only=True
-        )
-    ]
+    gcs_obj_ref_keys = []
+    if application_key:
+        gcs_obj_ref_keys = [
+            rkey
+            for rkey in GCSObjectReference.query(ancestor=application_key).fetch(
+                keys_only=True
+            )
+        ]
     for gcs_obj_ref in ndb.get_multi(gcs_obj_ref_keys):
         delete_referenced_gcs_object(gcs_obj_ref)
     keys_to_delete = (
-        [applicant_key, application_key, unique_user_tracking_key]
+        [applicant_key, unique_user_tracking_key]
+        + ([application_key] if application_key else [])
         + auth_token_keys
         + gcs_obj_ref_keys
     )
-    ndb.delete_multi(keys_to_delete)
+    deleted_ack = ndb.delete_multi(keys_to_delete)
+    logger.debug("Deleted %s keys", len(deleted_ack))
     logger.info("Deleted applicant: %s", applicant.email)

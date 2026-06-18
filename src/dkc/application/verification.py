@@ -67,7 +67,7 @@ def handle_post(applicant, application):
             application.verification_ltg_token = token_key
             application.verification_ltg_sent = True
             verifier_email = application.verification_ltg_email
-            verifier_name = "Lieutenant Governor " + application.ltg.title()
+            verifier_name = f"Lieutenant Governor {application.ltg.title()}"
         elif task == "club-president" and not application.verification_club_president:
             application.verification_club_president_email = request.form.get(
                 "club-president-email"
@@ -77,7 +77,7 @@ def handle_post(applicant, application):
                 application.verification_club_president_token.delete()
             application.verification_club_president_token = token_key
             application.verification_club_president_sent = True
-            verifier_name = "Club President " + application.club_president.title()
+            verifier_name = f"Club President {application.club_president.title()}"
             verifier_email = application.verification_club_president_email
         elif task == "faculty-advisor" and not application.verification_faculty_advisor:
             application.verification_faculty_advisor_email = request.form.get(
@@ -88,7 +88,7 @@ def handle_post(applicant, application):
                 application.verification_faculty_advisor_token.delete()
             application.verification_faculty_advisor_token = token_key
             application.verification_faculty_advisor_sent = True
-            verifier_name = "Faculty Advisor " + application.faculty_advisor.title()
+            verifier_name = f"Faculty Advisor {application.faculty_advisor.title()}"
             verifier_email = application.verification_faculty_advisor_email
         else:
             logger.warning(

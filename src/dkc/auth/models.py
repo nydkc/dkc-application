@@ -47,7 +47,7 @@ class User(ndb.Model, UserMixin):
         return self.auth_credential_id
 
     def _get_unique_attributes_id(self):
-        return "User.email:{}".format(self.email)
+        return f"User.email:{self.email}"
 
 
 class UniqueUserTracking(ndb.Model):

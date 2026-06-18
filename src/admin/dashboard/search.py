@@ -50,6 +50,8 @@ def applicant_matches(applicant, application, querystring):
     returned from a projection query, that the projection contains the profile
     fields that are searched.
     """
+    if applicant is None or application is None:
+        return False
     search_fields = [
         applicant.first_name,
         applicant.last_name,

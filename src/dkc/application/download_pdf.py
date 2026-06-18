@@ -86,7 +86,7 @@ def download_pdf(user_id: int, name: str):
         "application": application,
         "STATIC_DIR": get_static_dir(),
     }
-    filename = "{}.pdf".format(name)
+    filename = f"{name}.pdf"
     return send_file(
         io.BytesIO(generate_pdf(render_template("pdf/pdf.html", **template_values))),
         mimetype="application/pdf",

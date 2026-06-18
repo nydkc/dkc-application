@@ -39,7 +39,7 @@ def forgot():
         user = User.find_by_email(email)
         if user is None:
             logger.warning("Could not find any user for email: %s", email)
-            form.email.errors.append("No account found with email '{}'.".format(email))
+            form.email.errors.append(f"No account found with email '{email}'.")
         else:
             token_key = create_password_reset_auth_token(user)
             send_password_reset_email(user, token_key)

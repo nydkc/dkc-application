@@ -4,6 +4,7 @@ import time
 ZERO = timedelta(0)
 HOUR = timedelta(hours=1)
 
+
 class UTC(tzinfo):
     def utcoffset(self, dt):
         return ZERO
@@ -14,13 +15,16 @@ class UTC(tzinfo):
     def dst(self, dt):
         return ZERO
 
+
 # A complete implementation of current DST rules for major US time zones.
+
 
 def first_sunday_on_or_after(dt):
     days_to_go = 6 - dt.weekday()
     if days_to_go:
         dt += timedelta(days_to_go)
     return dt
+
 
 # US DST Rules
 #
@@ -46,6 +50,7 @@ DSTEND_1987_2006 = datetime(1, 10, 25, 1)
 # on or after Oct 25.
 DSTSTART_1967_1986 = datetime(1, 4, 24, 2)
 DSTEND_1967_1986 = DSTEND_1987_2006
+
 
 class USTimeZone(tzinfo):
 
@@ -97,4 +102,5 @@ class USTimeZone(tzinfo):
         else:
             return ZERO
 
-Eastern = USTimeZone(-5, "Eastern",  "EST", "EDT")
+
+Eastern = USTimeZone(-5, "Eastern", "EST", "EDT")

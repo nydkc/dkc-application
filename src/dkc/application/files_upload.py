@@ -51,9 +51,7 @@ def handle_activities_advocacy_post():
     if len(application.advocacy_materials) >= MAX_ADVOCACY_ITEMS:
         return abort(
             400,
-            description="Cannot upload more than {} advocacy materials.".format(
-                MAX_ADVOCACY_ITEMS
-            ),
+            description=f"Cannot upload more than {MAX_ADVOCACY_ITEMS} advocacy materials.",
         )
 
     new_gcs_obj_ref_key = handle_upload_file(
@@ -97,9 +95,7 @@ def handle_activities_newsletter_post():
     if len(application.newsletter_materials) >= MAX_NEWSLETTER_ITEMS:
         return abort(
             400,
-            description="Cannot upload more than {} newsletter materials.".format(
-                MAX_NEWSLETTER_ITEMS
-            ),
+            description=f"Cannot upload more than {MAX_NEWSLETTER_ITEMS} newsletter materials.",
         )
 
     new_gcs_obj_ref_key = handle_upload_file(
@@ -143,9 +139,7 @@ def handle_activities_other_post():
     if len(application.other_materials) >= MAX_OTHER_ITEMS:
         return abort(
             400,
-            description="Cannot upload more than {} other materials.".format(
-                MAX_OTHER_ITEMS
-            ),
+            description=f"Cannot upload more than {MAX_OTHER_ITEMS} other materials.",
         )
 
     new_gcs_obj_ref_key = handle_upload_file(
@@ -187,11 +181,7 @@ def handle_upload_file(applicant, application, max_size_bytes):
     if upload_file_size > max_size_bytes:
         return abort(
             413,
-            description="File '{}' is too large. Its size of {} is over the limit of {}".format(
-                upload_file.filename,
-                byteConversion(upload_file_size),
-                byteConversion(max_size_bytes),
-            ),
+            description=f"File '{upload_file.filename}' is too large. Its size of {byteConversion(upload_file_size)} is over the limit of {byteConversion(max_size_bytes)}",
         )
 
     settings = ndb.Key(Settings, "config").get()
