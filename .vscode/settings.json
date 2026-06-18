@@ -1,5 +1,5 @@
 {
     "python.formatting.provider": "black",
-    "python.formatting.blackPath": "venv/bin/black",
-    "python.defaultInterpreterPath": "venv/bin/python"
+    "python.formatting.blackPath": "${workspaceFolder}/.venv/bin/black",
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python"
 }

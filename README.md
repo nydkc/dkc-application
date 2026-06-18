@@ -59,15 +59,15 @@ $ gcloud app deploy app.yaml --project dkc-app
 Python 3+ is required to run the DKC Application. The recommended development setup is to use Python's [Virtual Environment (venv)](https://docs.python.org/3/library/venv.html) to install dependencies from [pip](https://pypi.org/project/pip/).
 
 ```console
-$ virtualenv venv
-$ source venv/bin/activate
+$ virtualenv .venv
+$ source .venv/bin/activate
 (venv) $ pip install -r requirements.txt
 (venv) $ pip install -r src/requirements.txt
 ```
 
 The Google Cloud SDK will also need to be installed, following instructions at https://cloud.google.com/sdk/docs/quickstart. Once installed, follow the instructions to [create Google Application Credentials for a service account](https://cloud.google.com/iam/docs/keys-create-delete#creating), which will be needed for the next step.
 
-With the Python `venv` and Google Cloud SDK setups complete, it is now possible to run locally:
+With the Python Virtualenv and Google Cloud SDK setups complete, it is now possible to run locally:
 
 ```console
 (venv) $ ./run_local.sh --google_application_credentials=<service_account_json_key_file>
