@@ -25,4 +25,4 @@ cat > "$LIFECYCLE_CONFIG_FILE" <<EOF
 }
 EOF
 
-gsutil lifecycle set "$LIFECYCLE_CONFIG_FILE" "$GCS_BUCKET"
+gcloud storage buckets update "$GCS_BUCKET" --lifecycle-file="$LIFECYCLE_CONFIG_FILE"
