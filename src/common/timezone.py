@@ -53,7 +53,6 @@ DSTEND_1967_1986 = DSTEND_1987_2006
 
 
 class USTimeZone(tzinfo):
-
     def __init__(self, hours, reprname, stdname, dstname):
         self.stdoffset = timedelta(hours=hours)
         self.reprname = reprname
