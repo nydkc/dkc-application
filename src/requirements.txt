@@ -1,4 +1,4 @@
-Authlib==1.6.12
+Authlib==1.9.1
 bcrypt==4.3.0
 cryptography==50.0.0
 Flask==3.1.3
